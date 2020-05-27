@@ -1,0 +1,22 @@
+{
+  "name": "voctail-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "SoSe 2020 SEBA Master Team 53",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.2.1",
+    "voctail-utils": "file:../global-utils"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
