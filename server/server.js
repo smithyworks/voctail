@@ -1,20 +1,21 @@
 require("dotenv").config();
 
 const express = require("express");
-const { createPool, checkConnection, log, listUsers, register, login } = require("./lib");
+const { log, db, jwt, auth } = require("./lib");
 
-const pool = createPool();
-if (!checkConnection()) {
-  log("Problem connecting to the database.", err);
-  pool.end();
+if (!db.isConnected()) {
+  log("Problem connecting to the database.");
+  db.disconnect();
   process.exit(1);
 }
 
 const server = express();
 server.use(express.json());
 
-server.get("/users", listUsers);
-server.post("/register", register);
-server.post("/login", login);
+server.get("/users", jwt.verifyToken, auth.listUsers);
+server.post("/register", auth.register);
+server.post("/login", auth.login);
+server.post("/token", jwt.token);
+server.post("/logout", jwt.clearToken);
 
 server.listen(8080);

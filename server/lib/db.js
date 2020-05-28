@@ -1,30 +1,32 @@
 const { Pool } = require("pg");
 
-let pool;
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
+  port: process.env.DB_PORT,
+});
 
-function createPool() {
-  pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASS,
-    port: process.env.DB_PORT,
-  });
-
-  return pool;
+async function isConnected() {
+  try {
+    const res = await pool.query("SELECT NOW()");
+    return res && res.rowCount === 1 && res.rows[0].now && res.rows[0].now.length > 0;
+  } catch {
+    return false;
+  }
 }
 
-function getPool() {
-  return pool;
+function query(text, params) {
+  return pool.query(text, params);
 }
 
-async function checkConnection() {
-  const res = await pool.query("SELECT NOW()");
-  return res && res.rowCount === 1 && res.rows[0].now && res.rows[0].now.length > 0;
+function disconnect() {
+  pool.end();
 }
 
 module.exports = {
-  createPool,
-  getPool,
-  checkConnection,
+  isConnected,
+  query,
+  disconnect,
 };
