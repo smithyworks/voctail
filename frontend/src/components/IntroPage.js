@@ -8,16 +8,16 @@ const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
 });
 
-function Dashboard({ ...props }) {
+function IntroPage({ ...props }) {
   const classes = useStyles();
   return (
-    <div id="404-page" className={classes.container}>
+    <div id="intro-page" className={classes.container}>
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">Welcome to your Dashboard!</T>
-        <Link to="/signout">Signout</Link>
+        <T variant="h4">Welcome to the world of Voctail!</T>
+        <Link to="/signin">Sign in</Link> or <Link to="/signup">sign up!</Link>
       </Grid>
     </div>
   );
 }
 
-export default Dashboard;
+export default IntroPage;

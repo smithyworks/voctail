@@ -15,7 +15,7 @@ server.use(express.json());
 server.get("/users", jwt.verifyToken, auth.listUsers);
 server.post("/register", auth.register);
 server.post("/login", auth.login);
+server.get("/logout", jwt.verifyToken, auth.logout);
 server.post("/token", jwt.token);
-server.post("/logout", jwt.clearToken);
 
 server.listen(8080);

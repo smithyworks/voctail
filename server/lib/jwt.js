@@ -22,8 +22,6 @@ async function createTokens(userRecord, isAdmin) {
       expiresIn: "3d",
     });
 
-    await query("UPDATE users SET refresh_token = $1 WHERE user_id = $2", [refreshToken, userRecord.user_id]);
-
     return [accessToken, refreshToken];
   } catch (err) {
     log(err);
@@ -34,6 +32,7 @@ async function createTokens(userRecord, isAdmin) {
 function verifyToken(req, res, next) {
   try {
     const bearerToken = req.headers.authorization;
+    console.log(bearerToken);
     if (bearerToken) {
       const token = bearerToken.split(" ")[1];
       const authData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -41,11 +40,11 @@ function verifyToken(req, res, next) {
       next();
     } else {
       log("No token to verify.");
-      res.status(401).send("Bad data.");
+      res.status(401).send("Unauthorized.");
     }
   } catch (err) {
     log("Error verifying token", err);
-    res.status(403).send("Forbidden.");
+    res.status(401).send("Unauthorized.");
   }
 }
 
@@ -53,7 +52,7 @@ async function token(req, res) {
   try {
     const { refreshToken } = req.body;
     log(refreshToken);
-    if (!refreshToken) res.status(401).send("Bad data.");
+    if (!refreshToken) res.status(403).send("Forbidden.");
 
     const {
       user: { user_id },
@@ -79,7 +78,7 @@ async function clearToken(req, res) {
   try {
     const { refreshToken } = req.body;
     log(refreshToken);
-    if (!refreshToken) res.status(401).send("Bad data.");
+    if (!refreshToken) res.status(403).send("Forbidden.");
 
     const {
       user: { user_id, email },

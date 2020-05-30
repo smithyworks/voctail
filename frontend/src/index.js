@@ -4,6 +4,9 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import setupInterceptors from "./interceptors.js";
+
+setupInterceptors();
 
 ReactDOM.render(
   <React.StrictMode>
