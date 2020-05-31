@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { validateEmail, validatePassword } = require("voctail-utils");
+
 const { query } = require("./db");
 const { log } = require("./log.js");
-const { createTokens } = require("./jwt.js");
-const jwt = require("jsonwebtoken");
 
 function _u({ user_id, email }) {
   return { user: { user_id, email, admin: false } };

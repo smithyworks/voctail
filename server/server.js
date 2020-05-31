@@ -1,6 +1,6 @@
 require("dotenv").config();
-
 const express = require("express");
+
 const { log, db, auth, users } = require("./lib");
 
 if (!db.isConnected()) {

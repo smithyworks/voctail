@@ -1,3 +1,6 @@
+const { log } = require("./log.js");
+const { query } = require("./db.js");
+
 async function userHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
