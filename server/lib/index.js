@@ -1,12 +1,11 @@
 const log = require("./log.js");
 const db = require("./db.js");
-const jwt = require("./jwt.js");
-
 const auth = require("./auth.js");
+const users = require("./users.js");
 
 module.exports = {
   log,
   db,
-  jwt,
   auth,
+  users,
 };

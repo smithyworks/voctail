@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-const { log, db, jwt, auth } = require("./lib");
+const { log, db, auth, users } = require("./lib");
 
 if (!db.isConnected()) {
   log("Problem connecting to the database.");
@@ -12,10 +12,12 @@ if (!db.isConnected()) {
 const server = express();
 server.use(express.json());
 
-server.get("/users", jwt.verifyToken, auth.listUsers);
-server.post("/register", auth.register);
-server.post("/login", auth.login);
-server.get("/logout", jwt.verifyToken, auth.logout);
-server.post("/token", jwt.token);
+server.post("/register", auth.registerHandler);
+server.post("/login", auth.loginHandler);
+server.post("/token", auth.tokenHandler);
+server.get("/logout", auth.tokenMiddleWare, auth.logoutHandler);
+
+server.get("/users", auth.tokenMiddleWare, users.usersHandler);
+server.get("/user", auth.tokenMiddleWare, users.userHandler);
 
 server.listen(8080);
