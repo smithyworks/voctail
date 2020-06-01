@@ -1,23 +1,39 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 
-const { log, db, auth, users } = require("./lib");
+const { log } = require("./lib/log.js");
+const { db, auth, users } = require("./lib");
 
-if (!db.isConnected()) {
-  log("Problem connecting to the database.");
-  db.disconnect();
-  process.exit(1);
-}
+db.checkConnection(connected => {
+  if (connected) log("Connected to the Database!");
+  else {
+    log("Problem connecting to the database.");
+    db.disconnect();
+    process.exit(1);
+  }
+});
 
 const server = express();
 server.use(express.json());
+// Serve the static files from the React app
+server.use(express.static(path.join(__dirname + "/frontend_build")));
 
-server.post("/register", auth.registerHandler);
-server.post("/login", auth.loginHandler);
-server.post("/token", auth.tokenHandler);
-server.get("/logout", auth.tokenMiddleWare, auth.logoutHandler);
+server.get("/api/test", (req, res) => res.status(200).send("Server is online!"));
 
-server.get("/users", auth.tokenMiddleWare, users.usersHandler);
-server.get("/user", auth.tokenMiddleWare, users.userHandler);
+server.post("/api/register", auth.registerHandler);
+server.post("/api/login", auth.loginHandler);
+server.post("/api/token", auth.tokenHandler);
+server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 
-server.listen(8080);
+server.get("/api/users", auth.tokenMiddleWare, users.usersHandler);
+server.get("/api/user", auth.tokenMiddleWare, users.userHandler);
+
+// Handles any requests that don't match the ones above
+server.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
+});
+
+const port = process.env.PORT || 8080;
+server.listen(port);
+log("Listening on port " + port);

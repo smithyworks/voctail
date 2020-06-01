@@ -1,5 +1,7 @@
 const { Pool } = require("pg");
 
+const { log } = require("./log.js");
+
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -8,13 +10,16 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-async function isConnected() {
-  try {
-    const res = await pool.query("SELECT NOW()");
-    return res && res.rowCount === 1 && res.rows[0].now && res.rows[0].now.length > 0;
-  } catch {
-    return false;
-  }
+function checkConnection(cb) {
+  pool
+    .query("SELECT NOW()")
+    .then(res => {
+      cb(res && res.rowCount === 1 && res.rows[0].now);
+    })
+    .catch(err => {
+      log(err);
+      cb(false);
+    });
 }
 
 function query(text, params) {
@@ -26,7 +31,7 @@ function disconnect() {
 }
 
 module.exports = {
-  isConnected,
+  checkConnection,
   query,
   disconnect,
 };

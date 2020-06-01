@@ -5,8 +5,8 @@ import { Grid, Paper, Typography as T, TextField, Button, Checkbox } from "@mate
 import { makeStyles } from "@material-ui/core/styles";
 import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 
-import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "voctail-utils";
-import { tokens, requests as r } from "../utils";
+import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "../utils/validation.js";
+import { tokens, api } from "../utils";
 
 const useStyles = makeStyles({
   page: {
@@ -47,7 +47,8 @@ function SigninPage({ signup: isSignupPage }) {
       return;
     }
 
-    r.login(email, password)
+    api
+      .login(email, password)
       .then(({ data: { accessToken, refreshToken } }) => {
         tokens.setTokens(accessToken, refreshToken);
         setErrorMessage();
@@ -81,9 +82,8 @@ function SigninPage({ signup: isSignupPage }) {
       return;
     }
 
-    const promise = r.register(name, email, password);
-    console.log(promise);
-    promise
+    api
+      .register(name, email, password)
       .then(res => setErrorMessage())
       .catch(err => {
         try {
@@ -94,7 +94,8 @@ function SigninPage({ signup: isSignupPage }) {
       })
       .then(() => {
         setInfoMessage();
-        r.login(email, password)
+        api
+          .login(email, password)
           .then(({ data: { accessToken, refreshToken } }) => {
             tokens.setTokens(accessToken, refreshToken);
             setLoggedIn(true);

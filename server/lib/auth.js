@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { validateEmail, validatePassword } = require("voctail-utils");
+const { validateEmail, validatePassword } = require("./validation.js");
 
 const { query } = require("./db");
 const { log } = require("./log.js");

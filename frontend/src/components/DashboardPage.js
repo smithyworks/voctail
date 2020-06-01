@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Grid, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { requests as r } from "../utils";
+import { api } from "../utils";
 
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
@@ -16,13 +16,16 @@ function Dashboard({ ...props }) {
   const [user, setUser] = useState();
   const [usersList, setUsersList] = useState([]);
 
-  useEffect(async () => {
-    r.user()
+  useEffect(() => {
+    api
+      .user()
       .then(res => {
         setUser(res.data);
       })
       .catch(err => console.log(err));
-    r.users()
+
+    api
+      .users()
       .then(res => {
         console.log(res.data);
         setUsersList(res.data);
