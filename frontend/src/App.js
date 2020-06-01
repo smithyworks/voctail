@@ -1,8 +1,8 @@
 import React from "react";
-import { tokens } from "./utils";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import { DashboardPage, SigninPage, SignoutRedirect, Error404Page, IntroPage } from "./components";
+import { tokens } from "./utils";
 
 function App() {
   const [accessToken, refreshToken] = tokens.getTokens();
@@ -11,17 +11,7 @@ function App() {
   function ProtectedRoute(props) {
     const [accessToken, refreshToken] = tokens.getTokens();
     if (accessToken && refreshToken) return <Route {...props} />;
-    else return null;
-  }
-
-  function DashboardRedirect() {
-    console.log("redirect to dashboard");
-    return <Redirect to="/dashboard" />;
-  }
-
-  function SigninRedirect() {
-    console.log("redirect to sign in");
-    return <Redirect to="/signin" />;
+    else return <Redirect to="/404" />;
   }
 
   return (
@@ -36,9 +26,8 @@ function App() {
         <Route path="/signin" component={SigninPage} />
 
         <Route exact path="/" component={IntroPage} />
-        <Route>
-          <Error404Page />
-        </Route>
+        <Route path="/404" component={Error404Page} />
+        <Route component={Error404Page} />
       </Switch>
     </Router>
   );

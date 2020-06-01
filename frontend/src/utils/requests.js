@@ -13,3 +13,11 @@ export function register(name, email, password) {
 export function logout() {
   return axios.get(`${base}/logout`);
 }
+
+export function user() {
+  return axios.get(`${base}/user`);
+}
+
+export function users() {
+  return axios.get(`${base}/users`);
+}

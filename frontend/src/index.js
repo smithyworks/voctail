@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import setupInterceptors from "./interceptors.js";
+import { setRequestInterceptor, setResponseInterceptor } from "./interceptors.js";
 
-setupInterceptors();
+setRequestInterceptor();
+setResponseInterceptor();
 
 ReactDOM.render(
   <React.StrictMode>

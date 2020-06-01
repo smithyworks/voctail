@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
 import { Link, useRouteMatch } from "react-router-dom";
-import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "voctail-utils";
 import { Grid, Paper, Typography as T, TextField, Button, Checkbox } from "@material-ui/core";
-import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons/";
+import { makeStyles } from "@material-ui/core/styles";
+import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
+
+import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "voctail-utils";
 import { tokens, requests as r } from "../utils";
 
 const useStyles = makeStyles({
@@ -41,7 +42,6 @@ function SigninPage({ signup: isSignupPage }) {
 
     const email = emailRef.current;
     const password = passwordRef.current;
-
     if (!validateEmail(email)) {
       setInfoMessage("Please provide a valid email address.");
       return;
@@ -49,7 +49,6 @@ function SigninPage({ signup: isSignupPage }) {
 
     r.login(email, password)
       .then(({ data: { accessToken, refreshToken } }) => {
-        console.log("login success");
         tokens.setTokens(accessToken, refreshToken);
         setErrorMessage();
         setInfoMessage();
@@ -65,14 +64,12 @@ function SigninPage({ signup: isSignupPage }) {
       });
   }
 
-  function signup() {
+  function signup(e) {
+    e.preventDefault();
+
     const name = nameRef.current;
     const email = emailRef.current;
     const password = passwordRef.current;
-
-    console.log(name, email, password);
-    console.log(process.env);
-
     if (!name || name.length < 1) {
       setInfoMessage("Please provide a name.");
       return;
@@ -87,19 +84,28 @@ function SigninPage({ signup: isSignupPage }) {
     const promise = r.register(name, email, password);
     console.log(promise);
     promise
-      .then(res => {
-        setErrorMessage();
-        setInfoMessage();
-
-        signin();
-      })
+      .then(res => setErrorMessage())
       .catch(err => {
-        setInfoMessage();
         try {
           if (err.response.status === 412) setErrorMessage(err.response.data);
         } catch {
           setErrorMessage("Sorry, omething went wrong and we couldn't sign you up!");
         }
+      })
+      .then(() => {
+        setInfoMessage();
+        r.login(email, password)
+          .then(({ data: { accessToken, refreshToken } }) => {
+            tokens.setTokens(accessToken, refreshToken);
+            setLoggedIn(true);
+          })
+          .catch(err => {
+            try {
+              if (err.response.status === 412) setErrorMessage(err.response.data);
+            } catch {
+              setErrorMessage("Sorry, omething went wrong and we couldn't log you in!");
+            }
+          });
       });
   }
 

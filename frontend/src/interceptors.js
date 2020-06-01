@@ -1,13 +1,15 @@
 import axios from "axios";
 import { tokens } from "./utils";
 
-export default () => {
+export function setRequestInterceptor() {
   // Intercept requests and attach access token.
   axios.interceptors.request.use(config => {
     config.headers.Authorization = `Bearer ${tokens.getAccessToken()}`;
     return config;
   });
+}
 
+export function setResponseInterceptor() {
   // Intercept response and refresh token if appropriate.
   axios.interceptors.response.use(
     response => response,
@@ -51,4 +53,4 @@ export default () => {
         });
     }
   );
-};
+}
