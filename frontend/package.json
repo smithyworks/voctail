@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "SoSe 2020 SEBA Master Team 53",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",

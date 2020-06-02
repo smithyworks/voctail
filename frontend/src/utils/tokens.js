@@ -18,3 +18,9 @@ export const flushTokens = () => {
   flushAccessToken();
   flushRefreshToken();
 };
+
+export const hasTokens = () => {
+  const [at, rt] = getTokens();
+  if (at && rt) return true;
+  else return false;
+};

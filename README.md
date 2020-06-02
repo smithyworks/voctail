@@ -18,6 +18,7 @@ This repository contains the 3 systems that make up our project: the ReactJS fro
 - Docker
 - Docker Compose
 - Node
+- Browser plugin to bypass CORS.
 
 ## Developing the Backend
 

@@ -4,7 +4,6 @@ import { Redirect } from "react-router-dom";
 import { tokens, api } from "../utils";
 
 function SignoutRedirect() {
-  console.log("signout");
   const [loggedOut, setLoggedOut] = useState(false);
   useEffect(() => {
     api
@@ -22,12 +21,14 @@ function SignoutRedirect() {
       });
   }, []);
 
-  let content = <Redirect to="/signin" />;
-  if (!loggedOut) {
-    content = <div>Signin out...</div>;
+  if (loggedOut) return <Redirect to="/" />;
+  else {
+    return (
+      <div style={{ height: "100%", width: "100%", display: "flex", alignItems: "center", justify: "center" }}>
+        Signin out...
+      </div>
+    );
   }
-
-  return <div id="signout">{content}</div>;
 }
 
 export default SignoutRedirect;

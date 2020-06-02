@@ -110,11 +110,8 @@ function SigninPage({ signup: isSignupPage }) {
       });
   }
 
-  if (loggedIn) {
-    console.log("tokens", tokens.getTokens());
-    console.log("redirect");
-    return <Redirect to="/dashboard" />;
-  }
+  if (loggedIn) return <Redirect to="/dashboard" />;
+
   return (
     <Grid id="login-page" className={classes.page} container alignItems="center" justify="center">
       <Paper component="span" elevation={4} className={classes.paper}>
