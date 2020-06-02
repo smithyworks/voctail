@@ -15,41 +15,25 @@ export function setResponseInterceptor() {
     response => response,
     error => {
       // Return any error which is not due to authentication back to the calling service
-      if (error.response.status !== 401) return new Promise((resolve, reject) => reject(error));
+      if (error.response.status !== 401) return new Promise((_, reject) => reject(error));
 
+      const originalConfig = error.config;
       // Logout user if token refresh didn't work or user is disabled
-      if (error.config.url === `${process.env.API_URL}/token`) {
+      if (originalConfig.url === `${process.env.API_URL ?? ""}/api/token`) {
         tokens.flushTokens();
-
-        return new Promise((resolve, reject) => {
-          reject(error);
-        });
+        return new Promise((_, reject) => reject(error));
       }
 
       // Try request again with new token
-      axios
-        .post(`${process.env.API_URL}/token`, { refreshToken: tokens.getRefreshToken() })
+      return axios
+        .post(`${process.env.API_URL ?? ""}/api/token`, { refreshToken: tokens.getRefreshToken() })
         .then(res => {
-          const token = res.data.accessToken;
-          tokens.setAccessToken(token);
+          if (res.status === 201) {
+            const { accessToken } = res.data;
+            tokens.setAccessToken(accessToken);
 
-          // New request with new token
-          const config = error.config;
-          config.headers["Authorization"] = `Bearer ${token}`;
-
-          return new Promise((resolve, reject) => {
-            axios
-              .request(config)
-              .then(response => {
-                resolve(response);
-              })
-              .catch(error => {
-                reject(error);
-              });
-          });
-        })
-        .catch(error => {
-          Promise.reject(error);
+            return axios.request(originalConfig);
+          }
         });
     }
   );

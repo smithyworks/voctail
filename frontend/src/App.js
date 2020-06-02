@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import { DashboardPage, SigninPage, SignoutRedirect, Error404Page, IntroPage, AdminPage } from "./components";
 import { tokens } from "./utils";
 
-function ProtectedRoute(props) {
+function ProtectedRoute({ ...props }) {
   if (tokens.hasTokens()) return <Route {...props} />;
   else return <Redirect to="/404" />;
 }
@@ -14,13 +14,13 @@ function App() {
     <Router>
       <Switch>
         <ProtectedRoute path="/admin" component={AdminPage} />
-        <ProtectedRoute path="/signout" component={SignoutRedirect} />
         <ProtectedRoute path="/dashboard" component={DashboardPage} />
 
         <Route path="/signup">
           <SigninPage signup />
         </Route>
         <Route path="/signin" component={SigninPage} />
+        <Route path="/signout" component={SignoutRedirect} />
 
         <Route exact path="/" component={IntroPage} />
         <Route path="/404" component={Error404Page} />

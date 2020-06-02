@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { Container } from "@material-ui/core";
 
 import TopNav from "./TopNav";
@@ -10,7 +10,7 @@ function AppPage({ children, id, location }) {
   return (
     <>
       <TopNav location={location} loggedIn={tokens.hasTokens()} />
-      <Container id={id} style={{ height: "100%", paddingTop: "52px" }}>
+      <Container id={id} style={{ height: "100%", padding: "60px 0 10px 0" }}>
         {children}
       </Container>
     </>

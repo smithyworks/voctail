@@ -2,17 +2,13 @@ import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Grid,
-  Typography as T,
   AppBar,
   Button,
-  Toolbar,
   IconButton,
-  Menu,
   MenuList,
   MenuItem,
   Paper,
   ClickAwayListener,
-  Grow,
   Popper,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,7 +24,6 @@ const useStyles = makeStyles({
     textDecoration: "none",
     color: "white",
     padding: "0 20px",
-    fontSize: "16px",
     display: "flex",
     alignItems: "center",
     fontSize: "24px",

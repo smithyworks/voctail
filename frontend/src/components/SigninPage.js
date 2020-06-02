@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
-import { Link, useRouteMatch } from "react-router-dom";
-import { Grid, Paper, Typography as T, TextField, Button, Checkbox } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { Grid, Paper, Typography as T, TextField, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 
@@ -26,8 +26,6 @@ const useStyles = makeStyles({
 
 function SigninPage({ signup: isSignupPage }) {
   const classes = useStyles();
-  const { path } = useRouteMatch();
-  console.log("SigninPage", path);
 
   isSignupPage = !!isSignupPage;
   const nameRef = useRef();
@@ -110,7 +108,7 @@ function SigninPage({ signup: isSignupPage }) {
       });
   }
 
-  if (loggedIn) return <Redirect to="/dashboard" />;
+  if (loggedIn || tokens.hasTokens()) return <Redirect to="/dashboard" />;
 
   return (
     <Grid id="login-page" className={classes.page} container alignItems="center" justify="center">
@@ -178,13 +176,6 @@ function SigninPage({ signup: isSignupPage }) {
           >
             {isSignupPage ? "Sign Up Now" : "Sign In"}
           </Button>
-
-          {!isSignupPage && (
-            <Grid container alignItems="center">
-              <Checkbox disableRipple className={classes.checkbox} />
-              <T display="inline">Remember Me</T>
-            </Grid>
-          )}
         </form>
 
         {isSignupPage ? (

@@ -10,7 +10,11 @@ function _u({ user_id, email }) {
 }
 
 function createAccessToken(userObj) {
-  return jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, { issuer: "voctail", subject: "webapp", expiresIn: "30s" });
+  return jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
+    issuer: "voctail",
+    subject: "webapp",
+    expiresIn: "10min",
+  });
 }
 
 async function createTokens(userRecord) {
@@ -51,7 +55,6 @@ function tokenMiddleWare(req, res, next) {
 async function tokenHandler(req, res) {
   try {
     const { refreshToken } = req.body;
-    if (!refreshToken) res.status(403).send("Forbidden.");
 
     const {
       user: { user_id },
@@ -61,15 +64,15 @@ async function tokenHandler(req, res) {
     } = await query("SELECT * FROM users WHERE user_id = $1", [user_id]);
 
     if (userRecord.refresh_token === refreshToken) {
-      const accessToken = createAccessToken(u(userRecord));
-      res.status(200).json({ accessToken });
+      const accessToken = createAccessToken(_u(userRecord));
+      res.status(201).json({ accessToken });
     } else {
       log("Bad token", user_id, refreshToken, userRecord.refresh_token);
-      res.status(403).send("Forbidden.");
+      res.status(401).send("Unauthorized.");
     }
   } catch (err) {
     log("Error verifying token", err);
-    res.status(403).send("Forbidden.");
+    res.status(401).send("Unauthorized.");
   }
 }
 
