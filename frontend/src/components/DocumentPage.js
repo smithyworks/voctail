@@ -7,6 +7,7 @@ import AppPage from "./AppPage.js";
 import { api } from "../utils";
 
 import tileData from './tileData.js';
+import {Link} from "react-router-dom";
 
 
 
@@ -15,15 +16,18 @@ const useStyles = makeStyles({
     grid: { height: 100, width: "100%" },
     userItem: { width: "150px" },
 
-    //gridlist
+    //gridlist with documents
     root: { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.54)', },
     gridList: { width: "100%", height: 800, justifyContent: 'space-around'},
     icon: {color: 'rgba(255,255,255,0.54)'},
 });
 
-function Documents({ ...props }) {
+function Documents({ ...props}, location) {
     const classes = useStyles();
     const [user, setUser] = useState();
+    //todo integrate flexible link to individual documents instead of const document markup
+    const documentMarkupLinkClass = location ==="document-markup" ? classes.activeLink : classes.link;
+
 
     useEffect(() => {
         api
@@ -48,18 +52,24 @@ function Documents({ ...props }) {
                     <GridListTile key={tile.img} cols={1}>
                         <img src={tile.img} alt={tile.title} />
                         <GridListTileBar
-                            title={tile.title}
+                            title={
+                                <Link to="/document-markup" className={documentMarkupLinkClass}>
+                                    {tile.title}
+                                </Link>
+                                }
                             subtitle={<span>description: {tile.description}</span>}
                             actionIcon={
                                 <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
                                     <LocalBarIcon />
                                 </IconButton>
                             }
+
                         />
+                        //documentMarkupLinkClass = location === "document-markup" ? classes.activeLink : classes.link;
+
                     </GridListTile>
                 ))}
             </GridList>
-
 
     </AppPage>
 );
