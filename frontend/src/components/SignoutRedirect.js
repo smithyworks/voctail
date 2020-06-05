@@ -8,10 +8,10 @@ function SignoutRedirect() {
   useEffect(() => {
     api
       .logout()
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       })
-      .finally(res => {
+      .finally((res) => {
         tokens.flushTokens();
         setLoggedOut(true);
       });

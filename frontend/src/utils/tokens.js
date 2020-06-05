@@ -3,7 +3,7 @@ const REFRESH_TOKEN_KEY = "voctail-refresh-token";
 
 const onChangeCallbacks = [];
 function signalChange() {
-  onChangeCallbacks.forEach(cb => {
+  onChangeCallbacks.forEach((cb) => {
     if (typeof cb === "function") cb(hasTokens());
   });
 }

@@ -53,7 +53,7 @@ function SigninPage({ signup: isSignupPage }) {
         setInfoMessage();
         setLoggedIn(true);
       })
-      .catch(err => {
+      .catch((err) => {
         setInfoMessage();
         try {
           if (err.response.status === 412) setErrorMessage(err.response.data);
@@ -82,8 +82,8 @@ function SigninPage({ signup: isSignupPage }) {
 
     api
       .register(name, email, password)
-      .then(res => setErrorMessage())
-      .catch(err => {
+      .then((res) => setErrorMessage())
+      .catch((err) => {
         try {
           if (err.response.status === 412) setErrorMessage(err.response.data);
         } catch {
@@ -98,7 +98,7 @@ function SigninPage({ signup: isSignupPage }) {
             tokens.setTokens(accessToken, refreshToken);
             setLoggedIn(true);
           })
-          .catch(err => {
+          .catch((err) => {
             try {
               if (err.response.status === 412) setErrorMessage(err.response.data);
             } catch {
@@ -141,7 +141,7 @@ function SigninPage({ signup: isSignupPage }) {
               fullWidth
               margin="dense"
               className={classes.inputs}
-              onChange={e => (nameRef.current = e.target.value)}
+              onChange={(e) => (nameRef.current = e.target.value)}
             ></TextField>
           )}
 
@@ -152,7 +152,7 @@ function SigninPage({ signup: isSignupPage }) {
             fullWidth
             margin="dense"
             className={classes.inputs}
-            onChange={e => (emailRef.current = e.target.value)}
+            onChange={(e) => (emailRef.current = e.target.value)}
           ></TextField>
 
           <TextField
@@ -163,7 +163,7 @@ function SigninPage({ signup: isSignupPage }) {
             fullWidth
             margin="dense"
             className={classes.inputs}
-            onChange={e => (passwordRef.current = e.target.value)}
+            onChange={(e) => (passwordRef.current = e.target.value)}
           ></TextField>
 
           <Button

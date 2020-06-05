@@ -18,10 +18,10 @@ function Dashboard({ ...props }) {
   useEffect(() => {
     api
       .user()
-      .then(res => {
+      .then((res) => {
         if (res) setUser(res.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   return (
