@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Typography as T , GridList, GridListTile, ListSubheader, GridListTileBar, IconButton} from "@material-ui/core";
+import React from "react";
+import { Grid, Typography as T} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-// import LocalBarIcon from '@material-ui/icons/LocalBar';
 
 import AppPage from "./AppPage.js";
-import { api } from "../utils";
 // import {Link} from "reactrouter-dom";
 
 const useStyles = makeStyles({
@@ -15,16 +13,6 @@ const useStyles = makeStyles({
 
 function DocumentMarkup({ ...props }) {
     const classes = useStyles();
-    const [user, setUser] = useState();
-
-    useEffect(() => {
-        api
-            .user()
-            .then(res => {
-                if (res) setUser(res.data);
-            })
-            .catch(err => console.log(err));
-    }, []);
 
     return (
         <AppPage location="document-markup" id="document-markup-page">

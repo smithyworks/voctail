@@ -5,11 +5,11 @@ import LocalBarIcon from '@material-ui/icons/LocalBar';
 
 import AppPage from "./AppPage.js";
 import { api } from "../utils";
-
-import tileData from './tileData.js';
 import {Link} from "react-router-dom";
 
-
+//example tile data
+import exampleImage from '../images/exampleimage.png';
+import textblock from '../images/textblock.png';
 
 const useStyles = makeStyles({
     container: { height: 200, width: "100%" },
@@ -28,6 +28,18 @@ function Documents({ ...props}, location) {
     //todo integrate flexible link to individual documents instead of const document markup
     const documentMarkupLinkClass = location ==="document-markup" ? classes.activeLink : classes.link;
 
+    //example tile data
+    const tileData = [
+        { img: exampleImage, title: 'ExampleImage', description: 'this is an example for another preview', author: 'Clara is the author'},
+        { img: textblock, title: 'Munich', description: 'Explanation text about the capital of bavaria', author: 'wikipedia'},
+        { img: textblock, title: 'Munich1', description: 'Explanation text about the capital of bavaria', author: 'wikipedia'},
+        { img: textblock, title: 'Munich2', description: 'Explanation text about the capital of bavaria', author: 'wikipedia'},
+        { img: textblock, title: 'Munich3', description: 'Explanation text about the capital of bavaria', author: 'wikipedia'},
+        { img: textblock, title: 'Munich4', description: 'Explanation text about the capital of bavaria', author: 'wikipedia'},
+        { img: textblock, title: 'Munich5', description: 'Explanation text about the capital of bavaria', author: 'wikipedia'},
+        { img: textblock, title: 'Munich6', description: 'Explanation text about the capital of bavaria', author: 'wikipedia'},
+        { img: textblock, title: 'Munich7', description: 'Explanation text about the capital of bavaria', author: 'wikipedia'},
+    ];
 
     useEffect(() => {
         api
@@ -43,7 +55,6 @@ function Documents({ ...props}, location) {
         <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
             <T variant="h4">Welcome to your Document Overview, {user ? user.name : "..."}!</T>
         </Grid>
-
             <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
                 <GridListTile key="Subheader" cols={3} style={{ height: 'auto' }}>
                     <ListSubheader component="div">Documents</ListSubheader>
@@ -63,16 +74,14 @@ function Documents({ ...props}, location) {
                                     <LocalBarIcon />
                                 </IconButton>
                             }
-
                         />
-                        //documentMarkupLinkClass = location === "document-markup" ? classes.activeLink : classes.link;
-
                     </GridListTile>
                 ))}
             </GridList>
-
     </AppPage>
 );
 }
-
 export default Documents;
+
+
+
