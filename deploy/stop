@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh -i LightsailDefaultKey-eu-central-1.pem ubuntu@35.159.42.127 "cd ~/voctail && sudo docker-compose down -v --rmi all";
