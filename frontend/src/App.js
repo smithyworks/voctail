@@ -10,6 +10,7 @@ import {
   AdminPage,
   DocumentPage,
   DocumentMarkup,
+  QuizzesPage,
 } from "./components";
 import { tokens } from "./utils";
 
@@ -24,6 +25,7 @@ function App() {
       <Switch>
         <ProtectedRoute path="/admin" component={AdminPage} />
         <ProtectedRoute path="/dashboard" component={DashboardPage} />
+        <ProtectedRoute path="/quizzes" component={QuizzesPage} />
         <ProtectedRoute path="/documents" component={DocumentPage} />
 
         <Route path="/document-markup" component={DocumentMarkup} />
