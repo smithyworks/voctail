@@ -11,6 +11,7 @@ import {
   DocumentPage,
   DocumentMarkup,
   QuizzesPage,
+  ClassroomsPage,
 } from "./components";
 import { tokens } from "./utils";
 
@@ -27,6 +28,7 @@ function App() {
         <ProtectedRoute path="/dashboard" component={DashboardPage} />
         <ProtectedRoute path="/quizzes" component={QuizzesPage} />
         <ProtectedRoute path="/documents" component={DocumentPage} />
+        <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
 
         <Route path="/document-markup" component={DocumentMarkup} />
 
