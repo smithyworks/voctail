@@ -5,7 +5,7 @@ const path = require("path");
 const { log } = require("./lib/log.js");
 const { db, auth, users } = require("./lib");
 
-db.checkConnection(connected => {
+db.checkConnection((connected) => {
   if (connected) log("Connected to the Database!");
   else {
     log("Problem connecting to the database.");

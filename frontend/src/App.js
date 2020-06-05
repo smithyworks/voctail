@@ -1,7 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
-import { DashboardPage, QuizzesPage, SigninPage, SignoutRedirect, Error404Page, IntroPage, AdminPage } from "./components";
+import {
+  DashboardPage,
+  SigninPage,
+  SignoutRedirect,
+  Error404Page,
+  IntroPage,
+  AdminPage,
+  DocumentPage,
+  DocumentMarkup,
+  QuizzesPage,
+} from "./components";
 import { tokens } from "./utils";
 
 function ProtectedRoute({ ...props }) {
@@ -16,6 +26,9 @@ function App() {
         <ProtectedRoute path="/admin" component={AdminPage} />
         <ProtectedRoute path="/dashboard" component={DashboardPage} />
         <ProtectedRoute path="/quizzes" component={QuizzesPage} />
+        <ProtectedRoute path="/documents" component={DocumentPage} />
+
+        <Route path="/document-markup" component={DocumentMarkup} />
 
         <Route path="/signup">
           <SigninPage signup />

@@ -19,17 +19,17 @@ function AdminPage({ ...props }) {
   useEffect(() => {
     api
       .user()
-      .then(res => {
+      .then((res) => {
         if (res) setUser(res.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 
     api
       .users()
-      .then(res => {
+      .then((res) => {
         if (res) setUsersList(res.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   const userRows = usersList.map((u, i) => {

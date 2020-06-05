@@ -13,10 +13,10 @@ const pool = new Pool({
 function checkConnection(cb) {
   pool
     .query("SELECT NOW()")
-    .then(res => {
+    .then((res) => {
       cb(res && res.rowCount === 1 && res.rows[0].now);
     })
-    .catch(err => {
+    .catch((err) => {
       log(err);
       cb(false);
     });
