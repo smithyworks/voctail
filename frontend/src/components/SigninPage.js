@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 
 import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "../utils/validation.js";
-import { tokens, api } from "../utils";
+import { localStorage, api } from "../utils";
 
 const useStyles = makeStyles({
   page: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   message: { paddingLeft: "5px", marginTop: "2px" },
 });
 
-function SigninPage({ signup: isSignupPage }) {
+function SigninPage({ signup: isSignupPage, onSignin }) {
   const classes = useStyles();
 
   isSignupPage = !!isSignupPage;
@@ -48,7 +48,7 @@ function SigninPage({ signup: isSignupPage }) {
     api
       .login(email, password)
       .then(({ data: { accessToken, refreshToken } }) => {
-        tokens.setTokens(accessToken, refreshToken);
+        localStorage.setTokens(accessToken, refreshToken);
         setErrorMessage();
         setInfoMessage();
         setLoggedIn(true);
@@ -60,6 +60,9 @@ function SigninPage({ signup: isSignupPage }) {
         } catch {
           setErrorMessage("Sorry, omething went wrong and we couldn't log you in!");
         }
+      })
+      .finally(() => {
+        if (typeof onSignin === "function") onSignin();
       });
   }
 
@@ -95,7 +98,7 @@ function SigninPage({ signup: isSignupPage }) {
         api
           .login(email, password)
           .then(({ data: { accessToken, refreshToken } }) => {
-            tokens.setTokens(accessToken, refreshToken);
+            localStorage.setTokens(accessToken, refreshToken);
             setLoggedIn(true);
           })
           .catch((err) => {
@@ -108,7 +111,7 @@ function SigninPage({ signup: isSignupPage }) {
       });
   }
 
-  if (loggedIn || tokens.hasTokens()) return <Redirect to="/dashboard" />;
+  if (loggedIn || localStorage.hasTokens()) return <Redirect to="/dashboard" />;
 
   return (
     <Grid id="login-page" className={classes.page} container alignItems="center" justify="center">

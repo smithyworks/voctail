@@ -5,8 +5,8 @@ const { validateEmail, validatePassword } = require("./validation.js");
 const { query } = require("./db");
 const { log } = require("./log.js");
 
-function _u({ user_id, email }) {
-  return { user: { user_id, email, admin: false } };
+function _u({ user_id, admin }) {
+  return { user: { user_id, admin } };
 }
 
 function createAccessToken(userObj) {

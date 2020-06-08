@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 
 const { log } = require("./lib/log.js");
-const { db, auth, users } = require("./lib");
+const { db, auth, users, admin } = require("./lib");
 
 db.checkConnection((connected) => {
   if (connected) log("Connected to the Database!");
@@ -26,8 +26,9 @@ server.post("/api/login", auth.loginHandler);
 server.post("/api/token", auth.tokenHandler);
 server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 
-server.get("/api/users", auth.tokenMiddleWare, users.usersHandler);
 server.get("/api/user", auth.tokenMiddleWare, users.userHandler);
+
+server.get("/api/admin/users", auth.tokenMiddleWare, admin.usersHandler);
 
 // Handles any requests that don't match the ones above
 server.get("*", (req, res) => {

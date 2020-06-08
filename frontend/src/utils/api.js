@@ -19,5 +19,5 @@ export function user() {
 }
 
 export function users() {
-  return axios.get(`${base}/users`);
+  return axios.get(`${base}/admin/users`);
 }

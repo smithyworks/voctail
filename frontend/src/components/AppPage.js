@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Grid,
@@ -15,7 +15,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import { tokens } from "../utils";
+import { localStorage } from "../utils";
+import { UserContext } from "../App.js";
 
 const useStyles = makeStyles({
   bar: { backgroundColor: "#555" },
@@ -123,13 +124,20 @@ function UserMenuButton() {
   );
 }
 
-function NavButtons({ location }) {
+function NavButtons({ location, isAdmin }) {
   const classes = useStyles();
 
   const dashboardLinkClass = location === "dashboard" ? classes.activeLink : classes.link;
   const documentsLinkClass = location === "documents" ? classes.activeLink : classes.link;
   const quizzesLinkClass = location === "quizzes" ? classes.activeLink : classes.link;
   const classroomsLinkClass = location === "classrooms" ? classes.activeLink : classes.link;
+  const adminLinkClass = location === "admin" ? classes.activeLink : classes.link;
+
+  const adminLink = isAdmin ? (
+    <Link to="/admin" className={adminLinkClass}>
+      Admin
+    </Link>
+  ) : null;
 
   return (
     <>
@@ -145,14 +153,15 @@ function NavButtons({ location }) {
       <Link to="/classrooms" className={classroomsLinkClass}>
         Classrooms
       </Link>
+      {adminLink}
     </>
   );
 }
 
-function TopNav({ location, loggedIn }) {
+function TopNav({ location, loggedIn, isAdmin }) {
   const classes = useStyles();
 
-  const navButtons = loggedIn ? <NavButtons location={location} /> : null;
+  const navButtons = loggedIn ? <NavButtons location={location} isAdmin={isAdmin} /> : null;
   const rightContent = loggedIn ? <UserMenuButton /> : <SigninButtons />;
 
   return (
@@ -176,9 +185,11 @@ function TopNav({ location, loggedIn }) {
 // The AppPage is meant to be rendered directly into the id="root" element.
 
 function AppPage({ children, id, location }) {
+  const user = useContext(UserContext);
+
   return (
     <Grid container direction="column" style={{ height: "100%" }}>
-      <TopNav location={location} loggedIn={tokens.hasTokens()} />
+      <TopNav location={location} loggedIn={localStorage.hasTokens()} isAdmin={!!user?.admin} />
       <Grid item xs style={{ overflowX: "hidden", overflowY: "auto" }}>
         <Container id={id} style={{ height: "100%" }}>
           {children}

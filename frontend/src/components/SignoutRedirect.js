@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 
-import { tokens, api } from "../utils";
+import { localStorage, api } from "../utils";
 
-function SignoutRedirect() {
+function SignoutRedirect({ onSignout }) {
   const [loggedOut, setLoggedOut] = useState(false);
   useEffect(() => {
     api
@@ -12,8 +12,9 @@ function SignoutRedirect() {
         console.log(error);
       })
       .finally((res) => {
-        tokens.flushTokens();
+        localStorage.flushTokens();
         setLoggedOut(true);
+        if (typeof onSignout === "function") onSignout();
       });
   }, []);
 

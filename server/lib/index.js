@@ -3,6 +3,7 @@ const db = require("./db.js");
 const auth = require("./auth.js");
 const users = require("./users.js");
 const validation = require("./validation.js");
+const admin = require("./admin.js");
 
 module.exports = {
   log,
@@ -10,4 +11,5 @@ module.exports = {
   auth,
   users,
   validation,
+  admin,
 };

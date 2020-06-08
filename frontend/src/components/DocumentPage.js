@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Grid,
   Typography as T,
@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 
 import AppPage from "./AppPage.js";
-import { api } from "../utils";
+import { UserContext } from "../App.js";
 import { Link } from "react-router-dom";
 
 //example tile data
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
 
 function Documents({ ...props }, location) {
   const classes = useStyles();
-  const [user, setUser] = useState();
+  const user = useContext(UserContext);
   //todo integrate flexible link to individual documents instead of const document markup
   const documentMarkupLinkClass = location === "document-markup" ? classes.activeLink : classes.link;
 
@@ -99,15 +99,6 @@ function Documents({ ...props }, location) {
       author: "wikipedia",
     },
   ];
-
-  useEffect(() => {
-    api
-      .user()
-      .then((res) => {
-        if (res) setUser(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   return (
     <AppPage location="documents" id="documents-page">
