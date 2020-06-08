@@ -11,6 +11,8 @@ import {
   DocumentPage,
   DocumentMarkup,
   QuizzesPage,
+  QuizzesSavedPage,
+  QuizzesDayPage,
   ClassroomsPage,
 } from "./components";
 import { localStorage, api } from "./utils";
@@ -38,14 +40,14 @@ function App() {
         .catch((err) => console.log(err));
   }, [loggedIn]);
 
-  console.log(user);
-
   return (
     <UserContext.Provider value={user}>
       <Router>
         <Switch>
           <ProtectedRoute path="/admin" component={AdminPage} />
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
+          <ProtectedRoute path="/quizzes/saved" component={QuizzesSavedPage} />
+          <ProtectedRoute path="/quizzes/day" component={QuizzesDayPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesPage} />
           <ProtectedRoute path="/documents" component={DocumentPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />

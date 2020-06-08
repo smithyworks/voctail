@@ -3,7 +3,6 @@ import { Grid, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppPage from "./AppPage.js";
-import { UserContext } from "../App.js";
 
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
@@ -32,6 +31,7 @@ const useStyles = makeStyles({
 function QuizButton(props) {
   const classes = useStyles();
   return (
+    //size="large"
     <Button component={Link} to={props.to} variant="outlined" className={classes.button}>
       <Grid className={classes.grid} container justify="flex-start" alignItems="center" direction="column">
         <T variant="h4">{props.title}</T>
@@ -43,21 +43,16 @@ function QuizButton(props) {
   );
 }
 
-function QuizzesPage({ ...props }) {
+function QuizzesSavedPage({ ...props }) {
   const classes = useStyles();
 
   return (
-    <AppPage location="quizzes" id="quizzes-page">
+    <AppPage location="quizzes" id="quizzes-saved-page">
       <Grid className={classes.grid} container justify="space-evenly" alignItems="center" direction="row">
-        <QuizButton title="Quiz of the Day" to="/quizzes/day">
-          Test your knowledge with as many questions as you want!
-        </QuizButton>
-        <QuizButton title="Saved Quiz" to="/quizzes/saved">
-          Retake saved quizzes!
-        </QuizButton>
+        <T variant="h4">Welcome to your saved Quizzes page.</T>
       </Grid>
     </AppPage>
   );
 }
 
-export default QuizzesPage;
+export default QuizzesSavedPage;

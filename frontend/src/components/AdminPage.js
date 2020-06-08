@@ -37,7 +37,7 @@ function AdminPage({ ...props }) {
   });
 
   return (
-    <AppPage id="admin-page">
+    <AppPage id="admin-page" location="admin">
       <T variant="h4" gutterBottom>
         Admin Page
       </T>

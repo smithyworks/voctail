@@ -16,7 +16,7 @@ function SignoutRedirect({ onSignout }) {
         setLoggedOut(true);
         if (typeof onSignout === "function") onSignout();
       });
-  }, []);
+  }, [onSignout]);
 
   if (loggedOut) return <Redirect to="/" />;
   else {
