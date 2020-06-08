@@ -128,7 +128,8 @@ function NavButtons({ location }) {
 
   const dashboardLinkClass = location === "dashboard" ? classes.activeLink : classes.link;
   const documentsLinkClass = location === "documents" ? classes.activeLink : classes.link;
-  const quizzesLinkClass = location === "quizzes" ? classes.activeLink : classes.link;
+  //const quizzesLinkClass = location === "quizzes" ? classes.activeLink : classes.link;
+  const quizzesLinkClass = location.includes("quizzes" )? classes.activeLink : classes.link;
   const classroomsLinkClass = location === "classrooms" ? classes.activeLink : classes.link;
 
   return (

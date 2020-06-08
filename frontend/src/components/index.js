@@ -1,5 +1,7 @@
 import DashboardPage from "./DashboardPage.js";
 import QuizzesPage from "./QuizzesPage.js";
+import QuizzesSavedPage from "./QuizzesSavedPage.js";
+import QuizzesDayPage from "./QuizzesDayPage.js";
 import ClassroomsPage from "./ClassroomsPage.js";
 import SigninPage from "./SigninPage.js";
 import SignoutRedirect from "./SignoutRedirect.js";
@@ -12,6 +14,8 @@ import DocumentMarkup from "./DocumentMarkup.js";
 export {
   DashboardPage,
   QuizzesPage,
+  QuizzesDayPage,
+  QuizzesSavedPage,
   ClassroomsPage,
   SigninPage,
   SignoutRedirect,

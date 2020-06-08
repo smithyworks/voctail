@@ -11,6 +11,8 @@ import {
   DocumentPage,
   DocumentMarkup,
   QuizzesPage,
+  QuizzesSavedPage,
+  QuizzesDayPage,
   ClassroomsPage,
 } from "./components";
 import { tokens } from "./utils";
@@ -19,13 +21,15 @@ function ProtectedRoute({ ...props }) {
   if (tokens.hasTokens()) return <Route {...props} />;
   else return <Redirect to="/404" />;
 }
-
+//<ProtectedRoute path="/quizzes/saved" component={QuizzesSavedPage} />
 function App() {
   return (
     <Router>
       <Switch>
         <ProtectedRoute path="/admin" component={AdminPage} />
         <ProtectedRoute path="/dashboard" component={DashboardPage} />
+        <ProtectedRoute path="/quizzes/saved" component={QuizzesSavedPage} />
+        <ProtectedRoute path="/quizzes/day" component={QuizzesDayPage} />
         <ProtectedRoute path="/quizzes" component={QuizzesPage} />
         <ProtectedRoute path="/documents" component={DocumentPage} />
         <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
