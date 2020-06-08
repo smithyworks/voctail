@@ -13,7 +13,14 @@ function createAccessToken(userObj) {
   return jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
     issuer: "voctail",
     subject: "webapp",
-    expiresIn: "3s",
+    expiresIn: "10min",
+  });
+}
+function createRrefreshToken(userObj, rememberMe) {
+  return jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, {
+    issuer: "voctail",
+    subject: "webapp",
+    expiresIn: !!rememberMe ? "14d" : "1d",
   });
 }
 
@@ -21,11 +28,7 @@ async function createTokens(userRecord, rememberMe) {
   try {
     const userObj = _u(userRecord);
     const accessToken = createAccessToken(userObj);
-    const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, {
-      issuer: "voctail",
-      subject: "webapp",
-      expiresIn: rememberMe ? "14d" : "1d",
-    });
+    const refreshToken = createRrefreshToken(userObj, rememberMe);
 
     return [accessToken, refreshToken];
   } catch (err) {
