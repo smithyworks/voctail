@@ -16,16 +16,18 @@ async function usersHandler(req, res) {
 
 async function masqueradeHandler(req, res) {
   try {
-    const { user_id, admin } = req.authData.user;
+    const { user_id: admin_id, admin } = req.authData.user;
     if (!admin) throw new Error("User must be an admin.");
 
-    const { as_id } = req.body;
+    const { masquerade_as_id } = req.body;
     const {
       rows: [userRecord],
-    } = await query("SELECT * FROM users WHERE user_id = $1", [user_id]);
-    const userObj = { ...u(userRecord), user_id: as_id, masquerading: true, real_id: user_id };
+    } = await query("SELECT * FROM users WHERE user_id = $1", [masquerade_as_id]);
+
+    const userObj = { ...u(userRecord), masquerading: true, admin_id };
     const accessToken = createAccessToken(userObj);
     const refreshToken = createAccessToken(userObj);
+    await query("UPDATE users SET refresh_token = $1 WHERE user_id = $2", [refreshToken, admin_id]);
 
     res.status(201).json({ accessToken, refreshToken });
   } catch {
@@ -36,15 +38,16 @@ async function masqueradeHandler(req, res) {
 
 async function endMasqueradeHandler(req, res) {
   try {
-    const { real_id, admin } = req.authData.user;
-    if (!admin || !real_id) throw new Error("User must be a masquerading admin.");
+    const { admin_id, masquerading } = req.authData.user;
+    if (!masquerading || !admin_id) throw new Error("User must be a masquerading admin.");
 
     const {
       rows: [userRecord],
-    } = await query("SELECT * FROM users WHERE user_id = $1", [real_id]);
+    } = await query("SELECT * FROM users WHERE user_id = $1", [admin_id]);
     const userObj = u(userRecord);
     const accessToken = createAccessToken(userObj);
     const refreshToken = createAccessToken(userObj);
+    await query("UPDATE users SET refresh_token = $1 WHERE user_id = $2", [refreshToken, admin_id]);
 
     res.status(201).json({ accessToken, refreshToken });
   } catch {

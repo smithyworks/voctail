@@ -1,12 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Grid, Paper, Typography as T, TextField, Button } from "@material-ui/core";
+import { Grid, Paper, Typography as T, TextField, Button, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 
 import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "../utils/validation.js";
 import { localStorage, api } from "../utils";
+import { refresh } from "../App.js";
 
 const useStyles = makeStyles({
   page: {
@@ -19,9 +20,14 @@ const useStyles = makeStyles({
     padding: "30px 20px 20px 20px",
   },
   inputs: { margin: "10px 0" },
-  checkbox: { margin: "0 5px 0 -10px" },
   captions: { color: "grey", marginTop: "30px" },
   message: { paddingLeft: "5px", marginTop: "2px" },
+  checkbox: {
+    marginLeft: "-10px",
+    "& span": {
+      paddingTop: "3px",
+    },
+  },
 });
 
 function SigninPage({ signup: isSignupPage, onSignin }) {
@@ -31,12 +37,15 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
+  const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [infoMessage, setInfoMessage] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
 
   function signin(e) {
     e.preventDefault();
+    setInfoMessage();
+    setErrorMessage();
 
     const email = emailRef.current;
     const password = passwordRef.current;
@@ -46,7 +55,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
     }
 
     api
-      .login(email, password)
+      .login(email, password, rememberMe)
       .then(({ data: { accessToken, refreshToken } }) => {
         localStorage.setTokens(accessToken, refreshToken);
         setErrorMessage();
@@ -55,14 +64,11 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
       })
       .catch((err) => {
         setInfoMessage();
-        try {
-          if (err.response.status === 412) setErrorMessage(err.response.data);
-        } catch {
-          setErrorMessage("Sorry, omething went wrong and we couldn't log you in!");
-        }
+        if (err.response.status === 412) setErrorMessage(err.response.data);
+        else setErrorMessage("Sorry, omething went wrong and we couldn't log you in!");
       })
       .finally(() => {
-        if (typeof onSignin === "function") onSignin();
+        refresh();
       });
   }
 
@@ -96,7 +102,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
       .then(() => {
         setInfoMessage();
         api
-          .login(email, password)
+          .login(email, password, rememberMe)
           .then(({ data: { accessToken, refreshToken } }) => {
             localStorage.setTokens(accessToken, refreshToken);
             setLoggedIn(true);
@@ -179,6 +185,11 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
           >
             {isSignupPage ? "Sign Up Now" : "Sign In"}
           </Button>
+
+          <T variant="body2" className={classes.checkbox}>
+            <Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+            <span>Remember me!</span>
+          </T>
         </form>
 
         {isSignupPage ? (

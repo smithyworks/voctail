@@ -21,6 +21,7 @@ export function setResponseInterceptor() {
       // Logout user if token refresh didn't work or user is disabled
       if (originalConfig.url === `${process.env.API_URL ?? ""}/api/token`) {
         localStorage.flushTokens();
+        window.location.href = "/";
         return new Promise((_, reject) => reject(error));
       }
 

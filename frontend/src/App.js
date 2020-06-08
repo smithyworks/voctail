@@ -22,11 +22,17 @@ function ProtectedRoute({ ...props }) {
   else return <Redirect to="/404" />;
 }
 
+const refreshCallback = {};
+export function refresh() {
+  const cb = refreshCallback.current;
+  if (typeof cb === "function") cb();
+}
+
 export const UserContext = React.createContext();
 
 function App() {
   const [count, setCount] = useState(0);
-  const refresh = () => setCount(count + 1);
+  refreshCallback.current = () => setCount(count + 1);
 
   const loggedIn = localStorage.hasTokens();
   const [user, setUser] = useState(localStorage.getUser());
@@ -55,14 +61,10 @@ function App() {
           <Route path="/document-markup" component={DocumentMarkup} />
 
           <Route path="/signup">
-            <SigninPage signup onSignin={refresh} />
+            <SigninPage signup />
           </Route>
-          <Route path="/signin">
-            <SigninPage onSignin={refresh} />
-          </Route>
-          <Route path="/signout">
-            <SignoutRedirect onSignout={refresh} />
-          </Route>
+          <Route path="/signin" component={SigninPage} />
+          <Route path="/signout" component={SignoutRedirect} />
 
           <Route exact path="/" component={IntroPage} />
           <Route path="/404" component={Error404Page} />
