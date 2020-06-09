@@ -18,6 +18,8 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { localStorage } from "../utils";
 import { UserContext } from "../App.js";
 
+import logo from "../images/logo_white.png";
+
 const useStyles = makeStyles({
   bar: { backgroundColor: "#555" },
   toolbar: {
@@ -25,13 +27,14 @@ const useStyles = makeStyles({
   },
   leftButtons: { height: "100%" },
   logo: {
-    textDecoration: "none",
-    color: "white",
-    padding: "0 20px",
-    display: "flex",
-    alignItems: "center",
-    fontSize: "24px",
-    fontWeight: "bold",
+    height: "50px",
+    //textDecoration: "none",
+    //color: "white",
+    //padding: "0 20px",
+    //display: "flex",
+    //alignItems: "center",
+    //fontSize: "24px",
+    //fontWeight: "bold",
   },
   link: {
     textDecoration: "none",
@@ -170,7 +173,7 @@ function TopNav({ location, loggedIn, isAdmin }) {
         <Grid item>
           <Grid container alignItems="stretch" className={classes.leftButtons}>
             <Link to="/" className={classes.logo}>
-              VocTail
+              <img src={logo} className={classes.logo} alt="VocTail" />
             </Link>
             {navButtons}
           </Grid>
