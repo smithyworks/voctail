@@ -187,8 +187,16 @@ function TopNav({ location, loggedIn, isAdmin }) {
 
 // The AppPage is meant to be rendered directly into the id="root" element.
 
-function AppPage({ children, id, location }) {
+function AppPage({ children, id, location, title }) {
   const user = useContext(UserContext);
+
+  if (title) window.document.title = title;
+  else if (location === "dashboard") window.document.title = "VocTail | Dashboard";
+  else if (location === "documents") window.document.title = "VocTail | Documents";
+  else if (location === "quizzes") window.document.title = "VocTail | Quizzes";
+  else if (location === "classrooms") window.document.title = "VocTail | Classrooms";
+  else if (location === "admin") window.document.title = "VocTail | Admin";
+  else window.document.title = "VocTail";
 
   return (
     <Grid container direction="column" style={{ height: "100%" }}>

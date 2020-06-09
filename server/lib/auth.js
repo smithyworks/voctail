@@ -5,7 +5,7 @@ const { validateEmail, validatePassword } = require("./validation.js");
 const { query } = require("./db");
 const { log } = require("./log.js");
 
-function _u({ user_id, admin }) {
+function u({ user_id, admin }) {
   return { user: { user_id, admin } };
 }
 
@@ -26,7 +26,7 @@ function createRrefreshToken(userObj, rememberMe) {
 
 async function createTokens(userRecord, rememberMe) {
   try {
-    const userObj = _u(userRecord);
+    const userObj = u(userRecord);
     const accessToken = createAccessToken(userObj);
     const refreshToken = createRrefreshToken(userObj, rememberMe);
 
@@ -62,7 +62,9 @@ async function tokenHandler(req, res) {
     const { user } = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
     const {
       rows: [userRecord],
-    } = await query("SELECT * FROM users WHERE user_id = $1", [user.user_id]);
+    } = user.masquerading
+      ? await query("SELECT * FROM users WHERE user_id = $1", [user.admin_id])
+      : await query("SELECT * FROM users WHERE user_id = $1", [user.user_id]);
 
     if (userRecord.refresh_token === refreshToken) {
       const accessToken = createAccessToken({ user });
@@ -148,4 +150,7 @@ module.exports = {
   registerHandler,
   loginHandler,
   logoutHandler,
+  createAccessToken,
+  createRrefreshToken,
+  u,
 };

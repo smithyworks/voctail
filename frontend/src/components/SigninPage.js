@@ -8,6 +8,7 @@ import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "../utils/validation.js";
 import { localStorage, api } from "../utils";
 import { refresh } from "../App.js";
+import AppPage from "./AppPage.js";
 
 const useStyles = makeStyles({
   page: {
@@ -41,6 +42,8 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
   const [errorMessage, setErrorMessage] = useState();
   const [infoMessage, setInfoMessage] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
+
+  const pageTitle = isSignupPage ? "VocTail | Sign Up" : "VocTail | Sign In";
 
   function signin(e) {
     e.preventDefault();
@@ -120,89 +123,91 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
   if (loggedIn || localStorage.hasTokens()) return <Redirect to="/dashboard" />;
 
   return (
-    <Grid id="login-page" className={classes.page} container alignItems="center" justify="center">
-      <Paper component="span" elevation={4} className={classes.paper}>
-        <div className={classes.logo}>
-          <T variant="h3" align="center" gutterBottom>
-            VocTail
-          </T>
-        </div>
-
-        <form className={classes.inputs} onSubmit={isSignupPage ? signup : signin}>
-          {!!errorMessage && (
-            <T variant="caption" color="error" component={Grid} container alignItems="center">
-              <ErrorIcon fontSize="small" />
-              <span className={classes.message}>{errorMessage}</span>
+    <AppPage id="login-page" title={pageTitle}>
+      <Grid className={classes.page} container alignItems="center" justify="center">
+        <Paper component="span" elevation={4} className={classes.paper}>
+          <div className={classes.logo}>
+            <T variant="h3" align="center" gutterBottom>
+              VocTail
             </T>
-          )}
-          {!!infoMessage && (
-            <T variant="caption" color="secondary" component={Grid} container alignItems="center">
-              <InfoIcon fontSize="small" />
-              <span className={classes.message}>{infoMessage}</span>
-            </T>
-          )}
+          </div>
 
-          {isSignupPage && (
+          <form className={classes.inputs} onSubmit={isSignupPage ? signup : signin}>
+            {!!errorMessage && (
+              <T variant="caption" color="error" component={Grid} container alignItems="center">
+                <ErrorIcon fontSize="small" />
+                <span className={classes.message}>{errorMessage}</span>
+              </T>
+            )}
+            {!!infoMessage && (
+              <T variant="caption" color="secondary" component={Grid} container alignItems="center">
+                <InfoIcon fontSize="small" />
+                <span className={classes.message}>{infoMessage}</span>
+              </T>
+            )}
+
+            {isSignupPage && (
+              <TextField
+                variant="outlined"
+                placeholder="John Doe"
+                label="Name"
+                fullWidth
+                margin="dense"
+                className={classes.inputs}
+                onChange={(e) => (nameRef.current = e.target.value)}
+              ></TextField>
+            )}
+
             <TextField
               variant="outlined"
-              placeholder="John Doe"
-              label="Name"
+              placeholder="username@example.com"
+              label="Email"
               fullWidth
               margin="dense"
               className={classes.inputs}
-              onChange={(e) => (nameRef.current = e.target.value)}
+              onChange={(e) => (emailRef.current = e.target.value)}
             ></TextField>
+
+            <TextField
+              variant="outlined"
+              placeholder="password"
+              label="Password"
+              type="password"
+              fullWidth
+              margin="dense"
+              className={classes.inputs}
+              onChange={(e) => (passwordRef.current = e.target.value)}
+            ></TextField>
+
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              fullWidth
+              className={classes.inputs}
+              disableElevation
+            >
+              {isSignupPage ? "Sign Up Now" : "Sign In"}
+            </Button>
+
+            <T variant="body2" className={classes.checkbox}>
+              <Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+              <span>Remember me!</span>
+            </T>
+          </form>
+
+          {isSignupPage ? (
+            <T className={classes.captions}>
+              Already have an account? Sign in <Link to="/signin">here</Link>!
+            </T>
+          ) : (
+            <T className={classes.captions}>
+              Don't have an account? Sign up <Link to="/signup">here</Link>!
+            </T>
           )}
-
-          <TextField
-            variant="outlined"
-            placeholder="username@example.com"
-            label="Email"
-            fullWidth
-            margin="dense"
-            className={classes.inputs}
-            onChange={(e) => (emailRef.current = e.target.value)}
-          ></TextField>
-
-          <TextField
-            variant="outlined"
-            placeholder="password"
-            label="Password"
-            type="password"
-            fullWidth
-            margin="dense"
-            className={classes.inputs}
-            onChange={(e) => (passwordRef.current = e.target.value)}
-          ></TextField>
-
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            fullWidth
-            className={classes.inputs}
-            disableElevation
-          >
-            {isSignupPage ? "Sign Up Now" : "Sign In"}
-          </Button>
-
-          <T variant="body2" className={classes.checkbox}>
-            <Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
-            <span>Remember me!</span>
-          </T>
-        </form>
-
-        {isSignupPage ? (
-          <T className={classes.captions}>
-            Already have an account? Sign in <Link to="/signin">here</Link>!
-          </T>
-        ) : (
-          <T className={classes.captions}>
-            Don't have an account? Sign up <Link to="/signup">here</Link>!
-          </T>
-        )}
-      </Paper>
-    </Grid>
+        </Paper>
+      </Grid>
+    </AppPage>
   );
 }
 
