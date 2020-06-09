@@ -9,6 +9,7 @@ import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "../utils/valid
 import { localStorage, api } from "../utils";
 import { refresh } from "../App.js";
 import AppPage from "./AppPage.js";
+import logo from "../images/logo_green.png";
 
 const useStyles = makeStyles({
   page: {
@@ -28,6 +29,10 @@ const useStyles = makeStyles({
     "& span": {
       paddingTop: "3px",
     },
+  },
+  logo: {
+    textAlign: "center",
+    "& img": { height: "100px", width: "auto", display: "inline-block" },
   },
 });
 
@@ -127,9 +132,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
       <Grid className={classes.page} container alignItems="center" justify="center">
         <Paper component="span" elevation={4} className={classes.paper}>
           <div className={classes.logo}>
-            <T variant="h3" align="center" gutterBottom>
-              VocTail
-            </T>
+            <img src={logo} />
           </div>
 
           <form className={classes.inputs} onSubmit={isSignupPage ? signup : signin}>

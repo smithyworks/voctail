@@ -26,15 +26,10 @@ const useStyles = makeStyles({
     height: "50px",
   },
   leftButtons: { height: "100%" },
+  logoLink: { height: "50px", padding: "0 10px" },
   logo: {
-    height: "50px",
-    //textDecoration: "none",
-    //color: "white",
-    //padding: "0 20px",
-    //display: "flex",
-    //alignItems: "center",
-    //fontSize: "24px",
-    //fontWeight: "bold",
+    height: "40px",
+    margin: "5px 0",
   },
   link: {
     textDecoration: "none",
@@ -172,7 +167,7 @@ function TopNav({ location, loggedIn, isAdmin }) {
       <Grid className={classes.toolbar} container alignItems="stretch" justify="space-between">
         <Grid item>
           <Grid container alignItems="stretch" className={classes.leftButtons}>
-            <Link to="/" className={classes.logo}>
+            <Link to="/" className={classes.logoLink}>
               <img src={logo} className={classes.logo} alt="VocTail" />
             </Link>
             {navButtons}
