@@ -172,7 +172,9 @@ function TopNav({ location, loggedIn, isAdmin }) {
       <Grid className={classes.toolbar} container alignItems="stretch" justify="space-between">
         <Grid item>
           <Grid container alignItems="stretch" className={classes.leftButtons}>
-            <img src={logo} className={classes.logo} alt="VocTail" onClick={} />
+            <Link to="/" className={classes.logo}>
+              <img src={logo} className={classes.logo} alt="VocTail" />
+            </Link>
             {navButtons}
           </Grid>
         </Grid>
