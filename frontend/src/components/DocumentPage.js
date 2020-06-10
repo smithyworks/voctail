@@ -196,7 +196,7 @@ function DocumentPreview({...props}, location) {
   return (
       <>
         {tileData.map((tile) => (
-        <GridListTile key={tile.img} cols={1} >
+        <GridListTile key={tile.img} cols={1}>
           <img src={tile.img} alt={tile.title} />
           <GridListTileBar
               title=
@@ -240,12 +240,12 @@ function Documents({ ...props }, location) {
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
         <T variant="h4">Welcome to your Document Overview, {user ? user.name : "..."}!</T>
       </Grid>
+
       <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
         <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
           <ListSubheader component="div">Documents</ListSubheader>
         </GridListTile>
-        <DocumentPreview cols={3}/>  //preview
-
+        <DocumentPreview/>  //preview
       </GridList>
     </AppPage>
   );
