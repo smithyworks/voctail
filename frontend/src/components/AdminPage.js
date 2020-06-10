@@ -9,16 +9,47 @@ import {
   TableCell,
   TableContainer,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from "@material-ui/core";
 import timediff from "timediff";
 
 import AppPage from "./AppPage.js";
 import { api, localStorage } from "../utils";
 
+function MasqueradeConfirmDialog({ open, onClose, onConfirm, id }) {
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Are you sure you want to masquerade under user ID {id}?</DialogTitle>
+      <DialogActions>
+        <Button onClick={onClose}>No</Button>
+        <Button onClick={onConfirm}>Yes</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+function RevokeConfirmDialog({ open, onClose, onConfirm, id }) {
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Are you sure you want to revoke tokens for user ID {id}?</DialogTitle>
+      <DialogActions>
+        <Button onClick={onClose}>No</Button>
+        <Button onClick={onConfirm}>Yes</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
 function AdminPage({ ...props }) {
   const [count, setCount] = useState(0);
   const refresh = () => setCount(count + 1);
   const [usersList, setUsersList] = useState([]);
+
+  const [id, setId] = useState();
+  const [confirmMasquerade, setConfirmMasquerade] = useState(false);
+  const [confirmRevoke, setConfirmRevoke] = useState(false);
 
   useEffect(() => {
     api
@@ -29,24 +60,28 @@ function AdminPage({ ...props }) {
       .catch((err) => console.log(err));
   }, []);
 
-  function revokeCB(user_id) {
-    return () => {
-      api.revokeToken(user_id).finally(() => refresh());
-    };
+  function revoke() {
+    if (id)
+      api
+        .revokeToken(id)
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setConfirmRevoke(false);
+          refresh();
+        });
   }
 
-  function impersonateCB(user_id) {
-    return () => {
-      console.log("hello");
+  function impersonate() {
+    if (id)
       api
-        .masquerade(user_id)
+        .masquerade(id)
         .then(({ data }) => {
           const { accessToken, refreshToken } = data;
           localStorage.setTokens(accessToken, refreshToken);
+          setConfirmMasquerade(false);
           window.location.href = "/dashboard";
         })
         .catch((err) => console.log(err));
-    };
   }
 
   const userRows = usersList.map((u, i) => {
@@ -75,11 +110,22 @@ function AdminPage({ ...props }) {
             variant="contained"
             color="secondary"
             style={{ margin: "-8px 10px -8px 0" }}
-            onClick={revokeCB(u.user_id)}
+            onClick={() => {
+              setId(u.user_id);
+              setConfirmRevoke(true);
+            }}
           >
             Revoke Tokens
           </Button>
-          <Button variant="contained" color="primary" style={{ margin: "-8px 0" }} onClick={impersonateCB(u.user_id)}>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ margin: "-8px 0" }}
+            onClick={() => {
+              setId(u.user_id);
+              setConfirmMasquerade(true);
+            }}
+          >
             Impersonate
           </Button>
         </TableCell>
@@ -113,6 +159,13 @@ function AdminPage({ ...props }) {
           <TableBody>{userRows}</TableBody>
         </Table>
       </TableContainer>
+      <MasqueradeConfirmDialog
+        open={confirmMasquerade}
+        onClose={() => setConfirmMasquerade(false)}
+        onConfirm={impersonate}
+        id={id}
+      />
+      <RevokeConfirmDialog open={confirmRevoke} onClose={() => setConfirmRevoke(false)} onConfirm={revoke} id={id} />
     </AppPage>
   );
 }

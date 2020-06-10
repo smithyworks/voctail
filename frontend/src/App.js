@@ -52,6 +52,8 @@ function App() {
         .catch((err) => console.log(err));
   }, [loggedIn]);
 
+  if (!user?.user_id) return null;
+
   return (
     <UserContext.Provider value={user}>
       <Router>
