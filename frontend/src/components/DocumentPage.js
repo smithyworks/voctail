@@ -59,7 +59,7 @@ const styles = (theme: Theme) =>
 export interface DialogTitleProps extends WithStyles<typeof styles> {
   id: string,
   children: React.ReactNode,
-  onClose: () => void
+  onClose: () => void,
 }
 const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   const { children, classes, onClose, ...other } = props;
@@ -86,26 +86,26 @@ const DialogActions = withStyles((theme: Theme) => ({
   },
 }))(MuiDialogActions);
 
-//popup for the document you prefer (get some information about the doc before entering viewmode)
-function DocumentOverviewPopup() {
-  //todo use document overview popup
-  const [open, setOpen] =React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+//popup for the document you prefer (get some information about the doc before entering viewmode)
+function DocumentOverviewPopUp() {
+  //todo use document overview popup
+
+
+  const [popUpOpen, setPopUpOpen] =React.useState(false);
+
+  const handlePopUpClose = () => {
+    setPopUpOpen(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handlePopUpOpen = () => {
+    setPopUpOpen(true);
   };
 
   return (
       <div>
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-          Dialog öffnen
-        </Button>
-        <Dialog onClose={handleClose} aria-labelledby="document-overview-popup" open={open}>
-          <DialogTitle id="document-overview-popup" onClose={handleClose}>
+        <Dialog onClose={handlePopUpClose} aria-labelledby="document-overview-popup" open={popUpOpen}>
+          <DialogTitle id="document-overview-popup" onClose={handlePopUpClose()}>
             Document: title
           </DialogTitle>
           <DialogContent dividers>
@@ -118,10 +118,10 @@ function DocumentOverviewPopup() {
           </DialogContent>
           <DialogActions>
             //todo onclick go to document
-            <Button autoFocus onClick={handleClose} color="primary" href="/document-markup">
+            <Button autoFocus component={Link} to ="/document-markup" color="primary" >
               Open the document in the markup view mode
             </Button>
-            <Button autoFocus onClick={handleClose} color="primary">
+            <Button autoFocus onClick={handlePopUpClose} color="primary">
               Close
             </Button>
           </DialogActions>
@@ -131,13 +131,8 @@ function DocumentOverviewPopup() {
 
 }
 
-//overview (browse through documents, see title, preview and some additional information)
-function Documents({ ...props }, location) {
-  const classes = useStyles();
-  const [user, setUser] = useState();
-  //todo integrate flexible link to individual documents instead of const document markup
-  const documentMarkupLinkClass = location === "document-markup" ? classes.activeLink : classes.link;
 
+function DocumentPreview({...props}, location) {
   //example tile data
   const tileData = [
     {
@@ -196,6 +191,41 @@ function Documents({ ...props }, location) {
     },
   ];
 
+  const classes = useStyles();
+
+  return (
+      <>
+        {tileData.map((tile) => (
+        <GridListTile key={tile.img} cols={1} >
+          <img src={tile.img} alt={tile.title} />
+          <GridListTileBar
+              title=
+                  // <Link to="/clara-dummy" className={documentMarkupLinkClass}>
+                  {tile.title}
+              // </Link>
+              subtitle={<span>description: {tile.description}</span>}
+              //onClick={<DocumentOverviewPopup>handlePopUpOpen</DocumentOverviewPopup>}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+          />
+        </GridListTile>
+        ))}
+     </>
+  );
+
+}
+
+//overview (browse through documents, see title, preview and some additional information)
+function Documents({ ...props }, location) {
+  const classes = useStyles();
+  const [user, setUser] = useState();
+
+  //todo integrate flexible link to individual documents instead of const document markup
+  //const documentMarkupLinkClass = location === "document-markup" ? classes.activeLink : classes.link;
+
   useEffect(() => {
     api
       .user()
@@ -214,24 +244,8 @@ function Documents({ ...props }, location) {
         <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
           <ListSubheader component="div">Documents</ListSubheader>
         </GridListTile>
-        {tileData.map((tile) => (
-          <GridListTile key={tile.img} cols={1}>
-            <img src={tile.img} alt={tile.title} />
-            <GridListTileBar
-              title=
-                //<Link to="/document-markup" className={documentMarkupLinkClass}>
-                  {tile.title}
-                //</Link>
-              subtitle={<span>description: {tile.description}</span>}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                  <LocalBarIcon />
-                </IconButton>
+        <DocumentPreview cols={3}/>  //preview
 
-              }
-            />
-          </GridListTile>
-        ))}
       </GridList>
     </AppPage>
   );

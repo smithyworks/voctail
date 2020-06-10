@@ -3,7 +3,6 @@ import { Grid, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppPage from "./AppPage.js";
-// import {Link} from "reactrouter-dom";
 
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
