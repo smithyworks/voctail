@@ -5,8 +5,8 @@ const { validateEmail, validatePassword } = require("./validation.js");
 const { query } = require("./db");
 const { log } = require("./log.js");
 
-function _u({ user_id, email }) {
-  return { user: { user_id, email, admin: false } };
+function u({ user_id, admin }) {
+  return { user: { user_id, admin } };
 }
 
 function createAccessToken(userObj) {
@@ -16,16 +16,19 @@ function createAccessToken(userObj) {
     expiresIn: "10min",
   });
 }
+function createRrefreshToken(userObj, rememberMe) {
+  return jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, {
+    issuer: "voctail",
+    subject: "webapp",
+    expiresIn: !!rememberMe ? "14d" : "1d",
+  });
+}
 
-async function createTokens(userRecord) {
+async function createTokens(userRecord, rememberMe) {
   try {
-    const userObj = _u(userRecord);
+    const userObj = u(userRecord);
     const accessToken = createAccessToken(userObj);
-    const refreshToken = jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, {
-      issuer: "voctail",
-      subject: "webapp",
-      expiresIn: "3d",
-    });
+    const refreshToken = createRrefreshToken(userObj, rememberMe);
 
     return [accessToken, refreshToken];
   } catch (err) {
@@ -56,18 +59,18 @@ async function tokenHandler(req, res) {
   try {
     const { refreshToken } = req.body;
 
-    const {
-      user: { user_id },
-    } = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    const { user } = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
     const {
       rows: [userRecord],
-    } = await query("SELECT * FROM users WHERE user_id = $1", [user_id]);
+    } = user.masquerading
+      ? await query("SELECT * FROM users WHERE user_id = $1", [user.admin_id])
+      : await query("SELECT * FROM users WHERE user_id = $1", [user.user_id]);
 
     if (userRecord.refresh_token === refreshToken) {
-      const accessToken = createAccessToken(_u(userRecord));
+      const accessToken = createAccessToken({ user });
       res.status(201).json({ accessToken });
     } else {
-      log("Bad token", user_id, refreshToken, userRecord.refresh_token);
+      log("Bad token", payload, refreshToken);
       res.status(401).send("Unauthorized.");
     }
   } catch (err) {
@@ -106,7 +109,7 @@ async function registerHandler(req, res) {
 
 async function loginHandler(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
     const {
       rows: [userRecord],
     } = await query("SELECT * FROM users WHERE email = $1", [email]);
@@ -114,7 +117,7 @@ async function loginHandler(req, res) {
     if (userRecord) {
       if (await bcrypt.compare(password, userRecord.password)) {
         log("Password authenticated user", email);
-        const [accessToken, refreshToken] = await createTokens(userRecord);
+        const [accessToken, refreshToken] = await createTokens(userRecord, rememberMe);
         await query("UPDATE users SET refresh_token = $1 WHERE user_id = $2", [refreshToken, userRecord.user_id]);
         res.status(200).json({ accessToken, refreshToken });
       } else {
@@ -147,4 +150,7 @@ module.exports = {
   registerHandler,
   loginHandler,
   logoutHandler,
+  createAccessToken,
+  createRrefreshToken,
+  u,
 };
