@@ -5,18 +5,19 @@ const { validateEmail, validatePassword } = require("./validation.js");
 const { query } = require("./db");
 const { log } = require("./log.js");
 
-function u({ user_id, admin }) {
-  return { user: { user_id, admin } };
+function u({ user_id, admin }, extra) {
+  extra = extra || {};
+  return { user: { user_id, admin, ...extra } };
 }
 
 function createAccessToken(userObj) {
   return jwt.sign(userObj, process.env.ACCESS_TOKEN_SECRET, {
     issuer: "voctail",
     subject: "webapp",
-    expiresIn: "10min",
+    expiresIn: "5min",
   });
 }
-function createRrefreshToken(userObj, rememberMe) {
+function createRefreshToken(userObj, rememberMe) {
   return jwt.sign(userObj, process.env.REFRESH_TOKEN_SECRET, {
     issuer: "voctail",
     subject: "webapp",
@@ -24,11 +25,11 @@ function createRrefreshToken(userObj, rememberMe) {
   });
 }
 
-async function createTokens(userRecord, rememberMe) {
+function createTokens(userRecord, rememberMe, extra) {
   try {
-    const userObj = u(userRecord);
+    const userObj = u(userRecord, extra);
     const accessToken = createAccessToken(userObj);
-    const refreshToken = createRrefreshToken(userObj, rememberMe);
+    const refreshToken = createRefreshToken(userObj, rememberMe);
 
     return [accessToken, refreshToken];
   } catch (err) {
@@ -37,13 +38,14 @@ async function createTokens(userRecord, rememberMe) {
   }
 }
 
-function tokenMiddleWare(req, res, next) {
+async function tokenMiddleWare(req, res, next) {
   try {
     const bearerToken = req.headers.authorization;
     if (bearerToken) {
       const token = bearerToken.split(" ")[1];
       const authData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
       req.authData = authData;
+      await query("UPDATE users SET last_seen = NOW() WHERE user_id = $1", [authData.user.user_id]);
       next();
     } else {
       log("No token to verify.");
@@ -60,13 +62,13 @@ async function tokenHandler(req, res) {
     const { refreshToken } = req.body;
 
     const { user } = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    const id = user.masquerading ? user.admin_id : user.user_id;
     const {
       rows: [userRecord],
-    } = user.masquerading
-      ? await query("SELECT * FROM users WHERE user_id = $1", [user.admin_id])
-      : await query("SELECT * FROM users WHERE user_id = $1", [user.user_id]);
+    } = await query("SELECT * FROM users WHERE user_id = $1", [id]);
 
     if (userRecord.refresh_token === refreshToken) {
+      await query("UPDATE users SET last_seen = NOW() WHERE user_id = $1", [id]);
       const accessToken = createAccessToken({ user });
       res.status(201).json({ accessToken });
     } else {
@@ -117,8 +119,11 @@ async function loginHandler(req, res) {
     if (userRecord) {
       if (await bcrypt.compare(password, userRecord.password)) {
         log("Password authenticated user", email);
-        const [accessToken, refreshToken] = await createTokens(userRecord, rememberMe);
-        await query("UPDATE users SET refresh_token = $1 WHERE user_id = $2", [refreshToken, userRecord.user_id]);
+        const [accessToken, refreshToken] = createTokens(userRecord, rememberMe);
+        await query("UPDATE users SET refresh_token = $1, last_seen = NOW() WHERE user_id = $2", [
+          refreshToken,
+          userRecord.user_id,
+        ]);
         res.status(200).json({ accessToken, refreshToken });
       } else {
         log("Wrong password login for", email);
@@ -136,8 +141,9 @@ async function loginHandler(req, res) {
 
 async function logoutHandler(req, res) {
   try {
-    const { user_id } = req.authData.user;
-    await query("UPDATE users SET refresh_token = NULL WHERE user_id = $1", [user_id]);
+    const { user_id, masquerading, admin_id } = req.authData.user;
+    const id = masquerading ? admin_id : user_id;
+    await query("UPDATE users SET refresh_token = NULL, last_seen = NOW() WHERE user_id = $1", [id]);
   } catch (err) {
     log("Errpr logging out user", err);
   }
@@ -150,7 +156,8 @@ module.exports = {
   registerHandler,
   loginHandler,
   logoutHandler,
+  createTokens,
   createAccessToken,
-  createRrefreshToken,
+  createRefreshToken,
   u,
 };

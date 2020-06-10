@@ -29,6 +29,7 @@ server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 server.get("/api/user", auth.tokenMiddleWare, users.userHandler);
 
 server.get("/api/admin/users", auth.tokenMiddleWare, admin.usersHandler);
+server.post("/api/admin/revoke-token", auth.tokenMiddleWare, admin.revokeTokenHandler);
 server.post("/api/admin/masquerade", auth.tokenMiddleWare, admin.masqueradeHandler);
 server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasqueradeHandler);
 
