@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const base = process.env.REACT_APP_API_URL ?? "" + "/api";
+const base = "/api";
 
-export function login(email, password) {
-  return axios.post(`${base}/login`, { email, password });
+export function login(email, password, rememberMe) {
+  return axios.post(`${base}/login`, { email, password, rememberMe });
 }
 
 export function register(name, email, password) {
@@ -19,5 +19,5 @@ export function user() {
 }
 
 export function users() {
-  return axios.get(`${base}/users`);
+  return axios.get(`${base}/admin/users`);
 }

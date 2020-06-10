@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Grid,
@@ -15,7 +15,10 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import { tokens } from "../utils";
+import { localStorage } from "../utils";
+import { UserContext } from "../App.js";
+
+import logo from "../images/logo_white.png";
 
 const useStyles = makeStyles({
   bar: { backgroundColor: "#555" },
@@ -23,14 +26,10 @@ const useStyles = makeStyles({
     height: "50px",
   },
   leftButtons: { height: "100%" },
+  logoLink: { height: "50px", padding: "0 10px" },
   logo: {
-    textDecoration: "none",
-    color: "white",
-    padding: "0 20px",
-    display: "flex",
-    alignItems: "center",
-    fontSize: "24px",
-    fontWeight: "bold",
+    height: "40px",
+    margin: "5px 0",
   },
   link: {
     textDecoration: "none",
@@ -123,13 +122,20 @@ function UserMenuButton() {
   );
 }
 
-function NavButtons({ location }) {
+function NavButtons({ location, isAdmin }) {
   const classes = useStyles();
 
   const dashboardLinkClass = location === "dashboard" ? classes.activeLink : classes.link;
   const documentsLinkClass = location === "documents" ? classes.activeLink : classes.link;
   const quizzesLinkClass = location === "quizzes" ? classes.activeLink : classes.link;
   const classroomsLinkClass = location === "classrooms" ? classes.activeLink : classes.link;
+  const adminLinkClass = location === "admin" ? classes.activeLink : classes.link;
+
+  const adminLink = isAdmin ? (
+    <Link to="/admin" className={adminLinkClass}>
+      Admin
+    </Link>
+  ) : null;
 
   return (
     <>
@@ -145,14 +151,15 @@ function NavButtons({ location }) {
       <Link to="/classrooms" className={classroomsLinkClass}>
         Classrooms
       </Link>
+      {adminLink}
     </>
   );
 }
 
-function TopNav({ location, loggedIn }) {
+function TopNav({ location, loggedIn, isAdmin }) {
   const classes = useStyles();
 
-  const navButtons = loggedIn ? <NavButtons location={location} /> : null;
+  const navButtons = loggedIn ? <NavButtons location={location} isAdmin={isAdmin} /> : null;
   const rightContent = loggedIn ? <UserMenuButton /> : <SigninButtons />;
 
   return (
@@ -160,8 +167,8 @@ function TopNav({ location, loggedIn }) {
       <Grid className={classes.toolbar} container alignItems="stretch" justify="space-between">
         <Grid item>
           <Grid container alignItems="stretch" className={classes.leftButtons}>
-            <Link to="/" className={classes.logo}>
-              VocTail
+            <Link to="/" className={classes.logoLink}>
+              <img src={logo} className={classes.logo} alt="VocTail" />
             </Link>
             {navButtons}
           </Grid>
@@ -175,10 +182,20 @@ function TopNav({ location, loggedIn }) {
 
 // The AppPage is meant to be rendered directly into the id="root" element.
 
-function AppPage({ children, id, location }) {
+function AppPage({ children, id, location, title }) {
+  const user = useContext(UserContext);
+
+  if (title) window.document.title = title;
+  else if (location === "dashboard") window.document.title = "VocTail | Dashboard";
+  else if (location === "documents") window.document.title = "VocTail | Documents";
+  else if (location === "quizzes") window.document.title = "VocTail | Quizzes";
+  else if (location === "classrooms") window.document.title = "VocTail | Classrooms";
+  else if (location === "admin") window.document.title = "VocTail | Admin";
+  else window.document.title = "VocTail";
+
   return (
     <Grid container direction="column" style={{ height: "100%" }}>
-      <TopNav location={location} loggedIn={tokens.hasTokens()} />
+      <TopNav location={location} loggedIn={localStorage.hasTokens()} isAdmin={!!user?.admin} />
       <Grid item xs style={{ overflowX: "hidden", overflowY: "auto" }}>
         <Container id={id} style={{ height: "100%" }}>
           {children}

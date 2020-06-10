@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Typography as T, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppPage from "./AppPage.js";
 import { api } from "../utils";
+import { UserContext } from "../App.js";
 
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
@@ -13,17 +14,10 @@ const useStyles = makeStyles({
 
 function AdminPage({ ...props }) {
   const classes = useStyles();
-  const [user, setUser] = useState();
+  const user = useContext(UserContext);
   const [usersList, setUsersList] = useState([]);
 
   useEffect(() => {
-    api
-      .user()
-      .then((res) => {
-        if (res) setUser(res.data);
-      })
-      .catch((err) => console.log(err));
-
     api
       .users()
       .then((res) => {
@@ -43,7 +37,7 @@ function AdminPage({ ...props }) {
   });
 
   return (
-    <AppPage id="admin-page">
+    <AppPage id="admin-page" location="admin">
       <T variant="h4" gutterBottom>
         Admin Page
       </T>
