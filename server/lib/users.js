@@ -6,7 +6,7 @@ async function userHandler(req, res) {
     const { user_id, masquerading } = req.authData.user;
     const {
       rows: [userRecord],
-    } = await query("SELECT user_id, name, email, admin FROM users WHERE user_id = $1", [user_id]);
+    } = await query("SELECT user_id, name, email, admin, premium FROM users WHERE user_id = $1", [user_id]);
     res.status(200).json({ ...userRecord, masquerading: !!masquerading });
   } catch (err) {
     log(error);

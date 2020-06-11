@@ -13,10 +13,20 @@ import {
   DialogTitle,
   DialogActions,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import timediff from "timediff";
 
 import AppPage from "./AppPage.js";
 import { api, localStorage } from "../utils";
+
+const useStyles = makeStyles({
+  greyed: { color: "#aaa" },
+  userRow: {
+    "&:hover": {
+      backgroundColor: "#efefef",
+    },
+  },
+});
 
 function MasqueradeConfirmDialog({ open, onClose, onConfirm, id }) {
   return (
@@ -42,7 +52,14 @@ function RevokeConfirmDialog({ open, onClose, onConfirm, id }) {
   );
 }
 
+function Grey({ children }) {
+  const classes = useStyles();
+  return <span className={classes.greyed}>{children}</span>;
+}
+
 function AdminPage({ ...props }) {
+  const classes = useStyles();
+
   const [count, setCount] = useState(0);
   const refresh = () => setCount(count + 1);
   const [usersList, setUsersList] = useState([]);
@@ -87,7 +104,7 @@ function AdminPage({ ...props }) {
   const userRows = usersList.map((u, i) => {
     if (!u) return <TableRow />;
 
-    let d = <span style={{ color: "#aaa" }}>never</span>;
+    let d = <Grey>never</Grey>;
     if (u.last_seen) {
       const { days, hours, minutes } = timediff(new Date(u.last_seen), new Date(), "DHm");
       d = "";
@@ -99,12 +116,13 @@ function AdminPage({ ...props }) {
       } else d = "just now";
     }
     return (
-      <TableRow key={i}>
+      <TableRow key={i} className={classes.userRow}>
         <TableCell align="right">{u.user_id}</TableCell>
         <TableCell>{u.name}</TableCell>
         <TableCell>{u.email}</TableCell>
+        <TableCell>{u.premium ? "premium" : <Grey>free</Grey>}</TableCell>
         <TableCell align="right">{d}</TableCell>
-        <TableCell align="right">{u.valid_token ? "true" : "false"}</TableCell>
+        <TableCell align="right">{u.valid_token ? "valid" : <Grey>invalid</Grey>}</TableCell>
         <TableCell align="right">
           <Button
             variant="contained"
@@ -149,9 +167,10 @@ function AdminPage({ ...props }) {
               </TableCell>
               <TableCell>Name</TableCell>
               <TableCell>email</TableCell>
+              <TableCell>Membership</TableCell>
               <TableCell align="right">Last Seen</TableCell>
               <TableCell style={{ width: "110px" }} align="right">
-                Logged In
+                Token
               </TableCell>
               <TableCell />
             </TableRow>

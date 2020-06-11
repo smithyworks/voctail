@@ -96,7 +96,7 @@ function UserMenuButton({ masquerading }) {
       .then((res) => {
         const { accessToken, refreshToken } = res.data;
         localStorage.setTokens(accessToken, refreshToken);
-        window.location.href = "/admin";
+        window.location.href = "/dashboard";
       })
       .catch((err) => console.log(err));
   }
