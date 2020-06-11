@@ -167,7 +167,7 @@ function AdminPage({ ...props }) {
               </TableCell>
               <TableCell>Name</TableCell>
               <TableCell>email</TableCell>
-              <TableCell>Membership</TableCell>
+              <TableCell>Account</TableCell>
               <TableCell align="right">Last Seen</TableCell>
               <TableCell style={{ width: "110px" }} align="right">
                 Token

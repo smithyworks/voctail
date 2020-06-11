@@ -124,11 +124,11 @@ function UserMenuButton({ masquerading }) {
         <Paper className={classes.menuPaper}>
           <ClickAwayListener onClickAway={() => setUserMenuOpen(false)}>
             <MenuList autoFocusItem={userMenuOpen} id="menu-list-grow">
-              <MenuItem ocomponent={Link} to="/profile">
-                Profile
+              <MenuItem component={Link} to="/go-premium">
+                Go Premium!
               </MenuItem>
-              <MenuItem component={Link} to="/account">
-                Account
+              <MenuItem component={Link} to="/profile">
+                Profile
               </MenuItem>
               <MenuItem component={Link} to="/signout">
                 Sign Out

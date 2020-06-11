@@ -9,7 +9,7 @@ import {
   IntroPage,
   AdminPage,
   DocumentPage,
-  DocumentMarkup,
+  TextDocumentPage,
   QuizzesPage,
   QuizzesSavedPage,
   QuizzesDayPage,
@@ -65,7 +65,7 @@ function App() {
           <ProtectedRoute path="/documents" component={DocumentPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
 
-          <Route path="/document-markup" component={DocumentMarkup} />
+          <Route path="/document-markup" component={TextDocumentPage} />
 
           <Route path="/signup">
             <SigninPage signup />
