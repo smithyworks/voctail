@@ -1,12 +1,72 @@
-import React, { useEffect, useState } from "react";
-import { Grid, Typography as T } from "@material-ui/core";
+import React, { useEffect, useState, useRef } from "react";
+import { Grid, Typography as T, Paper, Popper, Divider } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppPage from "./AppPage.js";
 
 const data = {
-  unknownItems: ["predominates", "eclipses", "akin", "abhorrent", "gibe", "sneer", "Grit", "disturbing", "dubious"],
+  unknownItems: [
+    "predominates",
+    "eclipses",
+    "akin",
+    "abhorrent",
+    "gibe",
+    "sneer",
+    "Grit",
+    "disturbing",
+    "dubious",
+    "seldom",
+    "motives",
+    "veil",
+    "reasoner",
+    "admit",
+    "adjusted",
+    "temperament",
+    "drifted",
+    "establishment",
+    "sufficient",
+    "loathed",
+    "remained",
+    "lodgings",
+    "buried",
+    "alternating",
+    "drowsiness",
+    "fierce",
+    "keen",
+    "faculties",
+    "hopeless",
+    "vague",
+    "summons",
+    "accomplished",
+    "delicately",
+    "reigning",
+    "press",
+    "wooing",
+    "seized",
+    "employing",
+    "brilliantly",
+    "silhouette",
+    "swiftly",
+    "eagerly",
+    "sunk",
+    "mood",
+    "habit",
+    "manner",
+    "risen",
+    "rang",
+    "chamber",
+    "formerly",
+    "effusive",
+    "hardly",
+    "kindly",
+    "armchair",
+    "gasogene",
+    "singular",
+    "introspective",
+    "fashion",
+  ],
+  /* eslint-disable */
   blocks: [
     {
       type: "title",
@@ -71,6 +131,7 @@ const data = {
       introspective fashion.",
     },
   ],
+  /* eslint-enable */
 };
 
 const useStyles = makeStyles({
@@ -80,37 +141,188 @@ const useStyles = makeStyles({
   title: { fontSize: "35px", marginBottom: "10px", textAlign: "center", fontWeight: "bold" },
   subtitle: { fontSize: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold" },
   paragraph: { fontSize: "16px", marginBottom: "10px", textAlign: "left" },
-  unknown: { backgroundColor: "#eee" },
+  unknownItem: { backgroundColor: "#eee", "&:hover": {} },
+  knownItem: { "&:hover": {} },
+  popperPaper: {
+    margin: "2px",
+    textAlign: "left",
+    border: "1px solid lightgrey",
+    overflow: "hidden",
+  },
+  popperBody: {
+    padding: "10px",
+  },
+  popperItem: { fontWeight: "bold" },
+  popperList: { padding: "0 10px 0 15px", margin: "0" },
+  popperActions: {
+    padding: "5px 10px",
+    textAlign: "center",
+    fontFamily: "sans",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#eee",
+    },
+  },
 });
 
-function KnownItem({ children }) {
-  return (
-    <>
-      <span>{children}</span>{" "}
-    </>
-  );
-}
-
-function UnknownItem({ children }) {
-  const classes = useStyles();
-  return (
-    <>
-      <span className={classes.unknown}>{children}</span>{" "}
-    </>
-  );
-}
-
-function TextDocumentPage({ ...props }) {
+function Item({ children, known, onMouseEnter, onMouseLeave, onClick }) {
   const classes = useStyles();
 
-  const [blocks, setBlocks] = useState();
+  const ref = useRef();
+  const hoveredRef = useRef(false);
 
   useEffect(() => {
-    const unknown = data.unknownItems;
+    if (!known)
+      setTimeout(() => {
+        try {
+          if (ref?.current?.matches(":hover") && !hoveredRef.current) {
+            if (typeof onMouseEnter === "function") onMouseEnter(ref.current, children);
+            hoveredRef.current = true;
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }, 300);
+  }, [known]); // eslint-disable-line
+
+  const [t, setT] = useState();
+  function enter() {
+    if (known) return;
+    setT(
+      setTimeout(() => {
+        hoveredRef.current = true;
+        if (typeof onMouseEnter === "function") onMouseEnter(ref.current, children);
+      }, 300)
+    );
+  }
+  function leave() {
+    if (known) return;
+    if (t) clearTimeout(t);
+    if (hoveredRef.current)
+      setTimeout(() => {
+        setT();
+        if (typeof onMouseLeave === "function") onMouseLeave();
+      }, 300);
+    hoveredRef.current = true;
+  }
+
+  function click() {
+    if (!known) return;
+    if (typeof onClick === "function") {
+      onClick(children);
+    }
+  }
+
+  return (
+    <>
+      <span
+        ref={ref}
+        onMouseEnter={enter}
+        onMouseLeave={leave}
+        onClick={click}
+        className={known ? classes.knownItem : classes.unknownItem}
+      >
+        {children}
+      </span>{" "}
+    </>
+  );
+}
+
+function TranslationPopup({ open, anchor, item, onMouseEnter, onMouseLeave, markAsKnown }) {
+  const classes = useStyles();
+
+  function leave() {
+    setTimeout(() => {
+      if (typeof onMouseLeave === "function") onMouseLeave();
+    }, 300);
+  }
+
+  function _markKnown() {
+    if (typeof markAsKnown === "function") markAsKnown(item);
+    if (typeof onMouseLeave === "function") onMouseLeave();
+  }
+
+  return (
+    <Popper open={!!open && !!anchor} anchorEl={anchor} placement="bottom" disablePortal>
+      <div onMouseEnter={onMouseEnter} onMouseLeave={leave}>
+        <Paper className={classes.popperPaper}>
+          <div className={classes.popperBody}>
+            <T variant="subtitle1" className={classes.popperItem} gutterBottom>
+              {item}
+            </T>
+            <ul className={classes.popperList}>
+              <T variant="body2" gutterBottom component="li">
+                Some Translation
+              </T>
+              <T variant="body2" gutterBottom component="li">
+                Another Translation
+              </T>
+              <T variant="body2" gutterBottom component="li">
+                Third Translation
+              </T>
+            </ul>
+          </div>
+          <Divider />
+          <div onClick={_markKnown} className={classes.popperActions}>
+            Mark as known
+          </div>
+        </Paper>
+      </div>
+    </Popper>
+  );
+}
+
+function TextDocumentPage() {
+  const classes = useStyles();
+
+  function clean(word) {
+    try {
+      return word.toLowerCase().replace(/([.,;:-]|'.*)/g, "");
+    } catch {
+      return "";
+    }
+  }
+
+  const [blocks, setBlocks] = useState();
+  const [unknownItems, setUnknownItems] = useState(data.unknownItems || []);
+  function markAsUnknown(word) {
+    word = clean(word);
+    if (!unknownItems.includes(word)) setUnknownItems([...unknownItems, word]);
+  }
+  function markAsKnown(word) {
+    word = clean(word);
+    if (unknownItems.includes(word)) setUnknownItems(unknownItems.filter((i) => i !== word));
+  }
+
+  const popperProps = useRef({});
+  const [itemHover, setItemHover] = useState(false);
+  const [popperHover, setPopperHover] = useState(false);
+  function enterItem(anchor, item) {
+    popperProps.current = { anchor, item };
+    setItemHover(true);
+  }
+
+  useEffect(() => {
     const newBlocks = data.blocks.map((b, bi) => {
       const items = b.content.split(" ").map((t, ti) => {
-        if (unknown.includes(t)) return <UnknownItem key={ti}>{t}</UnknownItem>;
-        else return <KnownItem key={ti}>{t}</KnownItem>;
+        if (unknownItems.includes(clean(t)))
+          return (
+            <Item key={ti} onMouseEnter={enterItem} onMouseLeave={() => setItemHover(false)} onClick={markAsUnknown}>
+              {t}
+            </Item>
+          );
+        else
+          return (
+            <Item
+              known
+              key={ti}
+              onMouseEnter={enterItem}
+              onMouseLeave={() => setItemHover(false)}
+              onClick={markAsUnknown}
+            >
+              {t}
+            </Item>
+          );
       });
       return (
         <T className={classes[b.type]} key={bi}>
@@ -119,7 +331,7 @@ function TextDocumentPage({ ...props }) {
       );
     });
     setBlocks(newBlocks);
-  }, [data.unknownItems]); // eslint-disable-line
+  }, [unknownItems]); // eslint-disable-line
 
   return (
     <AppPage location="documents" id="document-markup-page">
@@ -129,6 +341,14 @@ function TextDocumentPage({ ...props }) {
       </Grid>
       <div className={classes.body}>
         <div className={classes.narrowContainer}>{blocks}</div>
+        <TranslationPopup
+          anchor={popperProps?.current?.anchor}
+          item={popperProps?.current?.item}
+          open={itemHover || popperHover}
+          onMouseEnter={() => setPopperHover(true)}
+          onMouseLeave={() => setPopperHover(false)}
+          markAsKnown={markAsKnown}
+        />
       </div>
     </AppPage>
   );
