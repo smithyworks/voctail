@@ -18,6 +18,20 @@ export function user() {
   return axios.get(`${base}/user`);
 }
 
+// Admin endpoints
+
 export function users() {
   return axios.get(`${base}/admin/users`);
+}
+
+export function revokeToken(user_id) {
+  return axios.post(`${base}/admin/revoke-token`, { user_id });
+}
+
+export function masquerade(user_id) {
+  return axios.post(`${base}/admin/masquerade`, { user_id });
+}
+
+export function endMasquerade(user_id) {
+  return axios.get(`${base}/admin/end-masquerade`);
 }

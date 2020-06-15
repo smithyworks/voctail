@@ -132,7 +132,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
       <Grid className={classes.page} container alignItems="center" justify="center">
         <Paper component="span" elevation={4} className={classes.paper}>
           <div className={classes.logo}>
-            <img src={logo} />
+            <img src={logo} alt="logo" />
           </div>
 
           <form className={classes.inputs} onSubmit={isSignupPage ? signup : signin}>

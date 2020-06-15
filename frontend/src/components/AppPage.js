@@ -15,7 +15,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
-import { localStorage } from "../utils";
+import { localStorage, api } from "../utils";
 import { UserContext } from "../App.js";
 
 import logo from "../images/logo_white.png";
@@ -66,6 +66,7 @@ const useStyles = makeStyles({
   signinButtonsContainer: { height: "100%" },
   signinButton: { margin: "0 10px", color: "white" },
   signupButton: { margin: "0 10px", color: "white", borderColor: "white" },
+  endMasquerade: { marginRight: "10px" },
 });
 
 function SigninButtons() {
@@ -83,14 +84,32 @@ function SigninButtons() {
   );
 }
 
-function UserMenuButton() {
+function UserMenuButton({ masquerading }) {
   const classes = useStyles();
 
   const userButtonRef = useRef();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
+  function endMasquerade() {
+    api
+      .endMasquerade()
+      .then((res) => {
+        const { accessToken, refreshToken } = res.data;
+        localStorage.setTokens(accessToken, refreshToken);
+        window.location.href = "/dashboard";
+      })
+      .catch((err) => console.log(err));
+  }
+
+  const endMasqueradeButton = masquerading ? (
+    <Button variant="contained" color="secondary" className={classes.endMasquerade} onClick={endMasquerade}>
+      End Masquerade
+    </Button>
+  ) : null;
+
   return (
     <>
+      {endMasqueradeButton}
       <IconButton
         className={classes.profileButton}
         ref={userButtonRef}
@@ -105,11 +124,11 @@ function UserMenuButton() {
         <Paper className={classes.menuPaper}>
           <ClickAwayListener onClickAway={() => setUserMenuOpen(false)}>
             <MenuList autoFocusItem={userMenuOpen} id="menu-list-grow">
-              <MenuItem ocomponent={Link} to="/profile">
-                Profile
+              <MenuItem component={Link} to="/go-premium">
+                Go Premium!
               </MenuItem>
-              <MenuItem component={Link} to="/account">
-                Account
+              <MenuItem component={Link} to="/profile">
+                Profile
               </MenuItem>
               <MenuItem component={Link} to="/signout">
                 Sign Out
@@ -156,11 +175,11 @@ function NavButtons({ location, isAdmin }) {
   );
 }
 
-function TopNav({ location, loggedIn, isAdmin }) {
+function TopNav({ location, loggedIn, isAdmin, masquerading }) {
   const classes = useStyles();
 
   const navButtons = loggedIn ? <NavButtons location={location} isAdmin={isAdmin} /> : null;
-  const rightContent = loggedIn ? <UserMenuButton /> : <SigninButtons />;
+  const rightContent = loggedIn ? <UserMenuButton masquerading={masquerading} /> : <SigninButtons />;
 
   return (
     <AppBar position="static" className={classes.bar}>
@@ -195,7 +214,12 @@ function AppPage({ children, id, location, title }) {
 
   return (
     <Grid container direction="column" style={{ height: "100%" }}>
-      <TopNav location={location} loggedIn={localStorage.hasTokens()} isAdmin={!!user?.admin} />
+      <TopNav
+        location={location}
+        loggedIn={localStorage.hasTokens()}
+        isAdmin={!!user?.admin}
+        masquerading={!!user?.masquerading}
+      />
       <Grid item xs style={{ overflowX: "hidden", overflowY: "auto" }}>
         <Container id={id} style={{ height: "100%" }}>
           {children}
