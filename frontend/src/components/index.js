@@ -3,6 +3,8 @@ import QuizzesPage from "./QuizzesPage.js";
 import QuizzesSavedPage from "./QuizzesSavedPage.js";
 import QuizzesDayPage from "./QuizzesDayPage.js";
 import ClassroomsPage from "./ClassroomsPage.js";
+import ClassroomsCreatePage from "./ClassroomsCreatePage";
+import ClassroomsSavedPage from "./ClassroomsSavedPage";
 import SigninPage from "./SigninPage.js";
 import SignoutRedirect from "./SignoutRedirect.js";
 import Error404Page from "./Error404Page.js";
@@ -17,6 +19,8 @@ export {
   QuizzesDayPage,
   QuizzesSavedPage,
   ClassroomsPage,
+  ClassroomsCreatePage,
+  ClassroomsSavedPage,
   SigninPage,
   SignoutRedirect,
   Error404Page,
