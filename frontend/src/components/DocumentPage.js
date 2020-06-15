@@ -9,8 +9,12 @@ import {
   IconButton,
   Button,
   Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
 } from "@material-ui/core";
-import { makeStyles, WithStyles, withStyles, createStyles, Theme } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
+//import {withStyles} from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 import CloseIcon from "@material-ui/icons/Close"
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -43,25 +47,20 @@ const useStyles = makeStyles({
 });
 
 //popup
-const styles = (theme: Theme) =>
-    createStyles({
-      root: {
-        margin: 0,
-        padding: theme.spacing(2),
-      },
-      closeButton: {
-        position: 'absolute',
-        right: theme.spacing(1),
-        top: theme.spacing(1),
-        color: theme.palette.grey[500],
-      },
-    });
-export interface DialogTitleProps extends WithStyles<typeof styles> {
-  id: string,
-  children: React.ReactNode,
-  onClose: () => void,
-}
-const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+/**
+const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
       <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -74,39 +73,27 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
       </MuiDialogTitle>
   );
 });
-const DialogContent = withStyles((theme: Theme) => ({
+const DialogContent = withStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
   },
 }))(MuiDialogContent);
-const DialogActions = withStyles((theme: Theme) => ({
+const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
+ **/
 
-
-//popup for the document you prefer (get some information about the doc before entering viewmode)
-function DocumentOverviewPopUp() {
+//popup for the document you click on (get some information about the doc before entering viewmode)
+function DocumentOverviewPopUp({open, onClose, onView, }) {
   //todo use document overview popup
 
-
-  const [popUpOpen, setPopUpOpen] =React.useState(false);
-
-  const handlePopUpClose = () => {
-    setPopUpOpen(false);
-  };
-
-  const handlePopUpOpen = () => {
-    setPopUpOpen(true);
-  };
-
   return (
-      <div>
-        <Dialog onClose={handlePopUpClose} aria-labelledby="document-overview-popup" open={popUpOpen}>
-          <DialogTitle id="document-overview-popup" onClose={handlePopUpClose()}>
-            Document: title
+        <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
+          <DialogTitle id="document-overview-popup" onClose={onClose}>
+            Title of the document
           </DialogTitle>
           <DialogContent dividers>
             <T gutterBottom>
@@ -118,20 +105,21 @@ function DocumentOverviewPopUp() {
           </DialogContent>
           <DialogActions>
             //todo onclick go to document
-            <Button autoFocus component={Link} to ="/document-markup" color="primary" >
-              Open the document in the markup view mode
+            <Button onClick={onView} color="primary" >
+              View the document
             </Button>
-            <Button autoFocus onClick={handlePopUpClose} color="primary">
+            <Button onClick={onClose} color="primary">
               Close
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
   );
-
 }
 
+function viewDocument () {
 
+}
+/**
 function DocumentPreview({...props}, location) {
   //example tile data
   const tileData = [
@@ -191,6 +179,9 @@ function DocumentPreview({...props}, location) {
     },
   ];
 
+  //const [clickOnPopUp,setPopUp] = useState (false);
+
+
   const classes = useStyles();
 
   return (
@@ -204,7 +195,9 @@ function DocumentPreview({...props}, location) {
                   {tile.title}
               // </Link>
               subtitle={<span>description: {tile.description}</span>}
-              //onClick={<DocumentOverviewPopup>handlePopUpOpen</DocumentOverviewPopup>}
+              onClick={() => {
+                setPopUpOpen(true);
+              }}
               actionIcon={
                 <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
                   <LocalBarIcon />
@@ -217,11 +210,70 @@ function DocumentPreview({...props}, location) {
   );
 
 }
-
+**/
 //overview (browse through documents, see title, preview and some additional information)
 function Documents({ ...props }, location) {
   const classes = useStyles();
   const [user, setUser] = useState();
+  const [openPopUp, setPopUpOpen] = useState(false);
+
+//example data
+  const tileData = [
+    {
+      img: exampleImage,
+      title: "ExampleImage",
+      description: "this is an example for another preview",
+      author: "Clara is the author",
+    },
+    {
+      img: textblock,
+      title: "Munich",
+      description: "Explanation text about the capital of bavaria",
+      author: "wikipedia",
+    },
+    {
+      img: textblock,
+      title: "Munich1",
+      description: "Explanation text about the capital of bavaria",
+      author: "wikipedia",
+    },
+    {
+      img: textblock,
+      title: "Munich2",
+      description: "Explanation text about the capital of bavaria",
+      author: "wikipedia",
+    },
+    {
+      img: textblock,
+      title: "Munich3",
+      description: "Explanation text about the capital of bavaria",
+      author: "wikipedia",
+    },
+    {
+      img: textblock,
+      title: "Munich4",
+      description: "Explanation text about the capital of bavaria",
+      author: "wikipedia",
+    },
+    {
+      img: textblock,
+      title: "Munich5",
+      description: "Explanation text about the capital of bavaria",
+      author: "wikipedia",
+    },
+    {
+      img: textblock,
+      title: "Munich6",
+      description: "Explanation text about the capital of bavaria",
+      author: "wikipedia",
+    },
+    {
+      img: textblock,
+      title: "Munich7",
+      description: "Explanation text about the capital of bavaria",
+      author: "wikipedia",
+    },
+  ];
 
   //todo integrate flexible link to individual documents instead of const document markup
   //const documentMarkupLinkClass = location === "document-markup" ? classes.activeLink : classes.link;
@@ -245,8 +297,34 @@ function Documents({ ...props }, location) {
         <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
           <ListSubheader component="div">Documents</ListSubheader>
         </GridListTile>
-        <DocumentPreview/>  //preview
+
+        {tileData.map((tile) => (
+            <GridListTile key={tile.img} cols={1}>
+              <img src={tile.img} alt={tile.title} />
+              <GridListTileBar
+                  title=
+                      // <Link to="/clara-dummy" className={documentMarkupLinkClass}>
+                      {tile.title}
+                  // </Link>
+                  subtitle={<span>description: {tile.description}</span>}
+                  onClick={() => {
+                    setPopUpOpen(true);
+                  }}
+                  actionIcon={
+                    <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                      <LocalBarIcon />
+                    </IconButton>
+                  }
+              />
+            </GridListTile>
+        ))}
       </GridList>
+
+      <DocumentOverviewPopUp
+        open={openPopUp}
+        onClose={() => setPopUpOpen(false)}
+        onView={viewDocument}
+      />
     </AppPage>
   );
 }
