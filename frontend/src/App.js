@@ -10,9 +10,8 @@ import {
   AdminPage,
   DocumentPage,
   TextDocumentPage,
-  QuizzesPage,
-  QuizzesSavedPage,
-  QuizzesDayPage,
+  QuizzesDashboardPage,
+  QuizPage,
   ClassroomsPage,
 } from "./components";
 import { localStorage, api } from "./utils";
@@ -59,8 +58,8 @@ function App() {
           <AdminRoute path="/admin" component={AdminPage} />
 
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
-          <ProtectedRoute path="/quizzes/:id" component={QuizzesDayPage} />
-          <ProtectedRoute path="/quizzes" component={QuizzesPage} />
+          <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
+          <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
           <ProtectedRoute path="/documents" component={DocumentPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
 
