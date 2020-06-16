@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import {
@@ -9,7 +9,7 @@ import {
   IntroPage,
   AdminPage,
   DocumentPage,
-  DocumentMarkup,
+  TextDocumentPage,
   QuizzesPage,
   QuizzesSavedPage,
   QuizzesDayPage,
@@ -19,6 +19,12 @@ import { localStorage, api } from "./utils";
 
 function ProtectedRoute({ ...props }) {
   if (localStorage.hasTokens()) return <Route {...props} />;
+  else return <Redirect to="/404" />;
+}
+
+function AdminRoute({ ...props }) {
+  const user = useContext(UserContext);
+  if (user.admin) return <Route {...props} />;
   else return <Redirect to="/404" />;
 }
 
@@ -50,14 +56,15 @@ function App() {
     <UserContext.Provider value={user}>
       <Router>
         <Switch>
-          <ProtectedRoute path="/admin" component={AdminPage} />
+          <AdminRoute path="/admin" component={AdminPage} />
+
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
           <ProtectedRoute path="/quizzes/:id" component={QuizzesDayPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesPage} />
           <ProtectedRoute path="/documents" component={DocumentPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
 
-          <Route path="/document-markup" component={DocumentMarkup} />
+          <Route path="/document-markup" component={TextDocumentPage} />
 
           <Route path="/signup">
             <SigninPage signup />
