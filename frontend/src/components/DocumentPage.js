@@ -16,10 +16,16 @@ import {
   Switch,
   DialogContentText,
   TextField,
+    Checkbox,
+
+
 
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
+import LocalBarIconOutlined from "@material-ui/icons/LocalBarOutlined";
+import DescriptionIcon from '@material-ui/icons/Description';
+import ImageIcon from '@material-ui/icons/Image';
 
 
 import AppPage from "./AppPage.js";
@@ -86,12 +92,14 @@ function ViewDocument () {
 function AddNewDocument() {
   const [open, setOpen]=React.useState(false);
   const [documentPrivate, setDocumentPrivate]=React.useState(false);
+  const classes = useStyles();
   const handleAddOpen = () => {
     setOpen(true);
   }
   const handleAddClose = () => {
     setOpen(false);
   }
+
   const handleStatusChange = () => {
     if (documentPrivate)
       setDocumentPrivate(false);
@@ -114,7 +122,7 @@ function AddNewDocument() {
           <DialogTitle id="add-new-document">Add a document</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To add a new text document please fill in the additional data first.
+              To add a new text document please fill in the additional data.
             </DialogContentText>
             <TextField
                 autoFocus
@@ -135,27 +143,35 @@ function AddNewDocument() {
             <TextField
                 autoFocus
                 margin="dense"
-                id="subtitle"
-                label="Subtitle"
-                type="subtitle"
+                id="description"
+                label="Description"
+                type="description"
                 fullWidth
             />
             <DialogContentText>
-              Please insert your text in the space provided.
+              Please upload your text document.
             </DialogContentText>
-            <TextField
-                autoFocus
-                margin="dense"
-                id="text-body"
-                label="Insert your text here"
-                type="text-body"
-                fullWidth
-            />
+            <input accept="text/*" className={classes.input} id="upload-text" multiple type="file"/>
+            <label htmlFor="upload-text">
+              <Button variant="contained" color="primary" component="span" startIcon={<DescriptionIcon/>}>Upload</Button>
+            </label>
             <DialogContentText>
-              First you document is public and available for every of our users. / If you want to keep your document private please activate the document status.
+              You can upload a preview image for your text document or choose one from our example pictures.
+            </DialogContentText>
+            <input accept="image/*" className={classes.input} id="upload-preview-image" multiple type="file"/>
+            <label htmlFor="upload-preview-image">
+              <Button variant="contained" color="primary" component="span" startIcon={<ImageIcon/>}>Upload</Button>
+            </label>
+            <DialogContentText>
+              Your document is public and available for all users.
+              If you want to keep your document private please activate the document status.
             </DialogContentText>
             <FormControlLabel
                 control={<Switch checked={documentPrivate} onChange={handleStatusChange} />}
+                label="Private Document"
+            />
+            <FormControlLabel
+                control={<Checkbox icon={<LocalBarIconOutlined />} checkedIcon={<LocalBarIcon />} name="checkedH" onChange={handleStatusChange} checked={documentPrivate}/>}
                 label="Private Document"
             />
           </DialogContent>
