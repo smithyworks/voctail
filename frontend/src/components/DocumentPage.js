@@ -33,7 +33,7 @@ import {api, localStorage} from "../utils";
 
 //example tile images
 import exampleImage from "../images/exampleimage.png";
-import textblock from "../images/textblock.png";
+import munich from "../images/munich.jpg";
 
 const useStyles = makeStyles({
   container: { height: 200, width: "100%" },
@@ -54,13 +54,13 @@ const useStyles = makeStyles({
 
 
 //popup for the document you click on (get some information about the doc before entering viewmode)
-function DocumentOverviewPopUp({open, onClose, onView, documentDetails}) {
+function DocumentOverviewPopUp({open, onClose, onView, documentDetails, documentTitle}) {
   //todo use document overview popup
 
   return (
         <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
           <DialogTitle id="document-overview-popup" onClose={onClose}>
-            Document Title //todo
+            Titel des Dokuments {documentTitle}
           </DialogTitle>
           <DialogContent dividers>
             <T gutterBottom>
@@ -196,7 +196,10 @@ function Documents() {
   const classes = useStyles();
   const [user, setUser] = useState();
   const [openPopUp, setPopUpOpen] = useState(false);
-  const [setDocumentDetails] = useState();
+  let [documentDetails, setDocumentDetails] = useState();
+//  var documentDetails;
+
+
 
 //example data
   const documentData = [
@@ -204,52 +207,52 @@ function Documents() {
       img: exampleImage,
       title: "ExampleImage",
       description: "this is an example for another preview",
-      author: "Clara is the author",
+      author: "Clara",
     },
     {
-      img: textblock,
+      img: munich,
       title: "Munich",
       description: "Explanation text about the capital of bavaria",
       author: "wikipedia",
     },
     {
-      img: textblock,
+      img: munich,
       title: "Munich1",
       description: "Explanation text about the capital of bavaria",
       author: "wikipedia",
     },
     {
-      img: textblock,
+      img: munich,
       title: "Munich2",
       description: "Explanation text about the capital of bavaria",
       author: "wikipedia",
     },
     {
-      img: textblock,
+      img: munich,
       title: "Munich3",
       description: "Explanation text about the capital of bavaria",
       author: "wikipedia",
     },
     {
-      img: textblock,
+      img: munich,
       title: "Munich4",
       description: "Explanation text about the capital of bavaria",
       author: "wikipedia",
     },
     {
-      img: textblock,
+      img: munich,
       title: "Munich5",
       description: "Explanation text about the capital of bavaria",
       author: "wikipedia",
     },
     {
-      img: textblock,
+      img: munich,
       title: "Munich6",
       description: "Explanation text about the capital of bavaria",
       author: "wikipedia",
     },
     {
-      img: textblock,
+      img: munich,
       title: "Munich7",
       description: "Explanation text about the capital of bavaria",
       author: "wikipedia",
@@ -283,14 +286,11 @@ function Documents() {
             <GridListTile key={tile.img} cols={1}>
               <img src={tile.img} alt={tile.title} />
               <GridListTileBar
-                  title=
-                      // <Link to="/clara-dummy" className={documentMarkupLinkClass}>
-                      {tile.title}
-                  // </Link>
+                  title={tile.title}
                   subtitle={<span>Description: {tile.description}</span>}
                   onClick={() => {
                     setPopUpOpen(true);
-
+                    documentDetails = {tile};
                   }}
                   actionIcon={
                     <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
@@ -308,6 +308,7 @@ function Documents() {
           setPopUpOpen(false);
         }}
         onView={ViewDocument}
+        documentDetails={documentDetails}
 
       />
     </AppPage>
