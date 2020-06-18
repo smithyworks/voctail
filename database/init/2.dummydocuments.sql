@@ -1,8 +1,6 @@
-INSERT INTO documents (title, subtitle, description, embedLink, isPublic, text) VALUES
+INSERT INTO documents (title, description, isPublic, content, author) VALUES
     ('A Bohemian Scandal',
-     'Chapter I',
      'This is the description of "A Bohemian Scandal"',
-     '/a-bohemian-scandal',
      true,
      'To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. In his \
       eyes she eclipses and predominates the whole of her sex. It was not that he felt any emotion akin to love \
@@ -14,4 +12,5 @@ INSERT INTO documents (title, subtitle, description, embedLink, isPublic, text) 
       finely adjusted temperament was to introduce a distracting factor which might throw a doubt upon all his \
       mental results. Grit in a sensitive instrument, or a crack in one of his own high - power lenses, would not be \
       more disturbing than a strong emotion in a nature such as his. And yet there was but one woman to him, and \
-     that woman was the late Irene Adler, of dubious and questionable memory.');
+     that woman was the late Irene Adler, of dubious and questionable memory.',
+     'Arthur Conan Doyle');
