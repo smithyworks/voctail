@@ -16,10 +16,7 @@ import {
   Switch,
   DialogContentText,
   TextField,
-    Checkbox,
-
-
-
+  Checkbox,
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
@@ -53,30 +50,30 @@ const useStyles = makeStyles({
 });
 
 
-//popup for the document you click on (get some information about the doc before entering viewmode)
-function DocumentOverviewPopUp({open, onClose, onView, documentDetails, documentTitle}) {
-  //todo use document overview popup
+//popup for the document you click on (get some information about the doc before entering view mode)
+function DocumentOverviewPopUp({open, onClose, onView, documentTitle, documentDetails, documentAuthor, documentImage}) {
 
   return (
         <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
           <DialogTitle id="document-overview-popup" onClose={onClose}>
-            Titel des Dokuments {documentTitle}
+            {documentTitle}
           </DialogTitle>
+          <img src={documentImage} alt={documentImage} width="100%" height="40%" />
           <DialogContent dividers>
             <T gutterBottom>
-              Description: //todo
+              Description: {documentDetails}
             </T>
             <T gutterBottom>
-              This document is provided to you by //todo
+              Author: {documentAuthor}
             </T>
           </DialogContent>
           <DialogActions>
             //todo onclick go to document
+            <Button onClick={onClose} color="primary">
+              Cancel
+            </Button>
             <Button onClick={onView} color="primary" >
               View document
-            </Button>
-            <Button onClick={onClose} color="primary">
-              Close
             </Button>
           </DialogActions>
         </Dialog>
@@ -190,16 +187,16 @@ function AddNewDocument() {
   );
 }
 
-
 //overview (browse through documents, see title, preview and some additional information)
 function Documents() {
   const classes = useStyles();
   const [user, setUser] = useState();
   const [openPopUp, setPopUpOpen] = useState(false);
-  let [documentDetails, setDocumentDetails] = useState();
-//  var documentDetails;
 
-
+  const [documentTitle, setDocumentTitle] = useState(null);
+  const [documentDetails, setDocumentDetails] = useState(null);
+  const [documentImage, setDocumentImage] = useState(null);
+  const [documentAuthor, setDocumentAuthor] = useState(null);
 
 //example data
   const documentData = [
@@ -290,7 +287,10 @@ function Documents() {
                   subtitle={<span>Description: {tile.description}</span>}
                   onClick={() => {
                     setPopUpOpen(true);
-                    documentDetails = {tile};
+                    setDocumentTitle(tile.title);
+                    setDocumentAuthor(tile.author);
+                    setDocumentDetails(tile.description);
+                    setDocumentImage(tile.img);
                   }}
                   actionIcon={
                     <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
@@ -308,8 +308,10 @@ function Documents() {
           setPopUpOpen(false);
         }}
         onView={ViewDocument}
+        documentTitle={documentTitle}
+        documentAuthor={documentAuthor}
         documentDetails={documentDetails}
-
+        documentImage={documentImage}
       />
     </AppPage>
   );
