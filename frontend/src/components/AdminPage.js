@@ -16,7 +16,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import timediff from "timediff";
 
-import AppPage from "./AppPage.js";
+import AppPage from "./common/AppPage";
 import { api, localStorage } from "../utils";
 
 const useStyles = makeStyles({

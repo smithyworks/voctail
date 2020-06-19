@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Grid, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import AppPage from "./AppPage.js";
+import AppPage from "./common/AppPage";
 import { UserContext } from "../App.js";
 
 const useStyles = makeStyles({
