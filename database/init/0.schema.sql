@@ -15,5 +15,5 @@ CREATE TABLE documents (
   description       text,
   isPublic          boolean     NOT NULL DEFAULT true,
   content           text,
-  author            text        NOT NULL,
+  author            text        NOT NULL
 );

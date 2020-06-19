@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Typography as T,
@@ -26,8 +26,7 @@ import ImageIcon from '@material-ui/icons/Image';
 
 
 import AppPage from "./common/AppPage";
-import { UserContext } from "../App.js";
-import { Link } from "react-router-dom";
+
 import {api} from "../utils";
 
 //example tile images
@@ -70,7 +69,6 @@ function DocumentOverviewPopUp({open, onClose, onView, documentTitle, documentDe
             </T>
           </DialogContent>
           <DialogActions>
-            //todo onclick go to document
             <Button onClick={onClose} color="primary">
               Cancel
             </Button>
@@ -85,7 +83,6 @@ function DocumentOverviewPopUp({open, onClose, onView, documentTitle, documentDe
 //get link to view the document after you clicked on "view" in the popup
 function ViewDocument () {
   //todo
-
 }
 
 function AddNewDocument() {
@@ -98,7 +95,6 @@ function AddNewDocument() {
   const handleAddClose = () => {
     setOpen(false);
   }
-
   const handleStatusChange = () => {
     if (documentPrivate)
       setDocumentPrivate(false);
@@ -183,9 +179,7 @@ function AddNewDocument() {
             </Button>
           </DialogActions>
         </Dialog>
-
       </div>
-
   );
 }
 
@@ -194,7 +188,6 @@ function Documents() {
   const classes = useStyles();
   const [user, setUser] = useState();
   const [openPopUp, setPopUpOpen] = useState(false);
-
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
   const [documentImage, setDocumentImage] = useState(null);
@@ -280,7 +273,6 @@ function Documents() {
 
           <AddNewDocument/>
         </GridListTile>
-
         {documentData.map((tile) => (
             <GridListTile key={tile.img} cols={1}>
               <img src={tile.img} alt={tile.title} />

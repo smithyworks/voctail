@@ -4,7 +4,7 @@ const auth = require("./auth.js");
 const users = require("./users.js");
 const validation = require("./validation.js");
 const admin = require("./admin.js");
-const documents = require("/.documents.js");
+const documents = require("./documents.js");
 
 module.exports = {
   log,
