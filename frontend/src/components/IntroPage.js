@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import AppPage from "./AppPage.js";
+import AppPage from "./common/AppPage";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },

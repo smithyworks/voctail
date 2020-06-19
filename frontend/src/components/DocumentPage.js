@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import {
   Grid,
   Typography as T,
@@ -25,8 +25,10 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import ImageIcon from '@material-ui/icons/Image';
 
 
-import AppPage from "./AppPage.js";
-import {api, localStorage} from "../utils";
+import AppPage from "./common/AppPage";
+import { UserContext } from "../App.js";
+import { Link } from "react-router-dom";
+import {api} from "../utils";
 
 //example tile images
 import exampleImage from "../images/exampleimage.png";
@@ -317,4 +319,3 @@ function Documents() {
   );
 }
 export default Documents;
-
