@@ -8,3 +8,10 @@ CREATE TABLE users (
   admin           boolean   NOT NULL DEFAULT false,
   last_seen       timestamptz
 );
+
+CREATE TABLE translations (
+  translation_id  serial    PRIMARY KEY,
+  term            text      NOT NULL,
+  translation     text      NOT NULL,
+  ignore          boolean   NOT NULL DEFAULT false
+);

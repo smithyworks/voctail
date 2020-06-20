@@ -18,6 +18,10 @@ export function user() {
   return axios.get(`${base}/user`);
 }
 
+export function document() {
+  return axios.get(`${base}/document`);
+}
+
 // Admin endpoints
 
 export function users() {
