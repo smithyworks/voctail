@@ -1,5 +1,5 @@
 import React from "react";
-import { TableRow, TableCell, IconButton } from "@material-ui/core";
+import { TableRow, TableCell, IconButton, Tooltip } from "@material-ui/core";
 import {
   Block as BlockIcon,
   DeleteForever as DeleteForeverIcon,
@@ -20,6 +20,10 @@ const useStyles = makeStyles({
   },
   cell: {
     padding: "0 10px",
+  },
+  tooltip: {
+    position: "relative",
+    top: "-10px",
   },
 });
 
@@ -77,15 +81,39 @@ function UserRow({ user_id, name, email, last_seen, premium, valid_token, onMasq
 
   const buttons = header ? null : (
     <>
-      <IconButton style={{ color: "darkblue", margin: "0 3px" }} onClick={_masquerade}>
-        <SupervisedUserCircleIcon />
-      </IconButton>
-      <IconButton style={{ color: "red", margin: "0 3px" }} onClick={_revoke}>
-        <BlockIcon />
-      </IconButton>
-      <IconButton style={{ color: "red", margin: "0 3px" }} onClick={_delete}>
-        <DeleteForeverIcon />
-      </IconButton>
+      <Tooltip
+        arrow
+        title="Masquerade as user."
+        enterDelay={1000}
+        enterNextDelay={500}
+        classes={{ tooltip: classes.tooltip }}
+      >
+        <IconButton style={{ color: "darkblue", margin: "0 3px" }} onClick={_masquerade}>
+          <SupervisedUserCircleIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip
+        arrow
+        title="Revoke user's tokens."
+        enterDelay={1000}
+        enterNextDelay={500}
+        classes={{ tooltip: classes.tooltip }}
+      >
+        <IconButton style={{ color: "red", margin: "0 3px" }} onClick={_revoke}>
+          <BlockIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip
+        arrow
+        title="Permanently delete user."
+        enterDelay={1000}
+        enterNextDelay={500}
+        classes={{ tooltip: classes.tooltip }}
+      >
+        <IconButton style={{ color: "red", margin: "0 3px" }} onClick={_delete}>
+          <DeleteForeverIcon />
+        </IconButton>
+      </Tooltip>
     </>
   );
 
