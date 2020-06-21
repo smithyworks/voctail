@@ -1,27 +1,55 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Typography as T, Divider } from "@material-ui/core";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Typography as T, Divider, Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
 import WarningDialog from "./WarningDialog.js";
+import SearchField from "./SearchField.js";
 import UsersPaginatedTable from "./UsersPaginatedTable.js";
 import AppPage from "../common/AppPage";
 import { api, localStorage } from "../../utils";
 
+const useStyles = makeStyles({
+  pageHeader: { marginTop: "10px" },
+  searchIcon: {
+    color: "darkgrey",
+  },
+});
+
 function AdminPage({ ...props }) {
+  const classes = useStyles();
+
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [count, setCount] = useState(0);
   const refresh = () => setCount(count + 1);
-  const [usersList, setUsersList] = useState([]);
+  const [usersList, setUsersList] = useState();
+  const [filteredUsers, setFilteredUsers] = useState();
+  const searchString = useRef();
 
   useEffect(() => {
     api
       .users()
       .then((res) => {
-        if (res) setUsersList(res.data);
+        if (res) {
+          setUsersList(res.data);
+          setFilteredUsers(res.data);
+        }
       })
       .catch((err) => console.log(err));
   }, [count]);
+
+  const filterUsers = useCallback(
+    (searchString) => {
+      if (searchString && searchString.length > 0) {
+        const pattern = new RegExp(searchString);
+        return usersList?.filter((u) => {
+          return u.name.match(pattern, "i") || u.email.match(pattern, "i");
+        });
+      } else return usersList;
+    },
+    [usersList]
+  );
 
   function revoke(id) {
     setDialogOpen(false);
@@ -60,13 +88,22 @@ function AdminPage({ ...props }) {
 
   return (
     <AppPage id="admin-page" location="admin">
-      <T variant="h6" gutterBottom style={{ marginTop: "20px" }}>
-        Users
-      </T>
-      <Divider style={{ margin: "10px 0 20px 0" }} />
+      <Grid container justify="space-between" className={classes.pageHeader}>
+        <T variant="h6" gutterBottom style={{ marginTop: "20px" }}>
+          Users
+        </T>
+        <SearchField
+          onSearch={(s) => {
+            searchString.current = s;
+            setFilteredUsers(filterUsers(s));
+          }}
+        />
+      </Grid>
+      <Divider />
 
       <UsersPaginatedTable
-        users={usersList}
+        users={filteredUsers}
+        searchString={searchString.current}
         onMasquerade={(user_id, name) => {
           dialogInfo.current = {
             title: "You are about to masquerade!",

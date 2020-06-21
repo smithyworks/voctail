@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, TableHead, TableBody, TableRow, TableContainer } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Pagination } from "@material-ui/lab";
@@ -15,22 +15,31 @@ const useStyles = makeStyles({
   },
 });
 
-function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete }) {
+function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete, searchString }) {
   const classes = useStyles();
 
   const listLength = users?.length ?? 0;
   const pageCount = listLength > PAGE_LENGTH ? Math.ceil(listLength / PAGE_LENGTH) : 1;
 
   const [page, setPage] = useState(1);
+  useEffect(() => setPage(1), [users]);
   const start = (page - 1) * PAGE_LENGTH < listLength ? (page - 1) * PAGE_LENGTH : listLength;
   const end = listLength < start + PAGE_LENGTH ? listLength : start + PAGE_LENGTH;
 
+  const pattern = searchString ? new RegExp(searchString, "i") : null;
   const userRows = [];
   for (let i = start; i < end; i++) {
     const u = users[i];
     userRows.push(
       u ? (
-        <UserRow key={u.user_id} {...u} onMasquerade={onMasquerade} onRevoke={onRevoke} onDelete={onDelete} />
+        <UserRow
+          key={u.user_id}
+          {...u}
+          onMasquerade={onMasquerade}
+          onRevoke={onRevoke}
+          onDelete={onDelete}
+          searchPattern={pattern}
+        />
       ) : (
         <TableRow />
       )
@@ -40,7 +49,7 @@ function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete }) {
   return (
     <TableContainer>
       <Pagination
-        page={page}
+        page={page < pageCount ? page : 1}
         count={pageCount}
         siblingCount={5}
         shape="rounded"
@@ -57,7 +66,7 @@ function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete }) {
         <TableBody>{userRows}</TableBody>
       </Table>
       <Pagination
-        page={page}
+        page={page < pageCount ? page : 1}
         count={pageCount}
         siblingCount={5}
         shape="rounded"

@@ -25,6 +25,9 @@ const useStyles = makeStyles({
     position: "relative",
     top: "-10px",
   },
+  match: {
+    backgroundColor: "#55FF9f",
+  },
 });
 
 function Grey({ children }) {
@@ -37,7 +40,24 @@ function Header({ children }) {
   return <span className={classes.header}>{children}</span>;
 }
 
-function UserRow({ user_id, name, email, last_seen, premium, valid_token, onMasquerade, onRevoke, onDelete, header }) {
+function Match({ children }) {
+  const classes = useStyles();
+  return <span className={classes.match}>{children}</span>;
+}
+
+function UserRow({
+  user_id,
+  name,
+  email,
+  last_seen,
+  premium,
+  valid_token,
+  onMasquerade,
+  onRevoke,
+  onDelete,
+  header,
+  searchPattern,
+}) {
   const classes = useStyles();
 
   let id_val, name_val, email_val, premium_val, duration_val, token_val;
@@ -67,6 +87,30 @@ function UserRow({ user_id, name, email, last_seen, premium, valid_token, onMasq
     premium_val = premium ? "premium" : <Grey>free</Grey>;
     duration_val = d;
     token_val = valid_token ? "valid" : <Grey>invalid</Grey>;
+
+    if (searchPattern) {
+      const nameMatch = name.match(searchPattern);
+      if (nameMatch && nameMatch[0]) {
+        const splitter = nameMatch[0];
+        const nameTokens = name.split(splitter);
+        name_val = [];
+        nameTokens.forEach((t, i) => {
+          name_val.push(t);
+          if (i < nameTokens.length - 1) name_val.push(<Match key={i}>{splitter}</Match>);
+        });
+      }
+
+      const emailMatch = email.match(searchPattern);
+      if (emailMatch && emailMatch[0]) {
+        const splitter = emailMatch[0];
+        const emailTokens = email.split(splitter);
+        email_val = [];
+        emailTokens.forEach((t, i) => {
+          email_val.push(t);
+          if (i < emailTokens.length - 1) email_val.push(<Match key={i}>{splitter}</Match>);
+        });
+      }
+    }
   }
 
   function _masquerade() {
