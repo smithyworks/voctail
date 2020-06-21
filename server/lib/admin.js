@@ -25,6 +25,20 @@ async function usersHandler(req, res) {
   }
 }
 
+async function deleteUser(req, res) {
+  try {
+    if (!req.authData.user.admin) throw new Error("User must be an admin.");
+
+    const { user_id } = req.body;
+    log("delete", user_id);
+    await query("DELETE FROM users WHERE user_id = $1", [user_id]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 async function revokeTokenHandler(req, res) {
   try {
     if (!req.authData.user.admin) throw new Error("User must be an admin.");
@@ -81,6 +95,7 @@ async function endMasqueradeHandler(req, res) {
 
 module.exports = {
   usersHandler,
+  deleteUser,
   revokeTokenHandler,
   masqueradeHandler,
   endMasqueradeHandler,

@@ -113,7 +113,7 @@ function TranslationPopup({ open, anchor, item, onMouseEnter, onMouseLeave, mark
       </T>
     ));
     setTranslationComponents(components);
-  }, [item]);
+  }, [item]); // eslint-disable-line
 
   function leave() {
     setTimeout(() => {
