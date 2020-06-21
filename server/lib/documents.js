@@ -132,20 +132,23 @@ const data = {
 
 async function dummyDocument(req, res) {
   try {
-    const vocabSet = new Set();
+    const tokenSet = new Set();
     data.blocks.forEach(({ content }) => {
-      content.split(" ").forEach((token) => {
-        const cleanToken = token.replace(/[\.,;:'"]/g, "").toLowerCase();
-        vocabSet.add(cleanToken);
-      });
+      content.split(" ").forEach((token) => tokenSet.add(token.replace(/[\.,;:'"]/g, "").toLowerCase()));
     });
 
-    const { rows } = await query("SELECT * FROM translations WHERE term = ANY($1::text[]) AND ignore = false", [
-      [...vocabSet],
+    const { rows: words } = await query("SELECT * FROM words WHERE word = ANY($1::text[]) AND ignore = false", [
+      [...tokenSet],
     ]);
-    data.translations = rows;
 
-    console.log([...vocabSet].length);
+    const wordIDs = words.map((w) => w.word_id);
+    const {
+      rows: translations,
+    } = await query(
+      "SELECT word, translation FROM words INNER JOIN translations ON words.word_id = translations.word_id AND words.word_id = ANY($1::integer[])",
+      [[...wordIDs]]
+    );
+    data.translations = translations;
 
     res.status(200).json(data);
   } catch (err) {

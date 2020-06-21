@@ -103,16 +103,16 @@ function Item({ children, known, onMouseEnter, onMouseLeave, onClick }) {
 function TranslationPopup({ open, anchor, item, onMouseEnter, onMouseLeave, markAsKnown, translations }) {
   const classes = useStyles();
 
-  const [translationComponents, setTranslationComponents] = useState();
+  const [translationData, setTranslationData] = useState();
   useEffect(() => {
     if (!translations || !item) return;
-    const relevantTranslations = translations.filter((t) => t.term === item);
-    const components = relevantTranslations.map((rt) => (
-      <T variant="body2" gutterBottom component="li">
+    const relevantTranslations = translations.filter((t) => t.word === item);
+    const components = relevantTranslations.map((rt, i) => (
+      <T variant="body2" gutterBottom component="li" key={i}>
         {rt.translation}
       </T>
     ));
-    setTranslationComponents(components);
+    setTranslationData({ components, item });
   }, [item]); // eslint-disable-line
 
   function leave() {
@@ -134,7 +134,9 @@ function TranslationPopup({ open, anchor, item, onMouseEnter, onMouseLeave, mark
             <T variant="subtitle1" className={classes.popperItem} gutterBottom>
               {item}
             </T>
-            <ul className={classes.popperList}>{translationComponents}</ul>
+            <ul className={classes.popperList}>
+              {translationData?.item === item ? translationData?.components : null}
+            </ul>
           </div>
           <Divider />
           <div onClick={_markKnown} className={classes.popperActions}>
@@ -162,8 +164,6 @@ function TextDocumentPage() {
         console.log(err);
       });
   }, []); // eslint-disable-line
-
-  console.log(JSON.stringify(document, null, 2));
 
   function clean(word) {
     try {
