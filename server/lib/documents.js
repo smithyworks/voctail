@@ -137,16 +137,11 @@ async function dummyDocument(req, res) {
       content.split(" ").forEach((token) => tokenSet.add(token.replace(/[\.,;:'"]/g, "").toLowerCase()));
     });
 
-    const { rows: words } = await query("SELECT * FROM words WHERE word = ANY($1::text[]) AND ignore = false", [
-      [...tokenSet],
-    ]);
-
-    const wordIDs = words.map((w) => w.word_id);
     const {
       rows: translations,
     } = await query(
-      "SELECT word, translation FROM words INNER JOIN translations ON words.word_id = translations.word_id AND words.word_id = ANY($1::integer[])",
-      [[...wordIDs]]
+      "SELECT words.word_id, words.word, translations.translation_id, translations.translation FROM words INNER JOIN translations ON words.word_id = translations.word_id WHERE words.word = ANY($1::text[]) AND words.ignore = false",
+      [[...tokenSet]]
     );
     data.translations = translations;
 
