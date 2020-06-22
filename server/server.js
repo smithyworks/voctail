@@ -33,7 +33,7 @@ server.post("/api/admin/revoke-token", auth.tokenMiddleWare, admin.revokeTokenHa
 server.post("/api/admin/masquerade", auth.tokenMiddleWare, admin.masqueradeHandler);
 server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasqueradeHandler);
 
-server.get("/api/quizzes", auth.tokenMiddleWare, admin.usersHandler);
+server.get("/api/quizzes", auth.tokenMiddleWare, quizzes.quizzesHandler);
 
 // Handles any requests that don't match the ones above
 server.get("*", (req, res) => {

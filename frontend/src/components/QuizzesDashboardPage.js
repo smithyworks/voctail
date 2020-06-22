@@ -65,13 +65,12 @@ function QuizzesDashboard({ ...props }) {
   //this should be replaced by id or some scheme depending on db
   //fetchQuizzes-> quizRecord: quiz_id, title, questions, is_day, last_seen
   const [quizzes, setQuizzes] = useState([]);
-  const [usersList, setUsersList] = useState([]);
   useEffect(() => {
     console.log("useEffect");
     api
       .fetchQuizzes()
       .then((res) => {
-        if (res) setQuizzes(res.data);
+        if (res) setQuizzes(res.data.quizList);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -91,6 +90,7 @@ function QuizzesDashboard({ ...props }) {
   console.log(quizzes);
   const day = quizzes.filter((e) => e.is_day === true)[0];
   const quizz = quizzes.filter((e) => e.is_day !== true);
+  console.log("quizz,day split");
   console.log(quizz);
   console.log(day);
 
@@ -129,6 +129,8 @@ function QuizzesDashboard({ ...props }) {
   }
   //{createQButton(quizzes.filter((e) => e.is_day === true)[0])}
   //{quizzes.filter((e) => e.is_day === false).map((q) => createQButton(q))}
+  //{createQButton(day)}
+  //{quizz.map((q)=>createQButton(q))}
 
   return (
     <AppPage location="quizzes" id="quizzes-page">
@@ -137,7 +139,7 @@ function QuizzesDashboard({ ...props }) {
           <T variant="h3">Welcome to your quizzes page, {user ? user.name : "..."}!</T>
         </Grid>
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">
-          {quizzes}
+          {day.length > 0 ? createQButton(day) : <T variant="h3">empty</T>}
         </GridList>
       </Grid>
     </AppPage>
