@@ -29,6 +29,7 @@ server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 server.get("/api/user", auth.tokenMiddleWare, users.userHandler);
 
 server.get("/api/document", auth.tokenMiddleWare, documents.dummyDocument);
+server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
 
 server.get("/api/admin/users", auth.tokenMiddleWare, admin.usersHandler);
 server.post("/api/admin/delete-user", auth.tokenMiddleWare, admin.deleteUser);

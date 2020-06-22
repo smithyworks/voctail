@@ -243,23 +243,33 @@ function Documents() {
       .catch((err) => console.log(err));
   }, []);
 
-  const [dummyDocsRyanClara, setDummyDocsRyanClara] = useState(null);
-  const [dummyTitle, setDummyTitle] = useState(null);
+  const [dummyDocsRyanClara, setDummyDocsRyanClara] = useState([]);
+  const [dummyTitle, setDummyTitle] = useState();
 
   useEffect(() => {
     console.log("Hi ich tue etwas");
     api
-
       .fetchDocuments()
       .then((res) => {
         if (res) {
           setDummyDocsRyanClara(res.data);
-          setDummyTitle(res.data);
           console.log("Hi ich bin in dummydocs");
+          console.log(dummyDocsRyanClara);
         }
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const clarastitle = "HALLO"; //= dummyTitle.filter((d)=>d.title === "A Bohemian Scandal") ;
+  // .filter(arg => arg.title ===('A Bohemian Scandal'))
+  const myExample = dummyDocsRyanClara.filter((e) => e.isPublic === true);
+  //    .map((dummyDocsRyanClara)=> console.log(toString(dummyDocsRyanClara)));
+
+  console.log(dummyDocsRyanClara);
+  const first = dummyDocsRyanClara.filter((e) => e.isPublic === true)[0];
+  const second = dummyDocsRyanClara.filter((e) => e.isPublic !== true);
+  console.log("First" + first);
+  console.log("Second" + second);
 
   return (
     <AppPage location="documents" id="documents-page">
@@ -268,8 +278,12 @@ function Documents() {
       </Grid>
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
         <T variant="h4">
-          Welcome to your Document Dashboard, this is the first document {dummyTitle ? dummyTitle : "no dummy data"}!
+          Welcome to your Document Dashboard, this is the first document{" "}
+          {dummyDocsRyanClara ? dummyDocsRyanClara.title : "no dummy data"}!
         </T>
+      </Grid>
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">OUTPUT: {dummyDocsRyanClara.title}</T>
       </Grid>
 
       <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
