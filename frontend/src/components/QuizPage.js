@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import { Grid, Typography as T, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
-import AppPage from "./common/AppPage.js";
-import Button from "@material-ui/core/Button";
+import AppPage from "./common/AppPage";
 import { api } from "../utils";
 
 const useStyles = makeStyles({
