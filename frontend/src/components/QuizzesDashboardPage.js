@@ -48,25 +48,11 @@ const useStyles = makeStyles({
 function QuizzesDashboard({ ...props }) {
   const classes = useStyles();
   const user = useContext(UserContext);
-  //console.log(user)
+  const base = "/quizzes";
 
-  /*let quizzes = [];
-  for (let i = 0; i < 11; i++) {
-    quizzes.push({ key: i, day: false, title: "Quiz " + i, text: "Take this quiz", link: "/quizzes/" + i });
-  }
-  quizzes.push({
-    key: 11,
-    day: true,
-    title: "Quiz of the day",
-    text: "Take a randomly generated quiz.",
-    link: "/quizzes/" + 11,
-  });
-  */
-  //this should be replaced by id or some scheme depending on db
-  //fetchQuizzes-> quizRecord: quiz_id, title, questions, is_day, last_seen
   const [quizzes, setQuizzes] = useState([]);
+
   useEffect(() => {
-    console.log("useEffect");
     api
       .fetchQuizzes()
       .then((res) => {
@@ -75,62 +61,33 @@ function QuizzesDashboard({ ...props }) {
       .catch((err) => console.log(err));
   }, []);
 
-  /*
-  useEffect(() => {
-    console.log("bla")
-    api
-        .users()
-        .then((res) => {
-          if (res) setUsersList(res.data);
-        })
-        .catch((err) => console.log(err));
-  }, []);
-  console.log(usersList);
-  */
-  console.log(quizzes);
-  const day = quizzes.filter((e) => e.is_day === true)[0];
-  const quizz = quizzes.filter((e) => e.is_day !== true);
-  console.log("quizz,day split");
-  console.log(quizz);
-  console.log(day);
-
-  /*Alternative Element to createQButton
-
-  function createQTile(q){
-    return(
-      <GridListTile key={q.id} cols={1} className={classes.questionTile}>
-        <Grid container justify="space-evenly" alignItems="center" direction="column">
-            <Link to={q.link} classname={classes.questionLink}>
-              <T variant="h4">{q.title}</T>
-              <T variant="p">{q.text}</T>
-            </Link>
-        </Grid>
-      </GridListTile>
-    )
-  }
-*/
-  function createQButton(q) {
+  function createQButton(q, base) {
     return (
       <Button
+        key={q.quiz_id}
         component={Link}
-        to={q.link}
+        to={base + "/" + q.quiz_id}
         variant="outlined"
-        color={q.day ? "primary" : "secondary"}
+        color={q.is_day ? "primary" : "secondary"}
         className={classes.button}
       >
-        <Grid className={q.grid} container justify="flex-start" alignItems="center" direction="column">
+        <Grid className={classes.grid} container justify="flex-start" alignItems="center" direction="column">
           <T variant="h4">{q.title}</T>
-          <T variant="p" align="center">
-            {q.text}
-          </T>
+          <T align="center">{q.text}</T>
         </Grid>
       </Button>
     );
   }
-  //{createQButton(quizzes.filter((e) => e.is_day === true)[0])}
-  //{quizzes.filter((e) => e.is_day === false).map((q) => createQButton(q))}
-  //{createQButton(day)}
-  //{quizz.map((q)=>createQButton(q))}
+  function createButtons(quizzes, base) {
+    const day = quizzes.filter((e) => e.is_day === true)[0];
+    const quizz = quizzes.filter((e) => e.is_day === false);
+    const buttons = [];
+    if (quizzes.length > 0) {
+      buttons.push(createQButton(day, base));
+      quizz.map((q) => buttons.push(createQButton(q, base)));
+    }
+    return buttons;
+  }
 
   return (
     <AppPage location="quizzes" id="quizzes-page">
@@ -139,7 +96,7 @@ function QuizzesDashboard({ ...props }) {
           <T variant="h3">Welcome to your quizzes page, {user ? user.name : "..."}!</T>
         </Grid>
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">
-          {day.length > 0 ? createQButton(day) : <T variant="h3">empty</T>}
+          {createButtons(quizzes, base)}
         </GridList>
       </Grid>
     </AppPage>

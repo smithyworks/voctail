@@ -43,7 +43,7 @@ INSERT INTO users (name, email, password, admin, premium) VALUES
 
 
 INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
-  (1, 'Quiz Fruits','{"questions":[
+  (1, 'Quiz Fruits','[
     {"vocabulary":"banana", "suggestions":["Himbeere", "Erdbeere", "Apfel"], "translation":"Banane"},
     {"vocabulary":"pineapple", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Ananas"},
     {"vocabulary":"orange", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Orange"},
@@ -54,19 +54,19 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
     {"vocabulary":"raspberry", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Himbeere"},
     {"vocabulary":"grape", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Traube"},
     {"vocabulary":"acai", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Acai"}
-    ]}',false),
+    ]',false),
 
-  (2, 'Quiz Vehicles','{"questions":[
+  (2, 'Quiz Vehicles','[
     {"vocabulary":"car", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Auto"},
     {"vocabulary":"train", "suggestions":["Auto", "Flugzeug", "Rakete"], "translation":"Zug"},
     {"vocabulary":"plane", "suggestions":["Zug", "Auto", "Rakete"], "translation":"Flugzeug"},
     {"vocabulary":"bike", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Fahrrad"},
     {"vocabulary":"scooter", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Roller"},
     {"vocabulary":"rocket", "suggestions":["Zug", "Flugzeug", "Fahrrad"], "translation":"Rakete"}
-    ]}',false),
+    ]',false),
 
 
-  (3, 'Quiz Colors','{"questions":[
+  (3, 'Quiz Colors','[
     {"vocabulary":"white", "suggestions":["rot", "schwarz", "gelb"], "translation":"weiß"},
     {"vocabulary":"black", "suggestions":["weiß", "grün", "gelb"], "translation":"schwarz"},
     {"vocabulary":"yellow", "suggestions":["weiß", "schwarz", "türkis"], "translation":"gelb"},
@@ -77,20 +77,20 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
     {"vocabulary":"grey", "suggestions":["weiß", "schwarz", "gelb"], "translation":"grau"},
     {"vocabulary":"violet", "suggestions":["weiß", "schwarz", "gelb"], "translation":"violett"},
     {"vocabulary":"turquoise", "suggestions":["weiß", "schwarz", "gelb"], "translation":"türkis"}
-    ]}',false),
+    ]',false),
 
-  (4, 'Quiz Numbers','{"questions":[
-    {"vocabulary":"one", "suggestions":["two", "six", "eight"], "translation":"eins"},
-    {"vocabulary":"two", "suggestions":["one", "six", "eight"], "translation":"zwei"},
-    {"vocabulary":"three", "suggestions":["two", "six", "eight"], "translation":"drei"},
-    {"vocabulary":"four", "suggestions":["two", "six", "eight"], "translation":"vier"},
-    {"vocabulary":"five", "suggestions":["two", "six", "eight"], "translation":"fünf"},
-    {"vocabulary":"six", "suggestions":["two", "four", "eight"], "translation":"sechs"},
-    {"vocabulary":"seven", "suggestions":["two", "six", "eight"], "translation":"sieben"},
-    {"vocabulary":"eight", "suggestions":["two", "six", "seven"], "translation":"acht"},
-    {"vocabulary":"nine", "suggestions":["two", "six", "eight"], "translation":"neun"},
-    {"vocabulary":"ten", "suggestions":["two", "six", "eight"], "translation":"zehn"}
-    ]}',true);
+  (4, 'Quiz Numbers','[
+    {"vocabulary":"one", "suggestions":["zwei", "sechs", "acht"], "translation":"eins"},
+    {"vocabulary":"two", "suggestions":["eins", "sechs", "acht"], "translation":"zwei"},
+    {"vocabulary":"three", "suggestions":["zwei", "sechs", "acht"], "translation":"drei"},
+    {"vocabulary":"four", "suggestions":["zwei", "sechs", "acht"], "translation":"vier"},
+    {"vocabulary":"five", "suggestions":["zwei", "sechs", "acht"], "translation":"fünf"},
+    {"vocabulary":"six", "suggestions":["zwei", "vier", "acht"], "translation":"sechs"},
+    {"vocabulary":"seven", "suggestions":["zwei", "sechs", "acht"], "translation":"sieben"},
+    {"vocabulary":"eight", "suggestions":["zwei", "sechs", "sieben"], "translation":"acht"},
+    {"vocabulary":"nine", "suggestions":["zwei", "sechs", "acht"], "translation":"neun"},
+    {"vocabulary":"ten", "suggestions":["zwei", "sechs", "acht"], "translation":"zehn"}
+    ]',true);
 
 SELECT setval(pg_get_serial_sequence('quizzes','quiz_id'), (SELECT MAX(quiz_id) from quizzes));
 
