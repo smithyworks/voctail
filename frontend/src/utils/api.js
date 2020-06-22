@@ -43,3 +43,9 @@ export function masquerade(user_id) {
 export function endMasquerade(user_id) {
   return axios.get(`${base}/admin/end-masquerade`);
 }
+
+//documents
+
+export function fetchDocuments() {
+  return axios.get(`${base}/documents`);
+}

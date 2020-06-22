@@ -9,7 +9,6 @@ CREATE TABLE users (
   last_seen       timestamptz
 );
 
-
 CREATE TABLE words (
   word_id         serial        PRIMARY KEY,
   word            text          NOT NULL,

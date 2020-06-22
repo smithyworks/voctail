@@ -152,4 +152,14 @@ async function dummyDocument(req, res) {
   }
 }
 
-module.exports = { dummyDocument };
+async function usersHandler(req, res) {
+  try {
+    const { rows } = await query("SELECT * FROM users ORDER BY user_id ASC");
+    res.status(200).json(rows);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+module.exports = { dummyDocument, usersHandler };
