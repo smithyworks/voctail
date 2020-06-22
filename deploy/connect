@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh -i LightsailDefaultKey-eu-central-1.pem ubuntu@voctail.smithy.fr

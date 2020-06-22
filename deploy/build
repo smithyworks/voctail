@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd ../frontend;
+npm run build;
+
+cd ../deploy;
+ssh -i LightsailDefaultKey-eu-central-1.pem ubuntu@35.159.42.127 "rm -R ~/voctail/server/frontend_build";
+scp -i LightsailDefaultKey-eu-central-1.pem docker-compose.yaml ubuntu@35.159.42.127:~/voctail/docker-compose.yaml;
+scp -i LightsailDefaultKey-eu-central-1.pem -r ../frontend/build ubuntu@35.159.42.127:~/voctail/server/frontend_build;

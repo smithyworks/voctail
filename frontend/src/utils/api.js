@@ -18,10 +18,18 @@ export function user() {
   return axios.get(`${base}/user`);
 }
 
+export function document() {
+  return axios.get(`${base}/document`);
+}
+
 // Admin endpoints
 
 export function users() {
   return axios.get(`${base}/admin/users`);
+}
+
+export function deleteUser(user_id) {
+  return axios.post(`${base}/admin/delete-user`, { user_id });
 }
 
 export function revokeToken(user_id) {

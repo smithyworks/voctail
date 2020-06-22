@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Typography as T } from "@material-ui/core";
+import { Grid, Typography as T, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
-import AppPage from "./AppPage.js";
+import AppPage from "./common/AppPage.js";
 import Button from "@material-ui/core/Button";
 import { api } from "../utils";
 

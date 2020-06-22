@@ -11,7 +11,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 
-import AppPage from "./AppPage.js";
+import AppPage from "./common/AppPage";
 import { UserContext } from "../App.js";
 import { Link } from "react-router-dom";
 

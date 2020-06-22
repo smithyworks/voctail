@@ -5,6 +5,7 @@ const users = require("./users.js");
 const validation = require("./validation.js");
 const admin = require("./admin.js");
 const quizzes = require("./quizzes.js");
+const documents = require("./documents.js");
 
 module.exports = {
   log,
@@ -14,4 +15,5 @@ module.exports = {
   validation,
   admin,
   quizzes,
+  documents,
 };

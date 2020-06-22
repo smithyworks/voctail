@@ -3,7 +3,8 @@ const express = require("express");
 const path = require("path");
 
 const { log } = require("./lib/log.js");
-const { db, auth, users, admin, quizzes } = require("./lib");
+
+const { db, auth, users, admin, quizzes, documents } = require("./lib");
 
 db.checkConnection((connected) => {
   if (connected) log("Connected to the Database!");
@@ -28,7 +29,10 @@ server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 
 server.get("/api/user", auth.tokenMiddleWare, users.userHandler);
 
+server.get("/api/document", auth.tokenMiddleWare, documents.dummyDocument);
+
 server.get("/api/admin/users", auth.tokenMiddleWare, admin.usersHandler);
+server.post("/api/admin/delete-user", auth.tokenMiddleWare, admin.deleteUser);
 server.post("/api/admin/revoke-token", auth.tokenMiddleWare, admin.revokeTokenHandler);
 server.post("/api/admin/masquerade", auth.tokenMiddleWare, admin.masqueradeHandler);
 server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasqueradeHandler);
@@ -40,6 +44,6 @@ server.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.VOCTAIL_SERVER_PORT || 8080;
 server.listen(port);
 log("Listening on port " + port);

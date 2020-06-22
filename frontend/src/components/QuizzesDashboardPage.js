@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Grid, GridList, Typography as T } from "@material-ui/core";
+
 import { makeStyles } from "@material-ui/core/styles";
-
-import AppPage from "./AppPage.js";
-
 import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+
+import AppPage from "./common/AppPage";
+
 import { UserContext } from "../App";
 
 import { api } from "../utils";
