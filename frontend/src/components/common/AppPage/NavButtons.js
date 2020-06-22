@@ -6,7 +6,7 @@ const useStyles = makeStyles({
   link: {
     textDecoration: "none",
     color: "#ddd",
-    padding: "4px 20px 0 20px",
+    padding: "0 20px",
     fontSize: "16px",
     display: "flex",
     alignItems: "center",
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     textDecoration: "none",
     color: "black",
     backgroundColor: "#ddd",
-    padding: "4px 20px 0 20px",
+    padding: "0 20px",
     fontSize: "16px",
     display: "flex",
     alignItems: "center",

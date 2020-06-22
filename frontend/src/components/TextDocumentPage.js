@@ -8,7 +8,7 @@ import { api } from "../utils";
 
 const useStyles = makeStyles({
   header: { padding: "15px 10px 10px 10px", borderBottom: "1px solid grey" },
-  body: { padding: "20px", textAlign: "center", "& *": { fontFamily: "serif" } },
+  body: { padding: "20px", textAlign: "center", "& *": { fontFamily: "noto-serif, sans" } },
   narrowContainer: { display: "inline-block", width: "100%", maxWidth: "800px" },
   title: { fontSize: "35px", marginBottom: "10px", textAlign: "center", fontWeight: "bold" },
   subtitle: { fontSize: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold" },
