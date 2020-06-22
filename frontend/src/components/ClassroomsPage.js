@@ -6,6 +6,12 @@ import AppPage from "./AppPage.js";
 import { UserContext } from "../App.js";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles({
   text: {

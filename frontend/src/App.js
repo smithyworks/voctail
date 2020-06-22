@@ -65,9 +65,9 @@ function App() {
           <ProtectedRoute path="/quizzes/day" component={QuizzesDayPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesPage} />
           <ProtectedRoute path="/documents" component={DocumentPage} />
-          <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
           <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
           <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
+          <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
 
           <Route path="/document-markup" component={TextDocumentPage} />
 

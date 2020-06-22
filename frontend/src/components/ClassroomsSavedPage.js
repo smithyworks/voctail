@@ -32,7 +32,7 @@ function ClassroomsSavedPage({ ...props }) {
   const classes = useStyles();
 
   return (
-    <AppPage location="classrooms" id="classrooms-saved-page">
+    <AppPage location="classrooms/saved" id="classrooms-saved-page">
       <Grid className={classes.grid} container justify="space-evenly" alignItems="center" direction="row">
         <T variant="h4">Here, you will be soon able to find your saved classrooms!</T>
       </Grid>
