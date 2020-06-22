@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 
 const { log } = require("./lib/log.js");
-const { db, auth, users, admin } = require("./lib");
+const { db, auth, users, admin, documents } = require("./lib");
 
 db.checkConnection((connected) => {
   if (connected) log("Connected to the Database!");
@@ -28,7 +28,10 @@ server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 
 server.get("/api/user", auth.tokenMiddleWare, users.userHandler);
 
+server.get("/api/document", auth.tokenMiddleWare, documents.dummyDocument);
+
 server.get("/api/admin/users", auth.tokenMiddleWare, admin.usersHandler);
+server.post("/api/admin/delete-user", auth.tokenMiddleWare, admin.deleteUser);
 server.post("/api/admin/revoke-token", auth.tokenMiddleWare, admin.revokeTokenHandler);
 server.post("/api/admin/masquerade", auth.tokenMiddleWare, admin.masqueradeHandler);
 server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasqueradeHandler);

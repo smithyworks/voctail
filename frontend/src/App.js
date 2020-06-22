@@ -23,6 +23,7 @@ function ProtectedRoute({ ...props }) {
 
 function AdminRoute({ ...props }) {
   const user = useContext(UserContext);
+  if (!user.user_id) return null;
   if (user.admin) return <Route {...props} />;
   else return <Redirect to="/404" />;
 }
