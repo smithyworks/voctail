@@ -47,6 +47,7 @@ function Header(props) {
 
 //continue here add other parts
 function Results(props) {
+  const classes = useStyles();
   let unknowns = [];
   let num_taken = props.result.length;
   for (let i in props.result) {
@@ -57,11 +58,24 @@ function Results(props) {
 
   //<T>{unknowns.length.toLocaleString() + props.qstate.result.length.toLocaleString()}</T>
   return (
-    <Grid>
+    <Grid
+      className={classes.gridQuizItem}
+      container
+      justify="center"
+      spacing={0}
+      alignItems="center"
+      direction="column"
+    >
       <T variant="h4">
         Your Score:{" "}
         {num_taken > 0
-          ? Math.round(((num_taken - unknowns.length) / num_taken) * 100) + "%"
+          ? num_taken -
+            unknowns.length +
+            "/" +
+            num_taken +
+            "  ( " +
+            Math.round(((num_taken - unknowns.length) / num_taken) * 100) +
+            "% )"
           : "Answer at least one question"}
       </T>
       <T variant="h4">Recap: {unknowns.length > 0 ? unknowns.join(", ") : "Good job. Nothing to recap."}</T>

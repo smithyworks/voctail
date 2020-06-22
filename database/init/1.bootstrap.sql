@@ -1,5 +1,8 @@
+INSERT INTO users (user_id, name, email, password, admin, premium) VALUES
+(1,'Admin', 'admin@voctail.com', '$2b$10$HjiM45j2YQYto6WbVkwH/u3NjvJrhlFjOY4/pbk4g/UURlQpVbBLK', true, true);
+SELECT setval(pg_get_serial_sequence('users','user_id'), (SELECT MAX(user_id) from users));
+
 INSERT INTO users (name, email, password, admin, premium) VALUES
-  ('Admin', 'admin@voctail.com', '$2b$10$HjiM45j2YQYto6WbVkwH/u3NjvJrhlFjOY4/pbk4g/UURlQpVbBLK', true, true),
   ('Clara', 'clara@voctail.com', '$2b$10$zApz..6fdnLBI2lxwUsq5uZt2qOkpqjs8dQzNLUMk1uT3GRKElNla', true, true),
   ('Ben', 'ben@voctail.com', '$2b$10$fBY8PFZWc9otMnNveHOU/.0vL01gFC/2sHioU2SBPrD5nw6I3nDaq', true, true),
   ('Ryan', 'ryan@voctail.com', '$2b$10$20uI..oITRujWr8Mm7pm8eraqymAm1z1mttA4ib1eDWUJLGwqZAem', true, true),
@@ -36,3 +39,63 @@ INSERT INTO users (name, email, password, admin, premium) VALUES
   ('Michelle', 'michelle@fake.com', '$2b$10$EK9Fh5E5D7hCn0Pc1yyDNOvs1x2/fu7dRp3.PeyhcTqOJkhCHmmy2', false, false),
   ('Melissa', 'melissa@fake.com', '$2b$10$u0ZGWwI/tjZV/hA1QqOCoO.MCXiPyjNGl9fSYX70p7TzCJUkEOE6a', false, false),
   ('Stephanie', 'stephanie@fake.com', '$2b$10$H1Yaq9jH.Jlpgz5qfRE2ReTYcKrgBcHIswRgwKmVogj7FaDZ9AWFK', false, true);
+
+
+
+INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
+  (1, 'Quiz Fruits','{"questions":[
+    {"vocabulary":"banana", "suggestions":["Himbeere", "Erdbeere", "Apfel"], "translation":"Banane"},
+    {"vocabulary":"pineapple", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Ananas"},
+    {"vocabulary":"orange", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Orange"},
+    {"vocabulary":"apple", "suggestions":["Banane", "Erdbeere", "Acai"], "translation":"Apfel"},
+    {"vocabulary":"pear", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Birne"},
+    {"vocabulary":"peach", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Pfirsich"},
+    {"vocabulary":"strawberry", "suggestions":["Banane", "Ananas", "Apfel"], "translation":"Erdbeere"},
+    {"vocabulary":"raspberry", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Himbeere"},
+    {"vocabulary":"grape", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Traube"},
+    {"vocabulary":"acai", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Acai"}
+    ]}',false),
+
+  (2, 'Quiz Vehicles','{"questions":[
+    {"vocabulary":"car", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Auto"},
+    {"vocabulary":"train", "suggestions":["Auto", "Flugzeug", "Rakete"], "translation":"Zug"},
+    {"vocabulary":"plane", "suggestions":["Zug", "Auto", "Rakete"], "translation":"Flugzeug"},
+    {"vocabulary":"bike", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Fahrrad"},
+    {"vocabulary":"scooter", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Roller"},
+    {"vocabulary":"rocket", "suggestions":["Zug", "Flugzeug", "Fahrrad"], "translation":"Rakete"}
+    ]}',false),
+
+
+  (3, 'Quiz Colors','{"questions":[
+    {"vocabulary":"white", "suggestions":["rot", "schwarz", "gelb"], "translation":"weiß"},
+    {"vocabulary":"black", "suggestions":["weiß", "grün", "gelb"], "translation":"schwarz"},
+    {"vocabulary":"yellow", "suggestions":["weiß", "schwarz", "türkis"], "translation":"gelb"},
+    {"vocabulary":"orange", "suggestions":["weiß", "schwarz", "gelb"], "translation":"orange"},
+    {"vocabulary":"red", "suggestions":["weiß", "schwarz", "gelb"], "translation":"rot"},
+    {"vocabulary":"green", "suggestions":["weiß", "schwarz", "gelb"], "translation":"grün"},
+    {"vocabulary":"blue", "suggestions":["weiß", "schwarz", "gelb"], "translation":"blau"},
+    {"vocabulary":"grey", "suggestions":["weiß", "schwarz", "gelb"], "translation":"grau"},
+    {"vocabulary":"violet", "suggestions":["weiß", "schwarz", "gelb"], "translation":"violett"},
+    {"vocabulary":"turquoise", "suggestions":["weiß", "schwarz", "gelb"], "translation":"türkis"}
+    ]}',false),
+
+  (4, 'Quiz Numbers','{"questions":[
+    {"vocabulary":"one", "suggestions":["two", "six", "eight"], "translation":"eins"},
+    {"vocabulary":"two", "suggestions":["one", "six", "eight"], "translation":"zwei"},
+    {"vocabulary":"three", "suggestions":["two", "six", "eight"], "translation":"drei"},
+    {"vocabulary":"four", "suggestions":["two", "six", "eight"], "translation":"vier"},
+    {"vocabulary":"five", "suggestions":["two", "six", "eight"], "translation":"fünf"},
+    {"vocabulary":"six", "suggestions":["two", "four", "eight"], "translation":"sechs"},
+    {"vocabulary":"seven", "suggestions":["two", "six", "eight"], "translation":"sieben"},
+    {"vocabulary":"eight", "suggestions":["two", "six", "seven"], "translation":"acht"},
+    {"vocabulary":"nine", "suggestions":["two", "six", "eight"], "translation":"neun"},
+    {"vocabulary":"ten", "suggestions":["two", "six", "eight"], "translation":"zehn"}
+    ]}',true);
+
+SELECT setval(pg_get_serial_sequence('quizzes','quiz_id'), (SELECT MAX(quiz_id) from quizzes));
+
+INSERT INTO users_quizzes (user_id, quiz_id) VALUES
+  (1,1),
+  (1,2),
+  (1,3),
+  (1,4);

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Grid, GridList, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -7,6 +7,8 @@ import AppPage from "./AppPage.js";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { UserContext } from "../App";
+
+import { api } from "../utils";
 
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
@@ -46,8 +48,9 @@ const useStyles = makeStyles({
 function QuizzesDashboard({ ...props }) {
   const classes = useStyles();
   const user = useContext(UserContext);
+  //console.log(user)
 
-  let quizzes = [];
+  /*let quizzes = [];
   for (let i = 0; i < 11; i++) {
     quizzes.push({ key: i, day: false, title: "Quiz " + i, text: "Take this quiz", link: "/quizzes/" + i });
   }
@@ -58,10 +61,38 @@ function QuizzesDashboard({ ...props }) {
     text: "Take a randomly generated quiz.",
     link: "/quizzes/" + 11,
   });
-
+  */
   //this should be replaced by id or some scheme depending on db
-  let day = quizzes.filter((e) => e.day === true)[0];
-  let quizz = quizzes.filter((e) => e.day !== true);
+  //fetchQuizzes-> quizRecord: quiz_id, title, questions, is_day, last_seen
+  const [quizzes, setQuizzes] = useState([]);
+  const [usersList, setUsersList] = useState([]);
+  useEffect(() => {
+    console.log("useEffect");
+    api
+      .fetchQuizzes()
+      .then((res) => {
+        if (res) setQuizzes(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  /*
+  useEffect(() => {
+    console.log("bla")
+    api
+        .users()
+        .then((res) => {
+          if (res) setUsersList(res.data);
+        })
+        .catch((err) => console.log(err));
+  }, []);
+  console.log(usersList);
+  */
+  console.log(quizzes);
+  const day = quizzes.filter((e) => e.is_day === true)[0];
+  const quizz = quizzes.filter((e) => e.is_day !== true);
+  console.log(quizz);
+  console.log(day);
 
   /*Alternative Element to createQButton
 
@@ -96,6 +127,8 @@ function QuizzesDashboard({ ...props }) {
       </Button>
     );
   }
+  //{createQButton(quizzes.filter((e) => e.is_day === true)[0])}
+  //{quizzes.filter((e) => e.is_day === false).map((q) => createQButton(q))}
 
   return (
     <AppPage location="quizzes" id="quizzes-page">
@@ -104,8 +137,7 @@ function QuizzesDashboard({ ...props }) {
           <T variant="h3">Welcome to your quizzes page, {user ? user.name : "..."}!</T>
         </Grid>
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">
-          {createQButton(day)}
-          {quizz.map((q) => createQButton(q))}
+          {quizzes}
         </GridList>
       </Grid>
     </AppPage>

@@ -69,6 +69,7 @@ function AdminPage({ ...props }) {
   const [confirmRevoke, setConfirmRevoke] = useState(false);
 
   useEffect(() => {
+    console.log("bla");
     api
       .users()
       .then((res) => {
@@ -76,6 +77,8 @@ function AdminPage({ ...props }) {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  console.log(usersList);
 
   function revoke() {
     if (id)
