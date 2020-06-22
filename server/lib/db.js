@@ -3,11 +3,11 @@ const { Pool } = require("pg");
 const { log } = require("./log.js");
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASS,
-  port: process.env.DB_PORT,
+  user: process.env.VOCTAIL_DB_USER,
+  host: process.env.VOCTAIL_DB_HOST,
+  database: process.env.VOCTAIL_DB_NAME,
+  password: process.env.VOCTAIL_DB_PASS,
+  port: process.env.VOCTAIL_DB_PORT,
 });
 
 function checkConnection(cb) {

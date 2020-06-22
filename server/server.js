@@ -41,6 +41,6 @@ server.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.VOCTAIL_SERVER_PORT || 8080;
 server.listen(port);
 log("Listening on port " + port);
