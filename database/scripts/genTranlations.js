@@ -49,6 +49,9 @@ async function main() {
           console.log(`${v.word_id}\t${JSON.parse(k)}\tf\tenglish`);
         });
         console.log("\\.");
+        console.log(
+          `ALTER SEQUENCE words_word_id_seq RESTART WITH ${word_id};`
+        );
 
         console.log(
           "COPY translations (translation_id, word_id, translation, language) FROM stdin;"
@@ -62,6 +65,9 @@ async function main() {
           });
         });
         console.log("\\.");
+        console.log(
+          `ALTER SEQUENCE translations_translation_id_seq RESTART WITH ${translation_id};`
+        );
       }
     }
   });
