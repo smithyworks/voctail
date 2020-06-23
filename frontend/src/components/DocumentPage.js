@@ -265,6 +265,7 @@ function Documents() {
   ];
 
   const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]);
+  console.log("documentDataFromDatabase", documentDataFromDatabase);
 
   //todo integrate flexible link to individual documents instead of const document markup
   useEffect(() => {
@@ -282,12 +283,13 @@ function Documents() {
       .then((res) => {
         if (res) setDocumentDataFromDatabase(res.data);
         console.log("setDocumentDataFromDatabase wurde ausgeführt");
-        console.log(toString(documentDataFromDatabase));
+        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
   const [dummyDocsRyanClara, setDummyDocsRyanClara] = useState([]);
+  console.log("dummyDocsRyanClara", dummyDocsRyanClara);
 
   useEffect(() => {
     console.log("Hi ich tue etwas");
@@ -297,7 +299,7 @@ function Documents() {
         if (res) {
           setDummyDocsRyanClara(res.data);
           console.log("Hi ich bin in dummydocs");
-          console.log(dummyDocsRyanClara);
+          console.log(res.data);
         }
       })
       .catch((err) => console.log(err));
