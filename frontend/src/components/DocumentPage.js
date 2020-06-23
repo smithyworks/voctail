@@ -165,6 +165,37 @@ function AddNewDocument() {
   );
 }
 
+function ManageDocuments() {
+  const [open, setOpen] = React.useState(false);
+  //const [documentPrivate, setDocumentPrivate] = React.useState(false);
+  const classes = useStyles();
+  const handleManageOpen = () => {
+    setOpen(true);
+  };
+  const handleManageClose = () => {
+    setOpen(false);
+  };
+  return (
+    <div>
+      <Button varian="contained" color="primary" startIcon={<LocalBarIcon />} onClick={handleManageOpen}>
+        Manage Documents
+      </Button>
+
+      <Dialog onClose={handleManageClose} aria-labelledby="manage-documents" open={open}>
+        <DialogTitle id="manage-documents" onClose={handleManageClose}>
+          Do you want to leave your dashboard to manage your documents?
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleManageClose} color="primary">
+            Cancel
+          </Button>
+          <Button color="primary">Manage documents</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
 //overview (browse through documents, see title, preview and some additional information)
 function Documents() {
   const classes = useStyles();
@@ -291,6 +322,7 @@ function Documents() {
           <ListSubheader component="div">Documents</ListSubheader>
 
           <AddNewDocument />
+          <ManageDocuments />
         </GridListTile>
         {documentData.map((tile) => (
           <GridListTile key={tile.img} cols={1}>
