@@ -264,6 +264,8 @@ function Documents() {
     },
   ];
 
+  const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]);
+
   //todo integrate flexible link to individual documents instead of const document markup
   useEffect(() => {
     api
@@ -274,8 +276,18 @@ function Documents() {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    api
+      .fetchDocuments()
+      .then((res) => {
+        if (res) setDocumentDataFromDatabase(res.data);
+        console.log("setDocumentDataFromDatabase wurde ausgeführt");
+        console.log(toString(documentDataFromDatabase));
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const [dummyDocsRyanClara, setDummyDocsRyanClara] = useState([]);
-  const [dummyTitle, setDummyTitle] = useState();
 
   useEffect(() => {
     console.log("Hi ich tue etwas");
@@ -291,16 +303,16 @@ function Documents() {
       .catch((err) => console.log(err));
   }, []);
 
-  const clarastitle = "HALLO"; //= dummyTitle.filter((d)=>d.title === "A Bohemian Scandal") ;
+  // const clarastitle = "HALLO"; //= dummyTitle.filter((d)=>d.title === "A Bohemian Scandal") ;
   // .filter(arg => arg.title ===('A Bohemian Scandal'))
-  const myExample = dummyDocsRyanClara.filter((e) => e.isPublic === true);
+  // const myExample = dummyDocsRyanClara.filter((e) => e.isPublic === true);
   //    .map((dummyDocsRyanClara)=> console.log(toString(dummyDocsRyanClara)));
 
-  console.log(dummyDocsRyanClara);
-  const first = dummyDocsRyanClara.filter((e) => e.isPublic === true)[0];
-  const second = dummyDocsRyanClara.filter((e) => e.isPublic !== true);
-  console.log("First" + first);
-  console.log("Second" + second);
+  // console.log(dummyDocsRyanClara);
+  // const first = dummyDocsRyanClara.filter((e) => e.isPublic === true)[0];
+  // const second = dummyDocsRyanClara.filter((e) => e.isPublic !== true);
+  // console.log("First" + first);
+  // console.log("Second" + second);
 
   return (
     <AppPage location="documents" id="documents-page">
@@ -310,7 +322,7 @@ function Documents() {
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
         <T variant="h4">
           Welcome to your Document Dashboard, this is the first document{" "}
-          {dummyDocsRyanClara ? dummyDocsRyanClara.title : "no dummy data"}!
+          {documentDataFromDatabase ? documentDataFromDatabase.title : "no dummy data"}!
         </T>
       </Grid>
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">

@@ -47,7 +47,7 @@ export function endMasquerade(user_id) {
 //documents
 
 export function fetchDocuments() {
-  return axios.get(`${base}/documents`);
+  return axios.get(`${base}/handle-documents`);
 }
 
 /* add and delete documents (WIP)
