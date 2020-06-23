@@ -1,11 +1,14 @@
-import React, { useContext } from "react";
-import { Grid, GridList, Typography as T, Button } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import { Grid, GridList, Button, Typography as T } from "@material-ui/core";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
 import AppPage from "./common/AppPage";
 
 import { UserContext } from "../App";
+
+import { api } from "../utils";
 
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
@@ -45,55 +48,45 @@ const useStyles = makeStyles({
 function QuizzesDashboard({ ...props }) {
   const classes = useStyles();
   const user = useContext(UserContext);
+  const base = "/quizzes";
 
-  let quizzes = [];
-  for (let i = 0; i < 11; i++) {
-    quizzes.push({ key: i, day: false, title: "Quiz " + i, text: "Take this quiz", link: "/quizzes/" + i });
-  }
-  quizzes.push({
-    key: 11,
-    day: true,
-    title: "Quiz of the day",
-    text: "Take a randomly generated quiz.",
-    link: "/quizzes/" + 11,
-  });
+  const [quizzes, setQuizzes] = useState([]);
 
-  //this should be replaced by id or some scheme depending on db
-  let day = quizzes.filter((e) => e.day === true)[0];
-  let quizz = quizzes.filter((e) => e.day !== true);
+  useEffect(() => {
+    api
+      .fetchQuizzes()
+      .then((res) => {
+        if (res) setQuizzes(res.data.quizList);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-  /*Alternative Element to createQButton
-
-  function createQTile(q){
-    return(
-      <GridListTile key={q.id} cols={1} className={classes.questionTile}>
-        <Grid container justify="space-evenly" alignItems="center" direction="column">
-            <Link to={q.link} classname={classes.questionLink}>
-              <T variant="h4">{q.title}</T>
-              <T variant="p">{q.text}</T>
-            </Link>
-        </Grid>
-      </GridListTile>
-    )
-  }
-*/
-  function createQButton(q) {
+  function createQButton(q, base) {
     return (
       <Button
+        key={q.quiz_id}
         component={Link}
-        to={q.link}
+        to={base + "/" + q.quiz_id}
         variant="outlined"
-        color={q.day ? "primary" : "secondary"}
+        color={q.is_day ? "primary" : "secondary"}
         className={classes.button}
       >
-        <Grid className={q.grid} container justify="flex-start" alignItems="center" direction="column">
+        <Grid className={classes.grid} container justify="flex-start" alignItems="center" direction="column">
           <T variant="h4">{q.title}</T>
-          <T variant="p" align="center">
-            {q.text}
-          </T>
+          <T align="center">{q.text}</T>
         </Grid>
       </Button>
     );
+  }
+  function createButtons(quizzes, base) {
+    const day = quizzes.filter((e) => e.is_day === true)[0];
+    const quizz = quizzes.filter((e) => e.is_day === false);
+    const buttons = [];
+    if (quizzes.length > 0) {
+      buttons.push(createQButton(day, base));
+      quizz.map((q) => buttons.push(createQButton(q, base)));
+    }
+    return buttons;
   }
 
   return (
@@ -103,8 +96,7 @@ function QuizzesDashboard({ ...props }) {
           <T variant="h3">Welcome to your quizzes page, {user ? user.name : "..."}!</T>
         </Grid>
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">
-          {createQButton(day)}
-          {quizz.map((q) => createQButton(q))}
+          {createButtons(quizzes, base)}
         </GridList>
       </Grid>
     </AppPage>

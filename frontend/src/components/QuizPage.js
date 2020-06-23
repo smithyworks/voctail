@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Typography as T, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
-
 import AppPage from "./common/AppPage";
+import { api } from "../utils";
 
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
@@ -40,13 +40,14 @@ function Header(props) {
   return (
     <Grid className={classes.gridHeader} container justify="center" alignItems="center" direction="column">
       <T variant="h4">{props.title}</T>
-      <T variant="p">{props.children}</T>
+      <T>{props.children}</T>
     </Grid>
   );
 }
 
 //continue here add other parts
 function Results(props) {
+  const classes = useStyles();
   let unknowns = [];
   let num_taken = props.result.length;
   for (let i in props.result) {
@@ -57,11 +58,24 @@ function Results(props) {
 
   //<T>{unknowns.length.toLocaleString() + props.qstate.result.length.toLocaleString()}</T>
   return (
-    <Grid>
+    <Grid
+      className={classes.gridQuizItem}
+      container
+      justify="center"
+      spacing={0}
+      alignItems="center"
+      direction="column"
+    >
       <T variant="h4">
         Your Score:{" "}
         {num_taken > 0
-          ? Math.round(((num_taken - unknowns.length) / num_taken) * 100) + "%"
+          ? num_taken -
+            unknowns.length +
+            "/" +
+            num_taken +
+            "  ( " +
+            Math.round(((num_taken - unknowns.length) / num_taken) * 100) +
+            "% )"
           : "Answer at least one question"}
       </T>
       <T variant="h4">Recap: {unknowns.length > 0 ? unknowns.join(", ") : "Good job. Nothing to recap."}</T>
@@ -75,10 +89,10 @@ function Translations(props) {
 
   function generateButtons(state) {
     let lines = [];
-    for (let i in props.question.suggestions) {
+    for (let i in props.suggestions) {
       //if diff state change icon - red or green - color="primary"| "secondary"
       lines.push(
-        props.question.suggestions[i] === props.question.translation ? (
+        props.suggestions[i] === props.translation ? (
           <Button
             key={i}
             variant="outlined"
@@ -91,7 +105,7 @@ function Translations(props) {
             startIcon={<LocalBarIcon />}
             className={classes.button}
           >
-            {props.question.suggestions[i]}
+            {props.suggestions[i]}
           </Button>
         ) : (
           <Button
@@ -106,7 +120,7 @@ function Translations(props) {
             startIcon={<LocalBarIcon />}
             className={classes.button}
           >
-            {props.question.suggestions[i]}
+            {props.suggestions[i]}
           </Button>
         )
       );
@@ -116,16 +130,16 @@ function Translations(props) {
 
   function updateButtons(color) {
     let lines = [];
-    for (let i in props.question.suggestions) {
+    for (let i in props.suggestions) {
       lines.push(
-        props.question.suggestions[i] === props.question.translation ? (
+        props.suggestions[i] === props.translation ? (
           //change icon instead of color
           <Button key={i} variant="outlined" color={color} startIcon={<LocalBarIcon />} className={classes.button}>
-            {props.question.suggestions[i]}
+            {props.suggestions[i]}
           </Button>
         ) : (
           <Button key={i} variant="outlined" startIcon={<LocalBarIcon />} className={classes.button}>
-            {props.question.suggestions[i]}
+            {props.suggestions[i]}
           </Button>
         )
       );
@@ -134,7 +148,6 @@ function Translations(props) {
   }
 
   function chooseButtons(state) {
-    //console.log(qstate)
     switch (state) {
       case props.qstate.states.untaken:
       case props.qstate.states.wrong:
@@ -212,7 +225,9 @@ function Actions(props) {
       //correct
       case props.qstate.states.correct:
       case props.qstate.states.shown:
-        buttons.push(actionButton("Next", 1));
+        if (!props.is_last) {
+          buttons.push(actionButton("Next", 1));
+        }
         buttons.push(actionButton("Done", 2));
         break;
       //wrong
@@ -244,63 +259,85 @@ function QuizItem(props) {
   //Your results  | Select the right translation for the word.
   const qst = { untaken: 0, correct: 1, wrong: 2, shown: 3 };
   const [qstate, setQState] = useState(qst.untaken);
+  const [suggestions, setSuggestions] = useState([]);
 
   let nextQ = () => {
     setQState(qst.untaken);
     props.nextQ();
   };
+
+  function shuffle(list) {
+    var i, j, tmp;
+    for (i = list.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * i);
+      tmp = list[i];
+      list[i] = list[j];
+      list[j] = tmp;
+    }
+    return list;
+  }
+
+  function suggestionsFromQ(q) {
+    var suggs = [q.translation];
+    for (let sg of q.suggestions) {
+      suggs.push(sg);
+    }
+    suggs = shuffle(suggs);
+    return suggs;
+  }
+
+  useEffect(() => {
+    setSuggestions(suggestionsFromQ(props.question));
+  }, [props.question]);
+
   return (
     <Grid className={classes.gridQuizItem} container justify="center" alignItems="center" direction="column">
       <Grid className={classes.gridWord} container justify="space-evenly" alignItems="flex-end" direction="row">
         <T variant="h3">{props.question.vocabulary}</T>
       </Grid>
       <Translations
-        question={props.question}
+        suggestions={suggestions}
+        translation={props.question.translation}
         qstate={{ state: qstate, states: qst, set: setQState }}
         addResult={props.addResult}
       />
-      <Actions qstate={{ state: qstate, states: qst, set: setQState }} nextQ={nextQ} showResult={props.showResult} />
+      <Actions
+        qstate={{ state: qstate, states: qst, set: setQState }}
+        nextQ={nextQ}
+        is_last={props.is_last}
+        showResult={props.showResult}
+      />
     </Grid>
   );
 }
 
 function Quiz({ ...props }) {
   const classes = useStyles();
-
-  //later questions=
   let { id } = useParams();
-  //quiz= db.query("SELECT * from Quizzes where id=$1 AND userid=$2",id,user) or sth like that;
-  //questions = quiz.questions
-  let words = ["word", "car", "train", "banana", "orange", "bagel", "coffee", "German", "English", "French"];
-  let translations = [
-    "Wort",
-    "Auto",
-    "Zug",
-    "Banana",
-    "Orange",
-    "Bagel",
-    "Kaffee",
-    "deutsch",
-    "english",
-    "französisch",
-  ];
-  let questions = [];
-  for (let i = 0; i < 10; i++) {
-    //for the translations: i=0 correct, eg "Wort"
-    questions.push({
-      vocabulary: words[i],
-      suggestions: [translations[i], "Phrase", "Satz", "Silbe"],
-      translation: translations[i],
-    });
-  }
-  //assumption id 11 = day - later day column in db
-  let quiz = { id: id, questions: questions, title: id === 11 ? "Quiz of the Day" : "Quiz " + id };
+  id = parseInt(id);
 
-  //const [user, setUser] = useState()
+  const [quiz, setQuiz] = useState({});
+  useEffect(() => {
+    api
+      .fetchQuizzes()
+      .then((res) => {
+        if (res) {
+          setQuiz(res.data.quizList.filter((q) => q.quiz_id === id)[0]);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
+
+  /*
+  if ("title" in quiz) {
+    console.log(quiz.questions)
+    console.log(quiz.questions.questions)
+    console.log(quiz.questions.map((q) => q.vocabulary));
+  }
+  */
   const [show, setShow] = useState(false);
   const [result, setResult] = useState([]);
   const [itemCount, setItemCount] = useState(0);
-
   let nextQ = () => {
     setItemCount((itemCount) => itemCount + 1);
   };
@@ -312,17 +349,41 @@ function Quiz({ ...props }) {
   };
 
   return (
-    <AppPage location={"quizzes/" + quiz.id} id="quizzes-day-page">
-      {!show ? (
-        <Grid className={classes.grid} container justify="space-evenly" spacing={0} alignItems="center" direction="row">
-          <Header title={quiz.title}>Select the right translation for the word.</Header>
-          <QuizItem question={questions[itemCount]} addResult={addResult} nextQ={nextQ} showResult={showResult} />
-        </Grid>
+    <AppPage location={"quizzes/" + id} id={"quiz-" + id + "page"}>
+      {"title" in quiz ? (
+        !show ? (
+          <Grid
+            className={classes.grid}
+            container
+            justify="space-evenly"
+            spacing={0}
+            alignItems="center"
+            direction="row"
+          >
+            <Header title={quiz.title}>Select the right translation for the word.</Header>
+            <QuizItem
+              question={quiz.questions[itemCount]}
+              is_last={itemCount === quiz.questions.length - 1}
+              addResult={addResult}
+              nextQ={nextQ}
+              showResult={showResult}
+            />
+          </Grid>
+        ) : (
+          <Grid
+            className={classes.grid}
+            container
+            justify="space-evenly"
+            spacing={0}
+            alignItems="center"
+            direction="row"
+          >
+            <Header title={quiz.title}>Your results.</Header>
+            <Results questions={quiz.questions} result={result} />
+          </Grid>
+        )
       ) : (
-        <Grid className={classes.grid} container justify="space-evenly" spacing={0} alignItems="center" direction="row">
-          <Header title={quiz.title}>Your results.</Header>
-          <Results questions={quiz.questions} result={result} />
-        </Grid>
+        []
       )}
     </AppPage>
   );
