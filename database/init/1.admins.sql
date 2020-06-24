@@ -1,7 +1,8 @@
-INSERT INTO users (name, email, password, admin, premium) VALUES
-  ('Admin', 'admin@voctail.com', '$2b$10$HjiM45j2YQYto6WbVkwH/u3NjvJrhlFjOY4/pbk4g/UURlQpVbBLK', true, true),
-  ('Clara', 'clara@voctail.com', '$2b$10$zApz..6fdnLBI2lxwUsq5uZt2qOkpqjs8dQzNLUMk1uT3GRKElNla', true, true),
-  ('Ben', 'ben@voctail.com', '$2b$10$fBY8PFZWc9otMnNveHOU/.0vL01gFC/2sHioU2SBPrD5nw6I3nDaq', true, true),
-  ('Ryan', 'ryan@voctail.com', '$2b$10$20uI..oITRujWr8Mm7pm8eraqymAm1z1mttA4ib1eDWUJLGwqZAem', true, true),
-  ('Christopher', 'christo@voctail.com', '$2b$10$ruRdtS1OyeFGLY62I7lW4eatR9nS0jQJ76.t3.skVS7xk79ZKamvm', true, true);
-  
+COPY users (user_id, name, email, password, premium, admin, refresh_token, last_seen) FROM stdin;
+1	Admin	admin@voctail.com	$2b$10$FlXJUpPFgyZqBqvETn7XPeSYFcb9gZ02d.uvbQVxdTe9YS4WjaNLu	t	t	\N	\N
+2	Christo	christo@voctail.com	$2b$10$6zHr/452bnmXeP2wXWZu3.C6opMFZEHXwFRGsdcJyeE95ODyNCI5W	t	t	\N	\N
+3	Ben	ben@voctail.com	$2b$10$f1FJZaS5kQFt1VLdHvZQk.yswzUALVylNEgG0GeQ0gc1GHGxOhTzq	t	t	\N	\N
+4	Clara	clara@voctail.com	$2b$10$K7I/R8cAVmUoYoxHyZ6rBO9TF72xaMh7QerErY34D3i8FN.9b4BD6	t	t	\N	\N
+5	Ryan	ryan@voctail.com	$2b$10$u6W2jujWGiCpa3wavl14q./sZTy.TLEdxlzcpGWAwCBmxJJJbwHs.	t	t	\N	\N
+\.
+ALTER SEQUENCE users_user_id_seq RESTART WITH 6;

@@ -44,6 +44,13 @@ export function endMasquerade(user_id) {
   return axios.get(`${base}/admin/end-masquerade`);
 }
 
+export function fetchQuizzes() {
+  return axios.get(`${base}/quizzes`);
+}
+export function fetchQuiz(quiz_id) {
+  return axios.get(`${base}/quizzes`, { quiz_id });
+}
+
 //documents
 
 export function fetchDocuments() {
