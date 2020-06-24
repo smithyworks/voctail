@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Grid,
   Typography as T,
@@ -31,7 +31,6 @@ import { api } from "../utils";
 //example tile images
 import exampleImage from "../images/exampleimage.png";
 import munich from "../images/munich.jpg";
-import { fetchDocuments } from "../utils/api";
 
 const useStyles = makeStyles({
   container: { height: 200, width: "100%" },
@@ -88,8 +87,13 @@ function ViewDocument() {
 }
 
 function AddNewDocument() {
+  const titleInput = useRef();
+  const descriptionInput = useRef();
+  const authorInput = useRef();
+  const contentInput = useRef();
+  const imageInput = useRef();
   const [open, setOpen] = React.useState(false);
-  const [documentPrivate, setDocumentPrivate] = React.useState(false);
+  const [publicDocument, setPublicDocument] = React.useState(true);
   const classes = useStyles();
   const handleAddOpen = () => {
     setOpen(true);
@@ -98,8 +102,20 @@ function AddNewDocument() {
     setOpen(false);
   };
   const handleStatusChange = () => {
-    if (documentPrivate) setDocumentPrivate(false);
-    else setDocumentPrivate(true);
+    if (publicDocument) setPublicDocument(false);
+    else setPublicDocument(true);
+  };
+
+  const addThisDocument = () => {
+    api
+      .addDocument(
+        titleInput.current,
+        descriptionInput.current,
+        publicDocument,
+        contentInput.current,
+        authorInput.current
+      )
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -112,11 +128,35 @@ function AddNewDocument() {
         <DialogTitle id="add-new-document">Add a document</DialogTitle>
         <DialogContent>
           <DialogContentText>To add a new text document please fill in the additional data.</DialogContentText>
-          <TextField autoFocus margin="dense" id="title" label="Title" type="title" fullWidth />
-          <TextField autoFocus margin="dense" id="author" label="Author" type="author" fullWidth />
-          <TextField autoFocus margin="dense" id="description" label="Description" type="description" fullWidth />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="title"
+            label="Title"
+            type="title"
+            onChange={(e) => (titleInput.current = e.target.value)}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="author"
+            label="Author"
+            type="author"
+            onChange={(e) => (authorInput.current = e.target.value)}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="description"
+            label="Description"
+            type="description"
+            onChange={(e) => (descriptionInput.current = e.target.value)}
+            fullWidth
+          />
           <DialogContentText>Please upload your text document.</DialogContentText>
-          <input accept="text/*" className={classes.input} id="upload-text" multiple type="file" />
+          {/*<input accept="text/*" className={classes.input} id="upload-text" multiple type="file" />
           <label htmlFor="upload-text">
             <Button variant="contained" color="primary" component="span" startIcon={<DescriptionIcon />}>
               Upload
@@ -131,13 +171,14 @@ function AddNewDocument() {
               Upload
             </Button>
           </label>
+          */}
           <DialogContentText>
             Your document is public and available for all users. If you want to keep your document private please
-            activate the document status.
+            deactivate the document status.
           </DialogContentText>
           <FormControlLabel
-            control={<Switch checked={documentPrivate} onChange={handleStatusChange} />}
-            label="Private Document"
+            control={<Switch checked={publicDocument} onChange={handleStatusChange} />}
+            label="Public Document"
           />
           <FormControlLabel
             control={
@@ -146,7 +187,7 @@ function AddNewDocument() {
                 checkedIcon={<LocalBarIcon />}
                 name="checkedH"
                 onChange={handleStatusChange}
-                checked={documentPrivate}
+                checked={publicDocument}
               />
             }
             label="Private Document"
@@ -156,7 +197,13 @@ function AddNewDocument() {
           <Button onClick={handleAddClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleAddClose} color="primary">
+          <Button
+            onClick={() => {
+              handleAddClose();
+              addThisDocument();
+            }}
+            color="primary"
+          >
             Add as a new document
           </Button>
         </DialogActions>
@@ -205,7 +252,8 @@ function Documents() {
   const [documentDetails, setDocumentDetails] = useState(null);
   const [documentImage, setDocumentImage] = useState(null);
   const [documentAuthor, setDocumentAuthor] = useState(null);
-
+  const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); //document data fetched from the database
+  console.log("documentDataFromDatabase", documentDataFromDatabase);
   //example data
   const documentData = [
     {
@@ -264,10 +312,6 @@ function Documents() {
     },
   ];
 
-  const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]);
-  console.log("documentDataFromDatabase", documentDataFromDatabase);
-
-  //todo integrate flexible link to individual documents instead of const document markup
   useEffect(() => {
     api
       .user()
@@ -278,69 +322,69 @@ function Documents() {
   }, []);
 
   useEffect(() => {
-    api
-      .fetchDocuments()
-      .then((res) => {
-        if (res) setDocumentDataFromDatabase(res.data);
-        console.log("setDocumentDataFromDatabase wurde ausgeführt");
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const [dummyDocsRyanClara, setDummyDocsRyanClara] = useState([]);
-  console.log("dummyDocsRyanClara", dummyDocsRyanClara);
-
-  useEffect(() => {
-    console.log("Hi ich tue etwas");
+    console.log("onMount");
     api
       .fetchDocuments()
       .then((res) => {
         if (res) {
-          setDummyDocsRyanClara(res.data);
-          console.log("Hi ich bin in dummydocs");
-          console.log(res.data);
+          setDocumentDataFromDatabase([res.data]);
+          console.log("in if schleife");
         }
+        console.log("ausgeführt res.data", res.data);
+        console.log("ausgeführt [res.data]", [res.data]);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  // const clarastitle = "HALLO"; //= dummyTitle.filter((d)=>d.title === "A Bohemian Scandal") ;
-  // .filter(arg => arg.title ===('A Bohemian Scandal'))
-  // const myExample = dummyDocsRyanClara.filter((e) => e.isPublic === true);
-  //    .map((dummyDocsRyanClara)=> console.log(toString(dummyDocsRyanClara)));
-
-  // console.log(dummyDocsRyanClara);
-  // const first = dummyDocsRyanClara.filter((e) => e.isPublic === true)[0];
-  // const second = dummyDocsRyanClara.filter((e) => e.isPublic !== true);
-  // console.log("First" + first);
-  // console.log("Second" + second);
-
   return (
     <AppPage location="documents" id="documents-page">
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">Welcome to your Document Dashboard, {user ? user.name : "..."}!</T>
+        <T variant="h4">Welcome to your Document Dashboard, {user ? user.name : "..."} !</T>
       </Grid>
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">
-          Welcome to your Document Dashboard, this is the first document{" "}
-          {documentDataFromDatabase ? documentDataFromDatabase.title : "no dummy data"}!
-        </T>
-      </Grid>
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">OUTPUT: {dummyDocsRyanClara.title}</T>
-      </Grid>
+
+      <AddNewDocument />
+      <ManageDocuments />
+
+      {documentDataFromDatabase.map((item) => {
+        return <Grid> {JSON.stringify(item)}</Grid>;
+      })}
+
+      {/*documentDataFromDatabase.map((item) => {
+        item.map((doc) => {
+          return <Grid> {JSON.stringify(doc.description)}</Grid>
+        })
+
+      })*/}
 
       <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
         <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
-          <ListSubheader component="div">Documents</ListSubheader>
-
-          <AddNewDocument />
-          <ManageDocuments />
+          {/*<ListSubheader component="div">Documents</ListSubheader> */}
         </GridListTile>
+
         {documentData.map((tile) => (
           <GridListTile key={tile.img} cols={1}>
             <img src={tile.img} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={<span>Description: {tile.description}</span>}
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(tile.img);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+
+        {documentDataFromDatabase.map((tile) => (
+          <GridListTile cols={1}>
             <GridListTileBar
               title={tile.title}
               subtitle={<span>Description: {tile.description}</span>}

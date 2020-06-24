@@ -204,4 +204,4 @@ async function usersHandler(req, res) {
   }
 }
 
-module.exports = { dummyDocument, usersHandler, dummyDataHandler };
+module.exports = { dummyDocument, usersHandler, dummyDataHandler, deleteDocument, addDocument };
