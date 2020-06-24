@@ -162,6 +162,38 @@ async function dummyDataHandler(req, res) {
   }
 }
 
+async function deleteDocument(req, res) {
+  try {
+    const { document_id } = req.body;
+    log("delete document", document_id);
+    await query("DELETE FROM documents WHERE document_id = $1", [document_id]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function addDocument(req, res) {
+  try {
+    const { title, description, isPublic, content, author } = req.body;
+    if (title.length < 1 || author.length < 1) {
+      log(`"Invalid document data ${title} ${author}.`);
+      res.status(400).send("Invalid document upload.");
+    }
+    const {
+      rows: [documentData],
+    } = await query(
+      "INSERT INTO documents (title, description, isPublic, content, author) VALUES($1, $2, $3, $4, $5)",
+      [title, description, isPublic, content, author]
+    );
+    res.status(201).send(`Successfully uploaded document ${title}.`);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 async function usersHandler(req, res) {
   try {
     const { rows } = await query("SELECT * FROM users ORDER BY user_id ASC");

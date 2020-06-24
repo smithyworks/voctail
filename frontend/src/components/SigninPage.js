@@ -119,7 +119,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
             try {
               if (err.response.status === 412) setErrorMessage(err.response.data);
             } catch {
-              setErrorMessage("Sorry, omething went wrong and we couldn't log you in!");
+              setErrorMessage("Sorry, something went wrong and we couldn't log you in!");
             }
           });
       });
