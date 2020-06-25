@@ -2,6 +2,7 @@
 // $ node genDocuments.js > ../init/5.documents.sql
 
 const fs = require("fs");
+const escape = require("pg-escape");
 
 // We define the files to go through in this variable.
 const fileNames = ["document001.txt", "document002.txt"];
@@ -60,7 +61,6 @@ try {
               );
           }
         }
-        blocks.push({ type: currentType, content: currentContent });
 
         // Reset block
         currentType = null;
@@ -110,13 +110,17 @@ try {
     });
 
     // Generate "random" variation in data for "premium" attribute
-    const premium = Math.random() > 0.5 ? true : false;
+    const premium = Math.random() > 0.5 ? "t" : "f";
+
+    // Escape the escapes
+    const blocksJson = JSON.stringify(blocks).replace(/\\/g, "\\\\");
+
+    // Description can be null
+    description = description ? description : "\\N";
 
     // document_id, publisher_id, title, author, description, public, premium, blocks
     console.log(
-      `${document_id++}\t\\N\t${title}\t${author}\t${
-        description ? description : "\\N"
-      }\tt\t${premium ? "true" : "false"}\t${JSON.stringify(blocks)}`
+      `${document_id++}\t\\N\t${title}\t${author}\t${description}\tt\t${premium}\t${blocksJson}`
     );
   });
   console.log("\\.");
