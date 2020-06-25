@@ -144,8 +144,7 @@ async function logoutHandler(req, res) {
     const { user_id, masquerading, admin_id } = req.authData.user;
     const id = masquerading ? admin_id : user_id;
     await query("UPDATE users SET refresh_token = NULL, last_seen = NOW() WHERE user_id = $1", [id]);
-  } catch (err) {
-    log("Errpr logging out user", err);
+  } catch (err) {log("Error logging out user", err);
   }
   res.status(200).send();
 }

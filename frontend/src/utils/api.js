@@ -50,3 +50,18 @@ export function fetchQuizzes() {
 export function fetchQuiz(quiz_id) {
   return axios.get(`${base}/quizzes`, { quiz_id });
 }
+
+//documents
+
+export function fetchDocuments() {
+  return axios.get(`${base}/handle-documents`);
+}
+
+// add and delete documents (WIP)
+export function addDocument(title, description, isPublic, content, author) {
+  return axios.post(`${base}/add-document`, { title, description, isPublic, content, author });
+}
+//WIP
+export function deleteDocument(document_id) {
+  return axios.post(`${base}/delete-document`, { document_id });
+}
