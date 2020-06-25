@@ -53,11 +53,11 @@ CREATE TABLE users_words (
 
 CREATE TABLE documents (
   document_id     serial        PRIMARY KEY,
-  publisher_id    integer, 
-  title           text, 
-  author          text, 
-  description     text, 
-  public          boolean, 
-  premium         boolean, 
+  publisher_id    integer       REFERENCES users,
+  title           text          NOT NULL,
+  author          text          NOT NULL,
+  description     text,
+  public          boolean       NOT NULL DEFAULT false,
+  premium         boolean       NOT NULL DEFAULT false,
   blocks          jsonb
 );

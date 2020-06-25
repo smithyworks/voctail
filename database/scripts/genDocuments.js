@@ -4,7 +4,7 @@
 const fs = require("fs");
 
 // We define the files to go through in this variable.
-const fileNames = ["document001.txt"];
+const fileNames = ["document001.txt", "document002.txt"];
 
 try {
   console.log(
@@ -114,9 +114,9 @@ try {
 
     // document_id, publisher_id, title, author, description, public, premium, blocks
     console.log(
-      `${document_id++}\t\\N\t${title}\t${author}\t${description}\tt\t${
-        premium ? "true" : "false"
-      }\t${JSON.stringify(blocks)}`
+      `${document_id++}\t\\N\t${title}\t${author}\t${
+        description ? description : "\\N"
+      }\tt\t${premium ? "true" : "false"}\t${JSON.stringify(blocks)}`
     );
   });
   console.log("\\.");
