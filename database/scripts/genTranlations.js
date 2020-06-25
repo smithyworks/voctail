@@ -1,5 +1,4 @@
 const lineReader = require("line-reader");
-const escape = require("pg-escape");
 
 async function main() {
   let lineCount = 0;
