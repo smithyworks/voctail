@@ -17,9 +17,12 @@ import {
   DialogContentText,
   TextField,
   Checkbox,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import LocalBarIconOutlined from "@material-ui/icons/LocalBarOutlined";
 import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
@@ -31,6 +34,8 @@ import { api } from "../utils";
 //example tile images
 import exampleImage from "../images/exampleimage.png";
 import munich from "../images/munich.jpg";
+import UserMenuButton from "./common/AppPage/UserMenuButton";
+import { deleteDocument } from "../utils/api";
 
 const useStyles = makeStyles({
   container: { height: 200, width: "100%" },
@@ -72,6 +77,9 @@ function DocumentOverviewPopUp({
       <DialogActions>
         <Button onClick={onClose} color="primary">
           Cancel
+        </Button>
+        <Button onClick={onClose} color="primary">
+          Delete document
         </Button>
         <Button onClick={onView} color="primary">
           View document
@@ -213,32 +221,23 @@ function AddNewDocument() {
 }
 
 function ManageDocuments() {
-  const [open, setOpen] = React.useState(false);
-  //const [documentPrivate, setDocumentPrivate] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
-  const handleManageOpen = () => {
-    setOpen(true);
+  const handleManageClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
   const handleManageClose = () => {
-    setOpen(false);
+    setAnchorEl(null);
   };
   return (
     <div>
-      <Button varian="contained" color="primary" startIcon={<LocalBarIcon />} onClick={handleManageOpen}>
-        Manage Documents
-      </Button>
+      <IconButton aria-label="more" color="primary" onClick={handleManageClick}>
+        <MoreVertIcon />
+      </IconButton>
 
-      <Dialog onClose={handleManageClose} aria-labelledby="manage-documents" open={open}>
-        <DialogTitle id="manage-documents" onClose={handleManageClose}>
-          Do you want to leave your dashboard to manage your documents?
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleManageClose} color="primary">
-            Cancel
-          </Button>
-          <Button color="primary">Manage documents</Button>
-        </DialogActions>
-      </Dialog>
+      <Menu id="manage-document" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleManageClose}>
+        <MenuItem onClick={deleteDocument}> Delete document</MenuItem>
+      </Menu>
     </div>
   );
 }
@@ -253,64 +252,6 @@ function Documents() {
   const [documentImage, setDocumentImage] = useState(null);
   const [documentAuthor, setDocumentAuthor] = useState(null);
   const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); //document data fetched from the database
-  console.log("documentDataFromDatabase", documentDataFromDatabase);
-  //example data
-  const documentData = [
-    {
-      img: exampleImage,
-      title: "ExampleImage",
-      description: "this is an example for another preview",
-      author: "Clara",
-    },
-    {
-      img: munich,
-      title: "Munich",
-      description: "Explanation text about the capital of bavaria",
-      author: "wikipedia",
-    },
-    {
-      img: munich,
-      title: "Munich1",
-      description: "Explanation text about the capital of bavaria",
-      author: "wikipedia",
-    },
-    {
-      img: munich,
-      title: "Munich2",
-      description: "Explanation text about the capital of bavaria",
-      author: "wikipedia",
-    },
-    {
-      img: munich,
-      title: "Munich3",
-      description: "Explanation text about the capital of bavaria",
-      author: "wikipedia",
-    },
-    {
-      img: munich,
-      title: "Munich4",
-      description: "Explanation text about the capital of bavaria",
-      author: "wikipedia",
-    },
-    {
-      img: munich,
-      title: "Munich5",
-      description: "Explanation text about the capital of bavaria",
-      author: "wikipedia",
-    },
-    {
-      img: munich,
-      title: "Munich6",
-      description: "Explanation text about the capital of bavaria",
-      author: "wikipedia",
-    },
-    {
-      img: munich,
-      title: "Munich7",
-      description: "Explanation text about the capital of bavaria",
-      author: "wikipedia",
-    },
-  ];
 
   useEffect(() => {
     api
@@ -322,16 +263,12 @@ function Documents() {
   }, []);
 
   useEffect(() => {
-    console.log("onMount");
     api
       .fetchDocuments()
       .then((res) => {
         if (res) {
-          setDocumentDataFromDatabase([res.data]);
-          console.log("in if schleife");
+          setDocumentDataFromDatabase(res.data.rows);
         }
-        console.log("ausgeführt res.data", res.data);
-        console.log("ausgeführt [res.data]", [res.data]);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -343,48 +280,15 @@ function Documents() {
       </Grid>
 
       <AddNewDocument />
-      <ManageDocuments />
-
-      {documentDataFromDatabase.map((item) => {
-        return <Grid> {JSON.stringify(item)}</Grid>;
-      })}
-
-      {/*documentDataFromDatabase.map((item) => {
-        item.map((doc) => {
-          return <Grid> {JSON.stringify(doc.description)}</Grid>
-        })
-
-      })*/}
 
       <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
         <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
           {/*<ListSubheader component="div">Documents</ListSubheader> */}
         </GridListTile>
 
-        {documentData.map((tile) => (
-          <GridListTile key={tile.img} cols={1}>
-            <img src={tile.img} alt={tile.title} />
-            <GridListTileBar
-              title={tile.title}
-              subtitle={<span>Description: {tile.description}</span>}
-              onClick={() => {
-                setPopUpOpen(true);
-                setDocumentTitle(tile.title);
-                setDocumentAuthor(tile.author);
-                setDocumentDetails(tile.description);
-                setDocumentImage(tile.img);
-              }}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                  <LocalBarIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-
         {documentDataFromDatabase.map((tile) => (
-          <GridListTile cols={1}>
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={munich} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
               subtitle={<span>Description: {tile.description}</span>}
@@ -393,7 +297,7 @@ function Documents() {
                 setDocumentTitle(tile.title);
                 setDocumentAuthor(tile.author);
                 setDocumentDetails(tile.description);
-                setDocumentImage(tile.img);
+                setDocumentImage(munich);
               }}
               actionIcon={
                 <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
