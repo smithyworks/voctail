@@ -49,4 +49,15 @@ CREATE TABLE users_words (
   known           boolean       NOT NULL DEFAULT true,
   certainty       integer       NOT NULL DEFAULT 1,
   last_seen       timestamptz
-)
+);
+
+CREATE TABLE documents (
+  document_id     serial        PRIMARY KEY,
+  publisher_id    integer, 
+  title           text, 
+  author          text, 
+  description     text, 
+  public          boolean, 
+  premium         boolean, 
+  blocks          jsonb
+);

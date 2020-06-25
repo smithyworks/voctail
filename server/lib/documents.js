@@ -2,7 +2,7 @@ const { log } = require("./log.js");
 const { query } = require("./db.js");
 
 const data = {
-  unknownItems: [
+  unknownWords: [
     "predominates",
     "eclipses",
     "akin",

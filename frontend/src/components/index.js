@@ -8,7 +8,7 @@ import Error404Page from "./Error404Page.js";
 import IntroPage from "./IntroPage.js";
 import AdminPage from "./AdminPage";
 import DocumentPage from "./DocumentPage.js";
-import TextDocumentPage from "./TextDocumentPage.js";
+import TextDocumentPage from "./TextDocumentPage";
 
 export {
   DashboardPage,
