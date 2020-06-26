@@ -63,6 +63,7 @@ function DocumentOverviewPopUp({
   documentDetails,
   documentAuthor,
   documentImage,
+  documentContent,
 }) {
   return (
     <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
@@ -73,6 +74,7 @@ function DocumentOverviewPopUp({
       <DialogContent dividers>
         <T gutterBottom>Description: {documentDetails}</T>
         <T gutterBottom>Author: {documentAuthor}</T>
+        <T gutterBottom>Content: {documentContent}</T>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
@@ -249,6 +251,7 @@ function Documents() {
   const [openPopUp, setPopUpOpen] = useState(false);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
+  const [content, setContent] = useState(null);
   const [documentImage, setDocumentImage] = useState(null);
   const [documentAuthor, setDocumentAuthor] = useState(null);
   const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); //document data fetched from the database
@@ -298,6 +301,7 @@ function Documents() {
                 setDocumentAuthor(tile.author);
                 setDocumentDetails(tile.description);
                 setDocumentImage(munich);
+                setContent(tile.content);
               }}
               actionIcon={
                 <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
@@ -319,6 +323,7 @@ function Documents() {
         documentAuthor={documentAuthor}
         documentDetails={documentDetails}
         documentImage={documentImage}
+        documentContent={content}
       />
     </AppPage>
   );
