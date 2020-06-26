@@ -35,8 +35,9 @@ function clean(word) {
 }
 
 async function main() {
-  const fileNames = await getFileNames();
-
+  const { rows: documentRecords } = await pool.query(
+    "SELECT * FROM documents;"
+  );
   const wordSet = new Set();
 
   // Make sure it's offset to the right value
@@ -45,43 +46,64 @@ async function main() {
   } = await pool.query("SELECT nextval('words_word_id_seq');");
   let word_id = parseInt(nextval);
 
-  console.log("COPY words (word_id, word, ignore, language) FROM stdin;");
-  for (let fi = 0; fi < fileNames.length; fi++) {
-    const name = fileNames[fi];
+  const newWords = [];
+  const documentWords = [];
 
-    // read contents of the file
-    const data = fs.readFileSync("./data/documents/" + name, "UTF-8");
+  for (let dri = 0; dri < documentRecords.length; dri++) {
+    const document = documentRecords[dri];
 
-    // split the contents by new line
-    const lines = data.split(/\r?\n/);
+    const content = document.blocks.map((b) => b.content).join(" ");
+    const words = content
+      .split(/\s/)
+      .map((token) => clean(token))
+      .filter((word) => word !== "");
 
-    for (let li = 0; li < lines.length; li++) {
-      const l = lines[li];
+    const frequencies = {};
 
-      const tokens = l.split(/\s/);
-      for (let ti = 0; ti < tokens.length; ti++) {
-        const t = tokens[ti];
+    for (let wi = 0; wi < words.length; wi++) {
+      const word = words[wi];
 
-        const word = clean(t);
+      if (word === "") continue;
 
-        if (word === "" || !word.match(/[a-z]/)) continue;
+      const {
+        rows,
+      } = await pool.query("SELECT word_id FROM words WHERE word = $1", [word]);
+      let current_word_id = rows[0]?.word_id;
 
-        const {
-          rows: [{ count }],
-        } = await pool.query("SELECT COUNT(*) FROM words WHERE word = $1", [
-          word,
-        ]);
-
-        if (count === "0" && !wordSet.has(word)) {
-          wordSet.add(word);
-          console.log(`${word_id++}\t${word}\tf\tenglish`);
+      // If the word doesn't exist, we need to add it to the database.
+      if (!current_word_id) {
+        let wordRecord = newWords.find((w) => w.word === word);
+        if (!wordRecord) {
+          wordRecord = { word_id: word_id++, word };
+          newWords.push(wordRecord);
         }
+
+        current_word_id = wordRecord.word_id;
       }
+
+      if (!frequencies[current_word_id]) frequencies[current_word_id] = 1;
+      else frequencies[current_word_id]++;
     }
+
+    documentWords[document.document_id] = frequencies;
   }
+
+  console.log("COPY words (word_id, word, ignore, language) FROM stdin;");
+  newWords.forEach((nw) => {
+    console.log(`${nw.word_id}\t${nw.word}\tf\tenglish`);
+  });
   console.log("\\.");
   console.log(`ALTER SEQUENCE words_word_id_seq RESTART WITH ${word_id};`);
-  console.log("-- Added " + wordSet.size + " words.");
+
+  console.log(
+    "COPY documents_words (document_id, word_id, frequency) FROM stdin;"
+  );
+  Object.entries(documentWords).forEach(([document_id, frequencies]) => {
+    Object.entries(frequencies).forEach(([word_id, frequency]) => {
+      console.log(`${document_id}\t${word_id}\t${frequency}`);
+    });
+  });
+  console.log("\\.");
 }
 
 main();
