@@ -130,8 +130,10 @@ const data = {
   /* eslint-enable */
 };
 
-async function dummyDocument(req, res) {
+async function documentHandler(req, res) {
   try {
+    const { document_id } = req.body;
+
     const tokenSet = new Set();
     data.blocks.forEach(({ content }) => {
       content.split(" ").forEach((token) => tokenSet.add(token.replace(/[\.,;:'"]/g, "").toLowerCase()));
@@ -204,4 +206,4 @@ async function usersHandler(req, res) {
   }
 }
 
-module.exports = { dummyDocument, usersHandler, dummyDataHandler, deleteDocument, addDocument };
+module.exports = { documentHandler, usersHandler, dummyDataHandler, deleteDocument, addDocument };

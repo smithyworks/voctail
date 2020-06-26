@@ -18,8 +18,8 @@ export function user() {
   return axios.get(`${base}/user`);
 }
 
-export function document() {
-  return axios.get(`${base}/document`);
+export function document(document_id) {
+  return axios.post(`${base}/document`, { document_id });
 }
 
 // Admin endpoints

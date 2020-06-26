@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { Grid, Typography as T } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,16 +11,17 @@ import { api } from "../../utils";
 
 const useStyles = makeStyles({
   header: { padding: "15px 10px 10px 10px", borderBottom: "1px solid grey" },
-  body: { padding: "20px", textAlign: "center", "& *": { fontFamily: "noto-serif, sans" } },
+  body: { padding: "20px", textAlign: "center", fontFamily: "noto-serif, serif" },
   narrowContainer: { display: "inline-block", width: "100%", maxWidth: "800px" },
   title: { fontSize: "35px", marginBottom: "10px", textAlign: "center", fontWeight: "bold" },
   subtitle: { fontSize: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold" },
   paragraph: { fontSize: "16px", marginBottom: "10px", textAlign: "left" },
+  block: { fontFamily: "noto-serif, serif" },
 });
 
 function clean(word) {
   try {
-    return word.toLowerCase().replace(/([.,;:-]|'.*)/g, "");
+    return word.toLowerCase().replace(/([.,;:"\(\)\?\!><’‘`]|'s$|^'|'$|)/g, "");
   } catch {
     return "";
   }
@@ -27,6 +29,8 @@ function clean(word) {
 
 function TextDocumentPage() {
   const classes = useStyles();
+
+  const { document_id } = useParams();
 
   const [document, setDocument] = useState();
   const [unknownWords, setUnknownWords] = useState([]);
@@ -53,11 +57,11 @@ function TextDocumentPage() {
   }
 
   const popperProps = useRef({});
-  const [itemHover, setItemHover] = useState(false);
+  const [wordHover, setWordHover] = useState(false);
   const [popperHover, setPopperHover] = useState(false);
   function enterItem(anchor, item) {
     popperProps.current = { anchor, item };
-    setItemHover(true);
+    setWordHover(true);
   }
 
   useEffect(() => {
@@ -67,7 +71,7 @@ function TextDocumentPage() {
       const items = b.content.split(" ").map((t, ti) => {
         if (unknownWords.includes(clean(t)))
           return (
-            <Word key={ti} onMouseEnter={enterItem} onMouseLeave={() => setItemHover(false)} onClick={markAsUnknown}>
+            <Word key={ti} onMouseEnter={enterItem} onMouseLeave={() => setWordHover(false)} onClick={markAsUnknown}>
               {t}
             </Word>
           );
@@ -77,7 +81,7 @@ function TextDocumentPage() {
               known
               key={ti}
               onMouseEnter={enterItem}
-              onMouseLeave={() => setItemHover(false)}
+              onMouseLeave={() => setWordHover(false)}
               onClick={markAsUnknown}
             >
               {t}
@@ -85,7 +89,7 @@ function TextDocumentPage() {
           );
       });
       return (
-        <T className={classes[b.type]} key={bi}>
+        <T className={[classes[b.type], classes.block]} key={bi}>
           {items}
         </T>
       );
@@ -101,10 +105,11 @@ function TextDocumentPage() {
       </Grid>
       <div className={classes.body}>
         <div className={classes.narrowContainer}>{blocks}</div>
+
         <TranslationPopup
           anchor={popperProps?.current?.anchor}
           word={clean(popperProps?.current?.item)}
-          open={itemHover || popperHover}
+          open={wordHover || popperHover}
           onMouseEnter={() => setPopperHover(true)}
           onMouseLeave={() => setPopperHover(false)}
           markAsKnown={markAsKnown}
