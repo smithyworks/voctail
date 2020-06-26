@@ -6,18 +6,48 @@ const useStyles = makeStyles({
   known: { fontFamily: "inherit" },
 });
 
-function Word({ children, known, onMouseEnter, onMouseLeave, onClick }) {
+function clean(word) {
+  try {
+    word = word.replace(/[ \t\r\n]/g, "");
+    return word
+      .toLowerCase()
+      .replace(/[.,;:"()?!><’‘`]/g, "")
+      .replace(/[^a-z]s$/g, "")
+      .replace(/(^'|'$)/g, "");
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+}
+
+function referenceVocabulary(token, vocabulary) {
+  return new Promise((resolve, reject) => {
+    try {
+      const entry = vocabulary.find((v) => v.word === clean(token));
+      resolve(entry);
+    } catch {
+      resolve(null);
+    }
+  });
+}
+
+function Word({ token, onMouseEnter, onMouseLeave, onClick, vocabulary }) {
   const classes = useStyles();
+
+  const [entry, setEntry] = useState();
+  const known = entry?.known ?? true;
+  useEffect(() => {
+    referenceVocabulary(token, vocabulary).then((entry) => setEntry(entry));
+  }, [token, vocabulary]);
 
   const ref = useRef();
   const hoveredRef = useRef(false);
-
   useEffect(() => {
     if (!known)
       setTimeout(() => {
         try {
           if (ref?.current?.matches(":hover") && !hoveredRef.current) {
-            if (typeof onMouseEnter === "function") onMouseEnter(ref.current, children);
+            if (typeof onMouseEnter === "function") onMouseEnter(ref.current, entry?.word_id);
             hoveredRef.current = true;
           }
         } catch (err) {
@@ -32,7 +62,7 @@ function Word({ children, known, onMouseEnter, onMouseLeave, onClick }) {
     setT(
       setTimeout(() => {
         hoveredRef.current = true;
-        if (typeof onMouseEnter === "function") onMouseEnter(ref.current, children);
+        if (typeof onMouseEnter === "function") onMouseEnter(ref.current, entry?.word_id);
       }, 300)
     );
   }
@@ -50,7 +80,7 @@ function Word({ children, known, onMouseEnter, onMouseLeave, onClick }) {
   function click() {
     if (!known) return;
     if (typeof onClick === "function") {
-      onClick(children);
+      onClick(entry?.word_id);
     }
   }
 
@@ -63,7 +93,7 @@ function Word({ children, known, onMouseEnter, onMouseLeave, onClick }) {
         onClick={click}
         className={known ? classes.known : classes.unknown}
       >
-        {children}
+        {token}
       </span>{" "}
     </>
   );

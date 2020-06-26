@@ -72,7 +72,7 @@ async function tokenHandler(req, res) {
       const accessToken = createAccessToken({ user });
       res.status(201).json({ accessToken });
     } else {
-      log("Bad token", payload, refreshToken);
+      log("Bad token", refreshToken);
       res.status(401).send("Unauthorized.");
     }
   } catch (err) {

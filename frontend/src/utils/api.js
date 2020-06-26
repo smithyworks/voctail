@@ -65,3 +65,8 @@ export function addDocument(title, description, isPublic, content, author) {
 export function deleteDocument(document_id) {
   return axios.post(`${base}/delete-document`, { document_id });
 }
+
+// vocabulary
+export function updateVocabulary(entries) {
+  return axios.post(`${base}/update-vocabulary`, { entries });
+}

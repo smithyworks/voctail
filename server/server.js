@@ -4,7 +4,7 @@ const path = require("path");
 
 const { log } = require("./lib/log.js");
 
-const { db, auth, users, admin, quizzes, documents } = require("./lib");
+const { db, auth, users, admin, quizzes, documents, vocabulary } = require("./lib");
 
 db.checkConnection((connected) => {
   if (connected) log("Connected to the Database!");
@@ -34,6 +34,8 @@ server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
 server.get("/api/handle-documents", auth.tokenMiddleWare, documents.dummyDataHandler);
 server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
+
+server.post("/api/update-vocabulary", auth.tokenMiddleWare, vocabulary.updateUserVocabHandler);
 
 server.get("/api/admin/users", auth.tokenMiddleWare, admin.usersHandler);
 server.post("/api/admin/delete-user", auth.tokenMiddleWare, admin.deleteUser);
