@@ -29,7 +29,7 @@ server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 
 server.get("/api/user", auth.tokenMiddleWare, users.userHandler);
 
-server.get("/api/document", auth.tokenMiddleWare, documents.dummyDocument);
+server.post("/api/document", auth.tokenMiddleWare, documents.documentHandler);
 server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
 server.get("/api/handle-documents", auth.tokenMiddleWare, documents.dummyDataHandler);
 server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);

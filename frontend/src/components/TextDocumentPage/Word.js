@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-  unknownItem: { backgroundColor: "#eee", "&:hover": {} },
-  knownItem: { "&:hover": {} },
+  unknown: { fontFamily: "inherit", backgroundColor: "blue", "&:hover": {} },
+  known: { fontFamily: "inherit" },
 });
 
 function Word({ children, known, onMouseEnter, onMouseLeave, onClick }) {
@@ -61,7 +61,7 @@ function Word({ children, known, onMouseEnter, onMouseLeave, onClick }) {
         onMouseEnter={enter}
         onMouseLeave={leave}
         onClick={click}
-        className={known ? classes.knownItem : classes.unknownItem}
+        className={known ? classes.known : classes.unknown}
       >
         {children}
       </span>{" "}
