@@ -12,6 +12,9 @@ setRequestInterceptor();
 setResponseInterceptor();
 
 const theme = createMuiTheme({
+  typography: {
+    fontFamily: "noto-sans, sans",
+  },
   props: {
     MuiButton: {
       disableElevation: true,

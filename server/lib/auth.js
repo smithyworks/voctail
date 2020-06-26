@@ -145,7 +145,7 @@ async function logoutHandler(req, res) {
     const id = masquerading ? admin_id : user_id;
     await query("UPDATE users SET refresh_token = NULL, last_seen = NOW() WHERE user_id = $1", [id]);
   } catch (err) {
-    log("Errpr logging out user", err);
+    log("Error logging out user", err);
   }
   res.status(200).send();
 }

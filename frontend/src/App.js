@@ -10,9 +10,8 @@ import {
   AdminPage,
   DocumentPage,
   TextDocumentPage,
-  QuizzesPage,
-  QuizzesSavedPage,
-  QuizzesDayPage,
+  QuizzesDashboardPage,
+  QuizPage,
   ClassroomsPage,
   ClassroomsCreatePage,
   ClassroomsSavedPage,
@@ -26,6 +25,7 @@ function ProtectedRoute({ ...props }) {
 
 function AdminRoute({ ...props }) {
   const user = useContext(UserContext);
+  if (!user.user_id) return null;
   if (user.admin) return <Route {...props} />;
   else return <Redirect to="/404" />;
 }
@@ -61,15 +61,13 @@ function App() {
           <AdminRoute path="/admin" component={AdminPage} />
 
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
-          <ProtectedRoute path="/quizzes/saved" component={QuizzesSavedPage} />
-          <ProtectedRoute path="/quizzes/day" component={QuizzesDayPage} />
-          <ProtectedRoute path="/quizzes" component={QuizzesPage} />
+          <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
+          <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
           <ProtectedRoute path="/documents" component={DocumentPage} />
+          <ProtectedRoute path="/document/:document_id" component={TextDocumentPage} />
           <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
           <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
-
-          <Route path="/document-markup" component={TextDocumentPage} />
 
           <Route path="/signup">
             <SigninPage signup />

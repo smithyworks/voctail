@@ -8,7 +8,7 @@ import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "../utils/validation.js";
 import { localStorage, api } from "../utils";
 import { refresh } from "../App.js";
-import AppPage from "./AppPage.js";
+import AppPage from "./common/AppPage";
 import logo from "../images/logo_green.png";
 
 const useStyles = makeStyles({
@@ -119,7 +119,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
             try {
               if (err.response.status === 412) setErrorMessage(err.response.data);
             } catch {
-              setErrorMessage("Sorry, omething went wrong and we couldn't log you in!");
+              setErrorMessage("Sorry, something went wrong and we couldn't log you in!");
             }
           });
       });
