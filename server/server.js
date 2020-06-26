@@ -4,7 +4,7 @@ const path = require("path");
 
 const { log } = require("./lib/log.js");
 
-const { db, auth, users, admin, quizzes, documents } = require("./lib");
+const { db, auth, users, admin, quizzes, documents, classrooms } = require("./lib");
 
 db.checkConnection((connected) => {
   if (connected) log("Connected to the Database!");
@@ -42,6 +42,11 @@ server.post("/api/admin/masquerade", auth.tokenMiddleWare, admin.masqueradeHandl
 server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasqueradeHandler);
 
 server.get("/api/quizzes", auth.tokenMiddleWare, quizzes.quizzesHandler);
+
+server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomHandler);
+server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClassroom);
+server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.addStudentToClassroom);
+server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);
 
 // Handles any requests that don't match the ones above
 server.get("*", (req, res) => {
