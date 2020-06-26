@@ -16,28 +16,24 @@ async function updateUserVocabHandler(req, res) {
       if (record) {
         if (record.known === !!known) {
           const newCertainty = record.certainty ? record.certainty + 1 : 1;
-          await query("UPDATE users_words SET certainty = $1 WHERE word_id = $2 AND user_id = $3", [
+          await query("UPDATE users_words SET certainty = $1, last_seen = NOW() WHERE word_id = $2 AND user_id = $3", [
             newCertainty,
             word_id,
             user_id,
           ]);
         } else {
           const newCertainty = certainty ?? 1;
-          await query("UPDATE users_words SET known = $1, certainty = $2 WHERE word_id = $3 AND user_id = $4", [
-            !!known,
-            newCertainty,
-            word_id,
-            user_id,
-          ]);
+          await query(
+            "UPDATE users_words SET known = $1, certainty = $2, last_seen = NOW() WHERE word_id = $3 AND user_id = $4",
+            [!!known, newCertainty, word_id, user_id]
+          );
         }
       } else {
         const newCertainty = certainty ?? 1;
-        await query("INSERT INTO users_words (user_id, word_id, known, certainty) VALUES ($1, $2, $3, $4)", [
-          user_id,
-          word_id,
-          !!known,
-          newCertainty,
-        ]);
+        await query(
+          "INSERT INTO users_words (user_id, word_id, known, certainty, last_seen) VALUES ($1, $2, $3, $4, NOW())",
+          [user_id, word_id, !!known, newCertainty]
+        );
       }
     }
 
