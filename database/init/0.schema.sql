@@ -73,5 +73,5 @@ CREATE TABLE documents_words (
   document_id     integer       NOT NULL REFERENCES documents
                                 ON DELETE CASCADE,
   word_id         integer       NOT NULL REFERENCES words
-                                ON DELETE CASCADE,
+                                ON DELETE CASCADE
 );
