@@ -39,9 +39,26 @@ async function updateUserVocabHandler(req, res) {
 
     return res.sendStatus(200);
   } catch (err) {
-    log(err);
+    log("updateUserVocabHandler", err);
     return res.status(500).send("Something went wrong.");
   }
 }
 
-module.exports = { updateUserVocabHandler };
+async function addTranslationHandler(req, res) {
+  try {
+    const { word_id, translation } = req.body;
+    const { user_id } = req.authData.user;
+
+    await query(
+      "INSERT INTO translations (word_id, translation, contributer_id, language) VALUES ($1, $2, $3, 'german'3)",
+      [word_id, translation, user_id]
+    );
+
+    res.sendStatus(201);
+  } catch (err) {
+    log("addTranslationHandler", err);
+    res.sendStatus(500);
+  }
+}
+
+module.exports = { updateUserVocabHandler, addTranslationHandler };

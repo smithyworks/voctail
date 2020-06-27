@@ -42,7 +42,9 @@ CREATE TABLE translations (
   contributor_id  integer       REFERENCES users
                                 ON DELETE SET NULL,
   translation     text          NOT NULL,
-  language        text          NOT NULL
+  language        text          NOT NULL,
+
+  UNIQUE (word_id, translation, language)
 );
 
 

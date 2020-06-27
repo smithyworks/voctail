@@ -67,6 +67,11 @@ export function deleteDocument(document_id) {
 }
 
 // vocabulary
+
 export function updateVocabulary(entries) {
   return axios.post(`${base}/update-vocabulary`, { entries });
+}
+
+export function addTranslation(word_id, translation) {
+  return axios.post(`${base}/add-translation`, { word_id, translation });
 }

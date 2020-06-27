@@ -36,6 +36,7 @@ server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
 
 server.post("/api/update-vocabulary", auth.tokenMiddleWare, vocabulary.updateUserVocabHandler);
+server.post("/api/add-translation", auth.tokenMiddleWare, vocabulary.addTranslationHandler);
 
 server.get("/api/admin/users", auth.tokenMiddleWare, admin.usersHandler);
 server.post("/api/admin/delete-user", auth.tokenMiddleWare, admin.deleteUser);

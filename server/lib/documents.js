@@ -4,6 +4,7 @@ const { query } = require("./db.js");
 async function documentHandler(req, res) {
   try {
     const { document_id } = req.body;
+    const { user_id } = req.authData.user;
 
     const {
       rows: [document],
@@ -27,14 +28,15 @@ async function documentHandler(req, res) {
          FROM documents_words \
            LEFT JOIN words ON documents_words.word_id = words.word_id \
            LEFT JOIN users_words ON documents_words.word_id = users_words.word_id \
-         WHERE documents_words.document_id = $1;",
-      [document_id]
+         WHERE documents_words.document_id = $1 AND users_words.user_id = $2;",
+      [document_id, user_id]
     );
     document.vocabulary = vocabulary;
+    console.log(vocabulary.length);
 
     res.status(200).json(document);
   } catch (err) {
-    log(err);
+    log("documentHandler", err);
     res.status(500).send("Something went wrong.");
   }
 }

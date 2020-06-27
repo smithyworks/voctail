@@ -42,38 +42,36 @@ function TranslationPopup({
   word_id,
   onMouseEnter,
   onMouseLeave,
-  markAsKnown,
-  translations,
-  vocabulary,
+  onMarkKnown,
+  translationLookup,
+  wordLookup,
+  onAddTranslationIntent,
 }) {
   const classes = useStyles();
 
-  const word = vocabulary?.find((t) => t.word_id === word_id)?.word;
-
+  const word = wordLookup[word_id]?.word;
   const [translationData, setTranslationData] = useState();
   useEffect(() => {
-    if (!translations || !word_id) return;
-
-    const word = translations.find((t) => t.word_id === word_id).word;
-
-    const components = translations
-      .filter((t) => t.translation_id && t.word_id === word_id)
-      .map((t, i) => (
-        <T variant="body2" gutterBottom component="li" className={classes.listItem} key={i}>
-          {t.translation}
-        </T>
-      ));
-    setTranslationData({ components, word_id, word });
-  }, [word_id, translations]); // eslint-disable-line
+    if (!translationLookup || !word_id) return;
+    const components = translationLookup[word_id]?.map((t, i) => (
+      <T variant="body2" gutterBottom component="li" className={classes.listItem} key={i}>
+        {t.translation}
+      </T>
+    ));
+    setTranslationData({ components, word_id });
+  }, [word_id, translationLookup]); // eslint-disable-line
 
   function leave() {
-    setTimeout(() => {
-      if (typeof onMouseLeave === "function") onMouseLeave();
-    }, 300);
+    if (typeof onMouseLeave === "function") onMouseLeave();
   }
 
   function _markKnown() {
-    if (typeof markAsKnown === "function") markAsKnown(word_id);
+    if (typeof onMarkKnown === "function") onMarkKnown(word_id);
+    if (typeof onMouseLeave === "function") onMouseLeave();
+  }
+
+  function _addTranslationIntent() {
+    if (typeof onAddTranslationIntent === "function") onAddTranslationIntent(word_id);
     if (typeof onMouseLeave === "function") onMouseLeave();
   }
 
@@ -88,7 +86,7 @@ function TranslationPopup({
           <Grid item xs className={classes.body}>
             <ul className={classes.list}>
               {translationData?.word_id === word_id ? translationData?.components : null}
-              <li className={classes.addWordListItem}>
+              <li className={classes.addWordListItem} onClick={_addTranslationIntent}>
                 <AddIcon fontSize="inherit" className={classes.addIcon} /> Add A Translation
               </li>
             </ul>
