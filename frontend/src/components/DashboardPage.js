@@ -20,6 +20,8 @@ import {
   Snackbar,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+
 //icons
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -31,7 +33,7 @@ import AppPage from "./common/AppPage";
 
 import { api } from "../utils";
 
-import { deleteDocument } from "../utils/api";
+import { deleteDocument, document } from "../utils/api";
 
 //example tile images
 import munich from "../images/munich.jpg";
@@ -66,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 function DocumentOverviewPopUp({
   open,
   onClose,
-  onView,
+  documentId,
   documentTitle,
   documentDetails,
   documentAuthor,
@@ -90,7 +92,7 @@ function DocumentOverviewPopUp({
         <Button onClick={onClose} color="primary">
           Delete document
         </Button>
-        <Button onClick={onView} color="primary">
+        <Button component={Link} to={"/document/" + documentId} color="primary">
           View document
         </Button>
       </DialogActions>
@@ -98,20 +100,16 @@ function DocumentOverviewPopUp({
   );
 }
 
-//get link to view the document after you clicked on "view" in the popup
-function ViewDocument() {
-  //todo
-}
-
 function AddNewDocument() {
-  const titleInput = useRef();
-  const descriptionInput = useRef();
-  const authorInput = useRef();
+  const titleInput = useRef("");
+  const descriptionInput = useRef("");
+  const authorInput = useRef("");
   const contentInput = useRef();
-  const imageInput = useRef();
-  const [open, setOpen] = React.useState(false);
-  const [publicDocument, setPublicDocument] = React.useState(true);
+  //const imageInput = useRef(); todo use image
+  const [open, setOpen] = useState(false);
+  const [publicDocument, setPublicDocument] = useState(true);
   const classes = useStyles();
+
   const handleAddOpen = () => {
     setOpen(true);
   };
@@ -136,6 +134,8 @@ function AddNewDocument() {
 
   const handleUpload = () => {
     handleAddClose();
+    UploadAlert();
+
     //todo
     {
       /*  const [successfull, setSuccessfull] =useState(false);
@@ -225,7 +225,7 @@ function AddNewDocument() {
                 inputProps={{ "aria-label": "primary checkbox" }}
               />
             }
-            label="public"
+            label="Public Document"
           />
         </DialogContent>
         <DialogActions>
@@ -246,14 +246,14 @@ function AddNewDocument() {
     </div>
   );
 }
-{
-  /*function Alert(props) {
+
+function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-function Upload() {
 
+function UploadAlert() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(true);
 
   const handleClick = () => {
     setOpen(true);
@@ -263,15 +263,14 @@ function Upload() {
     setOpen(false);
   };
   return {
-    <div className={classes.alert}>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          This is a success message!
-        </Alert>
-      </Snackbar>
-    </div>
-  }
-} */
+    //todo     <div className={classes.alert}>
+    //       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+    //         <Alert onClose={handleClose} severity="error">
+    //           The Upload failed!
+    //         </Alert>
+    //       </Snackbar>
+    //     </div>
+  };
 }
 
 function ManageDocuments() {
@@ -301,6 +300,7 @@ function Dashboard() {
   const classes = useStyles();
   const [user, setUser] = useState();
   const [openPopUp, setPopUpOpen] = useState(false);
+  const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
   const [documentImage, setDocumentImage] = useState(null);
@@ -330,7 +330,8 @@ function Dashboard() {
   return (
     <AppPage location="dashboard" id="dashboard-page">
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">Improve your language skills with text documents, videos and more!</T>
+        <T variant="h4">Welcome {user ? user.name : "..."}!</T>
+        <T variant="h4">Improve your language skills with text documents, videos and more...</T>
       </Grid>
       <AddNewDocument />
 
@@ -347,6 +348,7 @@ function Dashboard() {
               subtitle={<span>Description: {tile.description}</span>}
               onClick={() => {
                 setPopUpOpen(true);
+                setDocumentId(tile.document_id);
                 setDocumentTitle(tile.title);
                 setDocumentAuthor(tile.author);
                 setDocumentDetails(tile.description);
@@ -368,6 +370,7 @@ function Dashboard() {
           setPopUpOpen(false);
         }}
         onView={ViewDocument}
+        documentId={documentId}
         documentTitle={documentTitle}
         documentAuthor={documentAuthor}
         documentDetails={documentDetails}
