@@ -62,7 +62,7 @@ function Classrooms() {
   return (
     <AppPage location="classrooms" id="classrooms-page">
       <T className={classes.text} variant="h4">
-        Welcome on your classrooms dashboard!
+        Welcome on your classrooms dashboard {user ? user.name : ""}!
       </T>
       <Grid className={classes.text} container justify="space-evenly" alignItems="center" direction="row">
         <ClassroomsButton title="My Classrooms" to="/classrooms/saved" />

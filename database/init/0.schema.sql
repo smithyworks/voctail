@@ -78,7 +78,7 @@ CREATE TABLE documents_words (
 
 CREATE TABLE classrooms (
   classroom_id      serial          PRIMARY KEY,
-  classroom_owner   integer         NOT NULL REFERENCES users
+  classroom_owner   integer         NOT NULL REFERENCES users(user_id)
                                     ON DELETE CASCADE,
   title             text            NOT NULL,
   description       text,
