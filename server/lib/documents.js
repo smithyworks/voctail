@@ -27,9 +27,9 @@ async function documentHandler(req, res) {
       "SELECT documents_words.word_id, words.word, documents_words.frequency, users_words.known \
          FROM documents_words \
            LEFT JOIN words ON documents_words.word_id = words.word_id \
-           LEFT JOIN users_words ON documents_words.word_id = users_words.word_id \
-         WHERE documents_words.document_id = $1 AND users_words.user_id = $2;",
-      [document_id, user_id]
+           LEFT JOIN users_words ON documents_words.word_id = users_words.word_id AND users_words.user_id = $1 \
+         WHERE documents_words.document_id = $2;",
+      [user_id, document_id]
     );
     document.vocabulary = vocabulary;
     console.log(vocabulary.length);

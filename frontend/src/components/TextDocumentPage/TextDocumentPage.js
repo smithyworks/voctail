@@ -118,7 +118,7 @@ function TextDocumentPage() {
             </React.Fragment>
           );
         } else {
-          return null;
+          return <span>{t} </span>;
         }
       });
 
@@ -128,6 +128,7 @@ function TextDocumentPage() {
         </T>
       );
     });
+
     setBlocks(newBlocks);
   }, [doc]); // eslint-disable-line
 
