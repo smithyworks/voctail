@@ -8,7 +8,6 @@ import {
   Error404Page,
   IntroPage,
   AdminPage,
-  DocumentPage,
   TextDocumentPage,
   QuizzesDashboardPage,
   QuizPage,
@@ -61,7 +60,6 @@ function App() {
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
           <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
-          <ProtectedRoute path="/documents" component={DocumentPage} />
           <ProtectedRoute path="/document/:document_id" component={TextDocumentPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
 
