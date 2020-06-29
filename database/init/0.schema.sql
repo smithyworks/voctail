@@ -19,7 +19,7 @@ CREATE TABLE quizzes (
 );
 
 
-CREATE TABLE users_quizzes(
+CREATE TABLE users_quizzes (
   user_id         integer    NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
   quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE
 );
@@ -42,7 +42,9 @@ CREATE TABLE translations (
   contributor_id  integer       REFERENCES users
                                 ON DELETE SET NULL,
   translation     text          NOT NULL,
-  language        text          NOT NULL
+  language        text          NOT NULL,
+
+  UNIQUE (word_id, translation, language)
 );
 
 
@@ -53,7 +55,9 @@ CREATE TABLE users_words (
                                 ON DELETE CASCADE,
   known           boolean       NOT NULL DEFAULT true,
   certainty       integer       NOT NULL DEFAULT 1,
-  last_seen       timestamptz
+  last_seen       timestamptz,
+
+  PRIMARY KEY (user_id, word_id)
 );
 
 
@@ -73,7 +77,10 @@ CREATE TABLE documents_words (
   document_id     integer       NOT NULL REFERENCES documents
                                 ON DELETE CASCADE,
   word_id         integer       NOT NULL REFERENCES words
-                                ON DELETE CASCADE
+                                ON DELETE CASCADE,
+  frequency       integer       NOT NULL DEFAULT 1,
+
+  PRIMARY KEY (document_id, word_id)
 );
 
 CREATE TABLE classrooms (

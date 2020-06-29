@@ -7,6 +7,7 @@ const admin = require("./admin.js");
 const quizzes = require("./quizzes.js");
 const documents = require("./documents.js");
 const classrooms = require("./classrooms");
+const vocabulary = require("./vocabulary.js");
 
 module.exports = {
   log,
@@ -18,4 +19,5 @@ module.exports = {
   quizzes,
   documents,
   classrooms,
+  vocabulary,
 };
