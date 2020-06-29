@@ -369,7 +369,6 @@ function Dashboard() {
         onClose={() => {
           setPopUpOpen(false);
         }}
-        onView={ViewDocument}
         documentId={documentId}
         documentTitle={documentTitle}
         documentAuthor={documentAuthor}
