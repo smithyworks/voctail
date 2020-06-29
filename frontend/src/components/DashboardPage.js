@@ -17,6 +17,7 @@ import {
   Checkbox,
   Menu,
   MenuItem,
+  Snackbar,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 //icons
@@ -30,11 +31,14 @@ import AppPage from "./common/AppPage";
 
 import { api } from "../utils";
 
-//example tile images
-import munich from "../images/munich.jpg";
 import { deleteDocument } from "../utils/api";
 
-const useStyles = makeStyles({
+//example tile images
+import munich from "../images/munich.jpg";
+
+import MuiAlert from "@material-ui/lab/Alert";
+
+const useStyles = makeStyles((theme) => ({
   container: { height: 200, width: "100%" },
   grid: { height: 100, width: "100%" },
   userItem: { width: "150px" },
@@ -49,7 +53,14 @@ const useStyles = makeStyles({
   },
   gridList: { width: "100%", height: 800, justifyContent: "space-around" },
   icon: { color: "rgba(255,255,255,0.54)" },
-});
+  //alert for document upload
+  alert: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 
 //popup for the document you click on (get some information about the doc before entering view mode)
 function DocumentOverviewPopUp({
@@ -123,6 +134,31 @@ function AddNewDocument() {
       .catch((err) => console.log(err));
   };
 
+  const handleUpload = () => {
+    handleAddClose();
+    //todo
+    {
+      /*  const [successfull, setSuccessfull] =useState(false);
+
+      const [open, setOpen] = useState(true);
+      const handleClose = () => {
+        setOpen(false);
+      };
+      const [alertText, setAlert] = useState("");
+      const [state, setState] = useState("");
+      const handleSuccess = () =>{
+        if (successfull) {
+          setAlert("The document was added to your dashboard!");
+          setState("success");
+        }
+        else {
+          setAlert("The upload was not successfull. Please try again.");
+          setState("error");
+        }
+      }*/
+    }
+  };
+
   return (
     <div>
       <Button varian="contained" color="primary" startIcon={<AddIcon />} onClick={handleAddOpen}>
@@ -137,7 +173,7 @@ function AddNewDocument() {
             autoFocus
             margin="dense"
             id="title"
-            label="Title"
+            label="Title*"
             type="title"
             onChange={(e) => (titleInput.current = e.target.value)}
             fullWidth
@@ -146,7 +182,7 @@ function AddNewDocument() {
             autoFocus
             margin="dense"
             id="author"
-            label="Author"
+            label="Author*"
             type="author"
             onChange={(e) => (authorInput.current = e.target.value)}
             fullWidth
@@ -198,8 +234,8 @@ function AddNewDocument() {
           </Button>
           <Button
             onClick={() => {
-              handleAddClose();
               addThisDocument();
+              handleUpload();
             }}
             color="primary"
           >
@@ -209,6 +245,33 @@ function AddNewDocument() {
       </Dialog>
     </div>
   );
+}
+{
+  /*function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+function Upload() {
+
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  return {
+    <div className={classes.alert}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          This is a success message!
+        </Alert>
+      </Snackbar>
+    </div>
+  }
+} */
 }
 
 function ManageDocuments() {
@@ -236,7 +299,7 @@ function ManageDocuments() {
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
   const classes = useStyles();
-  //const [user, setUser] = useState();
+  const [user, setUser] = useState();
   const [openPopUp, setPopUpOpen] = useState(false);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
