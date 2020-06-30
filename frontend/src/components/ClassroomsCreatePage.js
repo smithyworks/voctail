@@ -1,18 +1,56 @@
 //This page will be used to test components
 
-import React from "react";
-import { Grid, Typography } from "@material-ui/core";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Grid,
+  Typography,
+  ButtonBase,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppPage from "./common/AppPage";
-import styled, { css } from "styled-components";
 
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import TextField from "@material-ui/core/TextField";
+import munich from "../images/munich.jpg";
+import logo_green from "../images/logo_green.png";
 
-const useStyles = makeStyles({
+const images = [
+  {
+    url: munich,
+    title: "Breakfast",
+    width: "40%",
+  },
+  {
+    url: logo_green,
+    title: "Burgers",
+    width: "30%",
+  },
+  {
+    url: munich,
+    title: "Camera",
+    width: "30%",
+  },
+  {
+    url: munich,
+    title: "LastOne",
+    width: "30%",
+  },
+];
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const useStyles = makeStyles((theme) => ({
   headuptext: {
     paddingTop: "5%",
     paddingBottom: "5%",
@@ -20,181 +58,165 @@ const useStyles = makeStyles({
     textAlign: "center",
     fontStyle: "italic",
   },
-});
 
-function MaterialCardWithContentAndActionButtons(props) {
-  return (
-    <Container {...props}>
-      <CardItem1Style>
-        <HeaderStyle>
-          <LeftImage src={require("../images/logo_green.png")}></LeftImage>
-          <HeaderContent>
-            <TextStyle>Title</TextStyle>
-            <NoteTextStyle>Subhead</NoteTextStyle>
-          </HeaderContent>
-        </HeaderStyle>
-      </CardItem1Style>
-      <CardItemImagePlace src={require("../images/logo_green.png")}></CardItemImagePlace>
-      <Body>
-        <BodyText>BuilderX is a screen design tool which codes React Native for you.</BodyText>
-      </Body>
-      <ActionBody>
-        <ActionButton1>
-          <ButtonOverlay>
-            <ActionText1>ACTION 1</ActionText1>
-          </ButtonOverlay>
-        </ActionButton1>
-        <ActionButton2>
-          <ButtonOverlay>
-            <ActionText2>ACTION 2</ActionText2>
-          </ButtonOverlay>
-        </ActionButton2>
-      </ActionBody>
-    </Container>
-  );
-}
-
-const Container = styled.div`
-  display: flex;
-  border-width: 1px;
-  border-radius: 2px;
-  border-color: #ccc;
-  flex-wrap: nowrap;
-  background-color: #fff;
-  overflow: hidden;
-  flex-direction: column;
-  border-style: solid;
-  box-shadow: -2px 2px 1.5px 0.1px #000;
-`;
-
-const ButtonOverlay = styled.button`
-  display: block;
-  background: none;
-  height: 100%;
-  width: 100%;
-  border: none;
-`;
-const CardItem1Style = styled.div`
-  flex-direction: row;
-  align-items: center;
-  padding: 16px;
-  height: 72px;
-  display: flex;
-`;
-
-const HeaderStyle = styled.div`
-  flex: 1 1 0%;
-  flex-direction: row;
-  align-items: center;
-  display: flex;
-`;
-
-const LeftImage = styled.img`
-  height: 40px;
-  width: 100%;
-  background-color: #ccc;
-  border-radius: 20px;
-`;
-
-const HeaderContent = styled.div`
-  padding-left: 16px;
-  justify-content: center;
-  flex-direction: column;
-  display: flex;
-`;
-
-const TextStyle = styled.span`
-  font-family: Roboto;
-  font-size: 16px;
-  color: #000;
-  line-height: 20px;
-`;
-
-const NoteTextStyle = styled.span`
-  font-family: Roboto;
-  font-size: 14px;
-  color: #000;
-  line-height: 16px;
-  opacity: 0.5;
-`;
-
-const CardItemImagePlace = styled.img`
-  background-color: #ccc;
-  flex: 1 1 0%;
-  min-height: 210px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Body = styled.div`
-  padding: 16px;
-  flex-direction: column;
-  display: flex;
-`;
-
-const BodyText = styled.span`
-  font-family: Arial;
-  line-height: 20px;
-  font-size: 14px;
-  color: #424242;
-`;
-
-const ActionBody = styled.div`
-  padding: 8px;
-  flex-direction: column;
-  display: flex;
-`;
-
-const ActionButton1 = styled.div`
-  padding: 8px;
-  height: 36px;
-  flex-direction: column;
-  display: flex;
-  border: none;
-`;
-
-const ActionText1 = styled.span`
-  font-family: Arial;
-  font-size: 14px;
-  color: #000;
-  opacity: 0.9;
-`;
-
-const ActionButton2 = styled.div`
-  padding: 8px;
-  height: 36px;
-  flex-direction: column;
-  display: flex;
-  border: none;
-`;
-
-const ActionText2 = styled.span`
-  font-family: Arial;
-  font-size: 14px;
-  color: #000;
-  opacity: 0.9;
-`;
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    minWidth: 300,
+    width: "100%",
+  },
+  image: {
+    position: "relative",
+    height: 200,
+    [theme.breakpoints.down("xs")]: {
+      width: "100% !important", // Overrides inline-style
+      height: 100,
+    },
+    "&:hover, &$focusVisible": {
+      zIndex: 1,
+      "& $imageBackdrop": {
+        opacity: 0.15,
+      },
+      "& $imageMarked": {
+        opacity: 0,
+      },
+      "& $imageTitle": {
+        border: "4px solid currentColor",
+      },
+    },
+  },
+  focusVisible: {},
+  imageButton: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: theme.palette.common.white,
+  },
+  imageSrc: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: "cover",
+    backgroundPosition: "center 40%",
+  },
+  imageBackdrop: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.4,
+    transition: theme.transitions.create("opacity"),
+  },
+  imageTitle: {
+    position: "relative",
+    padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) + 6}px`,
+  },
+  imageMarked: {
+    height: 3,
+    width: 18,
+    backgroundColor: theme.palette.common.white,
+    position: "absolute",
+    bottom: -2,
+    left: "calc(50% - 9px)",
+    transition: theme.transitions.create("opacity"),
+  },
+}));
 
 function HeadUpText(props) {
   const styles = useStyles();
   return <Typography className={styles.headuptext}>{props.text}</Typography>;
 }
 
+function ClassroomOverviewPopUp({ open, onClose, onView, classroomTitle, classroomDescription, classroomTeacher }) {
+  return (
+    <Dialog onClose={onClose} aria-labelledby="classroom-overview-popup" open={open}>
+      <DialogTitle id="classroom-overview-popup" onClose={onClose}>
+        {classroomTitle}
+      </DialogTitle>
+      <DialogContent dividers>
+        <Typography gutterBottom>Description: {classroomDescription}</Typography>
+        <Typography gutterBottom>Teacher: {classroomTeacher}</Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={onClose} color="primary">
+          Leave
+        </Button>
+        <Button onClick={onView} color="primary">
+          Open
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
 function ClassroomsCreatePage({ ...props }) {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [openPopUp, setPopUpOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <AppPage location="classrooms" id="classrooms-page">
       <HeadUpText text="This page is used for testing." />
-      <MaterialCardWithContentAndActionButtons
-        style={{
-          height: 499,
-          width: 460,
-          borderRadius: 31,
-          overflow: "visible",
-        }}
-      ></MaterialCardWithContentAndActionButtons>
+
+      <div className={classes.root}>
+        {images.map((image) => (
+          <React.Fragment key={image.title}>
+            <ButtonBase
+              focusRipple
+              className={classes.image}
+              focusVisibleClassName={classes.focusVisible}
+              style={{
+                width: image.width,
+              }}
+              onClick={() => setPopUpOpen(true)}
+            >
+              <span
+                className={classes.imageSrc}
+                style={{
+                  backgroundImage: `url(${image.url})`,
+                }}
+              />
+              <span className={classes.imageBackdrop} />
+              <span className={classes.imageButton}>
+                <Typography component="span" variant="subtitle1" color="inherit" className={classes.imageTitle}>
+                  {image.title}
+                  <span className={classes.imageMarked} />
+                </Typography>
+              </span>
+            </ButtonBase>
+            <ClassroomOverviewPopUp
+              open={openPopUp}
+              onClose={() => {
+                setPopUpOpen(false);
+              }}
+              //Here is impossible to display images
+              classroomTitle={image.title}
+              classroomDescription={image.title}
+              classroomTeacher="Teacher"
+            ></ClassroomOverviewPopUp>
+          </React.Fragment>
+        ))}
+      </div>
     </AppPage>
   );
 }
