@@ -67,6 +67,7 @@ CREATE TABLE documents (
   title           text          NOT NULL,
   author          text          NOT NULL,
   description     text,
+  category        text,
   public          boolean       NOT NULL DEFAULT false,
   premium         boolean       NOT NULL DEFAULT false,
   blocks          jsonb
