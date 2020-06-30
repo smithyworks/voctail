@@ -18,6 +18,7 @@ import {
   Menu,
   MenuItem,
   Snackbar,
+  ListSubheader,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
@@ -82,7 +83,7 @@ function DocumentOverviewPopUp({
       <img src={documentImage} alt={documentImage} width="100%" height="40%" />
       <DialogContent dividers>
         <T gutterBottom>
-          {documentDetails} by {documentAuthor}
+          {documentDetails} Written by {documentAuthor}
         </T>
       </DialogContent>
       <DialogActions>
@@ -306,7 +307,15 @@ function Dashboard() {
   const [documentImage, setDocumentImage] = useState(null);
   const [documentAuthor, setDocumentAuthor] = useState(null);
   const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); //document data fetched from the database
+  const categories = ["newspaper-article", "fairy-tale", "short-story"];
+  const [documentDataFromDatabaseSortedInCategory, setDocumentDataFromDatabaseSortedInCategory] = useState(() => {
+    return [[], []];
+  }); // document data sorted in categories
+  // todo add more categories
 
+  console.log("length", documentDataFromDatabase.length);
+  console.log("documentData", documentDataFromDatabase);
+  //console.log("categories", documentDataFromDatabaseSortedInCategory);
   useEffect(() => {
     api
       .user()
@@ -327,6 +336,26 @@ function Dashboard() {
       .catch((err) => console.log(err));
   }, []);
 
+  function addToCategory(category, document) {
+    setDocumentDataFromDatabaseSortedInCategory((prevState) => [...prevState, { category: document }]);
+  }
+  useEffect(() => {
+    for (let i = 0; i < documentDataFromDatabase.length; i++) {
+      //switch (documentDataFromDatabase[i].category) {
+      switch (documentDataFromDatabase[i].document_id) {
+        case 0:
+          addToCategory(0, documentDataFromDatabase[i]);
+          break;
+        /*case 1:
+          addToCategory(1, documentDataFromDatabase[i]);
+        case 2:
+          addToCategory(2, documentDataFromDatabase[i]); */
+        default:
+          addToCategory(1, documentDataFromDatabase[i]);
+      }
+    }
+  });
+
   return (
     <AppPage location="dashboard" id="dashboard-page">
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
@@ -334,6 +363,14 @@ function Dashboard() {
         <T variant="h4">Improve your language skills with text documents, videos and more...</T>
       </Grid>
       <AddNewDocument />
+
+      {categories.map((category, index) => (
+        <GridList cellHeight={100} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+          <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
+            <ListSubheader component="div"> {category} </ListSubheader>
+          </GridListTile>
+        </GridList>
+      ))}
 
       <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
         <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
@@ -345,7 +382,11 @@ function Dashboard() {
             <img src={munich} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
-              subtitle={<span>Description: {tile.description}</span>}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
               onClick={() => {
                 setPopUpOpen(true);
                 setDocumentId(tile.document_id);
