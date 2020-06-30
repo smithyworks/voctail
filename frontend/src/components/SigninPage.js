@@ -73,7 +73,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
       .catch((err) => {
         setInfoMessage();
         if (err.response.status === 412) setErrorMessage(err.response.data);
-        else setErrorMessage("Sorry, omething went wrong and we couldn't log you in!");
+        else setErrorMessage("Sorry, something went wrong and we couldn't log you in!");
       })
       .finally(() => {
         refresh();
@@ -104,7 +104,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
         try {
           if (err.response.status === 412) setErrorMessage(err.response.data);
         } catch {
-          setErrorMessage("Sorry, omething went wrong and we couldn't sign you up!");
+          setErrorMessage("Sorry, something went wrong and we couldn't sign you up!");
         }
       })
       .then(() => {

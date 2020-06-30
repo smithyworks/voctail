@@ -6,6 +6,7 @@ const validation = require("./validation.js");
 const admin = require("./admin.js");
 const quizzes = require("./quizzes.js");
 const documents = require("./documents.js");
+const classrooms = require("./classrooms");
 const vocabulary = require("./vocabulary.js");
 
 module.exports = {
@@ -17,5 +18,6 @@ module.exports = {
   admin,
   quizzes,
   documents,
+  classrooms,
   vocabulary,
 };
