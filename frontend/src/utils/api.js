@@ -44,6 +44,8 @@ export function endMasquerade(user_id) {
   return axios.get(`${base}/admin/end-masquerade`);
 }
 
+//quizzes
+
 export function fetchQuizzes() {
   return axios.get(`${base}/quizzes`);
 }
@@ -74,4 +76,22 @@ export function updateVocabulary(entries) {
 
 export function addTranslation(word_id, translation) {
   return axios.post(`${base}/add-translation`, { word_id, translation });
+}
+
+//classrooms
+
+export function getClassrooms() {
+  return axios.get(`${base}/classrooms`);
+}
+
+export function createClassroom(title, topic, description, open) {
+  return axios.post(`${base}/create-classroom`, { title, topic, description, open });
+}
+
+export function addStudentToClassroom(student_id) {
+  return axios.post(`${base}/add-student-to-classroom`, { student_id });
+}
+
+export function addDocumentToClassroom(document_id) {
+  return axios.post(`${base}/add-document-to-classroom`, { document_id });
 }

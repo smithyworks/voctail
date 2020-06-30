@@ -82,3 +82,23 @@ CREATE TABLE documents_words (
 
   PRIMARY KEY (document_id, word_id)
 );
+
+CREATE TABLE classrooms (
+  classroom_id      serial          PRIMARY KEY,
+  classroom_owner   integer         NOT NULL REFERENCES users(user_id)
+                                    ON DELETE CASCADE,
+  title             text            NOT NULL,
+  description       text,
+  topic             text,
+  open              boolean         DEFAULT false
+);
+
+CREATE TABLE classroom_members (
+    classroom_id    integer     NOT NULL REFERENCES classrooms(classroom_id) ON DELETE CASCADE,
+    student_id      integer     REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE classroom_documents (
+    classroom_id    integer     NOT NULL REFERENCES classrooms(classroom_id) ON DELETE CASCADE,
+    document_id     integer     REFERENCES documents(document_id) ON DELETE CASCADE
+)

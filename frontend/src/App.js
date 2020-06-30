@@ -12,6 +12,8 @@ import {
   QuizzesDashboardPage,
   QuizPage,
   ClassroomsPage,
+  ClassroomsCreatePage,
+  ClassroomsSavedPage,
 } from "./components";
 import { localStorage, api } from "./utils";
 
@@ -61,6 +63,8 @@ function App() {
           <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
           <ProtectedRoute path="/document/:document_id" component={TextDocumentPage} />
+          <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
+          <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
 
           <Route path="/signup">
