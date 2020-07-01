@@ -138,7 +138,7 @@ function ClassroomOverviewPopUp({
   onView,
   classroomTitle,
   classroomTopic,
-  classroomTeacher,
+  classroomAuthor,
   classroomDescription,
 }) {
   return (
@@ -154,7 +154,7 @@ function ClassroomOverviewPopUp({
       </DialogTitle>
       <DialogContent dividers>
         <Typography gutterBottom>Topic: {classroomTopic}</Typography>
-        <Typography gutterBottom>Teacher: {classroomTeacher}</Typography>
+        <Typography gutterBottom>Teacher: {classroomAuthor}</Typography>
         <Typography gutterBottom>Description: {classroomDescription}</Typography>
       </DialogContent>
       <DialogActions>
@@ -186,6 +186,11 @@ function Classrooms() {
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
   const [open, setOpen] = useState(false);
   const [openPopUp, setPopUpOpen] = useState(false);
+  //Accessor to a current classroom
+  const [classroomTitle, setClassroomTitle] = useState(null);
+  const [classroomTopic, setClassroomTopic] = useState(null);
+  const [classroomAuthor, setClassroomAuthor] = useState(null);
+  const [classroomDescription, setClassroomDescription] = useState(null);
 
   useEffect(() => {
     api
@@ -238,7 +243,13 @@ function Classrooms() {
               style={{
                 width: "40%",
               }}
-              onClick={() => setPopUpOpen(true)}
+              onClick={() => {
+                setPopUpOpen(true);
+                setClassroomTitle(tile.title);
+                setClassroomTopic(tile.topic);
+                setClassroomAuthor(tile.classroom_owner);
+                setClassroomDescription(tile.description);
+              }}
             >
               <span
                 className={classes.imageSrc}
@@ -259,11 +270,11 @@ function Classrooms() {
               onClose={() => {
                 setPopUpOpen(false);
               }}
-              classroomTitle={tile.title}
-              classroomTopic={tile.topic}
-              classroomTeacher={tile.classroom_owner}
-              classroomDescription={tile.description}
-            ></ClassroomOverviewPopUp>
+              classroomTitle={classroomTitle}
+              classroomTopic={classroomTopic}
+              classroomAuthor={classroomAuthor}
+              classroomDescription={classroomDescription}
+            />
           </React.Fragment>
         ))}
       </div>
