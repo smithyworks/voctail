@@ -36,23 +36,12 @@ import munich from "../images/munich.jpg";
 import { Link } from "react-router-dom";
 import { Theme as theme } from "@material-ui/core/styles/createMuiTheme";
 
-const images = [
-  {
-    url: "/frontend/src/images/logo_green.png",
-    title: "Breakfast",
-    width: "40%",
-  },
-  {
-    url: "/frontend/src/images/logo_green.png",
-    title: "Burgers",
-    width: "30%",
-  },
-  {
-    url: "/frontend/src/images/logo_green.png",
-    title: "Camera",
-    width: "30%",
-  },
-];
+export const dummyClassroom = {
+  title: "Class of 2020",
+  topic: "British History",
+  description: "In this classroom I will provide material for my students to discover the ancient british history.",
+  students: ["Alice", "Bob", "Clara"],
+};
 
 const useStyles = makeStyles({
   text: {

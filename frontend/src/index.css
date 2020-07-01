@@ -1,12 +1,18 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap");
+
 html {
   box-sizing: border-box;
-  font-family: noto-serif;
+  font-family: "Source Sans Pro", sans-serif;
 }
 *,
 *:before,
 *:after {
   box-sizing: inherit;
   font-family: inherit;
+}
+
+body {
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 html,

@@ -32,7 +32,7 @@ async function createClassroom(req, res) {
       rows: [classroom],
     } = await query(
       "INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4, $5, $6)",
-      [12345, 6, title, description, topic, open]
+      [12333, 6, title, description, topic, open]
     );
     res.status(201).send(`Successfully created classroom ${title}.`);
   } catch (err) {
