@@ -14,7 +14,7 @@ import {
   QuizPage,
   ClassroomsPage,
   ClassroomsCreatePage,
-  ClassroomsSavedPage,
+  ClassroomViewPage,
 } from "./components";
 import { localStorage, api } from "./utils";
 
@@ -66,7 +66,7 @@ function App() {
           <ProtectedRoute path="/documents" component={DocumentPage} />
           <ProtectedRoute path="/document/:document_id" component={TextDocumentPage} />
           <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
-          <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
+          <ProtectedRoute path="/classrooms/view" component={ClassroomViewPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
 
           <Route path="/signup">
