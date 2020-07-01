@@ -19,6 +19,10 @@ import {
   MenuItem,
   Snackbar,
   ListSubheader,
+  InputLabel,
+  FormHelperText,
+  FormControl,
+  Select,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
@@ -66,6 +70,13 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(2),
     },
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 //popup for the document you click on (get some information about the doc before entering view mode)
@@ -112,6 +123,7 @@ function AddNewDocument() {
   //const imageInput = useRef(); todo use image
   const [open, setOpen] = useState(false);
   const [publicDocument, setPublicDocument] = useState(true);
+  const [category, setCategory] = useState("");
   const classes = useStyles();
 
   const handleAddOpen = () => {
@@ -122,6 +134,9 @@ function AddNewDocument() {
   };
   const handleStatusChange = (event) => {
     setPublicDocument(event.target.checked);
+  };
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
   };
 
   const addThisDocument = () => {
@@ -201,7 +216,7 @@ function AddNewDocument() {
             fullWidth
           />
           <DialogContentText>Please upload your text document.</DialogContentText>
-          *<input accept="text/*" className={classes.input} id="upload-text" multiple type="file" />
+          <input accept="text/*" className={classes.input} id="upload-text" multiple type="file" />
           <label htmlFor="upload-text">
             <Button variant="contained" color="primary" component="span" startIcon={<DescriptionIcon />}>
               Upload
@@ -217,7 +232,7 @@ function AddNewDocument() {
             </Button>
           </label>
           <DialogContentText>
-            Your document is public and available for all users. If you want to keep your document private please
+            Your document is public and available to all users. If you want to keep your document private please
             deactivate the document status.
           </DialogContentText>
           <FormControlLabel
@@ -231,6 +246,28 @@ function AddNewDocument() {
             }
             label="Public Document"
           />
+
+          <FormControl className={classes.formControl}>
+            <InputLabel shrink id="choose-category">
+              Category
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-placeholder-label-label"
+              id="choose-category"
+              value={category}
+              onChange={handleCategoryChange}
+              displayEmpty
+              className={classes.selectEmpty}
+            >
+              <MenuItem value={"Fairy Tale"}>Fairy Tale</MenuItem>
+              <MenuItem value={"(Short) Story"}>Short Story</MenuItem>
+              <MenuItem value={"Newspaper Article"}>Newspaper Article</MenuItem>
+              <MenuItem value={"Others"}>
+                <em>Others</em>
+              </MenuItem>
+            </Select>
+            <FormHelperText>Please choose a category for your document</FormHelperText>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleAddClose} color="primary">
@@ -310,18 +347,12 @@ function Dashboard() {
   const [documentImage, setDocumentImage] = useState(null);
   const [documentAuthor, setDocumentAuthor] = useState(null);
 
-  const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); //document data fetched from the database
+  //const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
   const [newspaperArticles, setNewspaperArticles] = useState([]);
   const [shortStories, setShortStories] = useState([]);
   const [fairyTales, setFairyTales] = useState([]);
   const [otherDocuments, setOtherDocuments] = useState([]);
 
-  console.log("documentData", documentDataFromDatabase);
-  console.log("newspaper", newspaperArticles);
-  console.log("fairytales", fairyTales);
-  console.log("shortStories", shortStories);
-  console.log("others", otherDocuments);
-  //console.log("categories", documentDataFromDatabaseSortedInCategory);
   useEffect(() => {
     api
       .user()
@@ -353,39 +384,6 @@ function Dashboard() {
         <T variant="h4">Improve your language skills with text documents, videos and more...</T>
       </Grid>
       <AddNewDocument />
-
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">Newspaper Articles</T>
-      </Grid>
-
-      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-        {newspaperArticles.map((tile) => (
-          <GridListTile key={tile.document_id} cols={1}>
-            <img src={newspaperArticlesPreview} alt={tile.title} />
-            <GridListTileBar
-              title={tile.title}
-              subtitle={
-                <span>
-                  {tile.description} Written by {tile.author}
-                </span>
-              }
-              onClick={() => {
-                setPopUpOpen(true);
-                setDocumentId(tile.document_id);
-                setDocumentTitle(tile.title);
-                setDocumentAuthor(tile.author);
-                setDocumentDetails(tile.description);
-                setDocumentImage(newspaperArticlesPreview);
-              }}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                  <LocalBarIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
 
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
         <T variant="h4">Short Stories</T>
@@ -442,6 +440,39 @@ function Dashboard() {
                 setDocumentAuthor(tile.author);
                 setDocumentDetails(tile.description);
                 setDocumentImage(fairyTalesPreview);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">Newspaper Articles</T>
+      </Grid>
+
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {newspaperArticles.map((tile) => (
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={newspaperArticlesPreview} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentId(tile.document_id);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(newspaperArticlesPreview);
               }}
               actionIcon={
                 <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
