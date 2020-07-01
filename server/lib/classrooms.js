@@ -7,7 +7,7 @@ async function classroomHandler(req, res) {
     res.status(200).json({ rows });
   } catch (err) {
     log(err);
-    res.status(500).send("Something went wrong with the dummy documents.");
+    res.status(500).send("Something went wrong with the classrooms handler.");
   }
 }
 
@@ -31,7 +31,7 @@ async function createClassroom(req, res) {
     const {
       rows: [classroom],
     } = await query(
-      "INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4)",
+      "INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4, $5, $6)",
       [title, description, topic, open]
     );
     res.status(201).send(`Successfully created classroom ${title}.`);
