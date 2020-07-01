@@ -37,7 +37,10 @@ import { api } from "../utils";
 import { deleteDocument, document } from "../utils/api";
 
 //example tile images
-import munich from "../images/munich.jpg";
+import shortStoriesPreview from "../images/books.jpg";
+import fairyTalesPreview from "../images/fairytale.jpg";
+import newspaperArticlesPreview from "../images/newspaper.jpg";
+import otherDocumentsPreview from "../images/others.jpg";
 
 import MuiAlert from "@material-ui/lab/Alert";
 
@@ -306,15 +309,18 @@ function Dashboard() {
   const [documentDetails, setDocumentDetails] = useState(null);
   const [documentImage, setDocumentImage] = useState(null);
   const [documentAuthor, setDocumentAuthor] = useState(null);
-  const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); //document data fetched from the database
-  const categories = ["newspaper-article", "fairy-tale", "short-story"];
-  const [documentDataFromDatabaseSortedInCategory, setDocumentDataFromDatabaseSortedInCategory] = useState(() => {
-    return [[], []];
-  }); // document data sorted in categories
-  // todo add more categories
 
-  console.log("length", documentDataFromDatabase.length);
+  const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); //document data fetched from the database
+  const [newspaperArticles, setNewspaperArticles] = useState([]);
+  const [shortStories, setShortStories] = useState([]);
+  const [fairyTales, setFairyTales] = useState([]);
+  const [otherDocuments, setOtherDocuments] = useState([]);
+
   console.log("documentData", documentDataFromDatabase);
+  console.log("newspaper", newspaperArticles);
+  console.log("fairytales", fairyTales);
+  console.log("shortStories", shortStories);
+  console.log("others", otherDocuments);
   //console.log("categories", documentDataFromDatabaseSortedInCategory);
   useEffect(() => {
     api
@@ -330,31 +336,15 @@ function Dashboard() {
       .fetchDocuments()
       .then((res) => {
         if (res) {
-          setDocumentDataFromDatabase(res.data.rows);
+          //setDocumentDataFromDatabase(res.data.documents);    //if needed: fetch all documents to the frontend
+          setNewspaperArticles(res.data.newspaperArticles);
+          setFairyTales(res.data.fairyTales);
+          setShortStories(res.data.shortStories);
+          setOtherDocuments(res.data.others);
         }
       })
       .catch((err) => console.log(err));
   }, []);
-
-  function addToCategory(category, document) {
-    setDocumentDataFromDatabaseSortedInCategory((prevState) => [...prevState, { category: document }]);
-  }
-  useEffect(() => {
-    for (let i = 0; i < documentDataFromDatabase.length; i++) {
-      //switch (documentDataFromDatabase[i].category) {
-      switch (documentDataFromDatabase[i].document_id) {
-        case 0:
-          addToCategory(0, documentDataFromDatabase[i]);
-          break;
-        /*case 1:
-          addToCategory(1, documentDataFromDatabase[i]);
-        case 2:
-          addToCategory(2, documentDataFromDatabase[i]); */
-        default:
-          addToCategory(1, documentDataFromDatabase[i]);
-      }
-    }
-  });
 
   return (
     <AppPage location="dashboard" id="dashboard-page">
@@ -364,22 +354,14 @@ function Dashboard() {
       </Grid>
       <AddNewDocument />
 
-      {categories.map((category, index) => (
-        <GridList cellHeight={100} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-          <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
-            <ListSubheader component="div"> {category} </ListSubheader>
-          </GridListTile>
-        </GridList>
-      ))}
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">Newspaper Articles</T>
+      </Grid>
 
       <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-        <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
-          {/*<ListSubheader component="div">Documents</ListSubheader> */}
-        </GridListTile>
-
-        {documentDataFromDatabase.map((tile) => (
+        {newspaperArticles.map((tile) => (
           <GridListTile key={tile.document_id} cols={1}>
-            <img src={munich} alt={tile.title} />
+            <img src={newspaperArticlesPreview} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
               subtitle={
@@ -393,7 +375,106 @@ function Dashboard() {
                 setDocumentTitle(tile.title);
                 setDocumentAuthor(tile.author);
                 setDocumentDetails(tile.description);
-                setDocumentImage(munich);
+                setDocumentImage(newspaperArticlesPreview);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">Short Stories</T>
+      </Grid>
+
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {shortStories.map((tile) => (
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={shortStoriesPreview} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentId(tile.document_id);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(shortStoriesPreview);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">Fairy Tales</T>
+      </Grid>
+
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {fairyTales.map((tile) => (
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={fairyTalesPreview} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentId(tile.document_id);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(fairyTalesPreview);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">More documents</T>
+      </Grid>
+
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {otherDocuments.map((tile) => (
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={otherDocumentsPreview} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentId(tile.document_id);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(otherDocumentsPreview);
               }}
               actionIcon={
                 <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
