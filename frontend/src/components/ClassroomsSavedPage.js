@@ -1,57 +1,28 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Grid,
-  Typography as T,
-  GridList,
-  GridListTile,
-  ListSubheader,
-  GridListTileBar,
-  IconButton,
-  Button,
-  ButtonBase,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  FormControlLabel,
-  Switch,
-  DialogContentText,
-  TextField,
-  Checkbox,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Typography as T, ButtonBase, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import LocalBarIcon from "@material-ui/icons/LocalBar";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import LocalBarIconOutlined from "@material-ui/icons/LocalBarOutlined";
-import DescriptionIcon from "@material-ui/icons/Description";
-import ImageIcon from "@material-ui/icons/Image";
 
 import AppPage from "./common/AppPage";
 
 import { api } from "../utils";
-import { Link } from "react-router-dom";
-import { Theme as theme } from "@material-ui/core/styles/createMuiTheme";
 
-const images = [
-  {
-    url: "/frontend/src/images/logo_green.png",
-    title: "Breakfast",
-    width: "40%",
-  },
-  {
-    url: "/frontend/src/images/logo_green.png",
-    title: "Burgers",
-    width: "30%",
-  },
-  {
-    url: "/frontend/src/images/logo_green.png",
-    title: "Camera",
-    width: "30%",
-  },
-];
+// const images = [
+//   {
+//     url: "/frontend/src/images/logo_green.png",
+//     title: "Breakfast",
+//     width: "40%",
+//   },
+//   {
+//     url: "/frontend/src/images/logo_green.png",
+//     title: "Burgers",
+//     width: "30%",
+//   },
+//   {
+//     url: "/frontend/src/images/logo_green.png",
+//     title: "Camera",
+//     width: "30%",
+//   },
+// ];
 
 const useStyles = makeStyles({
   text: {
@@ -148,23 +119,23 @@ const useStyles = makeStyles({
   },
 });
 
-function SavedClassroomsButton(props) {
-  const classes = useStyles();
-  return (
-    <Button component={Link} to={props.to} variant="outlined" className={classes.button}>
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">{props.title}</T>
-        <T variant="p" align="center">
-          {props.children}
-        </T>
-      </Grid>
-    </Button>
-  );
-}
+// function SavedClassroomsButton(props) {
+//   const classes = useStyles();
+//   return (
+//     <Button component={Link} to={props.to} variant="outlined" className={classes.button}>
+//       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+//         <T variant="h4">{props.title}</T>
+//         <T variant="p" align="center">
+//           {props.children}
+//         </T>
+//       </Grid>
+//     </Button>
+//   );
+// }
 
 function ClassroomsSavedPage() {
   const classes = useStyles();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(); // eslint-disable-line
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
 
   useEffect(() => {
