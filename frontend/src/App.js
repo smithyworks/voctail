@@ -15,8 +15,9 @@ import {
   ClassroomsCreatePage,
   ClassroomsSavedPage,
 } from "./components";
-import { toasts } from "./components/common/AppPage";
+import { toasts } from "./components/common";
 import { localStorage, api } from "./utils";
+import ShowcasePage from "./components/common/ShowcasePage";
 
 function ProtectedRoute({ ...props }) {
   if (localStorage.hasTokens()) return <Route {...props} />;
@@ -58,12 +59,13 @@ function App() {
     <UserContext.Provider value={user}>
       <Router>
         <Switch>
+          <AdminRoute path="/showcase" component={ShowcasePage} />
           <AdminRoute path="/admin" component={AdminPage} />
 
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
           <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
-          <ProtectedRoute path="/document/:document_id" component={TextDocumentPage} />
+          <ProtectedRoute path="/documents/:document_id" component={TextDocumentPage} />
           <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
           <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />

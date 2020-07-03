@@ -35,10 +35,10 @@ import AppPage from "./common/AppPage";
 import { api } from "../utils";
 
 //example tile images
-import shortStoriesPreview from "../images/books.jpg";
-import fairyTalesPreview from "../images/fairytale.jpg";
-import newspaperArticlesPreview from "../images/newspaper.jpg";
-import otherDocumentsPreview from "../images/others.jpg";
+import shortStoriesPreview from "../assets/books.jpg";
+import fairyTalesPreview from "../assets/fairytale.jpg";
+import newspaperArticlesPreview from "../assets/newspaper.jpg";
+import otherDocumentsPreview from "../assets/others.jpg";
 
 const useStyles = makeStyles((theme) => ({
   container: { height: 200, width: "100%" },
@@ -99,7 +99,7 @@ function DocumentOverviewPopUp({
         <Button onClick={onClose} color="primary">
           Delete document
         </Button>
-        <Button component={Link} to={"/document/" + documentId} color="primary">
+        <Button component={Link} to={"/documents/" + documentId} color="primary">
           View document
         </Button>
       </DialogActions>

@@ -2,27 +2,30 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
+import colors from "../../../assets/colors.json";
+
 const useStyles = makeStyles({
   link: {
     textDecoration: "none",
-    color: "#ddd",
     padding: "0 20px",
     fontSize: "16px",
     display: "flex",
     alignItems: "center",
+    ...colors.topNav.button,
     "&:hover": {
-      color: "white",
-      backgroundColor: "rgba(0,0,0,0.3)",
+      ...colors.topNav.buttonHover,
     },
   },
   activeLink: {
     textDecoration: "none",
-    color: "black",
-    backgroundColor: "#ddd",
     padding: "0 20px",
     fontSize: "16px",
     display: "flex",
     alignItems: "center",
+    ...colors.topNav.activeButton,
+    "&:hover": {
+      ...colors.topNav.activeButtonHover,
+    },
   },
 });
 

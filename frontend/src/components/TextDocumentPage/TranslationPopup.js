@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Typography as T, Paper, Popper, Grid, Button } from "@material-ui/core";
+import { Typography as T, Paper, Popper, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import CheckIcon from "@material-ui/icons/Check";
+
+import { VTButton } from "../common";
 
 const useStyles = makeStyles({
   paper: {
@@ -33,7 +35,7 @@ const useStyles = makeStyles({
     fontFamily: "noto-sans, sans",
   },
   addIcon: { fontSize: "1.2em", marginRight: "2px" },
-  knownButton: { color: "white", backgroundColor: "green", fontWeight: "bold" },
+  knownButton: { fontWeight: "bold" },
 });
 
 function TranslationPopup({
@@ -93,15 +95,16 @@ function TranslationPopup({
           </Grid>
 
           <div className={classes.actions}>
-            <Button
+            <VTButton
               variant="contained"
               size="small"
               startIcon={<CheckIcon />}
               className={classes.knownButton}
               onClick={_markKnown}
+              accept
             >
               Mark Known
-            </Button>
+            </VTButton>
           </div>
         </Paper>
       </div>

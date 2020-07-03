@@ -1,0 +1,73 @@
+{
+  "topNav": {
+    "bar": { "backgroundColor": "midnightblue" },
+
+    "button": {
+      "backgroundColor": "rgba(0,0,0,0)",
+      "color": "#ddd"
+    },
+    "buttonHover": {
+      "backgroundColor": "rgba(0,0,0,0.3)",
+      "color": "white"
+    },
+    "activeButton": {
+      "backgroundColor": "lightsteelblue",
+      "color": "black"
+    },
+    "activeButtonHover": {
+      "backGroundColor": "lightsteelblue",
+      "color": "black"
+    }
+  },
+  "userMenu": {
+    "paper": {
+      "background": "darkblue"
+    },
+    "button": {
+      "backgroundColor": "rgba(0,0,0,0)",
+      "color": "#ddd"
+    },
+    "buttonHover": {
+      "backgroundColor": "rgba(0,0,0,0.3)",
+      "color": "white"
+    }
+  },
+  "button": {
+    "neutral": {
+      "backgroundColor": "darkblue",
+      "color": "white"
+    },
+    "neutralHover": {
+      "backgroundColor": "darkblue",
+      "opacity": "0.7",
+      "color": "white"
+    },
+    "accept": {
+      "backgroundColor": "green",
+      "color": "white"
+    },
+    "acceptHover": {
+      "backgroundColor": "green",
+      "opacity": "0.7",
+      "color": "white"
+    },
+    "danger": {
+      "backgroundColor": "red",
+      "color": "white"
+    },
+    "dangerHover": {
+      "backgroundColor": "red",
+      "opacity": "0.7",
+      "color": "white"
+    },
+    "secondary": {
+      "color": "darkblue",
+      "borderColor": "darkblue"
+    },
+    "secondaryHover": {
+      "color": "white",
+      "backgroundColor": "darkblue",
+      "borderColor": "darkblue"
+    }
+  }
+}

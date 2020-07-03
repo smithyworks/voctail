@@ -29,3 +29,15 @@ toasts.toastError(message);
 // Info toast
 toasts.toastInfo(message);
 ```
+
+## VTButton
+
+VTButton is a thin wrapper around the Material-UI Button.
+It removes the need to alter the color or variant, so that we can use consistent buttons accross the website.
+
+Props:
+
+- neutral: boolean, neutral colored button
+- accept: boolean
+- danger: boolean
+- secondary: boolean

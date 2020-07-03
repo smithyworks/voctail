@@ -8,17 +8,17 @@ import { api } from "../utils";
 
 // const images = [
 //   {
-//     url: "/frontend/src/images/logo_green.png",
+//     url: "/frontend/src/assets/logo_green.png",
 //     title: "Breakfast",
 //     width: "40%",
 //   },
 //   {
-//     url: "/frontend/src/images/logo_green.png",
+//     url: "/frontend/src/assets/logo_green.png",
 //     title: "Burgers",
 //     width: "30%",
 //   },
 //   {
-//     url: "/frontend/src/images/logo_green.png",
+//     url: "/frontend/src/assets/logo_green.png",
 //     title: "Camera",
 //     width: "30%",
 //   },

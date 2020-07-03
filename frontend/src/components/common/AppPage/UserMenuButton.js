@@ -5,9 +5,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 import { localStorage, api } from "../../../utils";
+import colors from "../../../assets/colors.json";
 
 const useStyles = makeStyles({
-  menuPaper: { zIndex: "1000", borderTopLeftRadius: "0", borderTopRightRadius: 0 },
+  menuPaper: { zIndex: "1000", borderTopLeftRadius: "0", borderTopRightRadius: 0, ...colors.userMenu.paper },
+  menuItem: {
+    ...colors.userMenu.button,
+    "&:hover": {
+      ...colors.userMenu.buttonHover,
+    },
+  },
   endMasquerade: { marginRight: "10px" },
   profileButton: {
     color: "white",
@@ -61,13 +68,13 @@ function UserMenuButton({ masquerading }) {
         <Paper className={classes.menuPaper}>
           <ClickAwayListener onClickAway={() => setUserMenuOpen(false)}>
             <MenuList autoFocusItem={userMenuOpen} id="menu-list-grow">
-              <MenuItem component={Link} to="/go-premium">
+              <MenuItem component={Link} to="/go-premium" className={classes.menuItem}>
                 Go Premium!
               </MenuItem>
-              <MenuItem component={Link} to="/profile">
+              <MenuItem component={Link} to="/profile" className={classes.menuItem}>
                 Profile
               </MenuItem>
-              <MenuItem component={Link} to="/signout">
+              <MenuItem component={Link} to="/signout" className={classes.menuItem}>
                 Sign Out
               </MenuItem>
             </MenuList>

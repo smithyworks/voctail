@@ -4,7 +4,7 @@ import { Grid, Typography as T, CircularProgress } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/core/styles";
 
-import AppPage, { toasts } from "../common/AppPage";
+import { AppPage, toasts } from "../common";
 import TranslationPopup from "./TranslationPopup.js";
 import AddTranslationDialog from "./AddTranslationDialog";
 import { api } from "../../utils";
