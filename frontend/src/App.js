@@ -15,6 +15,7 @@ import {
   ClassroomsCreatePage,
   ClassroomsSavedPage,
 } from "./components";
+import { toasts } from "./components/common/AppPage";
 import { localStorage, api } from "./utils";
 
 function ProtectedRoute({ ...props }) {
@@ -50,7 +51,7 @@ function App() {
         .then((res) => {
           if (res) setUser(res.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toasts.toastError("Error communicating with the server!"));
   }, [loggedIn]);
 
   return (
