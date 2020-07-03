@@ -1,5 +1,5 @@
-// Example usage:
-// $ node genDocuments.js > ../init/5.documents.sql
+// Example usage (cd into database/scripts):
+// $ node 5.documents.js > ../init/5.documents.sql
 
 const fs = require("fs");
 const path = require("path");
@@ -20,7 +20,7 @@ async function main() {
     const fileNames = await getFileNames();
 
     console.log(
-      "COPY documents (document_id, publisher_id, title, author, description, public, premium, blocks) FROM stdin;"
+      "COPY documents (document_id, publisher_id, title, author, description, category, public, premium, blocks) FROM stdin;"
     );
     let document_id = 1;
     fileNames.forEach((name) => {
@@ -33,6 +33,7 @@ async function main() {
       let title = "";
       let author = "";
       let description = "";
+      let category = "";
 
       const blocks = [];
 
@@ -54,6 +55,9 @@ async function main() {
                 break;
               case "metadata_description":
                 description = currentContent;
+                break;
+              case "metadata_category":
+                category = currentContent;
                 break;
               case "title":
                 blocks.push({ type: currentType, content: currentContent });
@@ -93,6 +97,9 @@ async function main() {
             case ">description":
               currentType = "metadata_description";
               break;
+            case ">category":
+              currentType = "metadata_category";
+              break;
             case "#":
               currentType = "title";
               break;
@@ -131,7 +138,7 @@ async function main() {
 
       // document_id, publisher_id, title, author, description, public, premium, blocks
       console.log(
-        `${document_id++}\t\\N\t${title}\t${author}\t${description}\tt\t${premium}\t${blocksJson}`
+        `${document_id++}\t\\N\t${title}\t${author}\t${description}\t${category}\tt\t${premium}\t${blocksJson}`
       );
     });
     console.log("\\.");

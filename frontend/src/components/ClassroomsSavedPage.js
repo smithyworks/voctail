@@ -32,7 +32,6 @@ import ImageIcon from "@material-ui/icons/Image";
 import AppPage from "./common/AppPage";
 
 import { api } from "../utils";
-import munich from "../images/munich.jpg";
 import { Link } from "react-router-dom";
 import { Theme as theme } from "@material-ui/core/styles/createMuiTheme";
 

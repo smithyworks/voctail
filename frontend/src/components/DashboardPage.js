@@ -18,6 +18,11 @@ import {
   Menu,
   MenuItem,
   Snackbar,
+  ListSubheader,
+  InputLabel,
+  FormHelperText,
+  FormControl,
+  Select,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
@@ -36,7 +41,10 @@ import { api } from "../utils";
 import { deleteDocument, document } from "../utils/api";
 
 //example tile images
-import munich from "../images/munich.jpg";
+import shortStoriesPreview from "../images/books.jpg";
+import fairyTalesPreview from "../images/fairytale.jpg";
+import newspaperArticlesPreview from "../images/newspaper.jpg";
+import otherDocumentsPreview from "../images/others.jpg";
 
 import MuiAlert from "@material-ui/lab/Alert";
 
@@ -62,6 +70,13 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(2),
     },
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 //popup for the document you click on (get some information about the doc before entering view mode)
@@ -82,7 +97,7 @@ function DocumentOverviewPopUp({
       <img src={documentImage} alt={documentImage} width="100%" height="40%" />
       <DialogContent dividers>
         <T gutterBottom>
-          {documentDetails} by {documentAuthor}
+          {documentDetails} Written by {documentAuthor}
         </T>
       </DialogContent>
       <DialogActions>
@@ -108,6 +123,7 @@ function AddNewDocument() {
   //const imageInput = useRef(); todo use image
   const [open, setOpen] = useState(false);
   const [publicDocument, setPublicDocument] = useState(true);
+  const [category, setCategory] = useState("");
   const classes = useStyles();
 
   const handleAddOpen = () => {
@@ -118,6 +134,9 @@ function AddNewDocument() {
   };
   const handleStatusChange = (event) => {
     setPublicDocument(event.target.checked);
+  };
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
   };
 
   const addThisDocument = () => {
@@ -197,7 +216,7 @@ function AddNewDocument() {
             fullWidth
           />
           <DialogContentText>Please upload your text document.</DialogContentText>
-          *<input accept="text/*" className={classes.input} id="upload-text" multiple type="file" />
+          <input accept="text/*" className={classes.input} id="upload-text" multiple type="file" />
           <label htmlFor="upload-text">
             <Button variant="contained" color="primary" component="span" startIcon={<DescriptionIcon />}>
               Upload
@@ -213,7 +232,7 @@ function AddNewDocument() {
             </Button>
           </label>
           <DialogContentText>
-            Your document is public and available for all users. If you want to keep your document private please
+            Your document is public and available to all users. If you want to keep your document private please
             deactivate the document status.
           </DialogContentText>
           <FormControlLabel
@@ -227,6 +246,28 @@ function AddNewDocument() {
             }
             label="Public Document"
           />
+
+          <FormControl className={classes.formControl}>
+            <InputLabel shrink id="choose-category">
+              Category
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-placeholder-label-label"
+              id="choose-category"
+              value={category}
+              onChange={handleCategoryChange}
+              displayEmpty
+              className={classes.selectEmpty}
+            >
+              <MenuItem value={"Fairy Tale"}>Fairy Tale</MenuItem>
+              <MenuItem value={"(Short) Story"}>Short Story</MenuItem>
+              <MenuItem value={"Newspaper Article"}>Newspaper Article</MenuItem>
+              <MenuItem value={"Others"}>
+                <em>Others</em>
+              </MenuItem>
+            </Select>
+            <FormHelperText>Please choose a category for your document</FormHelperText>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleAddClose} color="primary">
@@ -305,7 +346,12 @@ function Dashboard() {
   const [documentDetails, setDocumentDetails] = useState(null);
   const [documentImage, setDocumentImage] = useState(null);
   const [documentAuthor, setDocumentAuthor] = useState(null);
-  const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); //document data fetched from the database
+
+  //const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
+  const [newspaperArticles, setNewspaperArticles] = useState([]);
+  const [shortStories, setShortStories] = useState([]);
+  const [fairyTales, setFairyTales] = useState([]);
+  const [otherDocuments, setOtherDocuments] = useState([]);
 
   useEffect(() => {
     api
@@ -321,7 +367,11 @@ function Dashboard() {
       .fetchDocuments()
       .then((res) => {
         if (res) {
-          setDocumentDataFromDatabase(res.data.rows);
+          //setDocumentDataFromDatabase(res.data.documents);    //if needed: fetch all documents to the frontend
+          setNewspaperArticles(res.data.newspaperArticles);
+          setFairyTales(res.data.fairyTales);
+          setShortStories(res.data.shortStories);
+          setOtherDocuments(res.data.others);
         }
       })
       .catch((err) => console.log(err));
@@ -335,24 +385,127 @@ function Dashboard() {
       </Grid>
       <AddNewDocument />
 
-      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-        <GridListTile key="Subheader" cols={3} style={{ height: "auto" }}>
-          {/*<ListSubheader component="div">Documents</ListSubheader> */}
-        </GridListTile>
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">Short Stories</T>
+      </Grid>
 
-        {documentDataFromDatabase.map((tile) => (
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {shortStories.map((tile) => (
           <GridListTile key={tile.document_id} cols={1}>
-            <img src={munich} alt={tile.title} />
+            <img src={shortStoriesPreview} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
-              subtitle={<span>Description: {tile.description}</span>}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
               onClick={() => {
                 setPopUpOpen(true);
                 setDocumentId(tile.document_id);
                 setDocumentTitle(tile.title);
                 setDocumentAuthor(tile.author);
                 setDocumentDetails(tile.description);
-                setDocumentImage(munich);
+                setDocumentImage(shortStoriesPreview);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">Fairy Tales</T>
+      </Grid>
+
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {fairyTales.map((tile) => (
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={fairyTalesPreview} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentId(tile.document_id);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(fairyTalesPreview);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">Newspaper Articles</T>
+      </Grid>
+
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {newspaperArticles.map((tile) => (
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={newspaperArticlesPreview} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentId(tile.document_id);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(newspaperArticlesPreview);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+
+      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
+        <T variant="h4">More documents</T>
+      </Grid>
+
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {otherDocuments.map((tile) => (
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={otherDocumentsPreview} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentId(tile.document_id);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(otherDocumentsPreview);
               }}
               actionIcon={
                 <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
