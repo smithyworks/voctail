@@ -14,7 +14,7 @@ export function logout() {
   return axios.get(`${base}/logout`);
 }
 
-export function user() {
+export function user(userId = false) {
   return axios.get(`${base}/user`);
 }
 
@@ -82,6 +82,14 @@ export function addTranslation(word_id, translation) {
 
 export function getClassrooms() {
   return axios.get(`${base}/classrooms`);
+}
+
+export function getStudents(classroom_id) {
+  return axios.get(`${base}/students`, { classroom_id });
+}
+
+export function getDocuments(classroom_id) {
+  return axios.get(`${base}/students`, { classroom_id });
 }
 
 export function createClassroom(title, topic, description, open) {

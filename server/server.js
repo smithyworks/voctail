@@ -47,6 +47,8 @@ server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasquerad
 server.get("/api/quizzes", auth.tokenMiddleWare, quizzes.quizzesHandler);
 
 server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomHandler);
+server.get("/api/students", auth.tokenMiddleWare, classrooms.studentsHandler);
+server.get("/api/documents", auth.tokenMiddleWare, classrooms.documentsHandler);
 server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClassroom);
 server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.addStudentToClassroom);
 server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);

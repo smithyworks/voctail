@@ -1,9 +1,9 @@
 INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic, open) VALUES
-(1, 4, 'Class of 2020',
+(10000, 4, 'Class of 2020',
  'In this classroom I will provide material for my students to discover the ancient british history.',
  'British History',
  true),
-(2, 4, 'Class of 2015',
+(20000, 4, 'Class of 2015',
  'In this classroom I will provide material for my students to discover the ancient german history.',
  'German History',
  true);

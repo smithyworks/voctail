@@ -21,6 +21,30 @@ async function usersHandler(req, res) {
   }
 }
 
+async function studentsHandler(req, res) {
+  try {
+    //const {classroom_id} = req
+    //TODO : solve create_classroom parameter problem
+    const { rows } = await query("SELECT student_id FROM classroom_members WHERE classroom_id = $1", [1]);
+    res.status(200).json({ rows });
+  } catch (err) {
+    log(err);
+    res.status(500).send("There is a problem in the studentsHandler");
+  }
+}
+
+async function documentsHandler(req, res) {
+  try {
+    //const {classroom_id} = req
+    //TODO : solve create_classroom parameter problem
+    const { rows } = await query("SELECT document_id FROM document_members WHERE classroom_id = $1", [1]);
+    res.status(200).json({ rows });
+  } catch (err) {
+    log(err);
+    res.status(500).send("There is a problem in the documentsHandler");
+  }
+}
+
 async function createClassroom(req, res) {
   try {
     const { title, description, topic, open } = req.body;
@@ -31,8 +55,8 @@ async function createClassroom(req, res) {
     const {
       rows: [classroom],
     } = await query(
-      "INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4, $5, $6)",
-      [12333, 6, title, description, topic, open]
+      "INSERT INTO classrooms (classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4, $5)",
+      [6, title, description, topic, open]
     );
     res.status(201).send(`Successfully created classroom ${title}.`);
   } catch (err) {
@@ -67,4 +91,12 @@ async function addDocumentToClassroom(req, res) {
   }
 }
 
-module.exports = { classroomHandler, usersHandler, createClassroom, addStudentToClassroom, addDocumentToClassroom };
+module.exports = {
+  classroomHandler,
+  documentsHandler,
+  studentsHandler,
+  usersHandler,
+  createClassroom,
+  addStudentToClassroom,
+  addDocumentToClassroom,
+};
