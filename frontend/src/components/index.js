@@ -11,6 +11,7 @@ import IntroPage from "./IntroPage.js";
 import AdminPage from "./AdminPage";
 import TextDocumentPage from "./TextDocumentPage";
 import AccountPage from "./AccountPage";
+import ProfilePage from "./ProfilePage";
 
 export {
   DashboardPage,
@@ -26,4 +27,5 @@ export {
   AdminPage,
   TextDocumentPage,
   AccountPage,
+  ProfilePage,
 };

@@ -15,6 +15,7 @@ import {
   ClassroomsCreatePage,
   ClassroomsSavedPage,
   AccountPage,
+  ProfilePage,
 } from "./components";
 import { toasts } from "./components/common";
 import { localStorage, api } from "./utils";
@@ -71,6 +72,7 @@ function App() {
           <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
           <ProtectedRoute path="/account" component={AccountPage} />
+          <ProtectedRoute path="/profile" component={ProfilePage} />
 
           <Route path="/signup">
             <SigninPage signup />
