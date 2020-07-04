@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Typography as T, CircularProgress } from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { AppPage, toasts } from "../common";
@@ -24,13 +23,26 @@ function clean(word) {
 }
 
 const useStyles = makeStyles({
-  header: { padding: "15px 10px 10px 10px", borderBottom: "1px solid grey" },
-  body: { padding: "20px", textAlign: "center", fontFamily: "noto-serif, serif" },
-  narrowContainer: { display: "inline-block", width: "100%", maxWidth: "800px" },
-  title: { fontSize: "35px", marginBottom: "10px", textAlign: "center", fontWeight: "bold" },
+  headerContainer: { textAlign: "center" },
+  header: {
+    display: "inline-block",
+    width: "100%",
+    maxWidth: "860px",
+    padding: "15px 10px 10px 10px",
+    backgroundColor: "skyblue",
+  },
+  body: { textAlign: "center", fontFamily: "crimson-text, serif" },
+  narrowContainer: {
+    display: "inline-block",
+    width: "100%",
+    maxWidth: "860px",
+    padding: "30px 40px",
+    backgroundColor: "white",
+  },
+  title: { fontSize: "34px", marginBottom: "10px", textAlign: "center", fontWeight: "bold" },
   subtitle: { fontSize: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold" },
-  paragraph: { fontSize: "16px", marginBottom: "10px", textAlign: "left" },
-  block: { fontFamily: "noto-serif, serif" },
+  paragraph: { fontSize: "18px", marginBottom: "10px", textAlign: "left" },
+  block: { fontFamily: "crimson-text, serif" },
   unknown: { fontFamily: "inherit", backgroundColor: "blue" },
 });
 
@@ -200,10 +212,14 @@ function TextDocumentPage() {
 
   return (
     <AppPage location="documents" id="document-markup-page">
-      <Grid container justify="space-between" className={classes.header}>
-        <T>Published by: The Voctail Team</T>
-        <Rating value={4} precision={0.5} className={classes.rating} name="Document Rating" />
-      </Grid>
+      <div className={classes.headerContainer}>
+        <div className={classes.header}>
+          <Grid container justify="space-between">
+            <T>Published by: The Voctail Team</T>
+            <div />
+          </Grid>
+        </div>
+      </div>
       <div className={classes.body} onMouseOver={mouseOverWord} onMouseOut={mouseOutWord} onClick={clickWord}>
         <div className={classes.narrowContainer}>{blocks}</div>
 

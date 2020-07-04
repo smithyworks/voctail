@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     padding: "30px 20px",
   },
   priceContainer: {
-    padding: "30px 0",
+    paddingBottom: "30px",
   },
   actionContainer: {
     paddingBottom: "30px",
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
     backgroundColor: "grey",
     fontWeight: "bold",
   },
-  premiumButton: { frontWeight: "bold" },
+  premiumButton: { fontWeight: "bold" },
   starIcon: {
     margin: "0 5px -4px 0",
   },
@@ -89,7 +89,7 @@ function AccountPage() {
           <Grid item xs={4} className={classes.freeOffer} component={Paper}>
             <Grid container direction="column">
               <Grid item className={classes.freeOfferTitle}>
-                <Typography align="center" variant="h6">
+                <Typography align="center" variant="h5">
                   Free Membership
                 </Typography>
               </Grid>
@@ -105,7 +105,7 @@ function AccountPage() {
 
               <Grid item className={classes.priceContainer}>
                 <Typography variant="h4" align="center">
-                  0.00 €
+                  0,00 €
                 </Typography>
                 <Typography variant="subtitle1" align="center">
                   -
@@ -123,7 +123,7 @@ function AccountPage() {
           <Grid item xs={4} className={classes.premiumOffer} component={Paper}>
             <Grid container direction="column">
               <Grid item className={classes.premiumOfferTitle}>
-                <Typography align="center" variant="h6">
+                <Typography align="center" variant="h5">
                   <StarIcon className={classes.starIcon} /> Premium Membership
                 </Typography>
               </Grid>
@@ -139,7 +139,7 @@ function AccountPage() {
 
               <Grid item className={classes.priceContainer}>
                 <Typography variant="h4" align="center">
-                  7.99 €
+                  7,99 €
                 </Typography>
                 <Typography variant="subtitle1" align="center">
                   per month

@@ -63,7 +63,7 @@ function UserMenuButton({ masquerading, premium }) {
 
   const endMasqueradeButton = masquerading ? (
     <VTButton
-      accept
+      neutral
       variant="contained"
       className={classes.endMasquerade}
       onClick={endMasquerade}
