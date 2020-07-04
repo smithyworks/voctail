@@ -10,6 +10,7 @@ import Error404Page from "./Error404Page.js";
 import IntroPage from "./IntroPage.js";
 import AdminPage from "./AdminPage";
 import TextDocumentPage from "./TextDocumentPage";
+import AccountPage from "./AccountPage";
 
 export {
   DashboardPage,
@@ -24,4 +25,5 @@ export {
   IntroPage,
   AdminPage,
   TextDocumentPage,
+  AccountPage,
 };

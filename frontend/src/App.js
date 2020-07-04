@@ -14,6 +14,7 @@ import {
   ClassroomsPage,
   ClassroomsCreatePage,
   ClassroomsSavedPage,
+  AccountPage,
 } from "./components";
 import { toasts } from "./components/common";
 import { localStorage, api } from "./utils";
@@ -53,7 +54,7 @@ function App() {
           if (res) setUser(res.data);
         })
         .catch((err) => toasts.toastError("Error communicating with the server!"));
-  }, [loggedIn]);
+  }, [loggedIn, count]);
 
   return (
     <UserContext.Provider value={user}>
@@ -69,6 +70,7 @@ function App() {
           <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
           <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
+          <ProtectedRoute path="/account" component={AccountPage} />
 
           <Route path="/signup">
             <SigninPage signup />

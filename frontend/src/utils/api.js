@@ -95,3 +95,9 @@ export function addStudentToClassroom(student_id) {
 export function addDocumentToClassroom(document_id) {
   return axios.post(`${base}/add-document-to-classroom`, { document_id });
 }
+
+// membership
+
+export function setPremium(premium) {
+  return axios.post(`${base}/set-premium`, { premium: !!premium });
+}

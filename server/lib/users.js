@@ -14,4 +14,18 @@ async function userHandler(req, res) {
   }
 }
 
-module.exports = { userHandler };
+async function setPremiumHandler(req, res) {
+  try {
+    const { user_id, masquerading } = req.authData.user;
+    const { premium } = req.body;
+
+    if (!masquerading) await query("UPDATE users SET premium = $1 WHERE user_id = $2", [premium, user_id]);
+
+    res.sendStatus(200);
+  } catch (err) {
+    log(error);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+module.exports = { userHandler, setPremiumHandler };
