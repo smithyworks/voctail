@@ -4,7 +4,7 @@ import { Grid, Typography as T, CircularProgress } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/core/styles";
 
-import AppPage from "../common/AppPage";
+import { AppPage, toasts } from "../common";
 import TranslationPopup from "./TranslationPopup.js";
 import AddTranslationDialog from "./AddTranslationDialog";
 import { api } from "../../utils";
@@ -74,7 +74,7 @@ function TextDocumentPage() {
         setDoc(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        toasts.toastError("Encountered an error communicating with the server!");
       });
   }, [document_id, reloadCount]); // eslint-disable-line
 

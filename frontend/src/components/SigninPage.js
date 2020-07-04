@@ -9,7 +9,7 @@ import { validateEmail, validatePassword, MIN_PASS_LENGTH } from "../utils/valid
 import { localStorage, api } from "../utils";
 import { refresh } from "../App.js";
 import AppPage from "./common/AppPage";
-import logo from "../images/logo_green.png";
+import logo from "../assets/logo_green.png";
 
 const useStyles = makeStyles({
   page: {

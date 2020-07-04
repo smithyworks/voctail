@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Typography as T,
-  Button,
   Dialog,
   DialogTitle,
   DialogActions,
@@ -12,13 +11,14 @@ import {
 import WarningIcon from "@material-ui/icons/Warning";
 import { makeStyles } from "@material-ui/core/styles";
 
+import { VTButton } from "../common";
+
 const useStyles = makeStyles({
   title: {
     display: "flex",
-    alignItems: "flex-end",
+    alignItems: "center",
     "& *": { color: "red" },
   },
-  titleSpan: { marginBottom: "-6px" },
   icon: { marginRight: "5px", fontSize: "30px" },
   confirmTitle: {
     marginTop: "5px",
@@ -53,7 +53,7 @@ function WarningDialog({ open, info }) {
       <DialogTitle disableTypography>
         <T variant="h6" className={classes.title}>
           <WarningIcon className={classes.icon} fontSize="inherit" />
-          <span className={classes.titleSpan}>{info?.title}</span>
+          <span>{info?.title}</span>
         </T>
       </DialogTitle>
       <DialogContent>
@@ -61,10 +61,12 @@ function WarningDialog({ open, info }) {
         {confirmInput}
       </DialogContent>
       <DialogActions>
-        <Button onClick={_close}>Cancel</Button>
-        <Button onClick={info?.onConfirm} disabled={disabled}>
+        <VTButton neutral onClick={_close}>
+          Cancel
+        </VTButton>
+        <VTButton danger onClick={info?.onConfirm} disabled={disabled}>
           Confirm
-        </Button>
+        </VTButton>
       </DialogActions>
     </Dialog>
   );

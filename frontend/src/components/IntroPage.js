@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AppPage from "./common/AppPage";
 
-import backgroundImage from "../images/logo_green.png";
+import backgroundImage from "../assets/logo_green.png";
 
 const useStyles = makeStyles({
   grid: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     width: "100%",
   },
   bar: { backgroundColor: "#555" },
-  backgroundImage: "frontend/src/images/logo_green.png",
+  backgroundImage: "frontend/src/assets/logo_green.png",
   backgroundPosition: "center",
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",

@@ -4,8 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AppPage from "./common/AppPage";
 
-import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import TextField from "@material-ui/core/TextField";
 

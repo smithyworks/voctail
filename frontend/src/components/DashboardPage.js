@@ -15,10 +15,7 @@ import {
   DialogContentText,
   TextField,
   Checkbox,
-  Menu,
   MenuItem,
-  Snackbar,
-  ListSubheader,
   InputLabel,
   FormHelperText,
   FormControl,
@@ -29,7 +26,6 @@ import { Link } from "react-router-dom";
 
 //icons
 import LocalBarIcon from "@material-ui/icons/LocalBar";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import AddIcon from "@material-ui/icons/Add";
 import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
@@ -38,15 +34,11 @@ import AppPage from "./common/AppPage";
 
 import { api } from "../utils";
 
-import { deleteDocument, document } from "../utils/api";
-
 //example tile images
-import shortStoriesPreview from "../images/books.jpg";
-import fairyTalesPreview from "../images/fairytale.jpg";
-import newspaperArticlesPreview from "../images/newspaper.jpg";
-import otherDocumentsPreview from "../images/others.jpg";
-
-import MuiAlert from "@material-ui/lab/Alert";
+import shortStoriesPreview from "../assets/books.jpg";
+import fairyTalesPreview from "../assets/fairytale.jpg";
+import newspaperArticlesPreview from "../assets/newspaper.jpg";
+import otherDocumentsPreview from "../assets/others.jpg";
 
 const useStyles = makeStyles((theme) => ({
   container: { height: 200, width: "100%" },
@@ -107,7 +99,7 @@ function DocumentOverviewPopUp({
         <Button onClick={onClose} color="primary">
           Delete document
         </Button>
-        <Button component={Link} to={"/document/" + documentId} color="primary">
+        <Button component={Link} to={"/documents/" + documentId} color="primary">
           View document
         </Button>
       </DialogActions>
@@ -153,11 +145,10 @@ function AddNewDocument() {
 
   const handleUpload = () => {
     handleAddClose();
-    UploadAlert();
 
     //todo
-    {
-      /*  const [successfull, setSuccessfull] =useState(false);
+    // {
+    /*  const [successfull, setSuccessfull] =useState(false);
 
       const [open, setOpen] = useState(true);
       const handleClose = () => {
@@ -175,7 +166,7 @@ function AddNewDocument() {
           setState("error");
         }
       }*/
-    }
+    // }
   };
 
   return (
@@ -288,53 +279,27 @@ function AddNewDocument() {
   );
 }
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+// function ManageDocuments() {
+//   const [anchorEl, setAnchorEl] = React.useState(null);
+//   const classes = useStyles();
+//   const handleManageClick = (event) => {
+//     setAnchorEl(event.currentTarget);
+//   };
+//   const handleManageClose = () => {
+//     setAnchorEl(null);
+//   };
+//   return (
+//     <div>
+//       <IconButton aria-label="more" color="primary" onClick={handleManageClick}>
+//         <MoreVertIcon />
+//       </IconButton>
 
-function UploadAlert() {
-  const classes = useStyles();
-  const [open, setOpen] = useState(true);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  return {
-    //todo     <div className={classes.alert}>
-    //       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-    //         <Alert onClose={handleClose} severity="error">
-    //           The Upload failed!
-    //         </Alert>
-    //       </Snackbar>
-    //     </div>
-  };
-}
-
-function ManageDocuments() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const classes = useStyles();
-  const handleManageClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleManageClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div>
-      <IconButton aria-label="more" color="primary" onClick={handleManageClick}>
-        <MoreVertIcon />
-      </IconButton>
-
-      <Menu id="manage-document" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleManageClose}>
-        <MenuItem onClick={deleteDocument}> Delete document</MenuItem>
-      </Menu>
-    </div>
-  );
-}
+//       <Menu id="manage-document" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleManageClose}>
+//         <MenuItem onClick={deleteDocument}> Delete document</MenuItem>
+//       </Menu>
+//     </div>
+//   );
+// }
 
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {

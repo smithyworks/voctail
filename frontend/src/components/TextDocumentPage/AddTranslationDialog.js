@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import {
   Typography as T,
-  Button,
   Dialog,
   DialogTitle,
   DialogActions,
@@ -10,6 +9,8 @@ import {
   TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
+import { VTButton } from "../common";
 
 const useStyles = makeStyles({
   title: {
@@ -50,7 +51,9 @@ function AddTranslationDialog({ open, word_id, vocabulary, translations, onSubmi
         <TextField variant="outlined" margin="dense" onChange={(e) => (valueRef.current = e.target.value)} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={_submit}>Submit</Button>
+        <VTButton neutral onClick={_submit}>
+          Submit
+        </VTButton>
       </DialogActions>
     </Dialog>
   );
