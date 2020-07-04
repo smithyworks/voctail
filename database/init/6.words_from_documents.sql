@@ -1,1073 +1,1073 @@
 COPY words (word_id, word, ignore, language) FROM stdin;
-159050	natasha	f	english
-159051	sonja	f	english
-159052	began	f	english
-159053	became	f	english
-159054	wears	f	english
-159055	wakes	f	english
-159056	sleeps	f	english
-159057	takes	f	english
-159058	could	f	english
-159059	“a	f	english
-159060	you”	f	english
-159061	says	f	english
-159062	rubs	f	english
-159063	“about	f	english
-159064	what”	f	english
-159065	hesitates	f	english
-159066	“hes	f	english
-159067	here”	f	english
-159068	introduces	f	english
-159069	“my	f	english
-159070	akhmed”	f	english
-159071	speaks	f	english
-159072	feels	f	english
-159073	conversing	f	english
-159074	descends	f	english
-159075	akhmeds	f	english
-159076	thinks	f	english
-159077	hes	f	english
-159078	remembers	f	english
-159079	has	f	english
-159080	countrys	f	english
-159081	her”	f	english
-159082	akhmed	f	english
-159083	“you	f	english
-159084	“this	f	english
-159085	isnt	f	english
-159086	orphanage”	f	english
-159087	“there	f	english
-159088	orphanages”	f	english
-159089	receives	f	english
-159090	tends	f	english
-159091	arrive	f	english
-159092	day	f	english
-159093	be	f	english
-159094	“her	f	english
-159095	took	f	english
-159096	mother”	f	english
-159097	“today	f	english
-159098	monday”	f	english
-159099	sees	f	english
-159100	“i	f	english
-159101	cant”	f	english
-159102	falters	f	english
-159103	war”	f	english
-159104	“in	f	english
-159105	girl”	f	english
-159106	degrees	f	english
-159107	flee	f	english
-159108	“parents	f	english
-159109	decide	f	english
-159110	afford	f	english
-159111	“then	f	english
-159112	working”	f	english
-159113	“does	f	english
-159114	speak”	f	english
-159115	“whats	f	english
-159116	name”	f	english
-159117	“havaa”	f	english
-159118	months	f	english
-159119	sonjas	f	english
-159120	italy	f	english
-159121	couldnt	f	english
-159122	believe	f	english
-159123	home”	f	english
-159124	gestured	f	english
-159125	natasha”	f	english
-159126	pills	f	english
-159127	natashas	f	english
-159128	accepts	f	english
-159129	shows	f	english
-159130	“where	f	english
-159131	everything”	f	english
-159132	asks	f	english
-159133	hypodermics	f	english
-159134	iv	f	english
-159135	forceps—any	f	english
-159136	taped-over	f	english
-159137	windowpanes	f	english
-159138	“the	f	english
-159139	open”	f	english
-159140	“trauma	f	english
-159141	thats	f	english
-159142	maternity”	f	english
-159143	know	f	english
-159144	dying”	f	english
-159145	“no”	f	english
-159146	“they	f	english
-159147	nods	f	english
-159148	wouldnt	f	english
-159149	didnt	f	english
-159150	babysitters	f	english
-159151	talking—and	f	english
-159152	pity—but	f	english
-159153	“its	f	english
-159154	tree”	f	english
-159155	hampshire”	f	english
-159156	“we	f	english
-159157	house”	f	english
-159158	though”	f	english
-159159	home—on	f	english
-159160	time—mrs	f	english
-159161	days”	f	english
-159162	wasnt	f	english
-159163	ward”	f	english
-159164	dont	f	english
-159165	seems	f	english
-159166	sensible”	f	english
-159167	werent	f	english
-159168	“mr	f	english
-159169	allergic”	f	english
-159170	it”	f	english
-159171	hadnt	f	english
-159172	“youd	f	english
-159173	russia	f	english
-159174	pikas”	f	english
-159175	“oh	f	english
-159176	belongs	f	english
-159177	favorites”	f	english
-159178	improvise	f	english
-159179	okay”	f	english
-159180	“but	f	english
-159181	mustnt	f	english
-159182	lose	f	english
-159183	things—conversations	f	english
-159184	hed	f	english
-159185	theyd	f	english
-159186	agree	f	english
-159187	whod	f	english
-159188	elses	f	english
-159189	ive	f	english
-159190	think	f	english
-159191	book”	f	english
-159192	holmes	f	english
-159193	predominates	f	english
-159194	adler	f	english
-159195	observer--excellent	f	english
-159196	mens	f	english
-159197	admit	f	english
-159198	introduce	f	english
-159199	-	f	english
-159200	home-centred	f	english
-159201	absorb	f	english
-159202	trepoff	f	english
-159203	atkinson	f	english
-159204	trincomalee	f	english
-159205	knew	f	english
-159206	gasogene	f	english
-159207	otchumyelov	f	english
-159208	hears	f	english
-159209	pitchugin	f	english
-159210	timber-yard	f	english
-159211	seizes	f	english
-159212	makes	f	english
-159213	half-drunken	f	english
-159214	recognises	f	english
-159215	hryukin	f	english
-159216	borzoy	f	english
-159217	inquires	f	english
-159218	begins	f	english
-159219	mitry	f	english
-159220	mitritch	f	english
-159221	shan't	f	english
-159222	won't	f	english
-159223	h'm	f	english
-159224	teach	f	english
-159225	obey	f	english
-159226	yeldyrin	f	english
-159227	zhigalov	f	english
-159228	couldn't	f	english
-159229	squinteye	f	english
-159230	didn't	f	english
-159231	argue	f	english
-159232	hasn't	f	english
-159233	knows	f	english
-159234	petersburg	f	english
-159235	strangle	f	english
-159236	inquire	f	english
-159237	goes	f	english
-159238	hi	f	english
-159239	prohor	f	english
-159240	ivanitch	f	english
-159241	hear	f	english
-159242	ha-ha-ha	f	english
-159243	rrr	f	english
-159244	rrrr	f	english
-159245	threatens	f	english
-159246	yellow-coloured	f	english
-159247	three-	f	english
-159248	his-eyes	f	english
-159249	“sergeant	f	english
-159250	him”	f	english
-159251	“	f	english
-159252	”	f	english
-159253	policemans	f	english
-159254	“up	f	english
-159255	aziza	f	english
-159256	crying”	f	english
-159257	“let	f	english
-159258	cry”	f	english
-159259	“woman	f	english
-159260	boy-	f	english
-159261	sunstroke”	f	english
-159262	“did	f	english
-159263	palms”	f	english
-159264	shook	f	english
-159265	“why	f	english
-159266	im	f	english
-159267	abu	f	english
-159268	ismail	f	english
-159269	send	f	english
-159270	cigarettes”	f	english
-159271	“talk	f	english
-159272	saying”	f	english
-159273	“youve	f	english
-159274	em”	f	english
-159275	“louder	f	english
-159276	woman”	f	english
-159277	em	f	english
-159278	“when”	f	english
-159279	“just	f	english
-159280	now”	f	english
-159281	head-veil	f	english
-159282	mind”	f	english
-159283	wall”	f	english
-159284	“not	f	english
-159285	yet”	f	english
-159286	“when	f	english
-159287	ahmed	f	english
-159288	“all	f	english
-159289	boy”	f	english
-159290	“anything	f	english
-159291	want”	f	english
-159292	transferred”	f	english
-159293	to”	f	english
-159294	know”	f	english
-159295	theyre	f	english
-159296	prison”	f	english
-159297	go”	f	english
-159298	“god	f	english
-159299	knows-anywhere	f	english
-159300	knows”	f	english
-159301	sleep”	f	english
-159302	“no	f	english
-159303	awake”	f	english
-159304	“aziza	f	english
-159305	drew	f	english
-159306	norton	f	english
-159307	maysville	f	english
-159308	harding	f	english
-159309	1886	f	english
-159310	weatherboarding	f	english
-159311	vine--of	f	english
-159312	name--has	f	english
-159313	consisted	f	english
-159314	robert	f	english
-159315	cold-mannered	f	english
-159316	together--not	f	english
-159317	1884	f	english
-159318	iowa	f	english
-159319	encourage	f	english
-159320	rev	f	english
-159321	gruber	f	english
-159322	hyatt	f	english
-159323	hitched	f	english
-159324	rouse	f	english
-159325	appear	f	english
-159326	proposed--nobody	f	english
-159327	came-	f	english
-159328	-to	f	english
-159329	rootlets	f	english
-159330	unite	f	english
-159331	lacked	f	english
-159332	inference--the	f	english
-159333	counselors	f	english
-159334	retains	f	english
-159335	sit	f	english
-159336	katydids	f	english
-159337	signifies	f	english
-159338	canada	f	english
-159339	&ltgm	f	english
-159340	11	f	english
-159341	ontario	f	english
-159342	40000	f	english
-159343	minimizes	f	english
-159344	trades	f	english
-159345	gm	f	english
-159346	threaten	f	english
-159347	chrysler	f	english
-159348	inflation-indexed	f	english
-159349	gives	f	english
-159350	pct	f	english
-159351	15	f	english
-159352	step-daughter	f	english
-159353	earn	f	english
-159354	kitchen-maid	f	english
-159355	step-daughters	f	english
-159356	hazel-twig	f	english
-159357	choose	f	english
-159358	begged	f	english
-159359	step-mother	f	english
-159360	allow	f	english
-159361	dish-full	f	english
-159362	turtle-doves	f	english
-159363	kitchen-window	f	english
-159364	half-an-hour	f	english
-159365	pigeon-house	f	english
-159366	oil-lamp	f	english
-159367	step-sisters	f	english
-159368	pear-tree	f	english
-159369	step-children	f	english
-159370	follow	f	english
-159371	curtseyed	f	english
-159372	feedstocks	f	english
-159373	90	f	english
-159374	propel	f	english
-159375	1990	f	english
-159376	gaf	f	english
-159377	privately-held	f	english
-159378	inc	f	english
-159379	seek	f	english
-159380	ashland	f	english
-159381	kentucky-based	f	english
-159382	oreffice	f	english
-159383	dow	f	english
-159384	co	f	english
-159385	analysts	f	english
-159386	30	f	english
-159387	40	f	english
-159388	dosher	f	english
-159389	argins	f	english
-159390	300	f	english
-159391	741	f	english
-159392	mln	f	english
-159393	dlrs	f	english
-159394	1985	f	english
-159395	25	f	english
-159396	58	f	english
-159397	samuel	f	english
-159398	heyman	f	english
-159399	20	f	english
-159400	1987	f	english
-159401	13	f	english
-159402	54	f	english
-159403	once-sickly	f	english
-159404	198	f	english
-159405	eliminate	f	english
-159406	acquire	f	english
-159407	wr	f	english
-159408	buyers	f	english
-159409	dupont	f	english
-159410	monsanto	f	english
-159411	houston-based	f	english
-159412	believes	f	english
-159413	generate	f	english
-159414	700	f	english
-159415	gordon	f	english
-159416	conoco	f	english
-159417	texas	f	english
-159418	grow	f	english
-159419	garo	f	english
-159420	armen	f	english
-159421	witter	f	english
-159422	reynolds	f	english
-159423	makers	f	english
-159424	continues	f	english
-159425	therell	f	english
-159426	ottoman—	f	english
-159427	sit—id	f	english
-159428	suppose	f	english
-159429	ottoman—i	f	english
-159430	it—no	f	english
-159431	place—two	f	english
-159432	glasses—does	f	english
-159433	determined—it	f	english
-159434	whos	f	english
-159435	soul—and	f	english
-159436	again—i	f	english
-159437	it—until	f	english
-159438	arent	f	english
-159439	likely—which	f	english
-159440	exude	f	english
-159441	garden—when	f	english
-159442	realise	f	english
-159443	house—it	f	english
-159444	doesnt	f	english
-159445	sometimes—but	f	english
-159446	idea—	f	english
-159447	itll	f	english
-159448	summer—this	f	english
-159449	summer—and	f	english
-159450	thatll	f	english
-159451	martinis	f	english
-159452	campari	f	english
-159453	vinsobres	f	english
-159454	upstairs—and	f	english
-159455	shant	f	english
-159456	unless—no	f	english
-159457	theyve	f	english
-159458	myself—i	f	english
-159459	myself—ill	f	english
-159460	possess	f	english
-159461	idea—a	f	english
-159462	actually—of	f	english
-159463	mirror—id	f	english
-159464	leans	f	english
-159465	prods	f	english
-159466	womans	f	english
-159467	way—in	f	english
-159468	room—that	f	english
-159469	work—that	f	english
-159470	work—but	f	english
-159471	unperturbed—im	f	english
-159472	way—and	f	english
-159473	myself—that	f	english
-159474	appreciate	f	english
-159475	allocate	f	english
-159476	contains	f	english
-159477	condescension—who	f	english
-159478	course—i	f	english
-159479	contribute	f	english
-159480	enjoy	f	english
-159481	infer	f	english
-159482	theyll	f	english
-159483	procure	f	english
-159484	breadstick	f	english
-159485	happens	f	english
-159486	me—ive	f	english
-159487	tarte	f	english
-159488	normande	f	english
-159489	intact—and	f	english
-159490	on—	f	english
-159491	presume	f	english
-159492	conclude	f	english
-159493	reminds	f	english
-159494	hasnt	f	english
-159495	wore	f	english
-159496	day—the	f	english
-159497	flipped	f	english
-159498	face—near	f	english
-159499	chin—near	f	english
-159500	convince	f	english
-159501	possible—and	f	english
-159502	theres	f	english
-159503	way—some	f	english
-159504	builds	f	english
-159505	nametag	f	english
-159506	hey	f	english
-159507	yeah	f	english
-159508	pulls	f	english
-159509	spins	f	english
-159510	gets	f	english
-159511	whatd	f	english
-159512	reads	f	english
-159513	flinches	f	english
-159514	puts	f	english
-159515	take-a-penny-leave-a-penny	f	english
-159516	sucks	f	english
-159517	wanna	f	english
-159518	it—the	f	english
-159519	roars	f	english
-159520	youve	f	english
-159521	havent	f	english
-159522	glitters	f	english
-159523	licks	f	english
-159524	youre	f	english
-159525	chuffs	f	english
-159526	whats	f	english
-159527	snorts	f	english
-159528	shrugs	f	english
-159529	reaches	f	english
-159530	agrees	f	english
-159531	relax	f	english
-159532	flutters	f	english
-159533	starts	f	english
-159534	deepens	f	english
-159535	plucks	f	english
-159536	tilts	f	english
-159537	blacken	f	english
-159538	discards	f	english
-159539	occurs	f	english
-159540	allison	f	english
-159541	sarah	f	english
-159542	tiffany	f	english
-159543	hey—the	f	english
-159544	exhales	f	english
-159545	croons	f	english
-159546	gonna	f	english
-159547	half-clipped	f	english
-159548	breathes	f	english
-159549	sharpens	f	english
-159550	jerks	f	english
-159551	moves	f	english
-159552	melts	f	english
-159553	pretends	f	english
-159554	sobs	f	english
-159555	lets	f	english
-159556	get—	f	english
-159557	slaps	f	english
-159558	smashes	f	english
-159559	congeals	f	english
-159560	jabbing	f	english
-159561	hisses	f	english
-159562	cops—the	f	english
-159563	gretel	f	english
-159564	grethel	f	english
-159565	sup	f	english
-159566	devour	f	english
-159567	starve	f	english
-159568	1	f	english
-159569	manage	f	english
-159570	forsake	f	english
-159571	forget	f	english
-159572	good-bye	f	english
-159573	chimney-pot	f	english
-159574	listen	f	english
-159575	window-that	f	english
-159576	window-pane	f	english
-159577	entice	f	english
-159578	weep	f	english
-159579	bade	f	english
-159580	crab-shells	f	english
-159581	wondered	f	english
-159582	howled	f	english
-159583	stable-door	f	english
-159584	stepping-stones	f	english
-159585	maggies	f	english
-159586	hemlocks	f	english
-159587	grows	f	english
-159588	hangs	f	english
-159589	spends	f	english
-159590	guests—the	f	english
-159591	works—can	f	english
-159592	childrens	f	english
-159593	shes	f	english
-159594	arrives	f	english
-159595	birdsongs	f	english
-159596	loves	f	english
-159597	listens	f	english
-159598	sweeps	f	english
-159599	lopes	f	english
-159600	cleans	f	english
-159601	waits	f	english
-159602	sulks	f	english
-159603	boasts	f	english
-159604	fits	f	english
-159605	knocks	f	english
-159606	passed-out	f	english
-159607	porches	f	english
-159608	bakes	f	english
-159609	boundarylessness	f	english
-159610	5	f	english
-159611	plc	f	english
-159612	xj-6	f	english
-159613	expects	f	english
-159614	uk	f	english
-159615	egan	f	english
-159616	1986	f	english
-159617	8304	f	english
-159618	stg	f	english
-159619	1208	f	english
-159620	1213	f	english
-159621	25000	f	english
-159622	47000	f	english
-159623	65	f	english
-159624	edwards	f	english
-159625	compete	f	english
-159626	restrict	f	english
-159627	12-month	f	english
-159628	10	f	english
-159629	buys	f	english
-159630	80	f	english
-159631	591p	f	english
-159632	611p	f	english
-159633	jim	f	english
-159634	blue-jay	f	english
-159635	understand	f	english
-159636	california	f	english
-159637	translate	f	english
-159638	ﬂowery	f	english
-159639	ﬁgure	f	english
-159640	ﬁne	f	english
-159641	ﬂuent	f	english
-159642	“showing	f	english
-159643	off”	f	english
-159644	blue-jays	f	english
-159645	he—	f	english
-159646	“theres	f	english
-159647	book-talk—and	f	english
-159648	too—just	f	english
-159649	language—why	f	english
-159650	does—but	f	english
-159651	youll	f	english
-159652	ﬁghting	f	english
-159653	aint	f	english
-159654	measure—because	f	english
-159655	belong	f	english
-159656	jays	f	english
-159657	deceive	f	english
-159658	betray	f	english
-159659	ﬁve	f	english
-159660	solemnest	f	english
-159661	cram	f	english
-159662	out-swear	f	english
-159663	swear	f	english
-159664	reserve-powers	f	english
-159665	me—i	f	english
-159666	scolding—just	f	english
-159667	scolding—a	f	english
-159668	do—maybe	f	english
-159669	blue-jays”	f	english
-159670	ﬁrst	f	english
-159671	house—been	f	english
-159672	roof—just	f	english
-159673	ceiling—nothing	f	english
-159674	ﬂoor	f	english
-159675	reckon	f	english
-159676	wings—which	f	english
-159677	signiﬁes	f	english
-159678	gratiﬁcation	f	english
-159679	understand—and	f	english
-159680	hole—blamed	f	english
-159681	details—walked	f	english
-159682	spied	f	english
-159683	ﬁnally	f	english
-159684	tend	f	english
-159685	right—chance	f	english
-159686	“so	f	english
-159687	ﬂew	f	english
-159688	ﬂirt	f	english
-159689	altogether—but	f	english
-159690	ﬁll	f	english
-159691	d—d	f	english
-159692	“and	f	english
-159693	hove	f	english
-159694	more—he	f	english
-159695	ﬂop	f	english
-159696	tuckered	f	english
-159697	a-drooping	f	english
-159698	ice-pitcher	f	english
-159699	“he	f	english
-159700	chimbly	f	english
-159701	mistook	f	english
-159702	“another	f	english
-159703	yonders	f	english
-159704	leather-headed	f	english
-159705	peared	f	english
-159706	ﬂush	f	english
-159707	jawing	f	english
-159708	chuckle-headed	f	english
-159709	galley-west	f	english
-159710	ﬂopped	f	english
-159711	hangd	f	english
-159712	a-swooping	f	english
-159713	“well	f	english
-159714	roosted	f	english
-159715	house-top	f	english
-159716	guffawed	f	english
-159717	scotia	f	english
-159718	too”	f	english
-159719	&	f	english
-159720	topple	f	english
-159721	crunch-crunching	f	english
-159722	garbagemen	f	english
-159723	“can	f	english
-159724	luanne	f	english
-159725	mommas	f	english
-159726	me”	f	english
-159727	dandelions	f	english
-159728	sprawled	f	english
-159729	fool”	f	english
-159730	care”	f	english
-159731	scrunched	f	english
-159732	“luanne	f	english
-159733	termites”	f	english
-159734	jackson	f	english
-159735	streetlamps	f	english
-159736	right”	f	english
-159737	again”	f	english
-159738	late”	f	english
-159739	“promise	f	english
-159740	trim”	f	english
-159741	represent	f	english
-159742	mammals”	f	english
-159743	first”	f	english
-159744	“to	f	english
-159745	grow”	f	english
-159746	“how	f	english
-159747	puppy”	f	english
-159748	hamsters”	f	english
-159749	behave	f	english
-159750	thank	f	english
-159751	drank	f	english
-159752	hadn't	f	english
-159753	arose	f	english
-159754	beacons	f	english
-159755	--	f	english
-159756	rostam	f	english
-159757	200	f	english
-159758	60	f	english
-159759	metres	f	english
-159760	destroyers	f	english
-159761	1000	f	english
-159762	iran	f	english
-159763	chinese-made	f	english
-159764	us-owned	f	english
-159765	liberian-flagged	f	english
-159766	kuwait	f	english
-159767	iraq	f	english
-159768	schuler	f	english
-159769	csis	f	english
-159770	washington	f	english
-159771	deter	f	english
-159772	tit-for-tat	f	english
-159773	harlan	f	english
-159774	ullman	f	english
-159775	ex-career	f	english
-159776	appraoch	f	english
-159777	suffer	f	english
-159778	blockading	f	english
-159779	neogtiating	f	english
-159780	impose	f	english
-159781	negotiate	f	english
-159782	1980	f	english
-159783	blames	f	english
-159784	entailed	f	english
-159785	i-style	f	english
-159786	slushed	f	english
-159787	babys	f	english
-159788	fisted	f	english
-159789	undo	f	english
-159790	unbind	f	english
-159791	plaits	f	english
-159792	ells	f	english
-159793	gothel	f	english
-159794	comest	f	english
-159795	shalt	f	english
-159796	day-time	f	english
-159797	hast	f	english
-159798	hard-hearted	f	english
-159799	window-hasp	f	english
-159800	aha	f	english
-159801	sits	f	english
-159802	sings	f	english
-159803	sprang	f	english
-159804	twin-children	f	english
-159805	pleases	f	english
-159806	accomplish	f	english
-159807	roast-ribs	f	english
-159808	sheepshanks	f	english
-159809	spindleshanks	f	english
-159810	contain	f	english
-159811	soften	f	english
-159812	twists	f	english
-159813	rosamond	f	english
-159814	thorn-hedge	f	english
-159815	dissuade	f	english
-159816	castle-yard	f	english
-159817	hunting-dogs	f	english
-159818	white-gold	f	english
-159819	head-you	f	english
-159820	fireplacemade	f	english
-159821	ofthem	f	english
-159822	wabt	f	english
-159823	popsicles	f	english
-159824	wouldn't	f	english
-159825	feild	f	english
-159826	ledto	f	english
-159827	omit	f	english
-159828	april	f	english
-159829	allen	f	english
-159830	embarassed	f	english
-159831	barest	f	english
-159832	survive	f	english
-159833	becomes	f	english
-159834	road-	f	english
-159835	carl	f	english
-159836	spitzweg	f	english
-159837	1850that	f	english
-159838	trysdale	f	english
-159839	singular-looking	f	english
-159840	lowpitched	f	english
-159841	strove	f	english
-159842	--his	f	english
-159843	unbedecked	f	english
-159844	been--but	f	english
-159845	why--	f	english
-159846	nothing--	f	english
-159847	remarshalled	f	english
-159848	night--the	f	english
-159849	carruthers	f	english
-159850	pierce	f	english
-159851	if--	f	english
-159852	cockroachy	f	english
-159853	connive	f	english
-159854	sacrifice--please	f	english
-159855	observe	f	english
-159856	rests	f	english
-159857	punta	f	english
-159858	redonda	f	english
-159859	garcia	f	english
-159860	smuggles	f	english
-159861	smile--is	f	english
-159862	imagine	f	english
-159863	name--ventomarme	f	english
-159864	attaches	f	english
-159865	insists	f	english
-159866	jumping-on-a-chair-at-the-sight-of-a-mouse	f	english
-159867	widen	f	english
-159868	realizes	f	english
-159869	rafters-the	f	english
-159870	warn	f	english
-159871	frighten	f	english
-159872	sobers	f	english
-159873	50	f	english
-159874	emerge	f	english
-159875	wynnes	f	english
-159876	walpurgis	f	english
-159877	nettlepink	f	english
-159878	arch-duchess	f	english
-159879	adela	f	english
-159880	chemping	f	english
-159881	allurements	f	english
-159882	accompany	f	english
-159883	parcel-carrying	f	english
-159884	invests	f	english
-159885	accompanies	f	english
-159886	novel-writers	f	english
-159887	widowed	f	english
-159888	meets	f	english
-159889	table-linen	f	english
-159890	over-fond	f	english
-159891	millicent	f	english
-159892	colson	f	english
-159893	extragavance	f	english
-159894	chose	f	english
-159895	restoratives	f	english
-159896	rumples	f	english
-159897	develop	f	english
-159898	evaporate	f	english
-159899	suit-cases	f	english
-159900	portmanteaux	f	english
-159901	wriggled	f	english
-159902	unstayable	f	english
-159903	religion	f	english
-159904	salsal	f	english
-159905	facebook	f	english
-159906	“good	f	english
-159907	hajjar	f	english
-159908	flowers”	f	english
-159909	strong”	f	english
-159910	umm	f	english
-159911	dala	f	english
-159912	salman	f	english
-159913	reassure	f	english
-159914	remind	f	english
-159915	fifties	f	english
-159916	pricks	f	english
-159917	salam	f	english
-159918	reduce	f	english
-159919	snuggle	f	english
-159920	reduvius	f	english
-159921	secrete	f	english
-159922	endure	f	english
-159923	decapitations	f	english
-159924	womens	f	english
-159925	allahu	f	english
-159926	akbar	f	english
-159927	poses	f	english
-159928	reminisce	f	english
-159929	expire	f	english
-159930	salmans	f	english
-159931	inspect	f	english
-159932	salsals	f	english
-159933	youd	f	english
-159934	leg”	f	english
-159935	“what	f	english
-159936	egg”	f	english
-159937	“perhaps	f	english
-159938	rabbit”	f	english
-159939	bodyguards	f	english
-159940	“wasnt	f	english
-159941	24-7	f	english
-159942	tolstoy	f	english
-159943	hajjar”	f	english
-159944	killers	f	english
-159945	deals	f	english
-159946	saddam	f	english
-159947	husseins	f	english
-159948	tigris	f	english
-159949	manuscripts	f	english
-159950	bargained	f	english
-159951	mans	f	english
-159952	toyota	f	english
-159953	shouldnt	f	english
-159954	photoshop	f	english
-159955	“do	f	english
-159956	picture”	f	english
-159957	culture”	f	english
-159958	“what”	f	english
-159959	deputys	f	english
-159960	holm-oak	f	english
-159961	depend	f	english
-159962	hyacinth-blossom	f	english
-159963	sing	f	english
-159964	suffers	f	english
-159965	opals	f	english
-159966	oak-tree	f	english
-159967	rose-tree	f	english
-159968	sun-dial	f	english
-159969	mermaiden	f	english
-159970	ocean-cavern	f	english
-159971	heart's-blood	f	english
-159972	life-blood	f	english
-159973	flame-	f	english
-159974	lead-pencil	f	english
-159975	pallet-bed	f	english
-159976	ebbed	f	english
-159977	top-most	f	english
-159978	water-pool	f	english
-159979	dies	f	english
-159980	to-night	f	english
-159981	cart-wheel	f	english
-159982	prove	f	english
-159983	carts	f	english
-159984	mule-	f	english
-159985	explore	f	english
-159986	carlos	f	english
-159987	kilometers	f	english
-159988	tortosa	f	english
-159989	they'll	f	english
-159990	richards	f	english
-159991	brently	f	english
-159992	assure	f	english
-159993	forestall	f	english
-159994	accept	f	english
-159995	recognize	f	english
-159996	will--as	f	english
-159997	dismiss	f	english
-159998	fellow-creature	f	english
-159999	him--sometimes	f	english
-160000	beg	f	english
-160001	door--you	f	english
-160002	travel-stained	f	english
-160003	grip-sack	f	english
-160004	disease--of	f	english
-160005	kills	f	english
-160006	droned	f	english
-160007	rang	f	english
-160008	velikopolsky	f	english
-160009	water-logged	f	english
-160010	rurik	f	english
-160011	exist	f	english
-160012	vasilisa	f	english
-160013	lukerya	f	english
-160014	stupid-looking	f	english
-160015	laborers	f	english
-160016	bless	f	english
-160017	you'll	f	english
-160018	wet-nurse	f	english
-160019	croweth	f	english
-160020	wilt	f	english
-160021	good-night	f	english
-160022	disguises	f	english
-160023	bleated	f	english
-160024	house-door	f	english
-160025	strew	f	english
-160026	clock-case	f	english
-160027	betide	f	english
-160028	zebraic	f	english
-160029	whinnied	f	english
-160030	“hello	f	english
-160031	there”	f	english
-160032	“it	f	english
-160033	today”	f	english
-160034	avoid	f	english
-160035	amuse	f	english
-160036	“thats	f	english
-160037	learns	f	english
-160038	laugh”	f	english
-160039	orfolei	f	english
-160040	carbon-based	f	english
-160041	nope	f	english
-160042	weddilei	f	english
-160043	omigod	f	english
-160044	sentients	f	english
-160045	advise	f	english
-160046	multibeings	f	english
-160047	erase	f	english
-160048	hydrogen	f	english
-160049	g445	f	english
-160050	prizewinners	f	english
-160051	extend	f	english
-160052	changeit	f	english
-160053	maintain	f	english
-160054	confer	f	english
-160055	1948	f	english
-160056	chancellors	f	english
-160057	vice-chancellors	f	english
-160058	bestow	f	english
-160059	carries	f	english
-160060	receive	f	english
-160061	lld	f	english
-160062	1962	f	english
-160063	1988	f	english
-160064	llb	f	english
-160065	1950	f	english
-160066	solicitors	f	english
-160067	mackerras	f	english
-160068	dmus	f	english
-160069	orchestras	f	english
-160070	iona	f	english
-160071	opie	f	english
-160072	1959the	f	english
-160073	1973	f	english
-160074	dlitt	f	english
-160075	jonathon	f	english
-160076	porritt	f	english
-160077	stewart	f	english
-160078	dsc	f	english
-160079	1968	f	english
-160080	1983	f	english
-160081	nitrogen	f	english
-160082	david	f	english
-160083	williams	f	english
-160084	cambridge	f	english
-160085	wolfson	f	english
-160086	honoris	f	english
-160087	indicate	f	english
-160088	pro-chancellors	f	english
-160089	includes	f	english
-160090	pro-vice-chancellors	f	english
-160091	graduands	f	english
-160092	bedell	f	english
-160093	mace-bearer	f	english
-160094	designatory	f	english
-160095	eg	f	english
-160096	ba	f	english
-160097	msc	f	english
-160098	phd	f	english
-160099	highfields	f	english
-160100	evokes	f	english
-160101	1928	f	english
-160102	9000	f	english
-160103	330	f	english
-160104	jesse	f	english
-160105	cripps	f	english
-160106	195	f	english
-160107	196	f	english
-160108	7	f	english
-160109	residences	f	english
-160110	reflects	f	english
-160111	—	f	english
-160112	150	f	english
-160113	sullivan	f	english
-160114	korfball	f	english
-160115	karnival	f	english
-160116	£100000	f	english
+159051	natasha	f	english
+159052	sonja	f	english
+159053	began	f	english
+159054	became	f	english
+159055	wears	f	english
+159056	wakes	f	english
+159057	sleeps	f	english
+159058	takes	f	english
+159059	could	f	english
+159060	“a	f	english
+159061	you”	f	english
+159062	says	f	english
+159063	rubs	f	english
+159064	“about	f	english
+159065	what”	f	english
+159066	hesitates	f	english
+159067	“hes	f	english
+159068	here”	f	english
+159069	introduces	f	english
+159070	“my	f	english
+159071	akhmed”	f	english
+159072	speaks	f	english
+159073	feels	f	english
+159074	conversing	f	english
+159075	descends	f	english
+159076	akhmeds	f	english
+159077	thinks	f	english
+159078	hes	f	english
+159079	remembers	f	english
+159080	has	f	english
+159081	countrys	f	english
+159082	her”	f	english
+159083	akhmed	f	english
+159084	“you	f	english
+159085	“this	f	english
+159086	isnt	f	english
+159087	orphanage”	f	english
+159088	“there	f	english
+159089	orphanages”	f	english
+159090	receives	f	english
+159091	tends	f	english
+159092	arrive	f	english
+159093	day	f	english
+159094	be	f	english
+159095	“her	f	english
+159096	took	f	english
+159097	mother”	f	english
+159098	“today	f	english
+159099	monday”	f	english
+159100	sees	f	english
+159101	“i	f	english
+159102	cant”	f	english
+159103	falters	f	english
+159104	war”	f	english
+159105	“in	f	english
+159106	girl”	f	english
+159107	degrees	f	english
+159108	flee	f	english
+159109	“parents	f	english
+159110	decide	f	english
+159111	afford	f	english
+159112	“then	f	english
+159113	working”	f	english
+159114	“does	f	english
+159115	speak”	f	english
+159116	“whats	f	english
+159117	name”	f	english
+159118	“havaa”	f	english
+159119	months	f	english
+159120	sonjas	f	english
+159121	italy	f	english
+159122	couldnt	f	english
+159123	believe	f	english
+159124	home”	f	english
+159125	gestured	f	english
+159126	natasha”	f	english
+159127	pills	f	english
+159128	natashas	f	english
+159129	accepts	f	english
+159130	shows	f	english
+159131	“where	f	english
+159132	everything”	f	english
+159133	asks	f	english
+159134	hypodermics	f	english
+159135	iv	f	english
+159136	forceps—any	f	english
+159137	taped-over	f	english
+159138	windowpanes	f	english
+159139	“the	f	english
+159140	open”	f	english
+159141	“trauma	f	english
+159142	thats	f	english
+159143	maternity”	f	english
+159144	know	f	english
+159145	dying”	f	english
+159146	“no”	f	english
+159147	“they	f	english
+159148	nods	f	english
+159149	wouldnt	f	english
+159150	didnt	f	english
+159151	babysitters	f	english
+159152	talking—and	f	english
+159153	pity—but	f	english
+159154	“its	f	english
+159155	tree”	f	english
+159156	hampshire”	f	english
+159157	“we	f	english
+159158	house”	f	english
+159159	though”	f	english
+159160	home—on	f	english
+159161	time—mrs	f	english
+159162	days”	f	english
+159163	wasnt	f	english
+159164	ward”	f	english
+159165	dont	f	english
+159166	seems	f	english
+159167	sensible”	f	english
+159168	werent	f	english
+159169	“mr	f	english
+159170	allergic”	f	english
+159171	it”	f	english
+159172	hadnt	f	english
+159173	“youd	f	english
+159174	russia	f	english
+159175	pikas”	f	english
+159176	“oh	f	english
+159177	belongs	f	english
+159178	favorites”	f	english
+159179	improvise	f	english
+159180	okay”	f	english
+159181	“but	f	english
+159182	mustnt	f	english
+159183	lose	f	english
+159184	things—conversations	f	english
+159185	hed	f	english
+159186	theyd	f	english
+159187	agree	f	english
+159188	whod	f	english
+159189	elses	f	english
+159190	ive	f	english
+159191	think	f	english
+159192	book”	f	english
+159193	holmes	f	english
+159194	predominates	f	english
+159195	adler	f	english
+159196	observer--excellent	f	english
+159197	mens	f	english
+159198	admit	f	english
+159199	introduce	f	english
+159200	-	f	english
+159201	home-centred	f	english
+159202	absorb	f	english
+159203	trepoff	f	english
+159204	atkinson	f	english
+159205	trincomalee	f	english
+159206	knew	f	english
+159207	gasogene	f	english
+159208	otchumyelov	f	english
+159209	hears	f	english
+159210	pitchugin	f	english
+159211	timber-yard	f	english
+159212	seizes	f	english
+159213	makes	f	english
+159214	half-drunken	f	english
+159215	recognises	f	english
+159216	hryukin	f	english
+159217	borzoy	f	english
+159218	inquires	f	english
+159219	begins	f	english
+159220	mitry	f	english
+159221	mitritch	f	english
+159222	shan't	f	english
+159223	won't	f	english
+159224	h'm	f	english
+159225	teach	f	english
+159226	obey	f	english
+159227	yeldyrin	f	english
+159228	zhigalov	f	english
+159229	couldn't	f	english
+159230	squinteye	f	english
+159231	didn't	f	english
+159232	argue	f	english
+159233	hasn't	f	english
+159234	knows	f	english
+159235	petersburg	f	english
+159236	strangle	f	english
+159237	inquire	f	english
+159238	goes	f	english
+159239	hi	f	english
+159240	prohor	f	english
+159241	ivanitch	f	english
+159242	hear	f	english
+159243	ha-ha-ha	f	english
+159244	rrr	f	english
+159245	rrrr	f	english
+159246	threatens	f	english
+159247	yellow-coloured	f	english
+159248	three-	f	english
+159249	his-eyes	f	english
+159250	“sergeant	f	english
+159251	him”	f	english
+159252	“	f	english
+159253	”	f	english
+159254	policemans	f	english
+159255	“up	f	english
+159256	aziza	f	english
+159257	crying”	f	english
+159258	“let	f	english
+159259	cry”	f	english
+159260	“woman	f	english
+159261	boy-	f	english
+159262	sunstroke”	f	english
+159263	“did	f	english
+159264	palms”	f	english
+159265	shook	f	english
+159266	“why	f	english
+159267	im	f	english
+159268	abu	f	english
+159269	ismail	f	english
+159270	send	f	english
+159271	cigarettes”	f	english
+159272	“talk	f	english
+159273	saying”	f	english
+159274	“youve	f	english
+159275	em”	f	english
+159276	“louder	f	english
+159277	woman”	f	english
+159278	em	f	english
+159279	“when”	f	english
+159280	“just	f	english
+159281	now”	f	english
+159282	head-veil	f	english
+159283	mind”	f	english
+159284	wall”	f	english
+159285	“not	f	english
+159286	yet”	f	english
+159287	“when	f	english
+159288	ahmed	f	english
+159289	“all	f	english
+159290	boy”	f	english
+159291	“anything	f	english
+159292	want”	f	english
+159293	transferred”	f	english
+159294	to”	f	english
+159295	know”	f	english
+159296	theyre	f	english
+159297	prison”	f	english
+159298	go”	f	english
+159299	“god	f	english
+159300	knows-anywhere	f	english
+159301	knows”	f	english
+159302	sleep”	f	english
+159303	“no	f	english
+159304	awake”	f	english
+159305	“aziza	f	english
+159306	drew	f	english
+159307	norton	f	english
+159308	maysville	f	english
+159309	harding	f	english
+159310	1886	f	english
+159311	weatherboarding	f	english
+159312	vine--of	f	english
+159313	name--has	f	english
+159314	consisted	f	english
+159315	robert	f	english
+159316	cold-mannered	f	english
+159317	together--not	f	english
+159318	1884	f	english
+159319	iowa	f	english
+159320	encourage	f	english
+159321	rev	f	english
+159322	gruber	f	english
+159323	hyatt	f	english
+159324	hitched	f	english
+159325	rouse	f	english
+159326	appear	f	english
+159327	proposed--nobody	f	english
+159328	came-	f	english
+159329	-to	f	english
+159330	rootlets	f	english
+159331	unite	f	english
+159332	lacked	f	english
+159333	inference--the	f	english
+159334	counselors	f	english
+159335	retains	f	english
+159336	sit	f	english
+159337	katydids	f	english
+159338	signifies	f	english
+159339	canada	f	english
+159340	&ltgm	f	english
+159341	11	f	english
+159342	ontario	f	english
+159343	40000	f	english
+159344	minimizes	f	english
+159345	trades	f	english
+159346	gm	f	english
+159347	threaten	f	english
+159348	chrysler	f	english
+159349	inflation-indexed	f	english
+159350	gives	f	english
+159351	pct	f	english
+159352	15	f	english
+159353	step-daughter	f	english
+159354	earn	f	english
+159355	kitchen-maid	f	english
+159356	step-daughters	f	english
+159357	hazel-twig	f	english
+159358	choose	f	english
+159359	begged	f	english
+159360	step-mother	f	english
+159361	allow	f	english
+159362	dish-full	f	english
+159363	turtle-doves	f	english
+159364	kitchen-window	f	english
+159365	half-an-hour	f	english
+159366	pigeon-house	f	english
+159367	oil-lamp	f	english
+159368	step-sisters	f	english
+159369	pear-tree	f	english
+159370	step-children	f	english
+159371	follow	f	english
+159372	curtseyed	f	english
+159373	feedstocks	f	english
+159374	90	f	english
+159375	propel	f	english
+159376	1990	f	english
+159377	gaf	f	english
+159378	privately-held	f	english
+159379	inc	f	english
+159380	seek	f	english
+159381	ashland	f	english
+159382	kentucky-based	f	english
+159383	oreffice	f	english
+159384	dow	f	english
+159385	co	f	english
+159386	analysts	f	english
+159387	30	f	english
+159388	40	f	english
+159389	dosher	f	english
+159390	argins	f	english
+159391	300	f	english
+159392	741	f	english
+159393	mln	f	english
+159394	dlrs	f	english
+159395	1985	f	english
+159396	25	f	english
+159397	58	f	english
+159398	samuel	f	english
+159399	heyman	f	english
+159400	20	f	english
+159401	1987	f	english
+159402	13	f	english
+159403	54	f	english
+159404	once-sickly	f	english
+159405	198	f	english
+159406	eliminate	f	english
+159407	acquire	f	english
+159408	wr	f	english
+159409	buyers	f	english
+159410	dupont	f	english
+159411	monsanto	f	english
+159412	houston-based	f	english
+159413	believes	f	english
+159414	generate	f	english
+159415	700	f	english
+159416	gordon	f	english
+159417	conoco	f	english
+159418	texas	f	english
+159419	grow	f	english
+159420	garo	f	english
+159421	armen	f	english
+159422	witter	f	english
+159423	reynolds	f	english
+159424	makers	f	english
+159425	continues	f	english
+159426	therell	f	english
+159427	ottoman—	f	english
+159428	sit—id	f	english
+159429	suppose	f	english
+159430	ottoman—i	f	english
+159431	it—no	f	english
+159432	place—two	f	english
+159433	glasses—does	f	english
+159434	determined—it	f	english
+159435	whos	f	english
+159436	soul—and	f	english
+159437	again—i	f	english
+159438	it—until	f	english
+159439	arent	f	english
+159440	likely—which	f	english
+159441	exude	f	english
+159442	garden—when	f	english
+159443	realise	f	english
+159444	house—it	f	english
+159445	doesnt	f	english
+159446	sometimes—but	f	english
+159447	idea—	f	english
+159448	itll	f	english
+159449	summer—this	f	english
+159450	summer—and	f	english
+159451	thatll	f	english
+159452	martinis	f	english
+159453	campari	f	english
+159454	vinsobres	f	english
+159455	upstairs—and	f	english
+159456	shant	f	english
+159457	unless—no	f	english
+159458	theyve	f	english
+159459	myself—i	f	english
+159460	myself—ill	f	english
+159461	possess	f	english
+159462	idea—a	f	english
+159463	actually—of	f	english
+159464	mirror—id	f	english
+159465	leans	f	english
+159466	prods	f	english
+159467	womans	f	english
+159468	way—in	f	english
+159469	room—that	f	english
+159470	work—that	f	english
+159471	work—but	f	english
+159472	unperturbed—im	f	english
+159473	way—and	f	english
+159474	myself—that	f	english
+159475	appreciate	f	english
+159476	allocate	f	english
+159477	contains	f	english
+159478	condescension—who	f	english
+159479	course—i	f	english
+159480	contribute	f	english
+159481	enjoy	f	english
+159482	infer	f	english
+159483	theyll	f	english
+159484	procure	f	english
+159485	breadstick	f	english
+159486	happens	f	english
+159487	me—ive	f	english
+159488	tarte	f	english
+159489	normande	f	english
+159490	intact—and	f	english
+159491	on—	f	english
+159492	presume	f	english
+159493	conclude	f	english
+159494	reminds	f	english
+159495	hasnt	f	english
+159496	wore	f	english
+159497	day—the	f	english
+159498	flipped	f	english
+159499	face—near	f	english
+159500	chin—near	f	english
+159501	convince	f	english
+159502	possible—and	f	english
+159503	theres	f	english
+159504	way—some	f	english
+159505	builds	f	english
+159506	nametag	f	english
+159507	hey	f	english
+159508	yeah	f	english
+159509	pulls	f	english
+159510	spins	f	english
+159511	gets	f	english
+159512	whatd	f	english
+159513	reads	f	english
+159514	flinches	f	english
+159515	puts	f	english
+159516	take-a-penny-leave-a-penny	f	english
+159517	sucks	f	english
+159518	wanna	f	english
+159519	it—the	f	english
+159520	roars	f	english
+159521	youve	f	english
+159522	havent	f	english
+159523	glitters	f	english
+159524	licks	f	english
+159525	youre	f	english
+159526	chuffs	f	english
+159527	whats	f	english
+159528	snorts	f	english
+159529	shrugs	f	english
+159530	reaches	f	english
+159531	agrees	f	english
+159532	relax	f	english
+159533	flutters	f	english
+159534	starts	f	english
+159535	deepens	f	english
+159536	plucks	f	english
+159537	tilts	f	english
+159538	blacken	f	english
+159539	discards	f	english
+159540	occurs	f	english
+159541	allison	f	english
+159542	sarah	f	english
+159543	tiffany	f	english
+159544	hey—the	f	english
+159545	exhales	f	english
+159546	croons	f	english
+159547	gonna	f	english
+159548	half-clipped	f	english
+159549	breathes	f	english
+159550	sharpens	f	english
+159551	jerks	f	english
+159552	moves	f	english
+159553	melts	f	english
+159554	pretends	f	english
+159555	sobs	f	english
+159556	lets	f	english
+159557	get—	f	english
+159558	slaps	f	english
+159559	smashes	f	english
+159560	congeals	f	english
+159561	jabbing	f	english
+159562	hisses	f	english
+159563	cops—the	f	english
+159564	gretel	f	english
+159565	grethel	f	english
+159566	sup	f	english
+159567	devour	f	english
+159568	starve	f	english
+159569	1	f	english
+159570	manage	f	english
+159571	forsake	f	english
+159572	forget	f	english
+159573	good-bye	f	english
+159574	chimney-pot	f	english
+159575	listen	f	english
+159576	window-that	f	english
+159577	window-pane	f	english
+159578	entice	f	english
+159579	weep	f	english
+159580	bade	f	english
+159581	crab-shells	f	english
+159582	wondered	f	english
+159583	howled	f	english
+159584	stable-door	f	english
+159585	stepping-stones	f	english
+159586	maggies	f	english
+159587	hemlocks	f	english
+159588	grows	f	english
+159589	hangs	f	english
+159590	spends	f	english
+159591	guests—the	f	english
+159592	works—can	f	english
+159593	childrens	f	english
+159594	shes	f	english
+159595	arrives	f	english
+159596	birdsongs	f	english
+159597	loves	f	english
+159598	listens	f	english
+159599	sweeps	f	english
+159600	lopes	f	english
+159601	cleans	f	english
+159602	waits	f	english
+159603	sulks	f	english
+159604	boasts	f	english
+159605	fits	f	english
+159606	knocks	f	english
+159607	passed-out	f	english
+159608	porches	f	english
+159609	bakes	f	english
+159610	boundarylessness	f	english
+159611	5	f	english
+159612	plc	f	english
+159613	xj-6	f	english
+159614	expects	f	english
+159615	uk	f	english
+159616	egan	f	english
+159617	1986	f	english
+159618	8304	f	english
+159619	stg	f	english
+159620	1208	f	english
+159621	1213	f	english
+159622	25000	f	english
+159623	47000	f	english
+159624	65	f	english
+159625	edwards	f	english
+159626	compete	f	english
+159627	restrict	f	english
+159628	12-month	f	english
+159629	10	f	english
+159630	buys	f	english
+159631	80	f	english
+159632	591p	f	english
+159633	611p	f	english
+159634	jim	f	english
+159635	blue-jay	f	english
+159636	understand	f	english
+159637	california	f	english
+159638	translate	f	english
+159639	ﬂowery	f	english
+159640	ﬁgure	f	english
+159641	ﬁne	f	english
+159642	ﬂuent	f	english
+159643	“showing	f	english
+159644	off”	f	english
+159645	blue-jays	f	english
+159646	he—	f	english
+159647	“theres	f	english
+159648	book-talk—and	f	english
+159649	too—just	f	english
+159650	language—why	f	english
+159651	does—but	f	english
+159652	youll	f	english
+159653	ﬁghting	f	english
+159654	aint	f	english
+159655	measure—because	f	english
+159656	belong	f	english
+159657	jays	f	english
+159658	deceive	f	english
+159659	betray	f	english
+159660	ﬁve	f	english
+159661	solemnest	f	english
+159662	cram	f	english
+159663	out-swear	f	english
+159664	swear	f	english
+159665	reserve-powers	f	english
+159666	me—i	f	english
+159667	scolding—just	f	english
+159668	scolding—a	f	english
+159669	do—maybe	f	english
+159670	blue-jays”	f	english
+159671	ﬁrst	f	english
+159672	house—been	f	english
+159673	roof—just	f	english
+159674	ceiling—nothing	f	english
+159675	ﬂoor	f	english
+159676	reckon	f	english
+159677	wings—which	f	english
+159678	signiﬁes	f	english
+159679	gratiﬁcation	f	english
+159680	understand—and	f	english
+159681	hole—blamed	f	english
+159682	details—walked	f	english
+159683	spied	f	english
+159684	ﬁnally	f	english
+159685	tend	f	english
+159686	right—chance	f	english
+159687	“so	f	english
+159688	ﬂew	f	english
+159689	ﬂirt	f	english
+159690	altogether—but	f	english
+159691	ﬁll	f	english
+159692	d—d	f	english
+159693	“and	f	english
+159694	hove	f	english
+159695	more—he	f	english
+159696	ﬂop	f	english
+159697	tuckered	f	english
+159698	a-drooping	f	english
+159699	ice-pitcher	f	english
+159700	“he	f	english
+159701	chimbly	f	english
+159702	mistook	f	english
+159703	“another	f	english
+159704	yonders	f	english
+159705	leather-headed	f	english
+159706	peared	f	english
+159707	ﬂush	f	english
+159708	jawing	f	english
+159709	chuckle-headed	f	english
+159710	galley-west	f	english
+159711	ﬂopped	f	english
+159712	hangd	f	english
+159713	a-swooping	f	english
+159714	“well	f	english
+159715	roosted	f	english
+159716	house-top	f	english
+159717	guffawed	f	english
+159718	scotia	f	english
+159719	too”	f	english
+159720	&	f	english
+159721	topple	f	english
+159722	crunch-crunching	f	english
+159723	garbagemen	f	english
+159724	“can	f	english
+159725	luanne	f	english
+159726	mommas	f	english
+159727	me”	f	english
+159728	dandelions	f	english
+159729	sprawled	f	english
+159730	fool”	f	english
+159731	care”	f	english
+159732	scrunched	f	english
+159733	“luanne	f	english
+159734	termites”	f	english
+159735	jackson	f	english
+159736	streetlamps	f	english
+159737	right”	f	english
+159738	again”	f	english
+159739	late”	f	english
+159740	“promise	f	english
+159741	trim”	f	english
+159742	represent	f	english
+159743	mammals”	f	english
+159744	first”	f	english
+159745	“to	f	english
+159746	grow”	f	english
+159747	“how	f	english
+159748	puppy”	f	english
+159749	hamsters”	f	english
+159750	behave	f	english
+159751	thank	f	english
+159752	drank	f	english
+159753	hadn't	f	english
+159754	arose	f	english
+159755	beacons	f	english
+159756	--	f	english
+159757	rostam	f	english
+159758	200	f	english
+159759	60	f	english
+159760	metres	f	english
+159761	destroyers	f	english
+159762	1000	f	english
+159763	iran	f	english
+159764	chinese-made	f	english
+159765	us-owned	f	english
+159766	liberian-flagged	f	english
+159767	kuwait	f	english
+159768	iraq	f	english
+159769	schuler	f	english
+159770	csis	f	english
+159771	washington	f	english
+159772	deter	f	english
+159773	tit-for-tat	f	english
+159774	harlan	f	english
+159775	ullman	f	english
+159776	ex-career	f	english
+159777	appraoch	f	english
+159778	suffer	f	english
+159779	blockading	f	english
+159780	neogtiating	f	english
+159781	impose	f	english
+159782	negotiate	f	english
+159783	1980	f	english
+159784	blames	f	english
+159785	entailed	f	english
+159786	i-style	f	english
+159787	slushed	f	english
+159788	babys	f	english
+159789	fisted	f	english
+159790	undo	f	english
+159791	unbind	f	english
+159792	plaits	f	english
+159793	ells	f	english
+159794	gothel	f	english
+159795	comest	f	english
+159796	shalt	f	english
+159797	day-time	f	english
+159798	hast	f	english
+159799	hard-hearted	f	english
+159800	window-hasp	f	english
+159801	aha	f	english
+159802	sits	f	english
+159803	sings	f	english
+159804	sprang	f	english
+159805	twin-children	f	english
+159806	pleases	f	english
+159807	accomplish	f	english
+159808	roast-ribs	f	english
+159809	sheepshanks	f	english
+159810	spindleshanks	f	english
+159811	contain	f	english
+159812	soften	f	english
+159813	twists	f	english
+159814	rosamond	f	english
+159815	thorn-hedge	f	english
+159816	dissuade	f	english
+159817	castle-yard	f	english
+159818	hunting-dogs	f	english
+159819	white-gold	f	english
+159820	head-you	f	english
+159821	fireplacemade	f	english
+159822	ofthem	f	english
+159823	wabt	f	english
+159824	popsicles	f	english
+159825	wouldn't	f	english
+159826	feild	f	english
+159827	ledto	f	english
+159828	omit	f	english
+159829	april	f	english
+159830	allen	f	english
+159831	embarassed	f	english
+159832	barest	f	english
+159833	survive	f	english
+159834	becomes	f	english
+159835	road-	f	english
+159836	carl	f	english
+159837	spitzweg	f	english
+159838	1850that	f	english
+159839	trysdale	f	english
+159840	singular-looking	f	english
+159841	lowpitched	f	english
+159842	strove	f	english
+159843	--his	f	english
+159844	unbedecked	f	english
+159845	been--but	f	english
+159846	why--	f	english
+159847	nothing--	f	english
+159848	remarshalled	f	english
+159849	night--the	f	english
+159850	carruthers	f	english
+159851	pierce	f	english
+159852	if--	f	english
+159853	cockroachy	f	english
+159854	connive	f	english
+159855	sacrifice--please	f	english
+159856	observe	f	english
+159857	rests	f	english
+159858	punta	f	english
+159859	redonda	f	english
+159860	garcia	f	english
+159861	smuggles	f	english
+159862	smile--is	f	english
+159863	imagine	f	english
+159864	name--ventomarme	f	english
+159865	attaches	f	english
+159866	insists	f	english
+159867	jumping-on-a-chair-at-the-sight-of-a-mouse	f	english
+159868	widen	f	english
+159869	realizes	f	english
+159870	rafters-the	f	english
+159871	warn	f	english
+159872	frighten	f	english
+159873	sobers	f	english
+159874	50	f	english
+159875	emerge	f	english
+159876	wynnes	f	english
+159877	walpurgis	f	english
+159878	nettlepink	f	english
+159879	arch-duchess	f	english
+159880	adela	f	english
+159881	chemping	f	english
+159882	allurements	f	english
+159883	accompany	f	english
+159884	parcel-carrying	f	english
+159885	invests	f	english
+159886	accompanies	f	english
+159887	novel-writers	f	english
+159888	widowed	f	english
+159889	meets	f	english
+159890	table-linen	f	english
+159891	over-fond	f	english
+159892	millicent	f	english
+159893	colson	f	english
+159894	extragavance	f	english
+159895	chose	f	english
+159896	restoratives	f	english
+159897	rumples	f	english
+159898	develop	f	english
+159899	evaporate	f	english
+159900	suit-cases	f	english
+159901	portmanteaux	f	english
+159902	wriggled	f	english
+159903	unstayable	f	english
+159904	religion	f	english
+159905	salsal	f	english
+159906	facebook	f	english
+159907	“good	f	english
+159908	hajjar	f	english
+159909	flowers”	f	english
+159910	strong”	f	english
+159911	umm	f	english
+159912	dala	f	english
+159913	salman	f	english
+159914	reassure	f	english
+159915	remind	f	english
+159916	fifties	f	english
+159917	pricks	f	english
+159918	salam	f	english
+159919	reduce	f	english
+159920	snuggle	f	english
+159921	reduvius	f	english
+159922	secrete	f	english
+159923	endure	f	english
+159924	decapitations	f	english
+159925	womens	f	english
+159926	allahu	f	english
+159927	akbar	f	english
+159928	poses	f	english
+159929	reminisce	f	english
+159930	expire	f	english
+159931	salmans	f	english
+159932	inspect	f	english
+159933	salsals	f	english
+159934	youd	f	english
+159935	leg”	f	english
+159936	“what	f	english
+159937	egg”	f	english
+159938	“perhaps	f	english
+159939	rabbit”	f	english
+159940	bodyguards	f	english
+159941	“wasnt	f	english
+159942	24-7	f	english
+159943	tolstoy	f	english
+159944	hajjar”	f	english
+159945	killers	f	english
+159946	deals	f	english
+159947	saddam	f	english
+159948	husseins	f	english
+159949	tigris	f	english
+159950	manuscripts	f	english
+159951	bargained	f	english
+159952	mans	f	english
+159953	toyota	f	english
+159954	shouldnt	f	english
+159955	photoshop	f	english
+159956	“do	f	english
+159957	picture”	f	english
+159958	culture”	f	english
+159959	“what”	f	english
+159960	deputys	f	english
+159961	holm-oak	f	english
+159962	depend	f	english
+159963	hyacinth-blossom	f	english
+159964	sing	f	english
+159965	suffers	f	english
+159966	opals	f	english
+159967	oak-tree	f	english
+159968	rose-tree	f	english
+159969	sun-dial	f	english
+159970	mermaiden	f	english
+159971	ocean-cavern	f	english
+159972	heart's-blood	f	english
+159973	life-blood	f	english
+159974	flame-	f	english
+159975	lead-pencil	f	english
+159976	pallet-bed	f	english
+159977	ebbed	f	english
+159978	top-most	f	english
+159979	water-pool	f	english
+159980	dies	f	english
+159981	to-night	f	english
+159982	cart-wheel	f	english
+159983	prove	f	english
+159984	carts	f	english
+159985	mule-	f	english
+159986	explore	f	english
+159987	carlos	f	english
+159988	kilometers	f	english
+159989	tortosa	f	english
+159990	they'll	f	english
+159991	richards	f	english
+159992	brently	f	english
+159993	assure	f	english
+159994	forestall	f	english
+159995	accept	f	english
+159996	recognize	f	english
+159997	will--as	f	english
+159998	dismiss	f	english
+159999	fellow-creature	f	english
+160000	him--sometimes	f	english
+160001	beg	f	english
+160002	door--you	f	english
+160003	travel-stained	f	english
+160004	grip-sack	f	english
+160005	disease--of	f	english
+160006	kills	f	english
+160007	droned	f	english
+160008	rang	f	english
+160009	velikopolsky	f	english
+160010	water-logged	f	english
+160011	rurik	f	english
+160012	exist	f	english
+160013	vasilisa	f	english
+160014	lukerya	f	english
+160015	stupid-looking	f	english
+160016	laborers	f	english
+160017	bless	f	english
+160018	you'll	f	english
+160019	wet-nurse	f	english
+160020	croweth	f	english
+160021	wilt	f	english
+160022	good-night	f	english
+160023	disguises	f	english
+160024	bleated	f	english
+160025	house-door	f	english
+160026	strew	f	english
+160027	clock-case	f	english
+160028	betide	f	english
+160029	zebraic	f	english
+160030	whinnied	f	english
+160031	“hello	f	english
+160032	there”	f	english
+160033	“it	f	english
+160034	today”	f	english
+160035	avoid	f	english
+160036	amuse	f	english
+160037	“thats	f	english
+160038	learns	f	english
+160039	laugh”	f	english
+160040	orfolei	f	english
+160041	carbon-based	f	english
+160042	nope	f	english
+160043	weddilei	f	english
+160044	omigod	f	english
+160045	sentients	f	english
+160046	advise	f	english
+160047	multibeings	f	english
+160048	erase	f	english
+160049	hydrogen	f	english
+160050	g445	f	english
+160051	prizewinners	f	english
+160052	extend	f	english
+160053	changeit	f	english
+160054	maintain	f	english
+160055	confer	f	english
+160056	1948	f	english
+160057	chancellors	f	english
+160058	vice-chancellors	f	english
+160059	bestow	f	english
+160060	carries	f	english
+160061	receive	f	english
+160062	lld	f	english
+160063	1962	f	english
+160064	1988	f	english
+160065	llb	f	english
+160066	1950	f	english
+160067	solicitors	f	english
+160068	mackerras	f	english
+160069	dmus	f	english
+160070	orchestras	f	english
+160071	iona	f	english
+160072	opie	f	english
+160073	1959the	f	english
+160074	1973	f	english
+160075	dlitt	f	english
+160076	jonathon	f	english
+160077	porritt	f	english
+160078	stewart	f	english
+160079	dsc	f	english
+160080	1968	f	english
+160081	1983	f	english
+160082	nitrogen	f	english
+160083	david	f	english
+160084	williams	f	english
+160085	cambridge	f	english
+160086	wolfson	f	english
+160087	honoris	f	english
+160088	indicate	f	english
+160089	pro-chancellors	f	english
+160090	includes	f	english
+160091	pro-vice-chancellors	f	english
+160092	graduands	f	english
+160093	bedell	f	english
+160094	mace-bearer	f	english
+160095	designatory	f	english
+160096	eg	f	english
+160097	ba	f	english
+160098	msc	f	english
+160099	phd	f	english
+160100	highfields	f	english
+160101	evokes	f	english
+160102	1928	f	english
+160103	9000	f	english
+160104	330	f	english
+160105	jesse	f	english
+160106	cripps	f	english
+160107	195	f	english
+160108	196	f	english
+160109	7	f	english
+160110	residences	f	english
+160111	reflects	f	english
+160112	—	f	english
+160113	150	f	english
+160114	sullivan	f	english
+160115	korfball	f	english
+160116	karnival	f	english
+160117	£100000	f	english
 \.
-ALTER SEQUENCE words_word_id_seq RESTART WITH 160117;
+ALTER SEQUENCE words_word_id_seq RESTART WITH 160118;
 COPY documents_words (document_id, word_id, frequency) FROM stdin;
 1	38	1
 1	77	1
@@ -1455,43 +1455,42 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 1	158974	4
 1	158981	2
 1	158982	1
-1	159050	7
-1	159051	22
-1	159052	1
+1	159051	7
+1	159052	22
 1	159053	1
 1	159054	1
 1	159055	1
 1	159056	1
-1	159057	2
+1	159057	1
 1	159058	2
-1	159059	1
+1	159059	2
 1	159060	1
-1	159061	6
-1	159062	1
+1	159061	1
+1	159062	6
 1	159063	1
 1	159064	1
 1	159065	1
 1	159066	1
-1	159067	2
-1	159068	1
-1	159069	2
-1	159070	1
+1	159067	1
+1	159068	2
+1	159069	1
+1	159070	2
 1	159071	1
 1	159072	1
 1	159073	1
 1	159074	1
 1	159075	1
-1	159076	2
+1	159076	1
 1	159077	2
-1	159078	1
-1	159079	2
-1	159080	1
-1	159081	2
-1	159082	9
-1	159083	1
-1	159084	2
+1	159078	2
+1	159079	1
+1	159080	2
+1	159081	1
+1	159082	2
+1	159083	9
+1	159084	1
 1	159085	2
-1	159086	1
+1	159086	2
 1	159087	1
 1	159088	1
 1	159089	1
@@ -1505,13 +1504,13 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 1	159097	1
 1	159098	1
 1	159099	1
-1	159100	4
-1	159101	1
+1	159100	1
+1	159101	4
 1	159102	1
 1	159103	1
 1	159104	1
-1	159105	2
-1	159106	1
+1	159105	1
+1	159106	2
 1	159107	1
 1	159108	1
 1	159109	1
@@ -1524,8 +1523,8 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 1	159116	1
 1	159117	1
 1	159118	1
-1	159119	2
-1	159120	1
+1	159119	1
+1	159120	2
 1	159121	1
 1	159122	1
 1	159123	1
@@ -1553,6 +1552,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 1	159145	1
 1	159146	1
 1	159147	1
+1	159148	1
 2	38	1
 2	77	2
 2	82	2
@@ -1991,43 +1991,42 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 2	158986	1
 2	158994	4
 2	158995	1
-2	159058	6
-2	159061	2
-2	159069	1
-2	159077	2
-2	159092	5
+2	159059	6
+2	159062	2
+2	159070	1
+2	159078	2
 2	159093	5
-2	159100	2
-2	159104	1
-2	159118	1
-2	159121	1
-2	159143	3
-2	159146	1
-2	159148	2
-2	159149	7
-2	159150	2
-2	159151	1
+2	159094	5
+2	159101	2
+2	159105	1
+2	159119	1
+2	159122	1
+2	159144	3
+2	159147	1
+2	159149	2
+2	159150	7
+2	159151	2
 2	159152	1
-2	159153	3
-2	159154	1
+2	159153	1
+2	159154	3
 2	159155	1
 2	159156	1
 2	159157	1
 2	159158	1
 2	159159	1
 2	159160	1
-2	159161	2
-2	159162	4
-2	159163	1
-2	159164	2
-2	159165	1
+2	159161	1
+2	159162	2
+2	159163	4
+2	159164	1
+2	159165	2
 2	159166	1
 2	159167	1
-2	159168	3
-2	159169	1
-2	159170	2
+2	159168	1
+2	159169	3
+2	159170	1
 2	159171	2
-2	159172	1
+2	159172	2
 2	159173	1
 2	159174	1
 2	159175	1
@@ -2039,14 +2038,15 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 2	159181	1
 2	159182	1
 2	159183	1
-2	159184	4
-2	159185	1
-2	159186	2
-2	159187	1
+2	159184	1
+2	159185	4
+2	159186	1
+2	159187	2
 2	159188	1
 2	159189	1
 2	159190	1
 2	159191	1
+2	159192	1
 3	77	1
 3	143	1
 3	181	1
@@ -2303,13 +2303,12 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 3	158973	1
 3	158993	1
 3	158994	2
-3	159079	1
-3	159093	1
-3	159190	1
-3	159192	4
-3	159193	1
-3	159194	2
-3	159195	1
+3	159080	1
+3	159094	1
+3	159191	1
+3	159193	4
+3	159194	1
+3	159195	2
 3	159196	1
 3	159197	1
 3	159198	1
@@ -2321,6 +2320,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 3	159204	1
 3	159205	1
 3	159206	1
+3	159207	1
 4	46	1
 4	77	1
 4	143	1
@@ -2738,54 +2738,54 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 4	158983	4
 4	158991	1
 4	158994	3
-4	159061	8
-4	159079	4
-4	159092	2
-4	159093	10
-4	159099	2
-4	159109	1
-4	159143	7
-4	159165	1
-4	159176	1
-4	159207	11
-4	159208	1
+4	159062	8
+4	159080	4
+4	159093	2
+4	159094	10
+4	159100	2
+4	159110	1
+4	159144	7
+4	159166	1
+4	159177	1
+4	159208	11
 4	159209	1
-4	159210	4
-4	159211	1
+4	159210	1
+4	159211	4
 4	159212	1
 4	159213	1
 4	159214	1
-4	159215	5
-4	159216	1
-4	159217	2
-4	159218	1
+4	159215	1
+4	159216	5
+4	159217	1
+4	159218	2
 4	159219	1
 4	159220	1
 4	159221	1
-4	159222	3
+4	159222	1
 4	159223	3
-4	159224	2
-4	159225	1
-4	159226	3
-4	159227	2
+4	159224	3
+4	159225	2
+4	159226	1
+4	159227	3
 4	159228	2
-4	159229	1
-4	159230	3
-4	159231	1
+4	159229	2
+4	159230	1
+4	159231	3
 4	159232	1
 4	159233	1
 4	159234	1
 4	159235	1
 4	159236	1
-4	159237	3
-4	159238	1
-4	159239	3
-4	159240	1
+4	159237	1
+4	159238	3
+4	159239	1
+4	159240	3
 4	159241	1
 4	159242	1
 4	159243	1
 4	159244	1
 4	159245	1
+4	159246	1
 5	77	2
 5	82	7
 5	181	9
@@ -3080,57 +3080,56 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 5	158974	1
 5	158982	1
 5	158996	2
-5	159058	1
-5	159060	1
-5	159066	1
-5	159077	2
-5	159079	1
-5	159083	1
-5	159093	4
-5	159095	3
-5	159100	1
-5	159104	1
-5	159130	2
-5	159138	1
-5	159141	1
-5	159143	1
-5	159145	1
+5	159059	1
+5	159061	1
+5	159067	1
+5	159078	2
+5	159080	1
+5	159084	1
+5	159094	4
+5	159096	3
+5	159101	1
+5	159105	1
+5	159131	2
+5	159139	1
+5	159142	1
+5	159144	1
 5	159146	1
-5	159164	4
-5	159246	1
+5	159147	1
+5	159165	4
 5	159247	1
 5	159248	1
 5	159249	1
-5	159250	3
-5	159251	1
-5	159252	2
-5	159253	1
+5	159250	1
+5	159251	3
+5	159252	1
+5	159253	2
 5	159254	1
-5	159255	3
-5	159256	2
-5	159257	1
+5	159255	1
+5	159256	3
+5	159257	2
 5	159258	1
 5	159259	1
 5	159260	1
 5	159261	1
-5	159262	3
-5	159263	1
+5	159262	1
+5	159263	3
 5	159264	1
-5	159265	2
-5	159266	3
-5	159267	1
+5	159265	1
+5	159266	2
+5	159267	3
 5	159268	1
 5	159269	1
 5	159270	1
 5	159271	1
 5	159272	1
-5	159273	2
-5	159274	1
+5	159273	1
+5	159274	2
 5	159275	1
 5	159276	1
 5	159277	1
-5	159278	3
-5	159279	1
+5	159278	1
+5	159279	3
 5	159280	1
 5	159281	1
 5	159282	1
@@ -3157,6 +3156,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 5	159303	1
 5	159304	1
 5	159305	1
+5	159306	1
 6	82	3
 6	102	1
 6	110	1
@@ -3666,32 +3666,31 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 6	158982	5
 6	158990	1
 6	158994	1
-6	159053	2
-6	159058	3
-6	159079	2
-6	159092	2
-6	159093	1
-6	159143	2
-6	159190	1
-6	159205	1
-6	159306	3
-6	159307	2
-6	159308	11
-6	159309	1
+6	159054	2
+6	159059	3
+6	159080	2
+6	159093	2
+6	159094	1
+6	159144	2
+6	159191	1
+6	159206	1
+6	159307	3
+6	159308	2
+6	159309	11
 6	159310	1
 6	159311	1
 6	159312	1
 6	159313	1
-6	159314	3
-6	159315	1
+6	159314	1
+6	159315	3
 6	159316	1
 6	159317	1
-6	159318	2
-6	159319	1
+6	159318	1
+6	159319	2
 6	159320	1
-6	159321	2
+6	159321	1
 6	159322	2
-6	159323	1
+6	159323	2
 6	159324	1
 6	159325	1
 6	159326	1
@@ -3706,6 +3705,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 6	159335	1
 6	159336	1
 6	159337	1
+6	159338	1
 7	181	2
 7	288	2
 7	370	1
@@ -3831,22 +3831,22 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 7	158974	1
 7	158983	1
 7	158994	1
-7	159079	1
-7	159093	3
-7	159338	3
-7	159339	1
+7	159080	1
+7	159094	3
+7	159339	3
 7	159340	1
 7	159341	1
 7	159342	1
 7	159343	1
 7	159344	1
-7	159345	2
-7	159346	1
+7	159345	1
+7	159346	2
 7	159347	1
 7	159348	1
 7	159349	1
-7	159350	2
-7	159351	1
+7	159350	1
+7	159351	2
+7	159352	1
 8	46	4
 8	82	9
 8	110	4
@@ -4366,38 +4366,38 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 8	158993	1
 8	158994	5
 8	158996	2
-8	159052	6
-8	159053	1
-8	159058	4
-8	159092	7
-8	159093	17
-8	159095	8
-8	159143	3
-8	159199	1
-8	159205	2
-8	159305	1
-8	159325	2
-8	159335	1
-8	159352	1
+8	159053	6
+8	159054	1
+8	159059	4
+8	159093	7
+8	159094	17
+8	159096	8
+8	159144	3
+8	159200	1
+8	159206	2
+8	159306	1
+8	159326	2
+8	159336	1
 8	159353	1
 8	159354	1
-8	159355	3
-8	159356	2
-8	159357	1
+8	159355	1
+8	159356	3
+8	159357	2
 8	159358	1
-8	159359	6
-8	159360	1
+8	159359	1
+8	159360	6
 8	159361	1
-8	159362	4
-8	159363	2
-8	159364	1
-8	159365	4
-8	159366	1
+8	159362	1
+8	159363	4
+8	159364	2
+8	159365	1
+8	159366	4
 8	159367	1
 8	159368	1
 8	159369	1
 8	159370	1
 8	159371	1
+8	159372	1
 9	77	1
 9	106	1
 9	177	1
@@ -4741,41 +4741,40 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 9	158974	5
 9	158994	3
 9	158996	1
-9	159058	3
-9	159079	5
-9	159093	3
-9	159122	1
-9	159190	1
-9	159340	1
-9	159350	7
-9	159372	2
+9	159059	3
+9	159080	5
+9	159094	3
+9	159123	1
+9	159191	1
+9	159341	1
+9	159351	7
 9	159373	2
-9	159374	1
+9	159374	2
 9	159375	1
-9	159376	4
-9	159377	1
-9	159378	4
-9	159379	1
+9	159376	1
+9	159377	4
+9	159378	1
+9	159379	4
 9	159380	1
 9	159381	1
-9	159382	3
+9	159382	1
 9	159383	3
-9	159384	2
-9	159385	1
+9	159384	3
+9	159385	2
 9	159386	1
 9	159387	1
-9	159388	4
-9	159389	1
+9	159388	1
+9	159389	4
 9	159390	1
 9	159391	1
-9	159392	3
-9	159393	7
-9	159394	3
-9	159395	1
+9	159392	1
+9	159393	3
+9	159394	7
+9	159395	3
 9	159396	1
 9	159397	1
-9	159398	2
-9	159399	1
+9	159398	1
+9	159399	2
 9	159400	1
 9	159401	1
 9	159402	1
@@ -4785,8 +4784,8 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 9	159406	1
 9	159407	1
 9	159408	1
-9	159409	2
-9	159410	1
+9	159409	1
+9	159410	2
 9	159411	1
 9	159412	1
 9	159413	1
@@ -4796,11 +4795,12 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 9	159417	1
 9	159418	1
 9	159419	1
-9	159420	2
-9	159421	1
+9	159420	1
+9	159421	2
 9	159422	1
 9	159423	1
 9	159424	1
+9	159425	1
 10	46	2
 10	77	5
 10	82	2
@@ -5374,42 +5374,41 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 10	158984	1
 10	158994	14
 10	158996	4
-10	159058	4
-10	159079	1
-10	159085	1
-10	159091	2
-10	159092	3
-10	159093	29
-10	159095	2
-10	159121	1
-10	159129	1
-10	159132	1
-10	159141	6
-10	159143	5
-10	159148	2
+10	159059	4
+10	159080	1
+10	159086	1
+10	159092	2
+10	159093	3
+10	159094	29
+10	159096	2
+10	159122	1
+10	159130	1
+10	159133	1
+10	159142	6
+10	159144	5
 10	159149	2
-10	159162	2
-10	159164	6
-10	159165	2
-10	159189	2
+10	159150	2
+10	159163	2
+10	159165	6
+10	159166	2
 10	159190	2
-10	159205	1
-10	159266	5
-10	159295	1
-10	159325	2
-10	159335	11
-10	159357	2
-10	159425	6
-10	159426	1
+10	159191	2
+10	159206	1
+10	159267	5
+10	159296	1
+10	159326	2
+10	159336	11
+10	159358	2
+10	159426	6
 10	159427	1
-10	159428	3
-10	159429	1
+10	159428	1
+10	159429	3
 10	159430	1
 10	159431	1
 10	159432	1
 10	159433	1
-10	159434	2
-10	159435	1
+10	159434	1
+10	159435	2
 10	159436	1
 10	159437	1
 10	159438	1
@@ -5424,22 +5423,22 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 10	159447	1
 10	159448	1
 10	159449	1
-10	159450	2
-10	159451	1
+10	159450	1
+10	159451	2
 10	159452	1
 10	159453	1
 10	159454	1
-10	159455	2
-10	159456	1
-10	159457	2
-10	159458	1
+10	159455	1
+10	159456	2
+10	159457	1
+10	159458	2
 10	159459	1
 10	159460	1
 10	159461	1
 10	159462	1
 10	159463	1
-10	159464	2
-10	159465	1
+10	159464	1
+10	159465	2
 10	159466	1
 10	159467	1
 10	159468	1
@@ -5454,10 +5453,10 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 10	159477	1
 10	159478	1
 10	159479	1
-10	159480	2
-10	159481	1
-10	159482	2
-10	159483	1
+10	159480	1
+10	159481	2
+10	159482	1
+10	159483	2
 10	159484	1
 10	159485	1
 10	159486	1
@@ -5478,6 +5477,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 10	159501	1
 10	159502	1
 10	159503	1
+10	159504	1
 11	32	1
 11	46	1
 11	70	1
@@ -6083,57 +6083,56 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 11	158974	10
 11	158982	4
 11	158991	3
-11	159057	2
 11	159058	2
-11	159061	52
-11	159062	1
-11	159079	1
-11	159085	3
-11	159093	2
-11	159099	1
-11	159132	7
-11	159143	11
-11	159164	10
-11	159167	1
-11	159238	1
-11	159241	2
-11	159295	1
-11	159418	2
-11	159424	1
-11	159438	2
-11	159444	2
-11	159464	1
-11	159504	1
+11	159059	2
+11	159062	52
+11	159063	1
+11	159080	1
+11	159086	3
+11	159094	2
+11	159100	1
+11	159133	7
+11	159144	11
+11	159165	10
+11	159168	1
+11	159239	1
+11	159242	2
+11	159296	1
+11	159419	2
+11	159425	1
+11	159439	2
+11	159445	2
+11	159465	1
 11	159505	1
-11	159506	3
-11	159507	1
-11	159508	3
-11	159509	1
+11	159506	1
+11	159507	3
+11	159508	1
+11	159509	3
 11	159510	1
 11	159511	1
 11	159512	1
 11	159513	1
-11	159514	4
-11	159515	1
+11	159514	1
+11	159515	4
 11	159516	1
-11	159517	2
-11	159518	1
+11	159517	1
+11	159518	2
 11	159519	1
 11	159520	1
-11	159521	3
-11	159522	1
-11	159523	2
-11	159524	3
-11	159525	1
-11	159526	4
-11	159527	1
+11	159521	1
+11	159522	3
+11	159523	1
+11	159524	2
+11	159525	3
+11	159526	1
+11	159527	4
 11	159528	1
-11	159529	4
-11	159530	1
+11	159529	1
+11	159530	4
 11	159531	1
 11	159532	1
-11	159533	2
-11	159534	1
+11	159533	1
+11	159534	2
 11	159535	1
 11	159536	1
 11	159537	1
@@ -6147,21 +6146,22 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 11	159545	1
 11	159546	1
 11	159547	1
-11	159548	2
-11	159549	1
+11	159548	1
+11	159549	2
 11	159550	1
-11	159551	3
-11	159552	1
+11	159551	1
+11	159552	3
 11	159553	1
 11	159554	1
-11	159555	2
-11	159556	1
+11	159555	1
+11	159556	2
 11	159557	1
 11	159558	1
 11	159559	1
 11	159560	1
 11	159561	1
 11	159562	1
+11	159563	1
 12	46	2
 12	82	9
 12	106	1
@@ -6768,34 +6768,33 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 12	158990	2
 12	158991	1
 12	158994	8
-12	159052	3
-12	159058	11
-12	159061	1
-12	159079	2
-12	159092	4
-12	159093	16
-12	159095	4
-12	159143	1
-12	159199	2
-12	159205	2
-12	159241	1
-12	159264	1
-12	159335	1
-12	159359	1
-12	159510	1
-12	159563	1
-12	159564	34
-12	159565	1
+12	159053	3
+12	159059	11
+12	159062	1
+12	159080	2
+12	159093	4
+12	159094	16
+12	159096	4
+12	159144	1
+12	159200	2
+12	159206	2
+12	159242	1
+12	159265	1
+12	159336	1
+12	159360	1
+12	159511	1
+12	159564	1
+12	159565	34
 12	159566	1
 12	159567	1
 12	159568	1
-12	159569	2
-12	159570	1
+12	159569	1
+12	159570	2
 12	159571	1
-12	159572	2
-12	159573	1
-12	159574	2
-12	159575	1
+12	159572	1
+12	159573	2
+12	159574	1
+12	159575	2
 12	159576	1
 12	159577	1
 12	159578	1
@@ -6804,7 +6803,8 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 12	159581	1
 12	159582	1
 12	159583	1
-12	159584	2
+12	159584	1
+12	159585	2
 13	38	2
 13	77	1
 13	82	1
@@ -7284,45 +7284,44 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 13	158984	2
 13	158991	1
 13	158994	2
-13	159055	2
-13	159056	1
+13	159056	2
 13	159057	1
-13	159058	2
-13	159061	1
-13	159072	1
-13	159076	1
-13	159077	2
-13	159078	1
-13	159079	7
-13	159092	3
-13	159093	5
-13	159099	1
-13	159118	2
-13	159141	1
-13	159143	2
-13	159162	1
-13	159190	1
-13	159212	2
-13	159233	1
-13	159237	1
-13	159325	1
-13	159444	3
-13	159502	3
-13	159512	1
-13	159514	1
-13	159529	1
-13	159552	1
-13	159555	2
-13	159585	2
+13	159058	1
+13	159059	2
+13	159062	1
+13	159073	1
+13	159077	1
+13	159078	2
+13	159079	1
+13	159080	7
+13	159093	3
+13	159094	5
+13	159100	1
+13	159119	2
+13	159142	1
+13	159144	2
+13	159163	1
+13	159191	1
+13	159213	2
+13	159234	1
+13	159238	1
+13	159326	1
+13	159445	3
+13	159503	3
+13	159513	1
+13	159515	1
+13	159530	1
+13	159553	1
+13	159556	2
 13	159586	2
 13	159587	2
-13	159588	1
+13	159588	2
 13	159589	1
 13	159590	1
 13	159591	1
 13	159592	1
-13	159593	4
-13	159594	1
+13	159593	1
+13	159594	4
 13	159595	1
 13	159596	1
 13	159597	1
@@ -7336,8 +7335,9 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 13	159605	1
 13	159606	1
 13	159607	1
-13	159608	2
-13	159609	1
+13	159608	1
+13	159609	2
+13	159610	1
 14	181	5
 14	339	1
 14	477	1
@@ -7484,32 +7484,31 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 14	158174	1
 14	158973	2
 14	158994	2
-14	159079	1
-14	159099	1
-14	159340	1
-14	159350	6
-14	159351	1
-14	159392	4
-14	159394	1
-14	159400	1
-14	159504	1
-14	159533	1
-14	159610	1
+14	159080	1
+14	159100	1
+14	159341	1
+14	159351	6
+14	159352	1
+14	159393	4
+14	159395	1
+14	159401	1
+14	159505	1
+14	159534	1
 14	159611	1
-14	159612	3
-14	159613	1
+14	159612	1
+14	159613	3
 14	159614	1
-14	159615	4
-14	159616	2
-14	159617	1
-14	159618	3
-14	159619	1
+14	159615	1
+14	159616	4
+14	159617	2
+14	159618	1
+14	159619	3
 14	159620	1
 14	159621	1
 14	159622	1
 14	159623	1
-14	159624	2
-14	159625	1
+14	159624	1
+14	159625	2
 14	159626	1
 14	159627	1
 14	159628	1
@@ -7517,6 +7516,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 14	159630	1
 14	159631	1
 14	159632	1
+14	159633	1
 15	77	2
 15	82	5
 15	172	2
@@ -8019,41 +8019,40 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 15	158974	3
 15	158977	1
 15	158982	2
-15	159057	1
-15	159058	6
-15	159061	12
-15	159072	1
-15	159077	1
-15	159079	2
-15	159083	1
-15	159093	3
-15	159095	4
-15	159121	3
+15	159058	1
+15	159059	6
+15	159062	12
+15	159073	1
+15	159078	1
+15	159080	2
+15	159084	1
+15	159094	3
+15	159096	4
 15	159122	3
-15	159141	2
-15	159143	2
-15	159146	1
-15	159149	1
-15	159164	6
-15	159171	1
-15	159189	6
-15	159190	2
-15	159205	2
-15	159233	1
-15	159236	1
-15	159241	1
-15	159266	3
-15	159277	2
-15	159286	1
-15	159428	1
-15	159480	1
-15	159494	3
-15	159502	3
-15	159524	1
-15	159633	3
-15	159634	8
-15	159635	3
-15	159636	1
+15	159123	3
+15	159142	2
+15	159144	2
+15	159147	1
+15	159150	1
+15	159165	6
+15	159172	1
+15	159190	6
+15	159191	2
+15	159206	2
+15	159234	1
+15	159237	1
+15	159242	1
+15	159267	3
+15	159278	2
+15	159287	1
+15	159429	1
+15	159481	1
+15	159495	3
+15	159503	3
+15	159525	1
+15	159634	3
+15	159635	8
+15	159636	3
 15	159637	1
 15	159638	1
 15	159639	1
@@ -8061,23 +8060,23 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 15	159641	1
 15	159642	1
 15	159643	1
-15	159644	2
-15	159645	1
+15	159644	1
+15	159645	2
 15	159646	1
 15	159647	1
 15	159648	1
 15	159649	1
 15	159650	1
-15	159651	2
-15	159652	1
-15	159653	4
-15	159654	1
+15	159651	1
+15	159652	2
+15	159653	1
+15	159654	4
 15	159655	1
-15	159656	4
-15	159657	1
+15	159656	1
+15	159657	4
 15	159658	1
-15	159659	2
-15	159660	1
+15	159659	1
+15	159660	2
 15	159661	1
 15	159662	1
 15	159663	1
@@ -8087,13 +8086,13 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 15	159667	1
 15	159668	1
 15	159669	1
-15	159670	2
-15	159671	1
+15	159670	1
+15	159671	2
 15	159672	1
 15	159673	1
-15	159674	2
+15	159674	1
 15	159675	2
-15	159676	1
+15	159676	2
 15	159677	1
 15	159678	1
 15	159679	1
@@ -8107,11 +8106,11 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 15	159687	1
 15	159688	1
 15	159689	1
-15	159690	2
-15	159691	1
+15	159690	1
+15	159691	2
 15	159692	1
-15	159693	2
-15	159694	1
+15	159693	1
+15	159694	2
 15	159695	1
 15	159696	1
 15	159697	1
@@ -8136,6 +8135,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 15	159716	1
 15	159717	1
 15	159718	1
+15	159719	1
 16	77	2
 16	110	1
 16	181	6
@@ -8508,25 +8508,24 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 16	158978	1
 16	158991	1
 16	158994	4
-16	159058	4
-16	159084	1
-16	159092	2
-16	159093	3
-16	159095	1
-16	159100	3
-16	159122	1
-16	159148	2
+16	159059	4
+16	159085	1
+16	159093	2
+16	159094	3
+16	159096	1
+16	159101	3
+16	159123	1
 16	159149	2
-16	159156	1
-16	159162	1
-16	159190	2
-16	159205	1
-16	159241	1
-16	159288	1
-16	159444	1
-16	159485	1
-16	159699	1
-16	159719	1
+16	159150	2
+16	159157	1
+16	159163	1
+16	159191	2
+16	159206	1
+16	159242	1
+16	159289	1
+16	159445	1
+16	159486	1
+16	159700	1
 16	159720	1
 16	159721	1
 16	159722	1
@@ -8556,6 +8555,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 16	159746	1
 16	159747	1
 16	159748	1
+16	159749	1
 17	77	1
 17	128	1
 17	181	2
@@ -8909,25 +8909,25 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 17	158990	3
 17	158991	1
 17	158994	1
-17	159052	2
-17	159058	3
-17	159079	1
-17	159092	3
-17	159093	5
-17	159095	4
-17	159122	1
-17	159143	3
-17	159199	16
-17	159222	1
-17	159225	1
-17	159241	2
-17	159370	1
-17	159574	1
-17	159749	1
+17	159053	2
+17	159059	3
+17	159080	1
+17	159093	3
+17	159094	5
+17	159096	4
+17	159123	1
+17	159144	3
+17	159200	16
+17	159223	1
+17	159226	1
+17	159242	2
+17	159371	1
+17	159575	1
 17	159750	1
 17	159751	1
 17	159752	1
 17	159753	1
+17	159754	1
 18	154	2
 18	180	1
 18	181	1
@@ -9144,12 +9144,11 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 18	158979	1
 18	158991	3
 18	158994	1
-18	159058	1
-18	159079	1
-18	159346	1
-18	159350	1
-18	159628	1
-18	159754	1
+18	159059	1
+18	159080	1
+18	159347	1
+18	159351	1
+18	159629	1
 18	159755	1
 18	159756	1
 18	159757	1
@@ -9157,20 +9156,20 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 18	159759	1
 18	159760	1
 18	159761	1
-18	159762	9
-18	159763	1
+18	159762	1
+18	159763	9
 18	159764	1
 18	159765	1
 18	159766	1
-18	159767	5
-18	159768	2
+18	159767	1
+18	159768	5
 18	159769	2
 18	159770	2
-18	159771	1
+18	159771	2
 18	159772	1
 18	159773	1
-18	159774	2
-18	159775	1
+18	159774	1
+18	159775	2
 18	159776	1
 18	159777	1
 18	159778	1
@@ -9181,6 +9180,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 18	159783	1
 18	159784	1
 18	159785	1
+18	159786	1
 19	77	3
 19	181	3
 19	192	3
@@ -9376,16 +9376,16 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 19	158990	1
 19	158994	2
 19	158996	1
-19	159052	1
-19	159092	1
-19	159095	1
-19	159164	1
-19	159241	1
-19	159266	4
-19	159524	5
-19	159786	1
-19	159787	2
-19	159788	1
+19	159053	1
+19	159093	1
+19	159096	1
+19	159165	1
+19	159242	1
+19	159267	4
+19	159525	5
+19	159787	1
+19	159788	2
+19	159789	1
 20	82	2
 20	110	1
 20	181	9
@@ -9753,29 +9753,28 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 20	158991	1
 20	158994	6
 20	158996	1
-20	159052	3
-20	159053	2
-20	159058	4
-20	159079	1
-20	159092	5
-20	159093	4
-20	159095	4
-20	159143	1
-20	159182	1
-20	159199	3
-20	159205	4
-20	159241	1
-20	159305	1
-20	159379	1
-20	159418	1
-20	159578	1
-20	159587	1
-20	159789	1
+20	159053	3
+20	159054	2
+20	159059	4
+20	159080	1
+20	159093	5
+20	159094	4
+20	159096	4
+20	159144	1
+20	159183	1
+20	159200	3
+20	159206	4
+20	159242	1
+20	159306	1
+20	159380	1
+20	159419	1
+20	159579	1
+20	159588	1
 20	159790	1
 20	159791	1
 20	159792	1
-20	159793	2
-20	159794	1
+20	159793	1
+20	159794	2
 20	159795	1
 20	159796	1
 20	159797	1
@@ -9786,6 +9785,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 20	159802	1
 20	159803	1
 20	159804	1
+20	159805	1
 21	46	1
 21	82	3
 21	111	1
@@ -10087,29 +10087,29 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 21	158983	1
 21	158994	2
 21	158996	1
-21	159052	5
-21	159053	1
-21	159058	4
-21	159092	6
-21	159093	4
-21	159095	3
-21	159143	2
-21	159190	2
-21	159199	3
-21	159205	2
-21	159233	1
-21	159236	1
-21	159241	1
-21	159269	1
-21	159578	2
-21	159635	1
-21	159795	1
-21	159797	1
-21	159805	1
+21	159053	5
+21	159054	1
+21	159059	4
+21	159093	6
+21	159094	4
+21	159096	3
+21	159144	2
+21	159191	2
+21	159200	3
+21	159206	2
+21	159234	1
+21	159237	1
+21	159242	1
+21	159270	1
+21	159579	2
+21	159636	1
+21	159796	1
+21	159798	1
 21	159806	1
 21	159807	1
 21	159808	1
 21	159809	1
+21	159810	1
 22	110	1
 22	181	5
 22	192	5
@@ -10528,29 +10528,29 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 22	158991	3
 22	158994	2
 22	158996	1
-22	159052	2
-22	159053	1
-22	159058	7
-22	159079	1
-22	159092	4
-22	159093	7
-22	159095	1
-22	159199	1
-22	159241	1
-22	159264	1
-22	159305	3
-22	159354	1
-22	159574	1
-22	159795	1
-22	159803	1
-22	159810	1
+22	159053	2
+22	159054	1
+22	159059	7
+22	159080	1
+22	159093	4
+22	159094	7
+22	159096	1
+22	159200	1
+22	159242	1
+22	159265	1
+22	159306	3
+22	159355	1
+22	159575	1
+22	159796	1
+22	159804	1
 22	159811	1
 22	159812	1
-22	159813	6
-22	159814	1
+22	159813	1
+22	159814	6
 22	159815	1
 22	159816	1
 22	159817	1
+22	159818	1
 23	167	1
 23	181	2
 23	192	1
@@ -10891,19 +10891,18 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 23	158990	2
 23	158991	1
 23	158994	2
-23	159058	1
-23	159079	1
-23	159092	2
-23	159093	4
-23	159122	1
-23	159190	2
-23	159199	1
-23	159205	1
-23	159228	2
-23	159571	1
-23	159613	1
-23	159625	1
-23	159818	1
+23	159059	1
+23	159080	1
+23	159093	2
+23	159094	4
+23	159123	1
+23	159191	2
+23	159200	1
+23	159206	1
+23	159229	2
+23	159572	1
+23	159614	1
+23	159626	1
 23	159819	1
 23	159820	1
 23	159821	1
@@ -10914,12 +10913,13 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 23	159826	1
 23	159827	1
 23	159828	1
-23	159829	3
-23	159830	1
+23	159829	1
+23	159830	3
 23	159831	1
 23	159832	1
 23	159833	1
 23	159834	1
+23	159835	1
 24	77	1
 24	180	1
 24	181	12
@@ -11454,21 +11454,20 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 24	158982	4
 24	158983	1
 24	158994	2
-24	159058	3
-24	159092	2
-24	159093	1
-24	159095	2
-24	159143	3
-24	159205	1
-24	159269	1
-24	159277	1
-24	159360	1
-24	159663	1
-24	159835	1
+24	159059	3
+24	159093	2
+24	159094	1
+24	159096	2
+24	159144	3
+24	159206	1
+24	159270	1
+24	159278	1
+24	159361	1
+24	159664	1
 24	159836	1
 24	159837	1
-24	159838	11
-24	159839	1
+24	159838	1
+24	159839	11
 24	159840	1
 24	159841	1
 24	159842	1
@@ -11478,21 +11477,22 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 24	159846	1
 24	159847	1
 24	159848	1
-24	159849	3
-24	159850	1
+24	159849	1
+24	159850	3
 24	159851	1
 24	159852	1
 24	159853	1
 24	159854	1
 24	159855	1
 24	159856	1
-24	159857	2
-24	159858	1
+24	159857	1
+24	159858	2
 24	159859	1
 24	159860	1
 24	159861	1
 24	159862	1
 24	159863	1
+24	159864	1
 25	152	1
 25	180	1
 25	181	4
@@ -11726,31 +11726,31 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 25	158974	5
 25	158982	1
 25	158987	1
-25	159061	4
-25	159071	1
-25	159079	4
-25	159093	1
-25	159099	4
-25	159143	3
-25	159186	1
-25	159199	4
-25	159233	1
-25	159335	1
-25	159399	1
-25	159514	1
-25	159801	1
-25	159864	1
+25	159062	4
+25	159072	1
+25	159080	4
+25	159094	1
+25	159100	4
+25	159144	3
+25	159187	1
+25	159200	4
+25	159234	1
+25	159336	1
+25	159400	1
+25	159515	1
+25	159802	1
 25	159865	1
 25	159866	1
 25	159867	1
-25	159868	2
-25	159869	1
+25	159868	1
+25	159869	2
 25	159870	1
 25	159871	1
 25	159872	1
 25	159873	1
 25	159874	1
 25	159875	1
+25	159876	1
 26	29	1
 26	70	1
 26	77	1
@@ -12309,22 +12309,21 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 26	158994	3
 26	158995	1
 26	158996	2
-26	159057	2
-26	159079	1
-26	159092	1
-26	159093	11
-26	159099	1
-26	159190	1
-26	159199	3
-26	159230	2
-26	159232	3
-26	159233	1
-26	159876	2
+26	159058	2
+26	159080	1
+26	159093	1
+26	159094	11
+26	159100	1
+26	159191	1
+26	159200	3
+26	159231	2
+26	159233	3
+26	159234	1
 26	159877	2
-26	159878	1
-26	159879	6
-26	159880	9
-26	159881	1
+26	159878	2
+26	159879	1
+26	159880	6
+26	159881	9
 26	159882	1
 26	159883	1
 26	159884	1
@@ -12346,6 +12345,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 26	159900	1
 26	159901	1
 26	159902	1
+26	159903	1
 27	28	1
 27	43	1
 27	77	2
@@ -13253,55 +13253,54 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 27	158993	2
 27	158994	30
 27	158996	2
-27	159052	2
-27	159053	1
-27	159058	1
+27	159053	2
+27	159054	1
 27	159059	1
-27	159083	1
-27	159091	1
-27	159092	5
-27	159093	10
-27	159095	8
-27	159118	1
-27	159121	2
-27	159138	2
-27	159141	1
-27	159143	4
-27	159149	7
-27	159153	1
-27	159162	3
-27	159164	1
-27	159167	1
-27	159171	1
-27	159190	1
-27	159205	3
-27	159231	1
-27	159264	1
-27	159280	1
-27	159325	1
-27	159335	1
-27	159370	1
-27	159418	2
-27	159524	1
-27	159574	1
-27	159635	1
-27	159810	1
-27	159903	2
-27	159904	25
-27	159905	6
-27	159906	1
-27	159907	2
-27	159908	1
+27	159060	1
+27	159084	1
+27	159092	1
+27	159093	5
+27	159094	10
+27	159096	8
+27	159119	1
+27	159122	2
+27	159139	2
+27	159142	1
+27	159144	4
+27	159150	7
+27	159154	1
+27	159163	3
+27	159165	1
+27	159168	1
+27	159172	1
+27	159191	1
+27	159206	3
+27	159232	1
+27	159265	1
+27	159281	1
+27	159326	1
+27	159336	1
+27	159371	1
+27	159419	2
+27	159525	1
+27	159575	1
+27	159636	1
+27	159811	1
+27	159904	2
+27	159905	25
+27	159906	6
+27	159907	1
+27	159908	2
 27	159909	1
-27	159910	7
+27	159910	1
 27	159911	7
-27	159912	10
-27	159913	1
+27	159912	7
+27	159913	10
 27	159914	1
 27	159915	1
 27	159916	1
-27	159917	4
-27	159918	1
+27	159917	1
+27	159918	4
 27	159919	1
 27	159920	1
 27	159921	1
@@ -13315,27 +13314,27 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 27	159929	1
 27	159930	1
 27	159931	1
-27	159932	5
-27	159933	1
+27	159932	1
+27	159933	5
 27	159934	1
 27	159935	1
-27	159936	2
-27	159937	1
+27	159936	1
+27	159937	2
 27	159938	1
 27	159939	1
 27	159940	1
 27	159941	1
 27	159942	1
-27	159943	2
-27	159944	1
+27	159943	1
+27	159944	2
 27	159945	1
 27	159946	1
 27	159947	1
 27	159948	1
 27	159949	1
 27	159950	1
-27	159951	2
-27	159952	1
+27	159951	1
+27	159952	2
 27	159953	1
 27	159954	1
 27	159955	1
@@ -13343,6 +13342,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 27	159957	1
 27	159958	1
 27	159959	1
+27	159960	1
 28	38	1
 28	46	1
 28	144	1
@@ -13896,41 +13896,40 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 28	158993	1
 28	158994	3
 28	158996	2
-28	159052	3
-28	159053	1
-28	159058	1
-28	159076	1
-28	159079	11
-28	159092	2
-28	159093	10
-28	159122	2
-28	159190	1
-28	159199	3
-28	159205	2
-28	159233	2
-28	159264	3
-28	159335	3
-28	159349	1
-28	159581	1
-28	159587	2
-28	159588	1
-28	159635	1
-28	159801	1
-28	159850	1
-28	159960	1
+28	159053	3
+28	159054	1
+28	159059	1
+28	159077	1
+28	159080	11
+28	159093	2
+28	159094	10
+28	159123	2
+28	159191	1
+28	159200	3
+28	159206	2
+28	159234	2
+28	159265	3
+28	159336	3
+28	159350	1
+28	159582	1
+28	159588	2
+28	159589	1
+28	159636	1
+28	159802	1
+28	159851	1
 28	159961	1
 28	159962	1
-28	159963	7
-28	159964	1
+28	159963	1
+28	159964	7
 28	159965	1
-28	159966	3
-28	159967	5
-28	159968	2
-28	159969	1
+28	159966	1
+28	159967	3
+28	159968	5
+28	159969	2
 28	159970	1
-28	159971	3
-28	159972	2
-28	159973	1
+28	159971	1
+28	159972	3
+28	159973	2
 28	159974	1
 28	159975	1
 28	159976	1
@@ -13940,6 +13939,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 28	159980	1
 28	159981	1
 28	159982	1
+28	159983	1
 29	33	1
 29	82	1
 29	181	3
@@ -14196,19 +14196,19 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 29	158981	1
 29	158982	3
 29	158994	5
-29	159092	1
-29	159093	4
-29	159143	2
-29	159190	5
-29	159264	1
-29	159750	3
-29	159983	5
-29	159984	1
+29	159093	1
+29	159094	4
+29	159144	2
+29	159191	5
+29	159265	1
+29	159751	3
+29	159984	5
 29	159985	1
-29	159986	2
-29	159987	1
+29	159986	1
+29	159987	2
 29	159988	1
-29	159989	3
+29	159989	1
+29	159990	3
 30	48	1
 30	82	1
 30	111	1
@@ -14629,24 +14629,23 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 30	158979	1
 30	158982	5
 30	158994	8
-30	159058	2
-30	159079	1
-30	159093	5
-30	159122	1
-30	159143	2
-30	159205	1
-30	159241	1
-30	159264	1
-30	159370	1
-30	159424	1
-30	159460	1
-30	159578	1
-30	159655	1
-30	159753	1
-30	159780	1
-30	159990	3
-30	159991	2
-30	159992	1
+30	159059	2
+30	159080	1
+30	159094	5
+30	159123	1
+30	159144	2
+30	159206	1
+30	159242	1
+30	159265	1
+30	159371	1
+30	159425	1
+30	159461	1
+30	159579	1
+30	159656	1
+30	159754	1
+30	159781	1
+30	159991	3
+30	159992	2
 30	159993	1
 30	159994	1
 30	159995	1
@@ -14660,6 +14659,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 30	160003	1
 30	160004	1
 30	160005	1
+30	160006	1
 31	46	1
 31	77	3
 31	82	5
@@ -15178,32 +15178,32 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 31	158985	1
 31	158991	1
 31	158994	3
-31	159052	3
-31	159053	1
-31	159058	3
-31	159092	2
-31	159093	6
-31	159095	2
-31	159143	3
-31	159264	1
-31	159755	6
-31	159862	1
-31	160006	1
+31	159053	3
+31	159054	1
+31	159059	3
+31	159093	2
+31	159094	6
+31	159096	2
+31	159144	3
+31	159265	1
+31	159756	6
+31	159863	1
 31	160007	1
 31	160008	1
 31	160009	1
 31	160010	1
-31	160011	2
-31	160012	7
-31	160013	4
-31	160014	1
-31	160015	4
-31	160016	1
+31	160011	1
+31	160012	2
+31	160013	7
+31	160014	4
+31	160015	1
+31	160016	4
 31	160017	1
 31	160018	1
 31	160019	1
 31	160020	1
 31	160021	1
+31	160022	1
 32	82	1
 32	181	6
 32	192	6
@@ -15526,22 +15526,22 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 32	158990	3
 32	158991	1
 32	158994	1
-32	159079	5
-32	159092	1
-32	159093	8
-32	159129	1
-32	159143	1
-32	159190	1
-32	159199	2
-32	159205	1
-32	159264	1
-32	159572	1
-32	160022	1
+32	159080	5
+32	159093	1
+32	159094	8
+32	159130	1
+32	159144	1
+32	159191	1
+32	159200	2
+32	159206	1
+32	159265	1
+32	159573	1
 32	160023	1
-32	160024	2
-32	160025	1
-32	160026	2
-32	160027	1
+32	160024	1
+32	160025	2
+32	160026	1
+32	160027	2
+32	160028	1
 33	181	3
 33	192	1
 33	210	1
@@ -15707,26 +15707,25 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 33	158974	1
 33	158977	1
 33	158990	1
-33	159052	1
-33	159061	1
-33	159077	1
-33	159085	3
-33	159092	3
+33	159053	1
+33	159062	1
+33	159078	1
+33	159086	3
 33	159093	3
-33	159095	1
-33	159118	1
-33	159143	1
-33	159149	2
-33	159162	1
-33	159170	1
-33	159184	1
-33	159277	1
-33	159450	1
-33	160005	1
-33	160028	2
-33	160029	1
-33	160030	2
-33	160031	1
+33	159094	3
+33	159096	1
+33	159119	1
+33	159144	1
+33	159150	2
+33	159163	1
+33	159171	1
+33	159185	1
+33	159278	1
+33	159451	1
+33	160006	1
+33	160029	2
+33	160030	1
+33	160031	2
 33	160032	1
 33	160033	1
 33	160034	1
@@ -15734,6 +15733,7 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 33	160036	1
 33	160037	1
 33	160038	1
+33	160039	1
 34	77	1
 34	82	1
 34	142	1
@@ -16007,33 +16007,33 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 34	158983	1
 34	158991	1
 34	158994	2
-34	159093	4
-34	159095	1
-34	159122	2
-34	159143	3
-34	159165	1
-34	159186	1
-34	159190	1
-34	159212	2
-34	159222	1
-34	159230	1
-34	159237	1
-34	159571	1
-34	159862	2
-34	159963	1
-34	159985	1
-34	159989	1
-34	160039	1
+34	159094	4
+34	159096	1
+34	159123	2
+34	159144	3
+34	159166	1
+34	159187	1
+34	159191	1
+34	159213	2
+34	159223	1
+34	159231	1
+34	159238	1
+34	159572	1
+34	159863	2
+34	159964	1
+34	159986	1
+34	159990	1
 34	160040	1
-34	160041	2
+34	160041	1
 34	160042	2
 34	160043	2
-34	160044	1
-34	160045	2
-34	160046	1
+34	160044	2
+34	160045	1
+34	160046	2
 34	160047	1
 34	160048	1
 34	160049	1
+34	160050	1
 35	48	1
 35	82	1
 35	143	4
@@ -16717,40 +16717,39 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 35	158974	16
 35	158978	1
 35	158996	1
-35	159052	1
 35	159053	1
-35	159061	1
-35	159079	11
-35	159092	2
-35	159093	9
-35	159106	5
-35	159197	1
-35	159199	5
-35	159324	1
-35	159384	1
-35	159418	1
-35	159476	1
-35	159533	1
-35	159571	1
-35	159628	1
-35	159758	1
-35	159761	2
-35	159782	2
-35	160050	1
+35	159054	1
+35	159062	1
+35	159080	11
+35	159093	2
+35	159094	9
+35	159107	5
+35	159198	1
+35	159200	5
+35	159325	1
+35	159385	1
+35	159419	1
+35	159477	1
+35	159534	1
+35	159572	1
+35	159629	1
+35	159759	1
+35	159762	2
+35	159783	2
 35	160051	1
 35	160052	1
 35	160053	1
 35	160054	1
-35	160055	2
-35	160056	1
+35	160055	1
+35	160056	2
 35	160057	1
 35	160058	1
 35	160059	1
-35	160060	7
-35	160061	4
-35	160062	1
-35	160063	2
-35	160064	1
+35	160060	1
+35	160061	7
+35	160062	4
+35	160063	1
+35	160064	2
 35	160065	1
 35	160066	1
 35	160067	1
@@ -16759,28 +16758,28 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 35	160070	1
 35	160071	1
 35	160072	1
-35	160073	2
-35	160074	1
+35	160073	1
+35	160074	2
 35	160075	1
 35	160076	1
-35	160077	2
-35	160078	1
+35	160077	1
+35	160078	2
 35	160079	1
-35	160080	2
-35	160081	1
+35	160080	1
+35	160081	2
 35	160082	1
-35	160083	2
+35	160083	1
 35	160084	2
-35	160085	1
+35	160085	2
 35	160086	1
 35	160087	1
 35	160088	1
 35	160089	1
 35	160090	1
-35	160091	2
-35	160092	1
-35	160093	2
-35	160094	1
+35	160091	1
+35	160092	2
+35	160093	1
+35	160094	2
 35	160095	1
 35	160096	1
 35	160097	1
@@ -16791,16 +16790,17 @@ COPY documents_words (document_id, word_id, frequency) FROM stdin;
 35	160102	1
 35	160103	1
 35	160104	1
-35	160105	3
-35	160106	1
+35	160105	1
+35	160106	3
 35	160107	1
 35	160108	1
 35	160109	1
 35	160110	1
-35	160111	4
-35	160112	1
+35	160111	1
+35	160112	4
 35	160113	1
 35	160114	1
 35	160115	1
 35	160116	1
+35	160117	1
 \.
