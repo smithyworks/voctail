@@ -17,29 +17,23 @@ async function quizzesHandler(req, res) {
     res.status(500).send("Something went wrong.");
   }
 }
-/*
+
 async function quizHandler(req, res) {
-  log(req);
-  log("bla");
-  console.log(req);
-  console.log("bla");
   try {
-    log(req);
-    const { quiz_id:q_id, } = req.body;
-    const { rows: quiz } = await query(
-        "SELECT  quizzes.* FROM quizzes " +
-        "INNER JOIN users_quizzes ON quizzes.quiz_id = users_quizzes.quiz_id " +
-        "INNER JOIN users on users.user_id = users_quizzes.user_id WHERE quizzes.quiz_id = $1",
-        [q_id]
+    const {
+      rows: [quiz],
+    } = await query(
+      "SELECT  quizzes.* FROM quizzes  WHERE quizzes.quiz_id = $1",
+      /*"INNER JOIN users_quizzes ON quizzes.quiz_id = users_quizzes.quiz_id " +
+        "INNER JOIN users on users.user_id = users_quizzes.user_id WHERE quizzes.quiz_id = $1",*/
+      [req.query.quiz_id]
     );
 
-    log(data);
-    res.status(200).json({ quiz });
+    res.status(200).json(quiz);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
   }
 }
 
-*/
-module.exports = { quizzesHandler };
+module.exports = { quizzesHandler, quizHandler };

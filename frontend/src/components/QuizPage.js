@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 import AppPage from "./common/AppPage";
 import { api } from "../utils";
+import { fetchQuiz } from "../utils/api";
 
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
@@ -316,25 +317,6 @@ function Quiz({ ...props }) {
   let { id } = useParams();
   id = parseInt(id);
 
-  const [quiz, setQuiz] = useState({});
-  useEffect(() => {
-    api
-      .fetchQuizzes()
-      .then((res) => {
-        if (res) {
-          setQuiz(res.data.quizList.filter((q) => q.quiz_id === id)[0]);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
-
-  /*
-  if ("title" in quiz) {
-    console.log(quiz.questions)
-    console.log(quiz.questions.questions)
-    console.log(quiz.questions.map((q) => q.vocabulary));
-  }
-  */
   const [show, setShow] = useState(false);
   const [result, setResult] = useState([]);
   const [itemCount, setItemCount] = useState(0);
@@ -347,6 +329,18 @@ function Quiz({ ...props }) {
   let showResult = () => {
     setShow(true);
   };
+
+  const [quiz, setQuiz] = useState({});
+  useEffect(() => {
+    api
+      .fetchQuiz(id)
+      .then((res) => {
+        if (res) {
+          setQuiz(res.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
 
   return (
     <AppPage location={"quizzes/" + id} id={"quiz-" + id + "page"}>

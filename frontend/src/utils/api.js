@@ -50,7 +50,7 @@ export function fetchQuizzes() {
   return axios.get(`${base}/quizzes`);
 }
 export function fetchQuiz(quiz_id) {
-  return axios.get(`${base}/quizzes`, { quiz_id });
+  return axios.get(`${base}/quiz`, { params: { quiz_id: quiz_id } });
 }
 
 //documents
