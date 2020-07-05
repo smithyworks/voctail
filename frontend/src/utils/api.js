@@ -14,8 +14,8 @@ export function logout() {
   return axios.get(`${base}/logout`);
 }
 
-export function user() {
-  return axios.get(`${base}/user`);
+export function user(user_id) {
+  return axios.post(`${base}/user`, { user_id });
 }
 
 export function document(document_id) {
@@ -110,6 +110,6 @@ export function setEmail(email) {
 export function setPassword(password) {
   return axios.post(`${base}/set-password`, { password });
 }
-export function vocabulary() {
-  return axios.get(`${base}/user-vocabulary`);
+export function vocabulary(user_id) {
+  return axios.post(`${base}/user-vocabulary`, { user_id });
 }

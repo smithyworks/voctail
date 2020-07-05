@@ -73,6 +73,7 @@ function App() {
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
           <ProtectedRoute path="/account" component={AccountPage} />
           <ProtectedRoute path="/profile" component={ProfilePage} />
+          <ProtectedRoute path="/users/:user_id" component={ProfilePage} />
 
           <Route path="/signup">
             <SigninPage signup />

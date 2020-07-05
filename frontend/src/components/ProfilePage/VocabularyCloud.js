@@ -17,20 +17,21 @@ const useStyles = makeStyles({
   },
 });
 
-function VocabularyCloud() {
+function VocabularyCloud({ userId }) {
   const classes = useStyles();
 
   const [vocabulary, setVocabulary] = useState();
   useEffect(() => {
-    api
-      .vocabulary()
-      .then((res) => {
-        setVocabulary(res.data);
-      })
-      .catch((err) => {
-        toasts.toastError("Encountered an error while communicating with the server...");
-      });
-  }, []);
+    if (userId)
+      api
+        .vocabulary(userId)
+        .then((res) => {
+          setVocabulary(res.data);
+        })
+        .catch((err) => {
+          toasts.toastError("Encountered an error while communicating with the server...");
+        });
+  }, [userId]);
 
   let items;
   if (vocabulary) {

@@ -4,10 +4,15 @@ const bcrypt = require("bcrypt");
 
 async function userHandler(req, res) {
   try {
-    const { user_id, masquerading } = req.authData.user;
+    const { user_id: current_user_id, masquerading } = req.authData.user;
+    const { user_id } = req.body;
+
+    let uid = current_user_id;
+    if (user_id) uid = user_id;
+
     const {
       rows: [userRecord],
-    } = await query("SELECT user_id, name, email, admin, premium FROM users WHERE user_id = $1", [user_id]);
+    } = await query("SELECT user_id, name, email, admin, premium FROM users WHERE user_id = $1", [uid]);
     res.status(200).json({ ...userRecord, masquerading: !!masquerading });
   } catch (err) {
     log(err);
@@ -74,7 +79,7 @@ async function setPasswordHandler(req, res) {
 
 async function userVocabularyHandler(req, res) {
   try {
-    const { user_id } = req.authData.user;
+    const { user_id } = req.body;
 
     const {
       rows: vocabulary,
