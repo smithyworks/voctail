@@ -70,7 +70,8 @@ async function deleteDocument(req, res) {
 
 async function addDocument(req, res) {
   try {
-    const { title, description, isPublic, content, author } = req.body;
+    const { publisher, title, author, description, category, isPublic, content } = req.body;
+    const premium = true;
     if (title.length < 1 || author.length < 1) {
       log(`"Invalid document data ${title} ${author}.`);
       res.status(400).send("Invalid document upload.");
@@ -78,8 +79,8 @@ async function addDocument(req, res) {
     const {
       rows: [documentData],
     } = await query(
-      "INSERT INTO documents (title, description, isPublic, content, author) VALUES($1, $2, $3, $4, $5)",
-      [title, description, isPublic, content, author]
+      "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+      [publisher, title, author, description, category, isPublic, premium, content]
     );
     res.status(201).send(`Successfully uploaded document ${title}.`);
   } catch (err) {

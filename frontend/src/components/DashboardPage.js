@@ -95,7 +95,7 @@ function DocumentOverviewPopUp({
           console.log(err);
           toasts.toastError("Error communicating with the server!");
         });
-    else toasts.toastWarning("No document found for the delete.");
+    else toasts.toastWarning("The document could not be found.");
   }
 
   return (
@@ -124,14 +124,15 @@ function DocumentOverviewPopUp({
   );
 }
 
-function AddNewDocument() {
+function AddNewDocument({ refresh, publisherId }) {
   const titleInput = useRef("");
-  const descriptionInput = useRef("");
   const authorInput = useRef("");
-  const contentInput = useRef();
+  const descriptionInput = useRef("");
+  const [publicDocument, setPublicDocument] = useState(true);
+
+  const contentInput = useRef("");
   //const imageInput = useRef(); todo use image
   const [open, setOpen] = useState(false);
-  const [publicDocument, setPublicDocument] = useState(true);
   const [category, setCategory] = useState("");
   const classes = useStyles();
 
@@ -148,43 +149,115 @@ function AddNewDocument() {
     setCategory(event.target.value);
   };
 
+  function readFile() {
+    const uploadedFile = document.getElementById("upload-file").files[0];
+
+    let reader = new FileReader();
+    reader.readAsText(uploadedFile);
+
+    const blocks = [];
+    let currentType;
+    let currentContent;
+
+    reader.onloadend = function () {
+      console.log("onload", reader.result);
+      const lines = reader.result.split(/\r?\n/);
+      console.log("lines in onload", lines);
+
+      lines.forEach((line, i) => {
+        // Encountered newline, current block set empty
+        if (line.trim() === "") {
+          // If not empty block, type will be set to something.
+          // Therefore, we push it to blocks
+          if (currentType) {
+            switch (currentType) {
+              case "title":
+                blocks.push({ type: currentType, content: currentContent });
+                break;
+              case "subtitle":
+                blocks.push({ type: currentType, content: currentContent });
+                break;
+              case "paragraph":
+                blocks.push({ type: currentType, content: currentContent });
+                break;
+              default:
+                throw new Error(`There is no case taking type "${currentType}" into account (line ${i + 1}').`);
+            }
+          }
+
+          // Reset block
+          currentType = null;
+          currentContent = null;
+
+          return; // no need to check for other block types
+        }
+
+        // Test for marked up line
+        const matchData = line.match(/^(?<key>>\w+|#+) (?<content>.*$)/);
+        if (matchData) {
+          switch (matchData.groups.key) {
+            case "#":
+              currentType = "title";
+              break;
+            case "##":
+              currentType = "subtitle";
+              break;
+            default:
+              throw new Error(
+                `Encountered malformed line with markup key: "${matchData.groups.key}"\n  line ${i + 1}: "${line}"`
+              );
+          }
+
+          // Set current content, since this is the first line of this block, no need to add a space.
+          currentContent = matchData.groups.content.trim();
+        } else if (!currentType) {
+          // If currentType is unset, this means we are on the first line of a paragraph.
+          currentType = "paragraph";
+          currentContent = line.trim();
+        } else {
+          // If we reach here, we are adding a line to the current block.
+          // We want to make sure to add a space.
+          currentContent += " " + line.trim();
+        }
+      });
+
+      // Escape the escapes (this is the content)
+      const blocksJson = JSON.stringify(blocks).replace(/\\/g, "\\\\");
+
+      contentInput.current = blocksJson;
+
+      return;
+    };
+  }
+
+  function verify() {
+    toasts.toastInfo("Verified.");
+    return true;
+  }
+
   const addThisDocument = () => {
+    readFile();
+    console.log("contentInput in add this document", contentInput.current);
+
     api
       .addDocument(
+        publisherId,
         titleInput.current,
+        authorInput.current,
         descriptionInput.current,
-        publicDocument,
         category,
-        contentInput.current,
-        authorInput.current
+        publicDocument,
+        contentInput.current
       )
-      .catch((err) => console.log(err));
-  };
-
-  const handleUpload = () => {
-    handleAddClose();
-
-    //todo
-    // {
-    /*  const [successfull, setSuccessfull] =useState(false);
-
-      const [open, setOpen] = useState(true);
-      const handleClose = () => {
-        setOpen(false);
-      };
-      const [alertText, setAlert] = useState("");
-      const [state, setState] = useState("");
-      const handleSuccess = () =>{
-        if (successfull) {
-          setAlert("The document was added to your dashboard!");
-          setState("success");
-        }
-        else {
-          setAlert("The upload was not successfull. Please try again.");
-          setState("error");
-        }
-      }*/
-    // }
+      .then(() => {
+        toasts.toastSuccess("The document was successfully added!");
+        refresh();
+        handleAddClose();
+      })
+      .catch((err) => {
+        console.log(err);
+        toasts.toastError("Error uploading the document!");
+      });
   };
 
   return (
@@ -225,9 +298,9 @@ function AddNewDocument() {
             fullWidth
           />
           <DialogContentText>Please upload your text document.</DialogContentText>
-          <input accept="text/*" className={classes.input} id="upload-text" multiple type="file" />
+          <input accept="txt/*" className={classes.input} id="upload-file" multiple type="file" />
           <label htmlFor="upload-text">
-            <VTButton neutral color="primary" component="span" startIcon={<DescriptionIcon />}>
+            <VTButton neutral component="span" startIcon={<DescriptionIcon />}>
               Upload
             </VTButton>
           </label>
@@ -268,12 +341,12 @@ function AddNewDocument() {
               displayEmpty
               className={classes.selectEmpty}
             >
-              <MenuItem value={"Fairy Tale"}>Fairy Tale</MenuItem>
-              <MenuItem value={"(Short) Story"}>Short Story</MenuItem>
-              <MenuItem value={"Newspaper Article"}>Newspaper Article</MenuItem>
               <MenuItem value={"Others"}>
                 <em>Others</em>
               </MenuItem>
+              <MenuItem value={"Fairy Tale"}>Fairy Tale</MenuItem>
+              <MenuItem value={"(Short) Story"}>Short Story</MenuItem>
+              <MenuItem value={"Newspaper Article"}>Newspaper Article</MenuItem>
             </Select>
             <FormHelperText>Please choose a category for your document</FormHelperText>
           </FormControl>
@@ -285,8 +358,8 @@ function AddNewDocument() {
           <VTButton
             accept
             onClick={() => {
-              addThisDocument();
-              handleUpload();
+              if (verify()) addThisDocument();
+              else toasts.toastWarning("Please review your entries.");
             }}
           >
             Add new document
@@ -315,6 +388,9 @@ function Dashboard() {
   const [otherDocuments, setOtherDocuments] = useState([]);
 
   const [countToRefresh, setCount] = useState(0);
+  function refresh() {
+    setCount(countToRefresh + 1);
+  }
 
   useEffect(() => {
     api
@@ -346,7 +422,7 @@ function Dashboard() {
         <T variant="h4">Welcome {user ? user.name : "..."}!</T>
         <T variant="h4">Improve your language skills with text documents, videos and more...</T>
       </Grid>
-      <AddNewDocument />
+      <AddNewDocument refresh={refresh} publisherId={user ? user.user_id : 10} />
 
       <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
         <T variant="h4">Short Stories</T>
@@ -488,7 +564,7 @@ function Dashboard() {
         documentAuthor={documentAuthor}
         documentDetails={documentDetails}
         documentImage={documentImage}
-        refresh={() => setCount(countToRefresh + 1)}
+        refresh={refresh}
       />
     </AppPage>
   );
