@@ -3,6 +3,7 @@ import { Grid, Typography } from "@material-ui/core";
 
 import { AppPage, toasts, VTButton } from ".";
 import ConfirmDialog from "./ConfirmDialog";
+import DashboardSection from "./DashboardSection";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -88,6 +89,11 @@ function ShowcasePage() {
           <Typography>Some longer text down here..</Typography>
         </ConfirmDialog>
       </Grid>
+
+      <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
+        DashboardSection
+      </Typography>
+      <DashboardSection title="My Documents">This is where the content goes</DashboardSection>
     </AppPage>
   );
 }
