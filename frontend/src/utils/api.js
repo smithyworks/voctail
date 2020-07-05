@@ -52,6 +52,22 @@ export function fetchQuizzes() {
 export function fetchQuiz(quiz_id) {
   return axios.get(`${base}/quiz`, { params: { quiz_id: quiz_id } });
 }
+export function fetchQuizByDocument(document_id) {
+  return axios.get(`${base}/quiz-by-document`, { params: { document_id: document_id } });
+}
+export function deleteQuiz(quiz_id) {
+  return axios.post(`${base}/delete-quiz`, { quiz_id });
+}
+export function createQuiz(title, length) {
+  return axios.post(`${base}/create-quiz`, { title, length });
+}
+export function createQuizFromDoc(document_id, length) {
+  //"document_id":document_id, "length":length
+  return axios.post(`${base}/create-document-quiz`, { document_id, length });
+}
+export function createCustomQuiz(title, questions) {
+  return axios.post(`${base}/create-custom-quiz`, { title, questions });
+}
 
 //documents
 
