@@ -20,6 +20,7 @@ import LocalBarIcon from "@material-ui/icons/LocalBar";
 
 import AppPage, { toasts } from "../common/AppPage";
 import VTButton from "../common/VTButton";
+import DashboardSection from "../common/DashboardSection";
 
 import { api } from "../../utils";
 
@@ -99,16 +100,64 @@ function DocumentOverviewPopUp({
   );
 }
 
-//overview (browse through documents, see title, preview and some additional information)
-function Dashboard() {
-  const classes = useStyles();
-  const [user, setUser] = useState();
+function PresentChildren({ classes, data, previewImage, refresh }) {
   const [openPopUp, setPopUpOpen] = useState(false);
   const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
-  const [documentImage, setDocumentImage] = useState(null);
+  const [documentImage, setDocumentImage] = useState(previewImage);
   const [documentAuthor, setDocumentAuthor] = useState(null);
+
+  return (
+    <div>
+      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
+        {data.map((tile) => (
+          <GridListTile key={tile.document_id} cols={1}>
+            <img src={documentImage} alt={tile.title} />
+            <GridListTileBar
+              title={tile.title}
+              subtitle={
+                <span>
+                  {tile.description} Written by {tile.author}
+                </span>
+              }
+              onClick={() => {
+                setPopUpOpen(true);
+                setDocumentId(tile.document_id);
+                setDocumentTitle(tile.title);
+                setDocumentAuthor(tile.author);
+                setDocumentDetails(tile.description);
+                setDocumentImage(previewImage);
+              }}
+              actionIcon={
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <LocalBarIcon />
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        ))}
+      </GridList>
+
+      <DocumentOverviewPopUp
+        open={openPopUp}
+        onClose={() => setPopUpOpen(false)}
+        documentId={documentId}
+        documentTitle={documentTitle}
+        documentAuthor={documentAuthor}
+        documentDetails={documentDetails}
+        documentImage={documentImage}
+        refresh={refresh}
+      />
+    </div>
+  );
+}
+
+//overview (browse through documents, see title, preview and some additional information)
+function Dashboard() {
+  const classes = useStyles();
+
+  const [user, setUser] = useState();
 
   //const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
   const [newspaperArticles, setNewspaperArticles] = useState([]);
@@ -153,148 +202,21 @@ function Dashboard() {
       </Grid>
       <UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />
 
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">Short Stories</T>
-      </Grid>
+      <DashboardSection title={"Short Stories"}>
+        <PresentChildren classes data={shortStories} previewImage={shortStoriesPreview} refresh={refresh} />
+      </DashboardSection>
 
-      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-        {shortStories.map((tile) => (
-          <GridListTile key={tile.document_id} cols={1}>
-            <img src={shortStoriesPreview} alt={tile.title} />
-            <GridListTileBar
-              title={tile.title}
-              subtitle={
-                <span>
-                  {tile.description} Written by {tile.author}
-                </span>
-              }
-              onClick={() => {
-                setPopUpOpen(true);
-                setDocumentId(tile.document_id);
-                setDocumentTitle(tile.title);
-                setDocumentAuthor(tile.author);
-                setDocumentDetails(tile.description);
-                setDocumentImage(shortStoriesPreview);
-              }}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                  <LocalBarIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
+      <DashboardSection title={"Fairy Tales"}>
+        <PresentChildren classes data={fairyTales} previewImage={fairyTalesPreview} refresh={refresh} />
+      </DashboardSection>
 
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">Fairy Tales</T>
-      </Grid>
+      <DashboardSection title={"Newspaper Articles"}>
+        <PresentChildren classes data={newspaperArticles} previewImage={newspaperArticlesPreview} refresh={refresh} />
+      </DashboardSection>
 
-      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-        {fairyTales.map((tile) => (
-          <GridListTile key={tile.document_id} cols={1}>
-            <img src={fairyTalesPreview} alt={tile.title} />
-            <GridListTileBar
-              title={tile.title}
-              subtitle={
-                <span>
-                  {tile.description} Written by {tile.author}
-                </span>
-              }
-              onClick={() => {
-                setPopUpOpen(true);
-                setDocumentId(tile.document_id);
-                setDocumentTitle(tile.title);
-                setDocumentAuthor(tile.author);
-                setDocumentDetails(tile.description);
-                setDocumentImage(fairyTalesPreview);
-              }}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                  <LocalBarIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">Newspaper Articles</T>
-      </Grid>
-
-      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-        {newspaperArticles.map((tile) => (
-          <GridListTile key={tile.document_id} cols={1}>
-            <img src={newspaperArticlesPreview} alt={tile.title} />
-            <GridListTileBar
-              title={tile.title}
-              subtitle={
-                <span>
-                  {tile.description} Written by {tile.author}
-                </span>
-              }
-              onClick={() => {
-                setPopUpOpen(true);
-                setDocumentId(tile.document_id);
-                setDocumentTitle(tile.title);
-                setDocumentAuthor(tile.author);
-                setDocumentDetails(tile.description);
-                setDocumentImage(newspaperArticlesPreview);
-              }}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                  <LocalBarIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">More documents</T>
-      </Grid>
-
-      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-        {otherDocuments.map((tile) => (
-          <GridListTile key={tile.document_id} cols={1}>
-            <img src={otherDocumentsPreview} alt={tile.title} />
-            <GridListTileBar
-              title={tile.title}
-              subtitle={
-                <span>
-                  {tile.description} Written by {tile.author}
-                </span>
-              }
-              onClick={() => {
-                setPopUpOpen(true);
-                setDocumentId(tile.document_id);
-                setDocumentTitle(tile.title);
-                setDocumentAuthor(tile.author);
-                setDocumentDetails(tile.description);
-                setDocumentImage(otherDocumentsPreview);
-              }}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                  <LocalBarIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-
-      <DocumentOverviewPopUp
-        open={openPopUp}
-        onClose={() => setPopUpOpen(false)}
-        documentId={documentId}
-        documentTitle={documentTitle}
-        documentAuthor={documentAuthor}
-        documentDetails={documentDetails}
-        documentImage={documentImage}
-        refresh={refresh}
-      />
+      <DashboardSection title={"Other documents"}>
+        <PresentChildren classes data={otherDocuments} previewImage={otherDocumentsPreview} refresh={refresh} />
+      </DashboardSection>
     </AppPage>
   );
 }
