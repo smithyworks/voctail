@@ -13,14 +13,16 @@ const useStyles = makeStyles({
   },
 });
 
-function ProfileSection({ title, children }) {
+function ProfileSection({ title, disablePadding, children }) {
   const classes = useStyles();
 
   return (
     <Paper className={classes.section} elevation={0}>
       <Typography variant="h5">{title}</Typography>
       <Divider />
-      <div className={classes.innerContainer}>{children}</div>
+      <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
+        {children}
+      </div>
     </Paper>
   );
 }

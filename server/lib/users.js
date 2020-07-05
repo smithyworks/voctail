@@ -10,7 +10,7 @@ async function userHandler(req, res) {
     } = await query("SELECT user_id, name, email, admin, premium FROM users WHERE user_id = $1", [user_id]);
     res.status(200).json({ ...userRecord, masquerading: !!masquerading });
   } catch (err) {
-    log(error);
+    log(err);
     res.status(500).send("Something went wrong.");
   }
 }
@@ -24,7 +24,7 @@ async function setPremiumHandler(req, res) {
 
     res.sendStatus(200);
   } catch (err) {
-    log(error);
+    log(err);
     res.status(500).send("Something went wrong.");
   }
 }
@@ -38,7 +38,7 @@ async function setNameHandler(req, res) {
 
     res.sendStatus(200);
   } catch (err) {
-    log(error);
+    log(err);
     res.status(500).send("Something went wrong.");
   }
 }
@@ -52,7 +52,7 @@ async function setEmailHandler(req, res) {
 
     res.sendStatus(200);
   } catch (err) {
-    log(error);
+    log(err);
     res.status(500).send("Something went wrong.");
   }
 }
@@ -67,9 +67,37 @@ async function setPasswordHandler(req, res) {
 
     res.sendStatus(200);
   } catch (err) {
-    log(error);
+    log(err);
     res.status(500).send("Something went wrong.");
   }
 }
 
-module.exports = { userHandler, setPremiumHandler, setNameHandler, setEmailHandler, setPasswordHandler };
+async function userVocabularyHandler(req, res) {
+  try {
+    const { user_id } = req.authData.user;
+
+    const {
+      rows: vocabulary,
+    } = await query(
+      "SELECT users_words.word_id, words.word, users_words.known, users_words.certainty, users_words.encounters, users_words.last_seen \
+        FROM users_words \
+          LEFT JOIN words ON words.word_id = users_words.word_id \
+        WHERE users_words.user_id = $1",
+      [user_id]
+    );
+
+    res.status(200).json(vocabulary);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+module.exports = {
+  userHandler,
+  setPremiumHandler,
+  setNameHandler,
+  setEmailHandler,
+  setPasswordHandler,
+  userVocabularyHandler,
+};

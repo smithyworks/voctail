@@ -96,7 +96,7 @@ export function addDocumentToClassroom(document_id) {
   return axios.post(`${base}/add-document-to-classroom`, { document_id });
 }
 
-// user edits
+// user
 
 export function setPremium(premium) {
   return axios.post(`${base}/set-premium`, { premium: !!premium });
@@ -109,4 +109,7 @@ export function setEmail(email) {
 }
 export function setPassword(password) {
   return axios.post(`${base}/set-password`, { password });
+}
+export function vocabulary() {
+  return axios.get(`${base}/user-vocabulary`);
 }

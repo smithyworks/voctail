@@ -6,6 +6,7 @@ import { AppPage, toasts } from "../common";
 import ProfilePicture from "./ProfilePicture";
 import ProfileSection from "./ProfileSection";
 import EditableItem from "./EditableItem";
+import VocabularyCloud from "./VocabularyCloud";
 import { UserContext, refresh } from "../../App";
 import { api } from "../../utils";
 
@@ -35,7 +36,7 @@ function ProfilePage() {
   return (
     <AppPage>
       <div className={classes.container}>
-        <ProfileSection title="Personal Information">
+        <ProfileSection title="Personal Information" disablePadding>
           <Grid container>
             <Grid item className={classes.pic}>
               <ProfilePicture dimension="250px" />
@@ -113,7 +114,7 @@ function ProfilePage() {
           <Typography variant="h6" className={classes.subSectionTitle}>
             Vocabulary
           </Typography>
-          <div></div>
+          <VocabularyCloud />
         </ProfileSection>
       </div>
     </AppPage>

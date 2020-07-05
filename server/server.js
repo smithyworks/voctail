@@ -32,6 +32,7 @@ server.post("/api/set-premium", auth.tokenMiddleWare, users.setPremiumHandler);
 server.post("/api/set-name", auth.tokenMiddleWare, users.setNameHandler);
 server.post("/api/set-email", auth.tokenMiddleWare, users.setEmailHandler);
 server.post("/api/set-password", auth.tokenMiddleWare, users.setPasswordHandler);
+server.get("/api/user-vocabulary", auth.tokenMiddleWare, users.userVocabularyHandler);
 
 server.post("/api/document", auth.tokenMiddleWare, documents.documentHandler);
 server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
