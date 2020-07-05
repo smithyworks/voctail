@@ -24,6 +24,10 @@ CREATE TABLE users_quizzes (
   quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE
 );
 
+CREATE TABLE quizzes_documents (
+  quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE,
+  document_id         integer    NOT NULL REFERENCES users(user_id) ON DELETE CASCADE
+);
 
 CREATE TABLE words (
   word_id         serial        PRIMARY KEY,

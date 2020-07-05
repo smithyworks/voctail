@@ -96,6 +96,8 @@ function QuizzesDashboard({ ...props }) {
           <T variant="h3">Welcome to your quizzes page, {user ? user.name : "..."}!</T>
         </Grid>
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">
+          <Button onClick={() => api.createQuiz("MyQuiz", 10)}>Generate Random</Button>
+          <Button onClick={() => api.createQuizFromDoc(1, 10)}>Generate from Document (2)</Button>
           {createButtons(quizzes, base)}
         </GridList>
       </Grid>

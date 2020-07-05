@@ -45,8 +45,10 @@ server.post("/api/admin/masquerade", auth.tokenMiddleWare, admin.masqueradeHandl
 server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasqueradeHandler);
 
 server.get("/api/quizzes", auth.tokenMiddleWare, quizzes.quizzesHandler);
-
 server.get("/api/quiz", auth.tokenMiddleWare, quizzes.quizHandler);
+server.post("/api/delete-quiz", auth.tokenMiddleWare, quizzes.quizDeleteHandler);
+server.post("/api/create-quiz", auth.tokenMiddleWare, quizzes.createQuizHandler);
+server.post("/api/create-document-quiz", auth.tokenMiddleWare, quizzes.createQuizFromDocHandler);
 
 server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomHandler);
 server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClassroom);
