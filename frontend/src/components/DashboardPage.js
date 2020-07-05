@@ -6,7 +6,6 @@ import {
   GridListTile,
   GridListTileBar,
   IconButton,
-  Button,
   Dialog,
   DialogTitle,
   DialogActions,
@@ -31,6 +30,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
 
 import AppPage, { toasts } from "./common/AppPage";
+import VTButton from "./common/VTButton";
 
 import { api } from "../utils";
 
@@ -95,7 +95,7 @@ function DocumentOverviewPopUp({
           console.log(err);
           toasts.toastError("Error communicating with the server!");
         });
-    else console.log("No document to delete found.");
+    else toasts.toastWarning("No document found for the delete.");
   }
 
   return (
@@ -110,15 +110,15 @@ function DocumentOverviewPopUp({
         </T>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <VTButton neutral onClick={onClose}>
           Cancel
-        </Button>
-        <Button onClick={() => deleteThisDocument(documentId)} color="primary">
+        </VTButton>
+        <VTButton danger onClick={() => deleteThisDocument(documentId)}>
           Delete document
-        </Button>
-        <Button component={Link} to={"/documents/" + documentId} color="primary">
+        </VTButton>
+        <VTButton accept component={Link} to={"/documents/" + documentId}>
           View document
-        </Button>
+        </VTButton>
       </DialogActions>
     </Dialog>
   );
@@ -189,9 +189,9 @@ function AddNewDocument() {
 
   return (
     <div>
-      <Button varian="contained" color="primary" startIcon={<AddIcon />} onClick={handleAddOpen}>
+      <VTButton neutral startIcon={<AddIcon />} onClick={handleAddOpen}>
         Add a new document
-      </Button>
+      </VTButton>
 
       <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-new-document">
         <DialogTitle id="add-new-document">Add a document</DialogTitle>
@@ -227,18 +227,18 @@ function AddNewDocument() {
           <DialogContentText>Please upload your text document.</DialogContentText>
           <input accept="text/*" className={classes.input} id="upload-text" multiple type="file" />
           <label htmlFor="upload-text">
-            <Button variant="contained" color="primary" component="span" startIcon={<DescriptionIcon />}>
+            <VTButton neutral color="primary" component="span" startIcon={<DescriptionIcon />}>
               Upload
-            </Button>
+            </VTButton>
           </label>
           <DialogContentText>
             You can upload a preview image for your text document or choose one from our example pictures.
           </DialogContentText>
           <input accept="image/*" className={classes.input} id="upload-preview-image" multiple type="file" />
           <label htmlFor="upload-preview-image">
-            <Button variant="contained" color="primary" component="span" startIcon={<ImageIcon />}>
+            <VTButton secondary component="span" startIcon={<ImageIcon />}>
               Upload
-            </Button>
+            </VTButton>
           </label>
           <DialogContentText>
             Your document is public and available to all users. If you want to keep your document private please
@@ -279,18 +279,18 @@ function AddNewDocument() {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleAddClose} color="primary">
+          <VTButton neutral onClick={handleAddClose}>
             Cancel
-          </Button>
-          <Button
+          </VTButton>
+          <VTButton
+            accept
             onClick={() => {
               addThisDocument();
               handleUpload();
             }}
-            color="primary"
           >
-            Add as a new document
-          </Button>
+            Add new document
+          </VTButton>
         </DialogActions>
       </Dialog>
     </div>
