@@ -88,7 +88,7 @@ function QuizzesDashboard({ ...props }) {
     }
     return buttons;
   }
-
+  // <Button onClick={() => api.fetchQuizByDocument(2)}>Fetch By Document (2)</Button>
   return (
     <AppPage location="quizzes" id="quizzes-page">
       <Grid className={classes.grid} container justify="space-evenly" alignItems="center" direction="row">
@@ -97,7 +97,17 @@ function QuizzesDashboard({ ...props }) {
         </Grid>
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">
           <Button onClick={() => api.createQuiz("MyQuiz", 10)}>Generate Random</Button>
-          <Button onClick={() => api.createQuizFromDoc(1, 10)}>Generate from Document (2)</Button>
+          <Button onClick={() => api.createQuizFromDoc(2, 10)}>Generate From Document (2)</Button>
+          <Button onClick={() => api.fetchQuizByDocument(2)}>Fetch By Document (2)</Button>
+          <Button
+            onClick={() =>
+              api.createCustomQuiz("Custom", [
+                { vocabulary: "word", suggestions: ["a", "b", "c"], translation: "Wort" },
+              ])
+            }
+          >
+            Create Custom Document
+          </Button>
           {createButtons(quizzes, base)}
         </GridList>
       </Grid>

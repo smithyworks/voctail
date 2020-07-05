@@ -103,6 +103,27 @@ async function quizHandler(req, res) {
   }
 }
 
+/*SELECT  quizzes.* FROM quizzes INNER JOIN quizzes_documents ON quizzes.quiz_id = quizzes_documents.quiz_id AND quizzes_documents.document_id = 2 INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = 1*/
+async function quizByDocHandler(req, res) {
+  try {
+    const { user_id } = req.authData.user;
+    const document_id = req.query.document_id;
+    const {
+      rows: quizList,
+    } = await query(
+      "SELECT  quizzes.* FROM quizzes INNER JOIN quizzes_documents \
+        ON quizzes.quiz_id = quizzes_documents.quiz_id AND quizzes_documents.document_id = $1\
+        INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $2",
+      [document_id, user_id]
+    );
+
+    res.status(200).json(quizList);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 async function quizDeleteHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
@@ -138,19 +159,8 @@ async function createQuizHandler(req, res) {
         transList.push({ translation: v.translation, word_id: v.word_id });
       }
     });
-    /*
-    const {
-      rows: transList,
-    } = await query(
-        "SELECT DISTINCT * FROM translations INNER JOIN users_words ON translations.word_id = users_words.word_id \
-        WHERE users_words.user_id = $1",
-        [user_id]
-    );
-    */
-    log(wordList);
-    const questions = generateQuestions(wordList, transList, length);
 
-    log(questions);
+    const questions = generateQuestions(wordList, transList, length);
 
     const quiz = await insertSQL(title, questions, user_id);
 
@@ -169,13 +179,7 @@ async function createQuizFromDocHandler(req, res) {
 
     const {
       rows: [document],
-    } = await query(
-      //additional INNER JOIN with translations ensures translations exist
-      "SELECT * FROM documents WHERE document_id=$1 ",
-      [document_id]
-    );
-
-    log(document);
+    } = await query("SELECT * FROM documents WHERE document_id=$1 ", [document_id]);
 
     const { rows: entryList } = await query(
       //for now df document_id 2 as boot strapped (DB) -> document_id=$1, user_id=$2, pass params document_id, user_id
@@ -199,12 +203,7 @@ async function createQuizFromDocHandler(req, res) {
       }
     });
 
-    log("wordList", wordList);
-    log("wordList", transList);
-
     const questions = generateQuestions(wordList, transList, length);
-
-    log(questions);
 
     const quiz = await insertSQL(document.title, questions, user_id, document.document_id);
 
@@ -215,4 +214,27 @@ async function createQuizFromDocHandler(req, res) {
   }
 }
 
-module.exports = { quizzesHandler, quizHandler, quizDeleteHandler, createQuizHandler, createQuizFromDocHandler };
+async function createCustomQuizHandler(req, res) {
+  try {
+    const { user_id } = req.authData.user;
+    const questions = req.body.questions;
+    const title = req.body.title;
+
+    const quiz = await insertSQL(title, questions, user_id);
+
+    res.status(200).json(quiz);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+module.exports = {
+  quizzesHandler,
+  quizHandler,
+  quizByDocHandler,
+  quizDeleteHandler,
+  createQuizHandler,
+  createQuizFromDocHandler,
+  createCustomQuizHandler,
+};
