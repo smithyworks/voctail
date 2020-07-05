@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   icon: { marginRight: "5px", fontSize: "30px" },
 });
 
-function ConfirmDialog({ open, title, variant, disabled, onConfirm, onClose, children }) {
+function OkDialog({ open, title, disabled, onOk, onClose, okText, children }) {
   const classes = useStyles();
 
   return (
@@ -32,15 +32,12 @@ function ConfirmDialog({ open, title, variant, disabled, onConfirm, onClose, chi
       </DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>
-        <VTButton secondary onClick={onClose}>
-          Cancel
-        </VTButton>
-        <VTButton danger onClick={onConfirm} disabled={disabled}>
-          Confirm
+        <VTButton accept onClick={onOk} disabled={disabled}>
+          {okText ?? "Ok!"}
         </VTButton>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default ConfirmDialog;
+export default OkDialog;

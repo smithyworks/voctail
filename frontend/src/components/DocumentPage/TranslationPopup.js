@@ -45,23 +45,26 @@ function TranslationPopup({
   onMouseEnter,
   onMouseLeave,
   onMarkKnown,
-  translationLookup,
-  wordLookup,
+  lookupWord,
+  lookupTranslations,
   onAddTranslationIntent,
 }) {
   const classes = useStyles();
 
-  const word = wordLookup[word_id]?.word;
-  const [translationData, setTranslationData] = useState();
+  const [translationData, setTranslationData] = useState({});
   useEffect(() => {
-    if (!translationLookup || !word_id) return;
-    const components = translationLookup[word_id]?.map((t, i) => (
+    if (!word_id) return;
+
+    const { word } = lookupWord(word_id) ?? {};
+
+    const components = lookupTranslations(word_id)?.map((t, i) => (
       <T variant="body2" gutterBottom component="li" className={classes.listItem} key={i}>
         {t.translation}
       </T>
     ));
-    setTranslationData({ components, word_id });
-  }, [word_id, translationLookup]); // eslint-disable-line
+
+    setTranslationData({ components, word_id, word });
+  }, [word_id, lookupTranslations]); // eslint-disable-line
 
   function leave() {
     if (typeof onMouseLeave === "function") onMouseLeave();
@@ -82,12 +85,12 @@ function TranslationPopup({
       <div onMouseEnter={onMouseEnter} onMouseLeave={leave}>
         <Paper className={classes.paper} component={Grid} container direction="column" wrap="nowrap">
           <T variant="subtitle1" className={classes.header}>
-            {word}
+            {translationData.word}
           </T>
 
           <Grid item xs className={classes.body}>
             <ul className={classes.list}>
-              {translationData?.word_id === word_id ? translationData?.components : null}
+              {translationData.word_id === word_id ? translationData.components : null}
               <li className={classes.addWordListItem} onClick={_addTranslationIntent}>
                 <AddIcon fontSize="inherit" className={classes.addIcon} /> Add A Translation
               </li>
