@@ -22,11 +22,11 @@ const useStyles = makeStyles({
   },
 });
 
-function TopNav({ location, loggedIn, isAdmin, masquerading }) {
+function TopNav({ location, loggedIn, isAdmin, masquerading, premium }) {
   const classes = useStyles();
 
   const navButtons = loggedIn ? <NavButtons location={location} isAdmin={isAdmin} /> : null;
-  const rightContent = loggedIn ? <UserMenuButton masquerading={masquerading} /> : <SigninButtons />;
+  const rightContent = loggedIn ? <UserMenuButton masquerading={masquerading} premium={premium} /> : <SigninButtons />;
 
   return (
     <AppBar position="static" className={classes.bar}>

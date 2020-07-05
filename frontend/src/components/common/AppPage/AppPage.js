@@ -68,6 +68,7 @@ function AppPage({ children, id, location, title }) {
         loggedIn={localStorage.hasTokens()}
         isAdmin={!!user?.admin}
         masquerading={!!user?.masquerading}
+        premium={!!user?.premium}
       />
 
       <Grid item xs className={classes.bodyContainer}>

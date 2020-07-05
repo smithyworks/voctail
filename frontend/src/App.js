@@ -8,12 +8,14 @@ import {
   Error404Page,
   IntroPage,
   AdminPage,
-  TextDocumentPage,
+  DocumentPage,
   QuizzesDashboardPage,
   QuizPage,
   ClassroomsPage,
   ClassroomsCreatePage,
   ClassroomsSavedPage,
+  AccountPage,
+  ProfilePage,
 } from "./components";
 import { toasts } from "./components/common";
 import { localStorage, api } from "./utils";
@@ -53,7 +55,7 @@ function App() {
           if (res) setUser(res.data);
         })
         .catch((err) => toasts.toastError("Error communicating with the server!"));
-  }, [loggedIn]);
+  }, [loggedIn, count]);
 
   return (
     <UserContext.Provider value={user}>
@@ -65,10 +67,13 @@ function App() {
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
           <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
-          <ProtectedRoute path="/documents/:document_id" component={TextDocumentPage} />
+          <ProtectedRoute path="/documents/:document_id" component={DocumentPage} />
           <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
           <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
+          <ProtectedRoute path="/account" component={AccountPage} />
+          <ProtectedRoute path="/profile" component={ProfilePage} />
+          <ProtectedRoute path="/users/:user_id" component={ProfilePage} />
 
           <Route path="/signup">
             <SigninPage signup />

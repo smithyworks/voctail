@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Typography } from "@material-ui/core";
 
 import { AppPage, toasts, VTButton } from ".";
+import ConfirmDialog from "./ConfirmDialog";
+import DashboardSection from "./DashboardSection";
 
 function ShowcasePage() {
+  const [okDialogOpen, setOkDialogOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+
   return (
     <AppPage title="Common components Showcase">
       <Typography variant="h5" style={{ marginTop: "20px" }}>
@@ -49,6 +54,46 @@ function ShowcasePage() {
           <VTButton secondary>secondary</VTButton>
         </Grid>
       </Grid>
+
+      <Typography variant="h5" style={{ marginTop: "20px" }}>
+        Dialogs
+      </Typography>
+      <Grid container>
+        <Grid item style={{ padding: "10px" }}>
+          <VTButton neutral onClick={() => setConfirmDialogOpen(true)}>
+            ConfirmDialog
+          </VTButton>
+        </Grid>
+        <Grid item style={{ padding: "10px" }}>
+          <VTButton neutral onClick={() => setOkDialogOpen(true)}>
+            OkDialog
+          </VTButton>
+        </Grid>
+
+        <ConfirmDialog
+          open={confirmDialogOpen}
+          title="Title Here"
+          onClose={() => setConfirmDialogOpen(false)}
+          onConfirm={() => toasts.toastSuccess("You clicked confirm!")}
+        >
+          <Typography>Some text here.</Typography>
+          <Typography>Some longer text down here..</Typography>
+        </ConfirmDialog>
+        <ConfirmDialog
+          open={okDialogOpen}
+          title="Title Here"
+          onClose={() => setOkDialogOpen(false)}
+          onOk={() => toasts.toastSuccess("You clicked Ok!")}
+        >
+          <Typography>Some text here.</Typography>
+          <Typography>Some longer text down here..</Typography>
+        </ConfirmDialog>
+      </Grid>
+
+      <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
+        DashboardSection
+      </Typography>
+      <DashboardSection title="My Documents">This is where the content goes</DashboardSection>
     </AppPage>
   );
 }

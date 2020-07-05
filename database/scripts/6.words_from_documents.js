@@ -25,7 +25,7 @@ function clean(word) {
     word = word.replace(/[ \t\r\n]/g, "");
     return word
       .toLowerCase()
-      .replace(/[.,;:"\(\)\?\!><’‘`]/g, "")
+      .replace(/[.,;:"()?!><’‘”“`]/g, "")
       .replace(/[^a-z]s$/g, "")
       .replace(/(^'|'$)/g, "");
   } catch (err) {

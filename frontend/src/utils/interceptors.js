@@ -1,5 +1,5 @@
 import axios from "axios";
-import { localStorage } from "./utils";
+import { localStorage } from ".";
 
 export function setRequestInterceptor() {
   // Intercept requests and attach access token.

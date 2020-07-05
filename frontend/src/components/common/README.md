@@ -41,3 +41,17 @@ Props:
 - accept: boolean
 - danger: boolean
 - secondary: boolean
+
+## Dialogs
+
+Thin wrappers for Material dialogs.
+So far we have `OkDialog` and `ConfirmDialog`.
+
+Props:
+
+- title: string
+- disabled: boolean
+- onConfirm/onOk: function
+- onClose: function
+- okText: string
+- open

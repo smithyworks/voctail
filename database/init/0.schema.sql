@@ -59,6 +59,7 @@ CREATE TABLE users_words (
                                 ON DELETE CASCADE,
   known           boolean       NOT NULL DEFAULT true,
   certainty       integer       NOT NULL DEFAULT 1,
+  encounters      integer       NOT NULL DEFAULT 0,
   last_seen       timestamptz,
 
   PRIMARY KEY (user_id, word_id)

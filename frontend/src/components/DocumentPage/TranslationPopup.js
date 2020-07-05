@@ -15,10 +15,10 @@ const useStyles = makeStyles({
     minHeight: "150px",
     minWidth: "250px",
   },
-  header: { fontWeight: "bold", fontSize: "1.3em", padding: "5px 10px 0 10px", fontFamily: "noto-serif, serif" },
+  header: { fontWeight: "bold", fontSize: "20px", padding: "5px 10px 0 10px", fontFamily: "crimson-text, serif" },
   body: { maxHeight: "200px" },
   list: { padding: "0 10px 0 15px", margin: "0", maxHeight: "100%", overflow: "auto" },
-  listItem: { fontFamily: "noto-serif, serif", listStyle: "inside" },
+  listItem: { fontFamily: "crimson-text, serif", fontSize: "18px", listStyle: "inside" },
   actions: {
     padding: "8px",
     textAlign: "right",
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     marginLeft: "-5px",
     cursor: "pointer",
     "&:hover": { textDecoration: "underline" },
-    fontFamily: "noto-sans, sans",
+    fontFamily: "fira-sans, sans",
   },
   addIcon: { fontSize: "1.2em", marginRight: "2px" },
   knownButton: { fontWeight: "bold" },
@@ -45,23 +45,26 @@ function TranslationPopup({
   onMouseEnter,
   onMouseLeave,
   onMarkKnown,
-  translationLookup,
-  wordLookup,
+  lookupWord,
+  lookupTranslations,
   onAddTranslationIntent,
 }) {
   const classes = useStyles();
 
-  const word = wordLookup[word_id]?.word;
-  const [translationData, setTranslationData] = useState();
+  const [translationData, setTranslationData] = useState({});
   useEffect(() => {
-    if (!translationLookup || !word_id) return;
-    const components = translationLookup[word_id]?.map((t, i) => (
+    if (!word_id) return;
+
+    const { word } = lookupWord(word_id) ?? {};
+
+    const components = lookupTranslations(word_id)?.map((t, i) => (
       <T variant="body2" gutterBottom component="li" className={classes.listItem} key={i}>
         {t.translation}
       </T>
     ));
-    setTranslationData({ components, word_id });
-  }, [word_id, translationLookup]); // eslint-disable-line
+
+    setTranslationData({ components, word_id, word });
+  }, [word_id, lookupTranslations]); // eslint-disable-line
 
   function leave() {
     if (typeof onMouseLeave === "function") onMouseLeave();
@@ -82,12 +85,12 @@ function TranslationPopup({
       <div onMouseEnter={onMouseEnter} onMouseLeave={leave}>
         <Paper className={classes.paper} component={Grid} container direction="column" wrap="nowrap">
           <T variant="subtitle1" className={classes.header}>
-            {word}
+            {translationData.word}
           </T>
 
           <Grid item xs className={classes.body}>
             <ul className={classes.list}>
-              {translationData?.word_id === word_id ? translationData?.components : null}
+              {translationData.word_id === word_id ? translationData.components : null}
               <li className={classes.addWordListItem} onClick={_addTranslationIntent}>
                 <AddIcon fontSize="inherit" className={classes.addIcon} /> Add A Translation
               </li>

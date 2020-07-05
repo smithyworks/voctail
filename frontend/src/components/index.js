@@ -9,7 +9,9 @@ import SignoutRedirect from "./SignoutRedirect.js";
 import Error404Page from "./Error404Page.js";
 import IntroPage from "./IntroPage.js";
 import AdminPage from "./AdminPage";
-import TextDocumentPage from "./TextDocumentPage";
+import DocumentPage from "./DocumentPage";
+import AccountPage from "./AccountPage";
+import ProfilePage from "./ProfilePage";
 
 export {
   DashboardPage,
@@ -23,5 +25,7 @@ export {
   Error404Page,
   IntroPage,
   AdminPage,
-  TextDocumentPage,
+  DocumentPage,
+  AccountPage,
+  ProfilePage,
 };
