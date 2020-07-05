@@ -30,7 +30,7 @@ import AddIcon from "@material-ui/icons/Add";
 import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
 
-import AppPage from "./common/AppPage";
+import AppPage, { toasts } from "./common/AppPage";
 
 import { api } from "../utils";
 
@@ -80,7 +80,24 @@ function DocumentOverviewPopUp({
   documentDetails,
   documentAuthor,
   documentImage,
+  refresh,
 }) {
+  function deleteThisDocument(documentId) {
+    if (documentId)
+      api
+        .deleteDocument(documentId)
+        .then(() => {
+          toasts.toastSuccess("The document was successfully deleted!");
+          refresh();
+          onClose();
+        })
+        .catch((err) => {
+          console.log(err);
+          toasts.toastError("Error communicating with the server!");
+        });
+    else console.log("No document to delete found.");
+  }
+
   return (
     <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
       <DialogTitle id="document-overview-popup" onClose={onClose}>
@@ -96,7 +113,7 @@ function DocumentOverviewPopUp({
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={() => deleteThisDocument(documentId)} color="primary">
           Delete document
         </Button>
         <Button component={Link} to={"/documents/" + documentId} color="primary">
@@ -137,6 +154,7 @@ function AddNewDocument() {
         titleInput.current,
         descriptionInput.current,
         publicDocument,
+        category,
         contentInput.current,
         authorInput.current
       )
@@ -279,28 +297,6 @@ function AddNewDocument() {
   );
 }
 
-// function ManageDocuments() {
-//   const [anchorEl, setAnchorEl] = React.useState(null);
-//   const classes = useStyles();
-//   const handleManageClick = (event) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-//   const handleManageClose = () => {
-//     setAnchorEl(null);
-//   };
-//   return (
-//     <div>
-//       <IconButton aria-label="more" color="primary" onClick={handleManageClick}>
-//         <MoreVertIcon />
-//       </IconButton>
-
-//       <Menu id="manage-document" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleManageClose}>
-//         <MenuItem onClick={deleteDocument}> Delete document</MenuItem>
-//       </Menu>
-//     </div>
-//   );
-// }
-
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
   const classes = useStyles();
@@ -318,6 +314,8 @@ function Dashboard() {
   const [fairyTales, setFairyTales] = useState([]);
   const [otherDocuments, setOtherDocuments] = useState([]);
 
+  const [countToRefresh, setCount] = useState(0);
+
   useEffect(() => {
     api
       .user()
@@ -325,7 +323,7 @@ function Dashboard() {
         if (res) setUser(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [countToRefresh]);
 
   useEffect(() => {
     api
@@ -340,7 +338,7 @@ function Dashboard() {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [countToRefresh]);
 
   return (
     <AppPage location="dashboard" id="dashboard-page">
@@ -484,14 +482,13 @@ function Dashboard() {
 
       <DocumentOverviewPopUp
         open={openPopUp}
-        onClose={() => {
-          setPopUpOpen(false);
-        }}
+        onClose={() => setPopUpOpen(false)}
         documentId={documentId}
         documentTitle={documentTitle}
         documentAuthor={documentAuthor}
         documentDetails={documentDetails}
         documentImage={documentImage}
+        refresh={() => setCount(countToRefresh + 1)}
       />
     </AppPage>
   );
