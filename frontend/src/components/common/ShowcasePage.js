@@ -5,6 +5,9 @@ import { AppPage, toasts, VTButton } from ".";
 import ConfirmDialog from "./ConfirmDialog";
 import DashboardSection from "./DashboardSection";
 import Header from "./HeaderSection";
+import UserCard from "./UserCard";
+
+import iconUser from "../../assets/icon_user.png";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -93,6 +96,21 @@ function ShowcasePage() {
           <Typography>Some text here.</Typography>
           <Typography>Some longer text down here..</Typography>
         </ConfirmDialog>
+      </Grid>
+
+      <Typography variant="h5" style={{ marginTop: "20px" }}>
+        UserCard
+      </Typography>
+      <Grid container>
+        <Grid item style={{ padding: "10px" }}>
+          <UserCard name="Name" email="email@voctail.com" avatar={iconUser} />
+        </Grid>
+        <Grid item style={{ padding: "10px" }}>
+          <UserCard name="Name" email="email@voctail.com" avatar={iconUser} />
+        </Grid>
+        <Grid item style={{ padding: "10px" }}>
+          <UserCard name="Name" email="email@voctail.com" avatar={iconUser} />
+        </Grid>
       </Grid>
 
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>

@@ -1,41 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Grid,
   Typography as T,
-  GridList,
-  GridListTile,
-  ListSubheader,
-  GridListTileBar,
-  IconButton,
   Button,
   ButtonBase,
   Dialog,
   DialogTitle,
   DialogActions,
   DialogContent,
-  FormControlLabel,
-  Switch,
-  DialogContentText,
-  TextField,
-  Checkbox,
-  Menu,
-  MenuItem,
   Typography,
   Slide,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import LocalBarIcon from "@material-ui/icons/LocalBar";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import LocalBarIconOutlined from "@material-ui/icons/LocalBarOutlined";
-import DescriptionIcon from "@material-ui/icons/Description";
-import ImageIcon from "@material-ui/icons/Image";
-
 import AppPage from "./common/AppPage";
 
 import { api } from "../utils";
 import logo_classroom from "../assets/classroom_logo.png";
-import { Link } from "react-router-dom";
-import { Theme as theme } from "@material-ui/core/styles/createMuiTheme";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

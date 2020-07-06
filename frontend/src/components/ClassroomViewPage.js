@@ -23,17 +23,19 @@ import Container from "@material-ui/core/Container";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import addMember from "../assets/addMember.png";
-import addSection from "../assets/addScetion.png";
+import iconUser from "../assets/icon_user.png";
+import addSection from "../assets/addSection.png";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Header from "./common/HeaderSection";
 import DashboardSection from "./common/DashboardSection";
+import UserCard from "./common/UserCard";
 
 export const dummyClassroom = {
   title: "Class of 2020",
   topic: "British History",
   description: "In this classroom I will provide material for my students to discover the ancient british history.",
-  students: ["Alice", "Bob", "Clara"],
+  students: ["Alice", "Bob", "Clara", "Alice", "Bob", "Clara"],
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
 
   logo: {
     height: "60px",
-    margin: "5px 0",
   },
 
   appBar: {
@@ -91,7 +92,27 @@ function ClassroomViewPage() {
         description={dummyClassroom.description}
       />
 
-      <DashboardSection title="Students">
+      <DashboardSection title="Students" description="Add students to share your material and get started.">
+        <Grid container>
+          {dummyClassroom.students.map((member) => {
+            return (
+              <Grid item style={{ padding: "10px" }}>
+                <UserCard name={member} email={member + "@voctail.com"} avatar={iconUser} />
+              </Grid>
+            );
+          })}
+          <Grid item style={{ padding: "10px" }}>
+            <Button onClick={handleClick}>
+              <img src={addMember} className={classes.logo} alt="VocTail" />
+            </Button>
+          </Grid>
+        </Grid>
+      </DashboardSection>
+
+      <DashboardSection
+        title="Sections"
+        description="Organize your classroom in several sections and upload your documents in a specific section."
+      >
         <Grid container>
           {dummyClassroom.students.map((member) => {
             return (
@@ -100,55 +121,13 @@ function ClassroomViewPage() {
               </Grid>
             );
           })}
-        </Grid>
-        <Grid item style={{ padding: "10px" }}>
-          <Button onClick={handleClick}>
-            <img src={addMember} className={classes.logo} alt="VocTail" />
-          </Button>
+          <Grid item style={{ padding: "10px" }}>
+            <Button onClick={handleClick}>
+              <img src={addMember} className={classes.logo} alt="VocTail" />
+            </Button>
+          </Grid>
         </Grid>
       </DashboardSection>
-
-      <AppBar position="static" color="white">
-        <Toolbar>
-          <Typography className={classes.title} variant="h6">
-            Students
-          </Typography>
-          <Typography className={classes.headUpText} algin="center" color="inherit">
-            Add students to share your material and get started.
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Container className={classes.containerWithoutMargin} maxWidth="xl">
-        <Button onClick={handleClick}>
-          <img src={addMember} className={classes.logo} alt="VocTail" />
-        </Button>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="info">
-            You will be soon able to add a member!
-          </Alert>
-        </Snackbar>
-      </Container>
-
-      <AppBar className={classes.appBar} position="static" color="white">
-        <Toolbar>
-          <Typography className={classes.title} variant="h6">
-            Sections
-          </Typography>
-          <Typography className={classes.headUpText} algin="center" color="inherit">
-            Organize your classroom in several sections and upload your documents in a specific section.
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Container className={classes.containerWithoutMargin} maxWidth="xl">
-        <Button onClick={handleClick}>
-          <img src={addSection} className={classes.logo} alt="VocTail" />
-        </Button>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="info">
-            You will be soon able to add a section!
-          </Alert>
-        </Snackbar>
-      </Container>
     </AppPage>
   );
 }
