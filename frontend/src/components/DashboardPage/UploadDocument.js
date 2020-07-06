@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
   gridList: { width: "100%", height: 800, justifyContent: "space-around" },
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
-
+/*
 function clean(word) {
   try {
     word = word.replace(/[ \t\r\n]/g, "");
@@ -52,6 +52,8 @@ function clean(word) {
     return "";
   }
 }
+
+ */
 
 /*
 function AddWordsFromNewDocument() {
