@@ -27,6 +27,7 @@ import addSection from "../assets/addScetion.png";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Header from "./common/HeaderSection";
+import DashboardSection from "./common/DashboardSection";
 
 export const dummyClassroom = {
   title: "Class of 2020",
@@ -89,6 +90,23 @@ function ClassroomViewPage() {
         subtitle={dummyClassroom.topic}
         description={dummyClassroom.description}
       />
+
+      <DashboardSection title="Students">
+        <Grid container>
+          {dummyClassroom.students.map((member) => {
+            return (
+              <Grid item style={{ padding: "10px" }}>
+                <img src={addMember} className={classes.logo} alt="VocTail" />
+              </Grid>
+            );
+          })}
+        </Grid>
+        <Grid item style={{ padding: "10px" }}>
+          <Button onClick={handleClick}>
+            <img src={addMember} className={classes.logo} alt="VocTail" />
+          </Button>
+        </Grid>
+      </DashboardSection>
 
       <AppBar position="static" color="white">
         <Toolbar>

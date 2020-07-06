@@ -7,8 +7,9 @@ const useStyles = makeStyles({
     padding: "30px 30px 8px 30px",
     border: "1px solid lightgrey",
     marginBottom: "20px",
+    boxShadow: "1px 1px 12px #555",
   },
-  title: { fontWeight: "lighter" },
+  title: { fontWeight: "bold" },
   innerContainer: {
     padding: "20px 20px 8px 20px",
   },
