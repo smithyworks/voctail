@@ -1,4 +1,4 @@
-INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
+INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom) VALUES
   (1, 'Quiz Fruits','[
     {"vocabulary":"banana", "suggestions":["Himbeere", "Erdbeere", "Apfel"], "translation":"Banane"},
     {"vocabulary":"pineapple", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Ananas"},
@@ -10,7 +10,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
     {"vocabulary":"raspberry", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Himbeere"},
     {"vocabulary":"grape", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Traube"},
     {"vocabulary":"acai", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Acai"}
-    ]',false),
+    ]',false,true),
 
   (2, 'Quiz Vehicles','[
     {"vocabulary":"car", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Auto"},
@@ -19,7 +19,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
     {"vocabulary":"bike", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Fahrrad"},
     {"vocabulary":"scooter", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Roller"},
     {"vocabulary":"rocket", "suggestions":["Zug", "Flugzeug", "Fahrrad"], "translation":"Rakete"}
-    ]',false),
+    ]',false,true),
 
 
   (3, 'Quiz Colors','[
@@ -33,7 +33,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
     {"vocabulary":"grey", "suggestions":["weiß", "schwarz", "gelb"], "translation":"grau"},
     {"vocabulary":"violet", "suggestions":["weiß", "schwarz", "gelb"], "translation":"violett"},
     {"vocabulary":"turquoise", "suggestions":["weiß", "schwarz", "gelb"], "translation":"türkis"}
-    ]',false),
+    ]',false,true),
 
   (4, 'Quiz Numbers','[
     {"vocabulary":"one", "suggestions":["zwei", "sechs", "acht"], "translation":"eins"},
@@ -46,7 +46,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day) VALUES
     {"vocabulary":"eight", "suggestions":["zwei", "sechs", "sieben"], "translation":"acht"},
     {"vocabulary":"nine", "suggestions":["zwei", "sechs", "acht"], "translation":"neun"},
     {"vocabulary":"ten", "suggestions":["zwei", "sechs", "acht"], "translation":"zehn"}
-    ]',true);
+    ]',false, true);
 
 SELECT setval(pg_get_serial_sequence('quizzes','quiz_id'), (SELECT MAX(quiz_id) from quizzes));
 
