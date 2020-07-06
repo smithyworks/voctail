@@ -23,7 +23,8 @@ async function usersHandler(req, res) {
 
 async function studentsHandler(req, res) {
   try {
-    //const {classroom_id} = req
+    const { classroom_id } = req.body;
+    console.log(classroom_id);
     //TODO : solve create_classroom parameter problem
     const { rows } = await query("SELECT student_id FROM classroom_members WHERE classroom_id = $1", [1]);
     res.status(200).json({ rows });
@@ -35,9 +36,8 @@ async function studentsHandler(req, res) {
 
 async function documentsHandler(req, res) {
   try {
-    //const {classroom_id} = req
     //TODO : solve create_classroom parameter problem
-    const { rows } = await query("SELECT document_id FROM document_members WHERE classroom_id = $1", [1]);
+    const { rows } = await query("SELECT document_id FROM document_members WHERE classroom_id = classroom_id");
     res.status(200).json({ rows });
   } catch (err) {
     log(err);

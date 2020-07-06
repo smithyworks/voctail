@@ -89,7 +89,7 @@ export function getStudents(classroom_id) {
 }
 
 export function getDocuments(classroom_id) {
-  return axios.get(`${base}/students`, { classroom_id });
+  return axios.get(`${base}/documents`, { classroom_id });
 }
 
 export function createClassroom(title, topic, description, open) {

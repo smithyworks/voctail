@@ -10,8 +10,8 @@ INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic
 
 
 INSERT INTO classroom_members (classroom_id, student_id) VALUES
-    (1, 6), (1,7), (1, 8);
+    (10000, 6), (10000,7), (10000, 8);
 
 INSERT INTO classroom_documents (classroom_id, document_id) VALUES
-    (1, 1), (1, 2), (1, 3);
+    (10000, 1), (10000, 2), (10000, 3);
 

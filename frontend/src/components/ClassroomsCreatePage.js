@@ -44,7 +44,7 @@ function HeadUpText(props) {
 
 function ClassroomsCreatePage({ ...props }) {
   const classes = useStyles();
-  const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState(null);
+  const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
 
   useEffect(() => {
     api
@@ -53,6 +53,7 @@ function ClassroomsCreatePage({ ...props }) {
         if (res) {
           setClassroomStudentsFromDatabase(res.data.rows);
         }
+        console.log(res.data.rows);
         console.log(classroomStudentsFromDatabase);
       })
       .catch((err) => console.log(err));
@@ -61,8 +62,8 @@ function ClassroomsCreatePage({ ...props }) {
   return (
     <AppPage location="classrooms" id="classrooms-page">
       <HeadUpText text="This page is used for testing." />
-      <Grid cellHeight={140} className={classes.gridList} direction="column">
-        {[0, 1, 2].map((tile) => (
+      <Grid className={classes.gridList} direction="column">
+        {classroomStudentsFromDatabase.map((tile) => (
           <Grid item>
             <img className={classes.logo} src={userLogo} alt="user logo" />
           </Grid>
