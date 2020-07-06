@@ -55,6 +55,9 @@ export function fetchQuiz(quiz_id) {
 export function fetchQuizByDocument(document_id) {
   return axios.get(`${base}/quiz-by-document`, { params: { document_id: document_id } });
 }
+export function fetchQuizzesByCategory() {
+  return axios.get(`${base}/quiz-category`);
+}
 export function deleteQuiz(quiz_id) {
   return axios.post(`${base}/delete-quiz`, { quiz_id });
 }
