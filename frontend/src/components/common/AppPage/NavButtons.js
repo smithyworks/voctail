@@ -33,7 +33,6 @@ function NavButtons({ location, isAdmin }) {
   const classes = useStyles();
 
   const dashboardLinkClass = location === "dashboard" ? classes.activeLink : classes.link;
-  // const documentsLinkClass = location === "documents" ? classes.activeLink : classes.link;
   const quizzesLinkClass = location === "quizzes" ? classes.activeLink : classes.link;
   const classroomsLinkClass = location === "classrooms" ? classes.activeLink : classes.link;
   const adminLinkClass = location === "admin" ? classes.activeLink : classes.link;

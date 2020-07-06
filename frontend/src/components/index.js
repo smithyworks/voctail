@@ -1,4 +1,4 @@
-import DashboardPage from "./DashboardPage.js";
+import DashboardPage from "./DashboardPage/DashboardPage.js";
 import QuizzesDashboardPage from "./QuizzesDashboardPage.js";
 import QuizPage from "./QuizPage.js";
 import ClassroomsPage from "./ClassroomsPage.js";
