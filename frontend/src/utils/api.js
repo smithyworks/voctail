@@ -114,6 +114,9 @@ export function addDocumentToClassroom(document_id) {
 
 // user
 
+export function allUsers() {
+  return axios.get(`${base}/all-users`);
+}
 export function setPremium(premium) {
   return axios.post(`${base}/set-premium`, { premium: !!premium });
 }

@@ -28,6 +28,7 @@ server.post("/api/token", auth.tokenHandler);
 server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 
 server.post("/api/user", auth.tokenMiddleWare, users.userHandler);
+server.get("/api/all-users", auth.tokenMiddleWare, users.allUsersHandler);
 server.post("/api/set-premium", auth.tokenMiddleWare, users.setPremiumHandler);
 server.post("/api/set-name", auth.tokenMiddleWare, users.setNameHandler);
 server.post("/api/set-email", auth.tokenMiddleWare, users.setEmailHandler);

@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { VTButton } from "../common";
 
 const useStyles = makeStyles({
+  dialog: {},
   title: {
     display: "flex",
     alignItems: "center",
@@ -13,11 +14,13 @@ const useStyles = makeStyles({
   icon: { marginRight: "5px", fontSize: "30px" },
 });
 
-function OkDialog({ open, title, disabled, onOk, onClose, okText, children }) {
+function OkDialog({ open, title, disabled, onOk, onClose, okText, className, children }) {
   const classes = useStyles();
 
+  const cName = className ? classes.dialog + " " + className : classes.dialog;
+
   return (
-    <Dialog open={open} onClose={onClose} className={classes.dialog}>
+    <Dialog open={open} onClose={onClose} className={cName}>
       <DialogTitle disableTypography>
         <T variant="h6" className={classes.title}>
           {title}
