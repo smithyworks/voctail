@@ -114,6 +114,7 @@ function PresentChildren({ classes, data, previewImage, refresh }) {
         {data.map((tile) => (
           <GridListTile key={tile.document_id} cols={1}>
             <img src={documentImage} alt={tile.title} />
+
             <GridListTileBar
               title={tile.title}
               subtitle={
@@ -200,6 +201,7 @@ function Dashboard() {
         <T variant="h4">Welcome {user ? user.name : "..."}!</T>
         <T variant="h4">Improve your language skills with text documents, videos and more...</T>
       </Grid>
+
       <UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />
 
       <DashboardSection title={"Short Stories"}>

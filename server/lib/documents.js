@@ -99,4 +99,40 @@ async function usersHandler(req, res) {
   }
 }
 
-module.exports = { documentHandler, usersHandler, dummyDataHandler, deleteDocument, addDocument };
+async function findWordId(req, res) {
+  try {
+    const word = req.body;
+    const { rows: word_id } = await pool.query("SELECT word_id FROM words WHERE word=$1", [word]);
+    log("find word id: word ", word);
+    log("find word id: word_id", word_id);
+    res.status(200).json(word_id);
+  } catch (e) {
+    log(e);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function addWords(req, res) {
+  try {
+    const { newWord, document_id, word_id, frequency } = req.body;
+    const ignore = false;
+    const language = "english";
+    const { rows: words } = await query("INSERT INTO words(word, ignore, language) VALUES ($1, $2, $3)", [
+      newWord,
+      ignore,
+      language,
+    ]);
+    const {
+      rows: documentWords,
+    } = await query("INSERT INTO document_words(document_id, word_id, frequency) VALUES ($1,$2, $3)", [
+      document_id,
+      word_id,
+      frequency,
+    ]);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+module.exports = { documentHandler, usersHandler, dummyDataHandler, deleteDocument, addDocument, findWordId, addWords };

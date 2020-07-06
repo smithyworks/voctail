@@ -75,13 +75,18 @@ export function fetchDocuments() {
   return axios.get(`${base}/handle-documents`);
 }
 
-// add and delete documents (WIP)
+// add and delete documents
 export function addDocument(publisher, title, author, description, category, isPublic, content) {
   return axios.post(`${base}/add-document`, { publisher, title, author, description, category, isPublic, content });
 }
-//WIP
 export function deleteDocument(document_id) {
   return axios.post(`${base}/delete-document`, { document_id });
+}
+export function findWordId(word) {
+  return axios.get(`${base}/find-word-id`, { params: { word: word } });
+}
+export function addWords(newWord, document_id, word_id, frequency) {
+  return axios.post(`${base}/add-words`, { newWord, document_id, word_id, frequency });
 }
 
 // vocabulary

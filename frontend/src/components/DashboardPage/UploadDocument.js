@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/VTButton";
@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
   gridList: { width: "100%", height: 800, justifyContent: "space-around" },
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
-/*
+
 function clean(word) {
   try {
     word = word.replace(/[ \t\r\n]/g, "");
@@ -53,82 +53,69 @@ function clean(word) {
   }
 }
 
- */
+function AddWordsFromNewDocument(document_id, contentData) {
+  // Make sure it's offset to the right value
+  /*const { //todo for the daily
+      rows: [{ nextval }],
+  } = await pool.query("SELECT nextval('words_word_id_seq');");
+  let word_id = parseInt(nextval);*/
+  const documentId = useRef(document_id);
+  const word = useRef("");
+  const [addToDatabase, setAddToDatabase] = useState();
+  const word_id = useRef(0);
+  let real_word_id = 159966;
+  const newWords = [];
+  const frequency = useRef(0);
+  //let current_word_id;
 
-/*
-function AddWordsFromNewDocument() {
-    //const { document_id } = req.body;
-    const { rows: documentRecords } = await pool.query(
-        "SELECT * FROM documents WHERE document_id=$1;"
-    );
-    const wordSet = new Set();
+  //const document = documentRecords[documentRecords.length - 1];
+  const content = contentData.blocks.map((b) => b.content).join(" ");
+  const words = content
+    .split(/\s/)
+    .map((token) => clean(token))
+    .filter((word) => word !== "");
 
-    // Make sure it's offset to the right value
-    const {
-        rows: [{ nextval }],
-    } = await pool.query("SELECT nextval('words_word_id_seq');");
-    let word_id = parseInt(nextval);
+  const frequencies = {};
 
-    const newWords = [];
-    const documentWords = [];
+  useEffect(() => {
+    api
+      .findWordId(word)
+      .then((res) => {
+        if (res) word_id.current = res.data;
+      })
+      .catch((err) => console.log(err));
+  }, [word]);
 
-    for (let dri = 0; dri < documentRecords.length; dri++) {
-        const document = documentRecords[dri];
+  useEffect(() => {
+    api
+      .addWords(word.current, documentId.current, word_id.current, frequency.current)
+      .then()
+      .catch((err) => console.log(err));
+  }, [addToDatabase]);
 
-        const content = document.blocks.map((b) => b.content).join(" ");
-        const words = content
-            .split(/\s/)
-            .map((token) => clean(token))
-            .filter((word) => word !== "");
-
-        const frequencies = {};
-
-        for (let wi = 0; wi < words.length; wi++) {
-            const word = words[wi];
-
-            if (word === "") continue;
-
-            const {
-                rows,
-            } = await pool.query("SELECT word_id FROM words WHERE word = $1", [word]);
-            let current_word_id = rows[0]?.word_id;
-
-            // If the word doesn't exist, we need to add it to the database.
-            if (!current_word_id) {
-                let wordRecord = newWords.find((w) => w.word === word);
-                if (!wordRecord) {
-                    wordRecord = { word_id: word_id++, word };
-                    newWords.push(wordRecord);
-                }
-
-                current_word_id = wordRecord.word_id;
-            }
-
-            if (!frequencies[current_word_id]) frequencies[current_word_id] = 1;
-            else frequencies[current_word_id]++;
-        }
-
-        documentWords[document.document_id] = frequencies;
+  for (let wi = 0; wi < words.length; wi++) {
+    word.current = words[wi];
+    if (word === "") continue;
+    //useeffects
+    // If the word doesn't exist, we need to add it to the database.
+    if (word_id.current !== 0) {
+      //changed from christo
+      let wordRecord = newWords.find((w) => w.word === word);
+      if (!wordRecord) {
+        wordRecord = { word_id: real_word_id++, word };
+        newWords.push(wordRecord);
+      }
+      word_id.current = wordRecord.real_word_id;
     }
 
-    console.log("COPY words (word_id, word, ignore, language) FROM stdin;");
-    newWords.forEach((nw) => {
-        console.log(`${nw.word_id}\t${nw.word}\tf\tenglish`);
-    });
-    console.log("\\.");
-    console.log(`ALTER SEQUENCE words_word_id_seq RESTART WITH ${word_id};`);
-
-    console.log(
-        "COPY documents_words (document_id, word_id, frequency) FROM stdin;"
-    );
-    Object.entries(documentWords).forEach(([document_id, frequencies]) => {
-        Object.entries(frequencies).forEach(([word_id, frequency]) => {
-            console.log(`${document_id}\t${word_id}\t${frequency}`);
-        });
-    });
-    console.log("\\.");
+    if (!frequencies[word_id.current]) frequencies[word_id.current] = 1;
+    else frequencies[word_id.current]++;
+    frequency.current = frequencies[word_id.current];
+    setAddToDatabase(addToDatabase + 1); //use effects
+    word_id.current = 0;
+  }
 }
-*/
+
 function UploadDocument({ refresh, publisherId }) {
   const titleInput = useRef("");
   const authorInput = useRef("");
@@ -165,9 +152,7 @@ function UploadDocument({ refresh, publisherId }) {
     let currentContent;
 
     reader.onloadend = function () {
-      console.log("onload", reader.result);
       const lines = reader.result.split(/\r?\n/);
-      console.log("lines in onload", lines);
 
       lines.forEach((line, i) => {
         // Encountered newline, current block set empty
@@ -262,8 +247,8 @@ function UploadDocument({ refresh, publisherId }) {
   }
 
   const addThisDocument = () => {
+    let documentId; //where to get my document id? just use length?
     readFile();
-    console.log("contentInput in add this document", contentInput.current);
 
     api
       .addDocument(
@@ -279,7 +264,10 @@ function UploadDocument({ refresh, publisherId }) {
         toasts.toastSuccess("The document was successfully added!");
         refresh();
         resetValues();
-        handleAddClose();
+        handleAddClose(); //todo
+        AddWordsFromNewDocument(documentId, contentInput.current).then(() => {
+          toasts.toastSuccess("Words were added.");
+        });
       })
       .catch((err) => {
         console.log(err);
