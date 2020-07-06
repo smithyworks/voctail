@@ -98,7 +98,9 @@ function ShowcasePage() {
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
         DashboardSection
       </Typography>
-      <DashboardSection title="My Documents">This is where the content goes</DashboardSection>
+      <DashboardSection title="My Documents" description="This is my description">
+        This is where the content goes
+      </DashboardSection>
     </AppPage>
   );
 }
