@@ -26,6 +26,7 @@ import addMember from "../assets/addMember.png";
 import addSection from "../assets/addScetion.png";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import Header from "./common/HeaderSection";
 
 export const dummyClassroom = {
   title: "Class of 2020",
@@ -39,33 +40,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     textAlign: "center",
     fontStyle: "italic",
-  },
-
-  headUp1: {
-    //Font to do
-    fontFamily: "Source Sans Pro",
-    textAlign: "center",
-    color: "#0B6374",
-  },
-
-  headUp2: {
-    //Font to do
-    fontFamily: "Source Sans Pro",
-    textAlign: "center",
-  },
-
-  headUp3: {
-    //Font to do
-    fontFamily: "Source Sans Pro",
-    fontStyle: "italic",
-    textAlign: "center",
-  },
-
-  container: {
-    backgroundColor: "#D4E4E4",
-    paddingTop: "3%",
-    paddingBottom: "3%",
-    marginBottom: "5%",
   },
 
   containerWithoutMargin: {
@@ -110,17 +84,11 @@ function ClassroomViewPage() {
 
   return (
     <AppPage location="classrooms" id="classrooms-page">
-      <Container className={classes.container} maxWidth="xl">
-        <Typography className={classes.headUp1} variant="h2">
-          {dummyClassroom.title}
-        </Typography>
-        <Typography align="center" classeName={classes.headUp2} variant="h4">
-          {dummyClassroom.topic}
-        </Typography>
-        <Typography className={classes.headUp3} align="center" variant="h5">
-          {dummyClassroom.description}
-        </Typography>
-      </Container>
+      <Header
+        mainTitle={dummyClassroom.title}
+        subtitle={dummyClassroom.topic}
+        description={dummyClassroom.description}
+      />
 
       <AppBar position="static" color="white">
         <Toolbar>

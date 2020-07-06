@@ -4,6 +4,7 @@ import { Grid, Typography } from "@material-ui/core";
 import { AppPage, toasts, VTButton } from ".";
 import ConfirmDialog from "./ConfirmDialog";
 import DashboardSection from "./DashboardSection";
+import Header from "./HeaderSection";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -11,6 +12,10 @@ function ShowcasePage() {
 
   return (
     <AppPage title="Common components Showcase">
+      <Typography variant="h5" style={{ marginTop: "20px" }}>
+        Header
+      </Typography>
+      <Header mainTitle="Main Title" subtitle="Subtitle" description="Description" />
       <Typography variant="h5" style={{ marginTop: "20px" }}>
         Toasts
       </Typography>

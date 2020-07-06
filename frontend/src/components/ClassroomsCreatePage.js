@@ -18,6 +18,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import { toasts } from "./common/AppPage/AppPage";
+import VTButton from "./common/VTButton";
 
 const useStyles = makeStyles((theme) => ({
   headUpText: {
@@ -71,6 +72,7 @@ function ClassroomsCreatePage({ ...props }) {
   const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
   const [classroomDocumentsFromDatabase, setClassroomDocumentsFromDatabase] = useState([]);
   const [allUsersFromDatabase, setAllUsersFromDatabase] = useState([]);
+  const [allDocumentsFromDatabase, setAllDocumentsFromDatabase] = useState([]);
 
   useEffect(() => {
     api
@@ -105,9 +107,25 @@ function ClassroomsCreatePage({ ...props }) {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    api
+      .fetchDocuments()
+      .then((res) => {
+        if (res) {
+          setAllDocumentsFromDatabase(res.data.documents);
+        }
+        console.log(res.data.documents);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   let registeredStudentIds = [];
   for (let id of classroomStudentsFromDatabase) {
-    registeredStudentIds.push(id.student_id);
+    registeredStudentIds.push(id.user_id);
+  }
+  let registeredDocumentIds = [];
+  for (let id of classroomDocumentsFromDatabase) {
+    registeredDocumentIds.push(id.document_id);
   }
   const [checked, setChecked] = useState([1]);
   const handleToggle = (value) => () => {
@@ -134,14 +152,14 @@ function ClassroomsCreatePage({ ...props }) {
               <ListItemAvatar>
                 <Avatar alt={`Avatar n°${tile.user_id + 1}`} src={userIcon} />
               </ListItemAvatar>
-              <ListItemText primary={`${tile.name}`}></ListItemText>
+              <ListItemText primary={`${tile.name}`} />
             </ListItem>
           );
         })}
       </List>
-      <Button variant="contained" className={classes.button} onClick={addStudents} color="primary">
+      <VTButton accept className={classes.button} onClick={addStudents} color="primary">
         Add student
-      </Button>
+      </VTButton>
 
       <List dense className={classes.root}>
         {classroomDocumentsFromDatabase.map((tile) => {
@@ -150,20 +168,21 @@ function ClassroomsCreatePage({ ...props }) {
               <ListItemAvatar>
                 <Avatar alt={`Avatar n°${tile.user_id + 1}`} src={documentIcon} />
               </ListItemAvatar>
-              <ListItemText primary={`${tile.title}, ${tile.author}`}></ListItemText>
+              <ListItemText primary={`${tile.title}, ${tile.author}`} />
             </ListItem>
           );
         })}
       </List>
-      <Button variant="contained" className={classes.button} onClick={addDocuments} color="primary">
+      <VTButton accept className={classes.button} onClick={addDocuments} color="primary">
         Add document
-      </Button>
+      </VTButton>
 
+      <HeadUpText text="Classrooms from the database" />
       <List dense className={classes.root}>
         {allUsersFromDatabase.map((tile) => {
           const labelId = `checkbox-list-secondary-label-${tile.name}`;
           return (
-            <ListItem key={tile.id} button>
+            <ListItem key={tile.user_id} button>
               <ListItemAvatar>
                 <Avatar alt={`Avatar n°${tile.id + 1}`} src={userIcon} />
               </ListItemAvatar>
@@ -172,6 +191,29 @@ function ClassroomsCreatePage({ ...props }) {
                 <Checkbox
                   onChange={handleToggle(tile.user_id)}
                   checked={registeredStudentIds.indexOf(tile.user_id) !== -1}
+                  inputProps={{ "aria-labelledby": labelId }}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
+      </List>
+
+      <HeadUpText text="Documents from the database" />
+
+      <List dense className={classes.root}>
+        {allDocumentsFromDatabase.map((tile) => {
+          const labelId = `checkbox-list-secondary-label-${tile.title}`;
+          return (
+            <ListItem key={tile.document_id} button>
+              <ListItemAvatar>
+                <Avatar alt={`Avatar n°${tile.id + 1}`} src={documentIcon} />
+              </ListItemAvatar>
+              <ListItemText id={labelId} primary={tile.title} />
+              <ListItemSecondaryAction>
+                <Checkbox
+                  onChange={handleToggle(tile.document_id)}
+                  checked={registeredDocumentIds.indexOf(tile.document_id) !== -1}
                   inputProps={{ "aria-labelledby": labelId }}
                 />
               </ListItemSecondaryAction>

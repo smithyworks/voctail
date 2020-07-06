@@ -27,7 +27,8 @@ async function studentsHandler(req, res) {
       "SELECT user_id, name " +
         "FROM users " +
         "INNER JOIN classroom_members ON user_id = student_id " +
-        "WHERE classroom_id = $1",
+        "WHERE classroom_id = $1 " +
+        "ORDER BY name ASC",
       [req.query.classroom_id]
     );
     res.status(200).json({ rows });
