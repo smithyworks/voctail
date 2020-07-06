@@ -9,14 +9,18 @@ import {
   IntroPage,
   AdminPage,
   DocumentPage,
-  TextDocumentPage,
   QuizzesDashboardPage,
   QuizPage,
   ClassroomsPage,
   ClassroomsCreatePage,
   ClassroomViewPage,
+  ClassroomsSavedPage,
+  AccountPage,
+  ProfilePage,
 } from "./components";
+import { toasts } from "./components/common";
 import { localStorage, api } from "./utils";
+import ShowcasePage from "./components/common/ShowcasePage";
 
 function ProtectedRoute({ ...props }) {
   if (localStorage.hasTokens()) return <Route {...props} />;
@@ -51,23 +55,26 @@ function App() {
         .then((res) => {
           if (res) setUser(res.data);
         })
-        .catch((err) => console.log(err));
-  }, [loggedIn]);
+        .catch((err) => toasts.toastError("Error communicating with the server!"));
+  }, [loggedIn, count]);
 
   return (
     <UserContext.Provider value={user}>
       <Router>
         <Switch>
+          <AdminRoute path="/showcase" component={ShowcasePage} />
           <AdminRoute path="/admin" component={AdminPage} />
 
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
           <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
-          <ProtectedRoute path="/documents" component={DocumentPage} />
-          <ProtectedRoute path="/document/:document_id" component={TextDocumentPage} />
+          <ProtectedRoute path="/documents/:document_id" component={DocumentPage} />
           <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
           <ProtectedRoute path="/classrooms/view" component={ClassroomViewPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
+          <ProtectedRoute path="/account" component={AccountPage} />
+          <ProtectedRoute path="/profile" component={ProfilePage} />
+          <ProtectedRoute path="/users/:user_id" component={ProfilePage} />
 
           <Route path="/signup">
             <SigninPage signup />

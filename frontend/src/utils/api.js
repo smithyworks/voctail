@@ -14,8 +14,8 @@ export function logout() {
   return axios.get(`${base}/logout`);
 }
 
-export function user(userId = false) {
-  return axios.get(`${base}/user`);
+export function user(user_id) {
+  return axios.post(`${base}/user`, { user_id });
 }
 
 export function document(document_id) {
@@ -50,7 +50,23 @@ export function fetchQuizzes() {
   return axios.get(`${base}/quizzes`);
 }
 export function fetchQuiz(quiz_id) {
-  return axios.get(`${base}/quizzes`, { quiz_id });
+  return axios.get(`${base}/quiz`, { params: { quiz_id: quiz_id } });
+}
+export function fetchQuizByDocument(document_id) {
+  return axios.get(`${base}/quiz-by-document`, { params: { document_id: document_id } });
+}
+export function deleteQuiz(quiz_id) {
+  return axios.post(`${base}/delete-quiz`, { quiz_id });
+}
+export function createQuiz(title, length) {
+  return axios.post(`${base}/create-quiz`, { title, length });
+}
+export function createQuizFromDoc(document_id, length) {
+  //"document_id":document_id, "length":length
+  return axios.post(`${base}/create-document-quiz`, { document_id, length });
+}
+export function createCustomQuiz(title, questions) {
+  return axios.post(`${base}/create-custom-quiz`, { title, questions });
 }
 
 //documents
@@ -102,4 +118,22 @@ export function addStudentToClassroom(student_id) {
 
 export function addDocumentToClassroom(document_id) {
   return axios.post(`${base}/add-document-to-classroom`, { document_id });
+}
+
+// user
+
+export function setPremium(premium) {
+  return axios.post(`${base}/set-premium`, { premium: !!premium });
+}
+export function setName(name) {
+  return axios.post(`${base}/set-name`, { name });
+}
+export function setEmail(email) {
+  return axios.post(`${base}/set-email`, { email });
+}
+export function setPassword(password) {
+  return axios.post(`${base}/set-password`, { password });
+}
+export function vocabulary(user_id) {
+  return axios.post(`${base}/user-vocabulary`, { user_id });
 }

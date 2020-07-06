@@ -23,45 +23,88 @@
     -->
     <style>
       @font-face {
-        font-family: "noto-serif";
-        src: url("%PUBLIC_URL%/fonts/noto-serif/NotoSerif-Regular.ttf");
+        font-family: "crimson-text";
+        src: url("%PUBLIC_URL%/fonts/crimson-text/CrimsonText-Regular.ttf");
       }
       @font-face {
-        font-family: "noto-serif";
-        src: url("%PUBLIC_URL%/fonts/noto-serif/NotoSerif-Bold.ttf");
-        font-weight: bold;
-      }
-      @font-face {
-        font-family: "noto-serif";
-        src: url("%PUBLIC_URL%/fonts/noto-serif/NotoSerif-Italic.ttf");
+        font-family: "crimson-text";
+        src: url("%PUBLIC_URL%/fonts/crimson-text/CrimsonText-Italic.ttf");
         font-style: italic;
       }
       @font-face {
-        font-family: "noto-serif";
-        src: url("%PUBLIC_URL%/fonts/noto-serif/NotoSerif-BoldItalic.ttf");
+        font-family: "crimson-text";
+        src: url("%PUBLIC_URL%/fonts/crimson-text/CrimsonText-Bold.ttf");
+        font-weight: bold;
+      }
+      @font-face {
+        font-family: "crimson-text";
+        src: url("%PUBLIC_URL%/fonts/crimson-text/CrimsonText-BoldItalic.ttf");
+        font-style: italic;
+        font-weight: bold;
+      }
+
+      @font-face {
+        font-family: "fira-sans";
+        src: url("%PUBLIC_URL%/fonts/fira-sans/FiraSans-Light.ttf");
+        font-weight: 300;
+      }
+      @font-face {
+        font-family: "fira-sans";
+        src: url("%PUBLIC_URL%/fonts/fira-sans/FiraSans-LightItalic.ttf");
+        font-weight: 300;
+        font-style: italic;
+      }
+      @font-face {
+        font-family: "fira-sans";
+        src: url("%PUBLIC_URL%/fonts/fira-sans/FiraSans-Regular.ttf");
+      }
+      @font-face {
+        font-family: "fira-sans";
+        src: url("%PUBLIC_URL%/fonts/fira-sans/FiraSans-Italic.ttf");
+        font-style: italic;
+      }
+      @font-face {
+        font-family: "fira-sans";
+        src: url("%PUBLIC_URL%/fonts/fira-sans/FiraSans-Medium.ttf");
+        font-weight: 500;
+      }
+      @font-face {
+        font-family: "fira-sans";
+        src: url("%PUBLIC_URL%/fonts/fira-sans/FiraSans-MediumItalic.ttf");
+        font-weight: 500;
+        font-style: italic;
+      }
+      @font-face {
+        font-family: "fira-sans";
+        src: url("%PUBLIC_URL%/fonts/fira-sans/FiraSans-Bold.ttf");
+        font-weight: bold;
+      }
+      @font-face {
+        font-family: "fira-sans";
+        src: url("%PUBLIC_URL%/fonts/fira-sans/FiraSans-BoldItalic.ttf");
         font-weight: bold;
         font-style: italic;
       }
 
-      @font-face {
-        font-family: "noto-sans";
-        src: url("%PUBLIC_URL%/fonts/noto-sans/NotoSans-Regular.ttf");
+      html {
+        box-sizing: border-box;
+        font-family: fira-sans, sans-serif;
       }
-      @font-face {
-        font-family: "noto-sans";
-        src: url("%PUBLIC_URL%/fonts/noto-sans/NotoSans-Bold.ttf");
-        font-weight: bold;
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+        font-family: inherit;
       }
-      @font-face {
-        font-family: "noto-sans";
-        src: url("%PUBLIC_URL%/fonts/noto-sans/NotoSans-Italic.ttf");
-        font-style: italic;
-      }
-      @font-face {
-        font-family: "noto-sans";
-        src: url("%PUBLIC_URL%/fonts/noto-sans/NotoSans-BoldItalic.ttf");
-        font-weight: bold;
-        font-style: italic;
+
+      html,
+      body,
+      #root {
+        height: 100%;
+        min-height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
       }
     </style>
     <title>VocTail</title>

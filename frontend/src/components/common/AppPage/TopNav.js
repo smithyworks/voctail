@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { Grid, AppBar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import logo from "../../../images/logo_white.png";
+import logo from "../../../assets/logo_white.png";
+import colors from "../../../assets/colors.json";
 import SigninButtons from "./SigninButtons.js";
 import UserMenuButton from "./UserMenuButton.js";
 import NavButtons from "./NavButtons.js";
 
 const useStyles = makeStyles({
-  bar: { backgroundColor: "#555" },
+  bar: { ...colors.topNav.bar },
   toolbar: {
     height: "50px",
   },
@@ -21,11 +22,11 @@ const useStyles = makeStyles({
   },
 });
 
-function TopNav({ location, loggedIn, isAdmin, masquerading }) {
+function TopNav({ location, loggedIn, isAdmin, masquerading, premium }) {
   const classes = useStyles();
 
   const navButtons = loggedIn ? <NavButtons location={location} isAdmin={isAdmin} /> : null;
-  const rightContent = loggedIn ? <UserMenuButton masquerading={masquerading} /> : <SigninButtons />;
+  const rightContent = loggedIn ? <UserMenuButton masquerading={masquerading} premium={premium} /> : <SigninButtons />;
 
   return (
     <AppBar position="static" className={classes.bar}>

@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/styles";
 import WarningDialog from "./WarningDialog.js";
 import SearchField from "./SearchField.js";
 import UsersPaginatedTable from "./UsersPaginatedTable.js";
-import AppPage from "../common/AppPage";
+import AppPage, { toasts } from "../common/AppPage";
 import { api, localStorage } from "../../utils";
 
 const useStyles = makeStyles({
@@ -36,7 +36,7 @@ function AdminPage({ ...props }) {
           setFilteredUsers(res.data);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => toasts.toastError("Error communicating with the server!"));
   }, [count]);
 
   const filterUsers = useCallback(
@@ -56,10 +56,11 @@ function AdminPage({ ...props }) {
     if (id)
       api
         .revokeToken(id)
-        .catch((err) => console.log(err))
-        .finally(() => {
+        .then(() => {
+          toasts.toastSuccess("The user's tokens were successfully revoked!");
           refresh();
-        });
+        })
+        .catch((err) => toasts.toastError("Error communicating with the server!"));
   }
 
   function masquerade(id) {
@@ -72,7 +73,7 @@ function AdminPage({ ...props }) {
           localStorage.setTokens(accessToken, refreshToken);
           window.location.href = "/dashboard";
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toasts.toastError("Error communicating with the server!"));
   }
 
   function deleteUser(id) {
@@ -80,10 +81,11 @@ function AdminPage({ ...props }) {
     if (id)
       api
         .deleteUser(id)
-        .catch((err) => console.log(err))
-        .finally(() => {
+        .then(() => {
+          toasts.toastSuccess("The user was successfully deleted!");
           refresh();
-        });
+        })
+        .catch((err) => toasts.toastError("Error communicating with the server!"));
   }
 
   return (

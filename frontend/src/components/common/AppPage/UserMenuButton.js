@@ -1,14 +1,24 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, IconButton, MenuList, MenuItem, Paper, ClickAwayListener, Popper } from "@material-ui/core";
+import { IconButton, MenuList, MenuItem, Paper, ClickAwayListener, Popper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import StarIcon from "@material-ui/icons/Star";
 
 import { localStorage, api } from "../../../utils";
+import { VTButton } from "../../common";
+import colors from "../../../assets/colors.json";
 
 const useStyles = makeStyles({
-  menuPaper: { zIndex: "1000", borderTopLeftRadius: "0", borderTopRightRadius: 0 },
-  endMasquerade: { marginRight: "10px" },
+  menuPaper: { zIndex: "1000", borderTopLeftRadius: "0", borderTopRightRadius: 0, ...colors.userMenu.paper },
+  menuItem: {
+    ...colors.userMenu.button,
+    "&:hover": {
+      ...colors.userMenu.buttonHover,
+    },
+  },
+  endMasquerade: { margin: "0 10px" },
   profileButton: {
     color: "white",
     padding: "0",
@@ -21,7 +31,7 @@ const useStyles = makeStyles({
   },
 });
 
-function UserMenuButton({ masquerading }) {
+function UserMenuButton({ masquerading, premium }) {
   const classes = useStyles();
 
   const userButtonRef = useRef();
@@ -38,15 +48,37 @@ function UserMenuButton({ masquerading }) {
       .catch((err) => console.log(err));
   }
 
+  const goPremiumButton = premium ? null : (
+    <VTButton
+      accept
+      variant="contained"
+      className={classes.endMasquerade}
+      startIcon={<StarIcon />}
+      component={Link}
+      to="/account"
+    >
+      Go premium!
+    </VTButton>
+  );
+
   const endMasqueradeButton = masquerading ? (
-    <Button variant="contained" color="secondary" className={classes.endMasquerade} onClick={endMasquerade}>
+    <VTButton
+      neutral
+      variant="contained"
+      className={classes.endMasquerade}
+      onClick={endMasquerade}
+      startIcon={<ExitToAppIcon />}
+    >
       End Masquerade
-    </Button>
+    </VTButton>
   ) : null;
 
   return (
     <>
+      {goPremiumButton}
+
       {endMasqueradeButton}
+
       <IconButton
         className={classes.profileButton}
         ref={userButtonRef}
@@ -61,13 +93,13 @@ function UserMenuButton({ masquerading }) {
         <Paper className={classes.menuPaper}>
           <ClickAwayListener onClickAway={() => setUserMenuOpen(false)}>
             <MenuList autoFocusItem={userMenuOpen} id="menu-list-grow">
-              <MenuItem component={Link} to="/go-premium">
-                Go Premium!
+              <MenuItem component={Link} to="/account" className={classes.menuItem}>
+                Account
               </MenuItem>
-              <MenuItem component={Link} to="/profile">
+              <MenuItem component={Link} to="/profile" className={classes.menuItem}>
                 Profile
               </MenuItem>
-              <MenuItem component={Link} to="/signout">
+              <MenuItem component={Link} to="/signout" className={classes.menuItem}>
                 Sign Out
               </MenuItem>
             </MenuList>

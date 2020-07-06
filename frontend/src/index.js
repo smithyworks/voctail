@@ -3,17 +3,16 @@ import ReactDOM from "react-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
-import "./index.css";
 import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import { setRequestInterceptor, setResponseInterceptor } from "./interceptors.js";
+import * as serviceWorker from "./utils/serviceWorker";
+import { setRequestInterceptor, setResponseInterceptor } from "./utils/interceptors.js";
 
 setRequestInterceptor();
 setResponseInterceptor();
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: "noto-sans, sans",
+    fontFamily: "fira-sans, sans",
   },
   props: {
     MuiButton: {

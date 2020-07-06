@@ -24,6 +24,10 @@ CREATE TABLE users_quizzes (
   quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE
 );
 
+CREATE TABLE quizzes_documents (
+  quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE,
+  document_id         integer    NOT NULL REFERENCES users(user_id) ON DELETE CASCADE
+);
 
 CREATE TABLE words (
   word_id         serial        PRIMARY KEY,
@@ -55,6 +59,7 @@ CREATE TABLE users_words (
                                 ON DELETE CASCADE,
   known           boolean       NOT NULL DEFAULT true,
   certainty       integer       NOT NULL DEFAULT 1,
+  encounters      integer       NOT NULL DEFAULT 0,
   last_seen       timestamptz,
 
   PRIMARY KEY (user_id, word_id)
@@ -67,6 +72,7 @@ CREATE TABLE documents (
   title           text          NOT NULL,
   author          text          NOT NULL,
   description     text,
+  category        text,
   public          boolean       NOT NULL DEFAULT false,
   premium         boolean       NOT NULL DEFAULT false,
   blocks          jsonb

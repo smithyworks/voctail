@@ -27,9 +27,9 @@ async function documentHandler(req, res) {
       "SELECT documents_words.word_id, words.word, documents_words.frequency, users_words.known \
          FROM documents_words \
            LEFT JOIN words ON documents_words.word_id = words.word_id \
-           LEFT JOIN users_words ON documents_words.word_id = users_words.word_id \
-         WHERE documents_words.document_id = $1 AND users_words.user_id = $2;",
-      [document_id, user_id]
+           LEFT JOIN users_words ON documents_words.word_id = users_words.word_id AND users_words.user_id = $1 \
+         WHERE documents_words.document_id = $2;",
+      [user_id, document_id]
     );
     document.vocabulary = vocabulary;
     console.log(vocabulary.length);
@@ -43,8 +43,13 @@ async function documentHandler(req, res) {
 
 async function dummyDataHandler(req, res) {
   try {
-    const { rows } = await query("SELECT * FROM documents");
-    res.status(200).json({ rows });
+    const { rows: documents } = await query("SELECT * FROM documents");
+    const { rows: newspaperArticles } = await query("SELECT * FROM documents WHERE category = 'Newspaper Article'");
+    const { rows: fairyTales } = await query("SELECT * FROM documents WHERE category = 'Fairy Tale'");
+    const { rows: shortStories } = await query("SELECT * FROM documents WHERE category = '(Short) Story'");
+    const { rows: others } = await query("SELECT * FROM documents WHERE category = 'Others'");
+
+    res.status(200).json({ documents, newspaperArticles, fairyTales, shortStories, others });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong with the dummy documents.");
