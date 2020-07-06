@@ -33,8 +33,7 @@ import ImageIcon from "@material-ui/icons/Image";
 import AppPage from "./common/AppPage";
 
 import { api } from "../utils";
-import logo_green from "../images/logo_green.png";
-import logo_classroom from "../images/classroom_logo.png";
+import logo_classroom from "../assets/classroom_logo.png";
 import { Link } from "react-router-dom";
 import { Theme as theme } from "@material-ui/core/styles/createMuiTheme";
 

@@ -14,7 +14,6 @@ import {
   ClassroomsPage,
   ClassroomsCreatePage,
   ClassroomViewPage,
-  ClassroomsSavedPage,
   AccountPage,
   ProfilePage,
 } from "./components";

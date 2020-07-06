@@ -23,10 +23,13 @@ async function usersHandler(req, res) {
 
 async function studentsHandler(req, res) {
   try {
-    const { classroom_id } = req.body;
-    console.log(classroom_id);
-    //TODO : solve create_classroom parameter problem
-    const { rows } = await query("SELECT student_id FROM classroom_members WHERE classroom_id = $1", [1]);
+    const { rows } = await query(
+      "SELECT user_id, name " +
+        "FROM users " +
+        "INNER JOIN classroom_members ON user_id = student_id " +
+        "WHERE classroom_id = $1",
+      [req.query.classroom_id]
+    );
     res.status(200).json({ rows });
   } catch (err) {
     log(err);
@@ -36,8 +39,13 @@ async function studentsHandler(req, res) {
 
 async function documentsHandler(req, res) {
   try {
-    //TODO : solve create_classroom parameter problem
-    const { rows } = await query("SELECT document_id FROM document_members WHERE classroom_id = classroom_id");
+    const { rows } = await query(
+      "SELECT documents.document_id, title, author " +
+        "FROM documents " +
+        "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id" +
+        " WHERE classroom_id = $1",
+      [req.query.classroom_id]
+    );
     res.status(200).json({ rows });
   } catch (err) {
     log(err);
