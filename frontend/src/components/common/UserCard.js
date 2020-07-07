@@ -6,6 +6,17 @@ import Card from "@material-ui/core/Card";
 import cx from "clsx";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
+import Tooltip from "@material-ui/core/Tooltip";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.black,
+    color: "white",
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+}))(Tooltip);
 
 const useStyles = makeStyles((palette) => ({
   actionArea: {
@@ -52,14 +63,16 @@ function UserCard(props) {
   if (props.initials !== false) {
     return (
       <Card className={cx(styles.card, styles.actionArea)}>
-        <CardContent>
-          <Avatar
-            className={styles.avatar}
-            src={"https://eu.ui-avatars.com/api/?name=" + avatarUrlBuilder(props.name)}
-          />
-          <h3 className={styles.heading}>{props.name}</h3>
-          <span className={styles.subheader}>{props.email}</span>
-        </CardContent>
+        <LightTooltip title={props.tip}>
+          <CardContent>
+            <Avatar
+              className={styles.avatar}
+              src={"https://eu.ui-avatars.com/api/?name=" + avatarUrlBuilder(props.name)}
+            />
+            <h3 className={styles.heading}>{props.name}</h3>
+            <span className={styles.subheader}>{props.email}</span>
+          </CardContent>
+        </LightTooltip>
       </Card>
     );
   } else {

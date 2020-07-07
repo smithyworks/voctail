@@ -15,6 +15,13 @@ import AppPage from "./common/AppPage";
 
 import { api } from "../utils";
 import logo_classroom from "../assets/classroom_logo.png";
+import Header from "./common/HeaderSection";
+import { dummyClassroom } from "./ClassroomViewPage";
+import { DashboardSection } from "./common";
+import IconButton from "@material-ui/core/IconButton";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import { toasts } from "./common/AppPage/AppPage";
+import { Link } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -155,7 +162,7 @@ function createClassroom() {
     api.createClassroom("MyTitle", "MyTopic", "My description", true).catch((err) => console.log(err));
   };
   addThisClassroom();
-  alert("Classroom added to the database!");
+  toasts.toastSuccess("Classroom added to the database!");
 }
 
 function Classrooms() {
@@ -203,59 +210,66 @@ function Classrooms() {
 
   return (
     <AppPage location="classrooms/saved" id="classrooms-saved-page">
-      <T className={classes.text} variant="h4">
-        Here, you find the classes you are registered to.
-      </T>
+      <Header mainTitle="Classrooms" description="Attend and manage your classrooms!" />
 
-      <Button variant="contained" className={classes.button} onClick={createClassroom} color="primary">
-        Create New Classrooom
-      </Button>
-
-      <div className={classes.root}>
-        {classroomDataFromDatabase.map((tile) => (
-          <React.Fragment key={tile.classroom_id}>
-            <ButtonBase
-              focusRipple
-              className={classes.image}
-              focusVisibleClassName={classes.focusVisible}
-              style={{
-                width: "40%",
-              }}
-              onClick={() => {
-                setPopUpOpen(true);
-                setClassroomTitle(tile.title);
-                setClassroomTopic(tile.topic);
-                setClassroomAuthor(tile.classroom_owner);
-                setClassroomDescription(tile.description);
-              }}
-            >
-              <span
-                className={classes.imageSrc}
+      <DashboardSection
+        title="My Classrooms"
+        description="You have here the classrooms you are registered to."
+        Button={
+          <IconButton aria-label="delete" onClick={createClassroom}>
+            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
+          </IconButton>
+        }
+      >
+        <div className={classes.root}>
+          {classroomDataFromDatabase.map((tile) => (
+            <React.Fragment key={tile.classroom_id}>
+              <ButtonBase
+                component={Link}
+                to={"/classrooms/view?classroom=" + tile.classroom_id}
+                focusRipple
+                className={classes.image}
+                focusVisibleClassName={classes.focusVisible}
                 style={{
-                  backgroundImage: `url(${logo_classroom})`,
+                  width: "40%",
+                  margin: "5%",
                 }}
+                onClick={() => {
+                  setPopUpOpen(true);
+                  setClassroomTitle(tile.title);
+                  setClassroomTopic(tile.topic);
+                  setClassroomAuthor(tile.classroom_owner);
+                  setClassroomDescription(tile.description);
+                }}
+              >
+                <span
+                  className={classes.imageSrc}
+                  style={{
+                    backgroundImage: `url(${logo_classroom})`,
+                  }}
+                />
+                <span className={classes.imageBackdrop} />
+                <span className={classes.imageButton}>
+                  <Typography component="span" variant="h4" color="inherit" className={classes.imageTitle}>
+                    {tile.title}
+                    <span className={classes.imageMarked} />
+                  </Typography>
+                </span>
+              </ButtonBase>
+              <ClassroomOverviewPopUp
+                open={openPopUp}
+                onClose={() => {
+                  setPopUpOpen(false);
+                }}
+                classroomTitle={classroomTitle}
+                classroomTopic={classroomTopic}
+                classroomAuthor={classroomAuthor}
+                classroomDescription={classroomDescription}
               />
-              <span className={classes.imageBackdrop} />
-              <span className={classes.imageButton}>
-                <Typography component="span" variant="h4" color="inherit" className={classes.imageTitle}>
-                  {tile.title}
-                  <span className={classes.imageMarked} />
-                </Typography>
-              </span>
-            </ButtonBase>
-            <ClassroomOverviewPopUp
-              open={openPopUp}
-              onClose={() => {
-                setPopUpOpen(false);
-              }}
-              classroomTitle={classroomTitle}
-              classroomTopic={classroomTopic}
-              classroomAuthor={classroomAuthor}
-              classroomDescription={classroomDescription}
-            />
-          </React.Fragment>
-        ))}
-      </div>
+            </React.Fragment>
+          ))}
+        </div>
+      </DashboardSection>
     </AppPage>
   );
 }

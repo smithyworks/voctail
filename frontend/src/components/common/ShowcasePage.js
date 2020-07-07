@@ -10,6 +10,8 @@ import UserCard from "./UserCard";
 import iconUser from "../../assets/icon_user.png";
 
 import { api } from "../../utils";
+import IconButton from "@material-ui/core/IconButton";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -105,20 +107,28 @@ function ShowcasePage() {
       </Typography>
       <Grid container>
         <Grid item style={{ padding: "10px" }}>
-          <UserCard name="Name" email="email@voctail.com" />
+          <UserCard name="Name" email="email@voctail.com" initials={false} tip="This is a detail about the user." />
         </Grid>
         <Grid item style={{ padding: "10px" }}>
-          <UserCard name="Name" email="email@voctail.com" />
+          <UserCard name="Name" email="email@voctail.com" tip="This is a detail about the user." />
         </Grid>
         <Grid item style={{ padding: "10px" }}>
-          <UserCard name="Name" email="email@voctail.com" />
+          <UserCard name="Name" email="email@voctail.com" tip="This is a detail about the user." />
         </Grid>
       </Grid>
 
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
         DashboardSection
       </Typography>
-      <DashboardSection title="My Documents" description="This is my description">
+      <DashboardSection
+        title="My Documents"
+        description="This is my description"
+        Button={
+          <IconButton aria-label="test">
+            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
+          </IconButton>
+        }
+      >
         This is where the content goes
       </DashboardSection>
     </AppPage>

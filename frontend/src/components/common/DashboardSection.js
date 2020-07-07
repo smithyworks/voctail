@@ -27,18 +27,21 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardSection({ title, description, children }) {
+function DashboardSection({ title, description, children, Button }) {
   const classes = useStyles();
 
   return (
     <Paper elevation={0} className={classes.paper}>
-      <Grid container justify="space-between">
-        <Grid item style={{ padding: "10px" }}>
+      <Grid container justify="space-between" direction="row" alignItems="center">
+        <Grid item xs={2} style={{ paddingLeft: "10px" }}>
           <Typography variant="h5" className={classes.title}>
             {title}
           </Typography>
         </Grid>
-        <Grid item style={{ padding: "10px" }}>
+        <Grid item xs={2} style={{ paddingRight: "10px" }}>
+          {Button}
+        </Grid>
+        <Grid item xs={8} style={{ paddingRight: "10px" }}>
           <Typography variant="h6" className={classes.description}>
             {description}
           </Typography>
