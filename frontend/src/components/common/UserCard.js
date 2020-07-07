@@ -40,17 +40,39 @@ const useStyles = makeStyles((palette) => ({
   },
 }));
 
+function avatarUrlBuilder(name) {
+  const parser = name.split(" ");
+  if (parser.length === 2) {
+    return parser[0] + "+" + parser[1];
+  } else return name;
+}
+
 function UserCard(props) {
   const styles = useStyles();
-  return (
-    <Card className={cx(styles.card, styles.actionArea)}>
-      <CardContent>
-        <Avatar className={styles.avatar} src={props.avatar} />
-        <h3 className={styles.heading}>{props.name}</h3>
-        <span className={styles.subheader}>{props.email}</span>
-      </CardContent>
-    </Card>
-  );
+  if (props.initials !== false) {
+    return (
+      <Card className={cx(styles.card, styles.actionArea)}>
+        <CardContent>
+          <Avatar
+            className={styles.avatar}
+            src={"https://eu.ui-avatars.com/api/?name=" + avatarUrlBuilder(props.name)}
+          />
+          <h3 className={styles.heading}>{props.name}</h3>
+          <span className={styles.subheader}>{props.email}</span>
+        </CardContent>
+      </Card>
+    );
+  } else {
+    return (
+      <Card className={cx(styles.card, styles.actionArea)}>
+        <CardContent>
+          <Avatar className={styles.avatar} />
+          <h3 className={styles.heading}>{props.name}</h3>
+          <span className={styles.subheader}>{props.email}</span>
+        </CardContent>
+      </Card>
+    );
+  }
 }
 
 export default UserCard;

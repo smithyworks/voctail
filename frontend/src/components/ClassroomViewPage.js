@@ -35,7 +35,7 @@ export const dummyClassroom = {
   title: "Class of 2020",
   topic: "British History",
   description: "In this classroom I will provide material for my students to discover the ancient british history.",
-  students: ["Alice", "Bob", "Clara", "Alice", "Bob", "Clara"],
+  students: ["Alice", "Bob Sinclar", "Clara", "Alice", "Bob", "Clara"],
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -68,6 +68,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+//TODO CUSTOMIZE ADD BUTTON @107
 function ClassroomViewPage() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -103,7 +104,7 @@ function ClassroomViewPage() {
           })}
           <Grid item style={{ padding: "10px" }}>
             <Button onClick={handleClick}>
-              <img src={addMember} className={classes.logo} alt="VocTail" />
+              <UserCard name=" " email=" " avatar={addMember} />
             </Button>
           </Grid>
         </Grid>

@@ -9,6 +9,8 @@ import UserCard from "./UserCard";
 
 import iconUser from "../../assets/icon_user.png";
 
+import { api } from "../../utils";
+
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -103,13 +105,13 @@ function ShowcasePage() {
       </Typography>
       <Grid container>
         <Grid item style={{ padding: "10px" }}>
-          <UserCard name="Name" email="email@voctail.com" avatar={iconUser} />
+          <UserCard name="Name" email="email@voctail.com" />
         </Grid>
         <Grid item style={{ padding: "10px" }}>
-          <UserCard name="Name" email="email@voctail.com" avatar={iconUser} />
+          <UserCard name="Name" email="email@voctail.com" />
         </Grid>
         <Grid item style={{ padding: "10px" }}>
-          <UserCard name="Name" email="email@voctail.com" avatar={iconUser} />
+          <UserCard name="Name" email="email@voctail.com" />
         </Grid>
       </Grid>
 
