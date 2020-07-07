@@ -55,7 +55,6 @@ function generateQuestions(wordList, transList, length) {
 async function insertSQL(title, questions, user_id, { ...props }) {
   //document_id = null, is_day = false, is_custom=false) {
   //insert quiz object - throws error
-  log("props", props);
   const document_id = props.document_id ? props.document_id : null;
   const is_day = props.is_day ? true : false;
   const is_custom = props.is_custom ? true : false;

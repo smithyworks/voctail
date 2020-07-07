@@ -288,7 +288,7 @@ function QuizItem(props) {
 
   useEffect(() => {
     setSuggestions(suggestionsFromQ(props.question));
-  }, [props.question]); // eslint-disable-line
+  }, [props.question]);
 
   return (
     <Grid className={classes.gridQuizItem} container justify="center" alignItems="center" direction="column">

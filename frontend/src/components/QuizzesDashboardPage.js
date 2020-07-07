@@ -40,6 +40,13 @@ import ImageIcon from "@material-ui/icons/Image";
 import { vocabulary } from "../utils/api";
 import { VTButton } from "./common";
 
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+
+import TableRow from "@material-ui/core/TableRow";
+
 const useStyles = makeStyles({
   quizTile: {
     //paddingLeft:"50px",
@@ -97,8 +104,19 @@ const useStyles = makeStyles({
     padding: "30px",
     border: "1px solid lightgrey",
   },
+  quizItem: {
+    marginBottom: "20px",
+    padding: "30px",
+    border: "1px solid lightgrey",
+  },
+  itemContainer: {
+    paddingTop: "20px",
+  },
   innerContainer: {
     paddingTop: "20px",
+  },
+  dialog: {
+    width: "300%",
   },
 });
 
@@ -113,10 +131,53 @@ function QuizSection({ title, icon, action, component, disablePadding, children 
         {component ? component : undefined}
       </Grid>
       <Divider />
-      <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
+      <div className={classes.itemContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
         {children}
       </div>
     </Paper>
+  );
+}
+
+function QuizItemSection({ items, del, disablePadding }) {
+  const classes = useStyles();
+
+  return (
+    <div>
+      {items.length === 0 ? undefined : (
+        <Paper className={classes.quizItem} elevation={0}>
+          <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="right">Vocabulary</TableCell>
+                  <TableCell align="right">Translation</TableCell>
+                  <TableCell align="right">Suggestion 1</TableCell>
+                  <TableCell align="right">Suggestion 2</TableCell>
+                  <TableCell align="right">Suggestion 3</TableCell>
+                  <TableCell align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {items.map((v, i) => (
+                  <TableRow key={i}>
+                    <TableCell align="right">{v.vocabulary}</TableCell>
+                    <TableCell align="right">{v.translation}</TableCell>
+                    {v.suggestions.map((vv) => (
+                      <TableCell align="right">{vv}</TableCell>
+                    ))}
+                    <TableCell align="right">
+                      <VTButton danger onClick={() => del(i)}>
+                        delete
+                      </VTButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </Paper>
+      )}
+    </div>
   );
 }
 
@@ -150,6 +211,8 @@ function QuizTile({ ...props }) {
 }
 
 function AddCustomQuiz() {
+  const styles = makeStyles();
+
   const [open, setOpen] = useState(false);
   const handleAddOpen = () => {
     setOpen(true);
@@ -161,40 +224,68 @@ function AddCustomQuiz() {
   const title = useRef("");
   const [items, setItems] = useState([]);
 
+  const test = () => {
+    console.log(items);
+  };
+
   const item = {
-    vocabulary: useRef(""),
-    translation: useRef(""),
-    suggestions: [useRef(""), useRef(""), useRef("")],
+    vocabulary: useState(""),
+    translation: useState(""),
+    suggestions: [useState(""), useState(""), useState("")],
+  };
+
+  const toItem = () => {
+    return {
+      vocabulary: item.vocabulary.current,
+      translation: item.translation.current,
+      suggestions: item.suggestions.map((vv) => vv.current),
+    };
   };
 
   const addQuiz = () => {
-    const questions = [
-      {
-        vocabulary: item.vocabulary.current,
-        translation: item.translation.current,
-        suggestions: [item.suggestions.map((v) => v.current)],
-      },
-    ];
-    if (validate_quiz({ title: title.current, questions: questions })) {
-      api.createCustomQuiz(title.current, questions);
-      toasts.toastSuccess("Custom quiz added!");
+    if (title.current.length > 0 && items.length > 0) {
+      api.createCustomQuiz(title.current, items);
+      toasts.toastSuccess("Custom quiz added with " + items.length + " questions!");
       handleAddClose();
     } else {
-      toasts.toastError("Not all fields are filled out. Please fill out all fields.");
+      toasts.toastError(
+        "You cannot add a quiz without title or quiz items. Please add title and at least one" + " quiz item first."
+      );
     }
   };
 
-  const validate_quiz = (quiz) => {
+  const addItem = () => {
+    if (validate_item()) {
+      setItems((il) => [...il, toItem()]);
+      //reset new fields
+      item.vocabulary.current = "";
+      item.translation.current = "";
+      item.suggestions.forEach((v) => (v.current = ""));
+
+      toasts.toastSuccess("Quiz item added!");
+    } else {
+      toasts.toastError("Please ensure all fields are filled out.");
+    }
+  };
+
+  const deleteItem = (i) => {
+    setItems((il) => il.slice(0, i).concat(il.slice(i + 1)));
+  };
+
+  const validate_item = () => {
+    console.log(
+      item.vocabulary.current.length > 0,
+      item.translation.current.length > 0,
+      item.suggestions[0].current.length > 0,
+      item.suggestions[1].current.length > 0,
+      item.suggestions[2].current.length > 0
+    );
     if (
-      quiz.title.length > 0 &&
-      quiz.questions.every(
-        (e) =>
-          e.vocabulary.length > 0 &&
-          e.translation.length > 0 &&
-          e.suggestions[0].length > 0 &&
-          e.suggestions[0].length > 1 &&
-          e.suggestions[0].length > 2
-      )
+      item.vocabulary.current.length > 0 &&
+      item.translation.current.length > 0 &&
+      item.suggestions[0].current.length > 0 &&
+      item.suggestions[1].current.length > 0 &&
+      item.suggestions[2].current.length > 0
     ) {
       return true;
     } else {
@@ -203,85 +294,38 @@ function AddCustomQuiz() {
   };
 
   /*
-  const useAddItem = () => {
-    setItems(v=> v.concat({
-          vocabulary: useRef(""),
-          translation: useRef(""),
-          suggestions: [
-            useRef(""),
-            useRef(""),
-            useRef("")
-          ]
-        }
-    ));
-  }
-*/
-
-  //useAddItem();
-
-  /*
-  * {items.map((v,i)=> (
-                <Grid container justify="flex-start" alignItems="center" direction="column">
-                  <DialogContentText>Quiz item {i}</DialogContentText>
-                  <TextField
-                      autoFocus
-                      margin="dense"
-                      id="vocabulary"
-                      label="Vocabulary*"
-                      type="vocabulary"
-                      onChange={(e) => (v.vocabulary.current = e.target.value)}
-                      fullWidth
-                  />
-                  <TextField
-                      autoFocus
-                      margin="dense"
-                      id="trasnlation"
-                      label="Translation*"
-                      type="translation"
-                      onChange={(e) => (v.translation.current = e.target.value)}
-                      fullWidth
-                  />
-                  <TextField
-                      autoFocus
-                      margin="dense"
-                      id="suggestion 1"
-                      label="Suggestion 1*"
-                      type="suggestion"
-                      onChange={(e) => (v.suggestions[0].current = e.target.value)}
-                      fullWidth
-                  />
-                  <TextField
-                      autoFocus
-                      margin="dense"
-                      id="suggestion 2"
-                      label="Suggestion 2*"
-                      type="suggestion"
-                      onChange={(e) => (items[i].suggestions[1].current = e.target.value)}
-                      fullWidth
-                  />
-                  <TextField
-                      autoFocus
-                      margin="dense"
-                      id="suggestion 3"
-                      label="Suggestion 3*"
-                      type="suggestion"
-                      onChange={(e) => (v.suggestions[2].current = e.target.value)}
-                      fullWidth
-                  />
+  *         <Grid container justify="flex-start" alignItems="center" direction="column">
+          {items.map((v, i)=> (
+              <Grid container justify="flex-start" alignItems="center" direction="column">
+                <T variant={"h3"}>Quiz Item {i}</T>
+                <T variant={"h6"}>Question:    {v.vocabulary}</T>
+                <T variant={"h6"}>Translation: {v.translation}</T>
+                <T variant={"h6"}>Suggestions:</T>
+                <T variant={"h6"}>             {v.suggestions[0]}</T>
+                <T variant={"h6"}>             {v.suggestions[1]}</T>
+                <T variant={"h6"}>             {v.suggestions[2]}</T>
               </Grid>
-              )
-            )
-            }
-            * */
+
+          ))
+          }
+        </Grid>*/
+
+  //const [str,setStr] = useState("");
+  //(i)=>{i.vocabulary=e.target.value; return i;})
+  /*  const [item_, setItem_] = useState({vocabulary:{current:""}, translation:{current:""},
+    suggestions:[{current:""},{current:""},{current:""}]})
+  */
+
   return (
     <div>
       <IconButton onClick={handleAddOpen}>
         <LibraryAddIcon />
       </IconButton>
-      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz">
-        <DialogTitle id="add-custom-quiz">Add a custom quiz</DialogTitle>
+      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz" fullScreen>
+        <DialogTitle id="add-custom-quiz">
+          To add a new quiz please fill out as many quiz items as you like.
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText>To add a new quiz please fill out as many quiz items as you like.</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -291,9 +335,11 @@ function AddCustomQuiz() {
             onChange={(e) => (title.current = e.target.value)}
             fullWidth
           />
-
+          <QuizItemSection items={items} del={deleteItem} />
+        </DialogContent>
+        <DialogTitle id="add-item">Add a quiz item</DialogTitle>
+        <DialogContent>
           <Grid container justify="flex-start" alignItems="center" direction="column">
-            <DialogContentText>Quiz item</DialogContentText>
             <TextField
               autoFocus
               margin="dense"
@@ -310,6 +356,7 @@ function AddCustomQuiz() {
               label="Translation*"
               type="translation"
               onChange={(e) => (item.translation.current = e.target.value)}
+              value={item.translation.current}
               fullWidth
             />
             <TextField
@@ -319,6 +366,7 @@ function AddCustomQuiz() {
               label="Suggestion 1*"
               type="suggestion"
               onChange={(e) => (item.suggestions[0].current = e.target.value)}
+              value={item.suggestions[0].current}
               fullWidth
             />
             <TextField
@@ -328,6 +376,7 @@ function AddCustomQuiz() {
               label="Suggestion 2*"
               type="suggestion"
               onChange={(e) => (item.suggestions[1].current = e.target.value)}
+              value={item.suggestions[1].current}
               fullWidth
             />
             <TextField
@@ -337,14 +386,25 @@ function AddCustomQuiz() {
               label="Suggestion 3*"
               type="suggestion"
               onChange={(e) => (item.suggestions[2].current = e.target.value)}
+              value={item.suggestions[2].current}
               fullWidth
             />
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => 1} color="primary">
+          <VTButton success onClick={() => addItem()} color="primary">
             Add quiz item
-          </Button>
+          </VTButton>
+          <VTButton success onClick={() => test()} color="primary">
+            Test
+          </VTButton>
+        </DialogActions>
+        <DialogContent>
+          <DialogContentText align={"right"}>
+            Once you have filled out the title and at least one question item feel free to add the Quiz.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
           <Button onClick={handleAddClose} color="primary">
             Cancel
           </Button>
@@ -367,46 +427,6 @@ function QuizzesDashboard({ ...props }) {
   const classes = useStyles();
   const user = useContext(UserContext);
   const base = "/quizzes";
-
-  const [quizzes, setQuizzes] = useState([]);
-
-  useEffect(() => {
-    api
-      .fetchQuizzes()
-      .then((res) => {
-        if (res) setQuizzes(res.data.quizList);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  function createQButton(q, base) {
-    return (
-      <Button
-        key={q.quiz_id}
-        component={Link}
-        to={base + "/" + q.quiz_id}
-        variant="outlined"
-        color={q.is_day ? "primary" : "secondary"}
-        className={classes.button}
-      >
-        <Grid className={classes.grid} container justify="flex-start" alignItems="center" direction="column">
-          <T variant="h4">{q.title}</T>
-          <T align="center">{q.text}</T>
-        </Grid>
-      </Button>
-    );
-  }
-
-  function createButtons(quizzes, base) {
-    const day = quizzes.filter((e) => e.is_day === true)[0];
-    const quizz = quizzes.filter((e) => e.is_day === false);
-    const buttons = [];
-    if (quizzes.length > 0) {
-      buttons.push(createQButton(day, base));
-      quizz.map((q) => buttons.push(createQButton(q, base)));
-    }
-    return buttons;
-  }
 
   const [quizChallenges, setChallenges] = useState([]);
   const [quizCustom, setCustom] = useState([]);
