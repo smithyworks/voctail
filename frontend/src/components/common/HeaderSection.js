@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
 import { Typography } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   headUpText: {
     margin: "auto",
     textAlign: "center",

@@ -6,10 +6,6 @@ import ConfirmDialog from "./ConfirmDialog";
 import DashboardSection from "./DashboardSection";
 import Header from "./HeaderSection";
 import UserCard from "./UserCard";
-
-import iconUser from "../../assets/icon_user.png";
-
-import { api } from "../../utils";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 

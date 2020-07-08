@@ -14,8 +14,6 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import { api } from "../utils";
 import { toasts } from "./common/AppPage/AppPage";
 
-const currentClassroomId = urlParser();
-
 const useStyles = makeStyles(() => ({
   headUpText: {
     margin: "auto",
@@ -46,10 +44,9 @@ function urlParser() {
   const parsed = window.location.href.split("=");
   return parsed[1];
 }
-
-function addStudents() {
+function addStudents(classroomId) {
   const addStudentsToThisClassroom = () => {
-    api.addStudentToClassroom(currentClassroomId, Math.floor(Math.random() * 30)).catch((err) => console.log(err));
+    api.addStudentToClassroom(classroomId, Math.floor(Math.random() * 30)).catch((err) => console.log(err));
   };
   addStudentsToThisClassroom();
   toasts.toastSuccess("Student added to the database!");
@@ -57,6 +54,7 @@ function addStudents() {
 
 function ClassroomViewPage() {
   const classes = useStyles();
+  const [currentClassroomId, setCurrentClassroomId] = useState(null);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
   const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
   const [classroomDocumentsFromDatabase, setClassroomDocumentsFromDatabase] = useState([]);
@@ -64,8 +62,12 @@ function ClassroomViewPage() {
   //const [allDocumentsFromDatabase, setAllDocumentsFromDatabase] = useState([]);
 
   useEffect(() => {
+    setCurrentClassroomId(urlParser());
+  });
+
+  useEffect(() => {
     api
-      .getClassroom(currentClassroomId)
+      .getClassroom(urlParser())
       .then((res) => {
         if (res) {
           setClassroomDataFromDatabase(res.data.rows[0]);
@@ -76,7 +78,7 @@ function ClassroomViewPage() {
 
   useEffect(() => {
     api
-      .getStudents(currentClassroomId)
+      .getStudents(urlParser())
       .then((res) => {
         if (res) {
           setClassroomStudentsFromDatabase(res.data.rows);
@@ -87,7 +89,7 @@ function ClassroomViewPage() {
 
   useEffect(() => {
     api
-      .getDocuments(currentClassroomId)
+      .getDocuments(urlParser())
       .then((res) => {
         if (res) {
           setClassroomDocumentsFromDatabase(res.data.rows);
@@ -96,6 +98,7 @@ function ClassroomViewPage() {
       .catch((err) => console.log(err));
   }, []);
 
+  /*
   useEffect(() => {
     api
       .getAllUsers()
@@ -155,7 +158,7 @@ function ClassroomViewPage() {
         title="Students"
         description="Add students to share your material and get started."
         Button={
-          <IconButton aria-label="test" onClick={addStudents}>
+          <IconButton aria-label="test" onClick={() => addStudents(currentClassroomId)}>
             <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
           </IconButton>
         }

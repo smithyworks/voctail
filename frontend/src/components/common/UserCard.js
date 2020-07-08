@@ -1,7 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
-import Container from "@material-ui/core/Container";
-import { Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import cx from "clsx";
 import CardContent from "@material-ui/core/CardContent";
@@ -18,7 +16,7 @@ const LightTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-const useStyles = makeStyles((palette) => ({
+const useStyles = makeStyles(() => ({
   actionArea: {
     borderRadius: 16,
     transition: "0.2s",
