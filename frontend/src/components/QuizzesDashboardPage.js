@@ -105,7 +105,8 @@ const useStyles = makeStyles({
     border: "1px solid lightgrey",
   },
   quizItem: {
-    marginBottom: "20px",
+    marginTop: "10px",
+    marginBottom: "10px",
     padding: "30px",
     border: "1px solid lightgrey",
   },
@@ -213,6 +214,9 @@ function QuizTile({ ...props }) {
 function AddCustomQuiz() {
   const styles = makeStyles();
 
+  const [count, setCount] = useState(0);
+  refreshCallback.current = () => setCount(count + 1);
+
   const [open, setOpen] = useState(false);
   const handleAddOpen = () => {
     setOpen(true);
@@ -228,10 +232,18 @@ function AddCustomQuiz() {
     console.log(items);
   };
 
+  /*
   const item = {
     vocabulary: useState(""),
     translation: useState(""),
     suggestions: [useState(""), useState(""), useState("")],
+  };
+*/
+
+  const item = {
+    vocabulary: useRef(""),
+    translation: useRef(""),
+    suggestions: [useRef(""), useRef(""), useRef("")],
   };
 
   const toItem = () => {
@@ -247,6 +259,7 @@ function AddCustomQuiz() {
       api.createCustomQuiz(title.current, items);
       toasts.toastSuccess("Custom quiz added with " + items.length + " questions!");
       handleAddClose();
+      refreshCallback.current();
     } else {
       toasts.toastError(
         "You cannot add a quiz without title or quiz items. Please add title and at least one" + " quiz item first."
@@ -316,6 +329,8 @@ function AddCustomQuiz() {
     suggestions:[{current:""},{current:""},{current:""}]})
   */
 
+  useEffect(() => {}, [count]);
+
   return (
     <div>
       <IconButton onClick={handleAddOpen}>
@@ -352,11 +367,10 @@ function AddCustomQuiz() {
             <TextField
               autoFocus
               margin="dense"
-              id="trasnlation"
+              id="translation"
               label="Translation*"
               type="translation"
               onChange={(e) => (item.translation.current = e.target.value)}
-              value={item.translation.current}
               fullWidth
             />
             <TextField
@@ -366,7 +380,6 @@ function AddCustomQuiz() {
               label="Suggestion 1*"
               type="suggestion"
               onChange={(e) => (item.suggestions[0].current = e.target.value)}
-              value={item.suggestions[0].current}
               fullWidth
             />
             <TextField
@@ -376,7 +389,6 @@ function AddCustomQuiz() {
               label="Suggestion 2*"
               type="suggestion"
               onChange={(e) => (item.suggestions[1].current = e.target.value)}
-              value={item.suggestions[1].current}
               fullWidth
             />
             <TextField
@@ -386,7 +398,6 @@ function AddCustomQuiz() {
               label="Suggestion 3*"
               type="suggestion"
               onChange={(e) => (item.suggestions[2].current = e.target.value)}
-              value={item.suggestions[2].current}
               fullWidth
             />
           </Grid>
@@ -423,8 +434,91 @@ function AddCustomQuiz() {
   );
 }
 
+function AddRandomQuiz() {
+  const [open, setOpen] = useState(false);
+  const handleAddOpen = () => {
+    setOpen(true);
+  };
+  const handleAddClose = () => {
+    setOpen(false);
+  };
+
+  const title = useRef("");
+  const length = useRef("");
+
+  const addQuiz = () => {
+    const len = parseInt(length.current);
+    //console.log(title.current.length > 0, length.current.length > 0, len!==NaN, len>0);
+    if (title.current.length > 0 && length.current.length > 0 && len !== NaN && len > 0) {
+      api.createQuiz(title.current, len);
+      toasts.toastSuccess("Random quiz added with " + len + " questions!");
+      handleAddClose();
+      refreshCallback.current();
+    } else {
+      toasts.toastError("You cannot add a quiz without title or length.");
+    }
+  };
+
+  return (
+    <div>
+      <IconButton onClick={handleAddOpen}>
+        <LibraryAddIcon />
+      </IconButton>
+      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz">
+        <DialogTitle id="add-custom-quiz">Please provide the title and length of your quiz.</DialogTitle>
+        <DialogContent>
+          <Grid container justify="flex-start" alignItems="center" direction="column">
+            <TextField
+              autoFocus
+              margin="dense"
+              id="title"
+              label="Title*"
+              type="title"
+              onChange={(e) => (title.current = e.target.value)}
+              fullWidth
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="length"
+              label="Length*"
+              type="length"
+              onChange={(e) => (length.current = e.target.value)}
+              fullWidth
+            />
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAddClose} color="primary">
+            Cancel
+          </Button>
+          <VTButton
+            success
+            onClick={() => {
+              addQuiz();
+            }}
+            color="primary"
+          >
+            Add quiz
+          </VTButton>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
+const refreshCallback = {};
+export function refresh() {
+  const cb = refreshCallback.current;
+  if (typeof cb === "function") cb();
+}
+
 function QuizzesDashboard({ ...props }) {
   const classes = useStyles();
+
+  const [count, setCount] = useState(0);
+  refreshCallback.current = () => setCount(count + 1);
+
   const user = useContext(UserContext);
   const base = "/quizzes";
 
@@ -444,9 +538,8 @@ function QuizzesDashboard({ ...props }) {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [count]);
 
-  //console.log(quizChallenges, quizCustom, quizRandom, quizDocuments)
   /*
   let [count,setCount] = useState(0);
 
@@ -470,8 +563,16 @@ function QuizzesDashboard({ ...props }) {
   }
   */
 
+  /*
+  const createRandomQuiz = () => {
+    api.createQuiz("MyQuiz", 10);
+    refreshCallback.current();
+  }
+*/
+
   const palette = "#555";
 
+  //action={() => createRandomQuiz()}
   return (
     <AppPage location="quizzes" id="quizzes-page">
       <QuizSection title={"Challenges"}>
@@ -492,7 +593,7 @@ function QuizzesDashboard({ ...props }) {
           ))}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Random Quizzes"} icon={<LibraryAddIcon />} action={() => api.createQuiz("MyQuiz", 10)}>
+      <QuizSection title={"Random Quizzes"} component={<AddRandomQuiz />}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizRandom.map((v) => (
             <QuizTile key={v.quiz_id} color={palette}>
