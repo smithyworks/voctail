@@ -28,17 +28,17 @@ import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 
-import AppPage, { toasts } from "./common/AppPage";
-import colors from "../assets/colors.json";
-import shuffle from "./QuizPage";
-import { UserContext } from "../App";
+import AppPage, { toasts } from "../../common/AppPage";
+import colors from "../../../assets/colors.json";
+import shuffle from "../../QuizPage";
+import { UserContext } from "../../../App";
 
-import { api } from "../utils";
+import { api } from "../../../utils";
 import AddIcon from "@material-ui/icons/Add";
 import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
-import { vocabulary } from "../utils/api";
-import { VTButton } from "./common";
+import { vocabulary } from "../../../utils/api";
+import { VTButton } from "../../common";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -141,7 +141,11 @@ function QuizSection({ title, icon, action, component, disablePadding, children 
 
 function QuizItemSection({ items, del, disablePadding }) {
   const classes = useStyles();
-
+  /*
+  <TableCell align="right">Suggestion 1</TableCell>
+  <TableCell align="right">Suggestion 2</TableCell>
+  <TableCell align="right">Suggestion 3</TableCell>
+  */
   return (
     <div>
       {items.length === 0 ? undefined : (
@@ -152,9 +156,13 @@ function QuizItemSection({ items, del, disablePadding }) {
                 <TableRow>
                   <TableCell align="right">Vocabulary</TableCell>
                   <TableCell align="right">Translation</TableCell>
-                  <TableCell align="right">Suggestion 1</TableCell>
-                  <TableCell align="right">Suggestion 2</TableCell>
-                  <TableCell align="right">Suggestion 3</TableCell>
+                  {items.length > 0
+                    ? items[0].suggestions.map((vv, i) => (
+                        <TableCell key={i} align="right">
+                          {"Suggestion " + (i + 1)}
+                        </TableCell>
+                      ))
+                    : undefined}
                   <TableCell align="right">Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -164,7 +172,9 @@ function QuizItemSection({ items, del, disablePadding }) {
                     <TableCell align="right">{v.vocabulary}</TableCell>
                     <TableCell align="right">{v.translation}</TableCell>
                     {v.suggestions.map((vv) => (
-                      <TableCell align="right">{vv}</TableCell>
+                      <TableCell key={i} align="right">
+                        {vv}
+                      </TableCell>
                     ))}
                     <TableCell align="right">
                       <VTButton danger onClick={() => del(i)}>
@@ -211,11 +221,8 @@ function QuizTile({ ...props }) {
   );
 }
 
-function AddCustomQuiz() {
+function AddCustomQuiz({ onAdd }) {
   const styles = makeStyles();
-
-  const [count, setCount] = useState(0);
-  refreshCallback.current = () => setCount(count + 1);
 
   const [open, setOpen] = useState(false);
   const handleAddOpen = () => {
@@ -223,22 +230,12 @@ function AddCustomQuiz() {
   };
   const handleAddClose = () => {
     setOpen(false);
+    setItems([]);
+    resetFields(true);
   };
 
   const title = useRef("");
   const [items, setItems] = useState([]);
-
-  const test = () => {
-    console.log(items);
-  };
-
-  /*
-  const item = {
-    vocabulary: useState(""),
-    translation: useState(""),
-    suggestions: [useState(""), useState(""), useState("")],
-  };
-*/
 
   const item = {
     vocabulary: useRef(""),
@@ -254,12 +251,24 @@ function AddCustomQuiz() {
     };
   };
 
+  const resetFields = (all = false) => {
+    console.log(all);
+    if (all) {
+      title.current = "";
+    }
+    item.vocabulary.current = "";
+    item.translation.current = "";
+    item.suggestions.forEach((v) => (v.current = ""));
+  };
+
   const addQuiz = () => {
+    console.log(title.current);
     if (title.current.length > 0 && items.length > 0) {
-      api.createCustomQuiz(title.current, items);
-      toasts.toastSuccess("Custom quiz added with " + items.length + " questions!");
-      handleAddClose();
-      refreshCallback.current();
+      api.createCustomQuiz(title.current, items).then((res) => {
+        toasts.toastSuccess("Custom quiz added with " + items.length + " questions!");
+        handleAddClose();
+        onAdd();
+      });
     } else {
       toasts.toastError(
         "You cannot add a quiz without title or quiz items. Please add title and at least one" + " quiz item first."
@@ -272,9 +281,7 @@ function AddCustomQuiz() {
     if (validate_item()) {
       setItems((il) => [...il, toItem()]);
       //reset new fields
-      item.vocabulary.current = "";
-      item.translation.current = "";
-      item.suggestions.forEach((v) => (v.current = ""));
+      resetFields();
 
       toasts.toastSuccess("Quiz item added!");
       setFieldKey(fieldKey + 1);
@@ -288,13 +295,6 @@ function AddCustomQuiz() {
   };
 
   const validate_item = () => {
-    console.log(
-      item.vocabulary.current.length > 0,
-      item.translation.current.length > 0,
-      item.suggestions[0].current.length > 0,
-      item.suggestions[1].current.length > 0,
-      item.suggestions[2].current.length > 0
-    );
     if (
       item.vocabulary.current.length > 0 &&
       item.translation.current.length > 0 &&
@@ -308,37 +308,12 @@ function AddCustomQuiz() {
     }
   };
 
-  /*
-  *         <Grid container justify="flex-start" alignItems="center" direction="column">
-          {items.map((v, i)=> (
-              <Grid container justify="flex-start" alignItems="center" direction="column">
-                <T variant={"h3"}>Quiz Item {i}</T>
-                <T variant={"h6"}>Question:    {v.vocabulary}</T>
-                <T variant={"h6"}>Translation: {v.translation}</T>
-                <T variant={"h6"}>Suggestions:</T>
-                <T variant={"h6"}>             {v.suggestions[0]}</T>
-                <T variant={"h6"}>             {v.suggestions[1]}</T>
-                <T variant={"h6"}>             {v.suggestions[2]}</T>
-              </Grid>
-
-          ))
-          }
-        </Grid>*/
-
-  //const [str,setStr] = useState("");
-  //(i)=>{i.vocabulary=e.target.value; return i;})
-  /*  const [item_, setItem_] = useState({vocabulary:{current:""}, translation:{current:""},
-    suggestions:[{current:""},{current:""},{current:""}]})
-  */
-
-  useEffect(() => {}, [count]);
-
   return (
     <div>
       <IconButton onClick={handleAddOpen}>
         <LibraryAddIcon />
       </IconButton>
-      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz" fullScreen key={fieldKey}>
+      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz" fullScreen>
         <DialogTitle id="add-custom-quiz">
           To add a new quiz please fill out as many quiz items as you like.
         </DialogTitle>
@@ -355,7 +330,7 @@ function AddCustomQuiz() {
           <QuizItemSection items={items} del={deleteItem} />
         </DialogContent>
         <DialogTitle id="add-item">Add a quiz item</DialogTitle>
-        <DialogContent>
+        <DialogContent key={fieldKey}>
           <Grid container justify="flex-start" alignItems="center" direction="column">
             <TextField
               autoFocus
@@ -408,9 +383,6 @@ function AddCustomQuiz() {
           <VTButton success onClick={() => addItem()} color="primary">
             Add quiz item
           </VTButton>
-          <VTButton success onClick={() => test()} color="primary">
-            Test
-          </VTButton>
         </DialogActions>
         <DialogContent>
           <DialogContentText align={"right"}>
@@ -436,26 +408,33 @@ function AddCustomQuiz() {
   );
 }
 
-function AddRandomQuiz() {
+function AddRandomQuiz({ onAdd }) {
   const [open, setOpen] = useState(false);
   const handleAddOpen = () => {
     setOpen(true);
   };
   const handleAddClose = () => {
     setOpen(false);
+    resetFields();
   };
 
   const title = useRef("");
   const length = useRef("");
 
+  const resetFields = () => {
+    title.current = "";
+    length.current = "";
+  };
+
   const addQuiz = () => {
     const len = parseInt(length.current);
     //console.log(title.current.length > 0, length.current.length > 0, len!==NaN, len>0);
     if (title.current.length > 0 && length.current.length > 0 && len !== NaN && len > 0) {
-      api.createQuiz(title.current, len);
-      toasts.toastSuccess("Random quiz added with " + len + " questions!");
-      handleAddClose();
-      refreshCallback.current();
+      api.createQuiz(title.current, len).then(() => {
+        toasts.toastSuccess("Random quiz added with " + len + " questions!");
+        handleAddClose();
+        onAdd();
+      });
     } else {
       toasts.toastError("You cannot add a quiz without title or length.");
     }
@@ -509,25 +488,17 @@ function AddRandomQuiz() {
   );
 }
 
-const refreshCallback = {};
-export function refresh() {
-  const cb = refreshCallback.current;
-  if (typeof cb === "function") cb();
-}
-
 function QuizzesDashboard({ ...props }) {
   const classes = useStyles();
 
-  const [count, setCount] = useState(0);
-  refreshCallback.current = () => setCount(count + 1);
-
-  const user = useContext(UserContext);
-  const base = "/quizzes";
+  const [reloadCount, setReloadCount] = useState(0);
+  const refresh = () => setReloadCount(reloadCount + 1);
 
   const [quizChallenges, setChallenges] = useState([]);
   const [quizCustom, setCustom] = useState([]);
   const [quizRandom, setRandom] = useState([]);
   const [quizDocuments, setDocuments] = useState([]);
+
   useEffect(() => {
     api
       .fetchQuizzesByCategory()
@@ -540,7 +511,7 @@ function QuizzesDashboard({ ...props }) {
         }
       })
       .catch((err) => console.log(err));
-  }, [count]);
+  }, [reloadCount]);
 
   /*
   let [count,setCount] = useState(0);
@@ -565,16 +536,8 @@ function QuizzesDashboard({ ...props }) {
   }
   */
 
-  /*
-  const createRandomQuiz = () => {
-    api.createQuiz("MyQuiz", 10);
-    refreshCallback.current();
-  }
-*/
-
   const palette = "#555";
 
-  //action={() => createRandomQuiz()}
   return (
     <AppPage location="quizzes" id="quizzes-page">
       <QuizSection title={"Challenges"}>
@@ -586,7 +549,7 @@ function QuizzesDashboard({ ...props }) {
           ))}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Custom Quizzes"} component={<AddCustomQuiz />}>
+      <QuizSection title={"Custom Quizzes"} component={<AddCustomQuiz onAdd={refresh} />}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizCustom.map((v) => (
             <QuizTile key={v.quiz_id} color={palette}>
@@ -595,7 +558,7 @@ function QuizzesDashboard({ ...props }) {
           ))}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Random Quizzes"} component={<AddRandomQuiz />}>
+      <QuizSection title={"Random Quizzes"} component={<AddRandomQuiz onAdd={refresh} />}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizRandom.map((v) => (
             <QuizTile key={v.quiz_id} color={palette}>
@@ -616,18 +579,8 @@ function QuizzesDashboard({ ...props }) {
 
       <Grid className={classes.grid} container justify="space-evenly" alignItems="center" direction="row">
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">
-          <Button onClick={() => api.createQuiz("MyQuiz", 10)}>Generate Random</Button>
           <Button onClick={() => api.createQuizFromDoc(2, 10)}>Generate From Document (2)</Button>
           <Button onClick={() => api.fetchQuizByDocument(2)}>Fetch By Document (2)</Button>
-          <Button
-            onClick={() =>
-              api.createCustomQuiz("Custom", [
-                { vocabulary: "word", suggestions: ["a", "b", "c"], translation: "Wort" },
-              ])
-            }
-          >
-            Create Custom Document
-          </Button>
         </GridList>
       </Grid>
     </AppPage>
