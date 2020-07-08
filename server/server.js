@@ -40,7 +40,8 @@ server.get("/api/handle-documents", auth.tokenMiddleWare, documents.dummyDataHan
 server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
 server.get("/api/find-word-id", auth.tokenMiddleWare, documents.findWordId);
-server.post("/api/add-words", auth.tokenMiddleWare, documents.addWords);
+server.post("/api/add-word", auth.tokenMiddleWare, documents.addNewWord);
+server.post("/api/add-words-to-document", auth.tokenMiddleWare, documents.addWordsToDocument);
 
 server.post("/api/update-vocabulary", auth.tokenMiddleWare, vocabulary.updateUserVocabHandler);
 server.post("/api/add-translation", auth.tokenMiddleWare, vocabulary.addTranslationHandler);

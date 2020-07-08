@@ -88,8 +88,11 @@ export function deleteDocument(document_id) {
 export function findWordId(word) {
   return axios.get(`${base}/find-word-id`, { params: { word: word } });
 }
-export function addWords(newWord, document_id, word_id, frequency) {
-  return axios.post(`${base}/add-words`, { newWord, document_id, word_id, frequency });
+export function addNewWord(newWord) {
+  return axios.post(`${base}/add-word`, { newWord });
+}
+export function addWordsToDocument(document_id, word_id, frequency) {
+  return axios.post(`${base}/add-words-to-document`, { document_id, word_id, frequency });
 }
 
 // vocabulary

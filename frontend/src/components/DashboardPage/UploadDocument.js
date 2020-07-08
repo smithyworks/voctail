@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/VTButton";
@@ -21,6 +21,7 @@ import {
 import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
 import { makeStyles } from "@material-ui/core/styles";
+//const { Pool } = require("pg");
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -53,69 +54,6 @@ function clean(word) {
   }
 }
 
-function AddWordsFromNewDocument(document_id, contentData) {
-  // Make sure it's offset to the right value
-  /*const { //todo for the daily
-      rows: [{ nextval }],
-  } = await pool.query("SELECT nextval('words_word_id_seq');");
-  let word_id = parseInt(nextval);*/
-  const documentId = useRef(document_id);
-  const word = useRef("");
-  const [addToDatabase, setAddToDatabase] = useState();
-  const word_id = useRef(0);
-  let real_word_id = 159966;
-  const newWords = [];
-  const frequency = useRef(0);
-  //let current_word_id;
-
-  //const document = documentRecords[documentRecords.length - 1];
-  const content = contentData.blocks.map((b) => b.content).join(" ");
-  const words = content
-    .split(/\s/)
-    .map((token) => clean(token))
-    .filter((word) => word !== "");
-
-  const frequencies = {};
-
-  useEffect(() => {
-    api
-      .findWordId(word)
-      .then((res) => {
-        if (res) word_id.current = res.data;
-      })
-      .catch((err) => console.log(err));
-  }, [word]);
-
-  useEffect(() => {
-    api
-      .addWords(word.current, documentId.current, word_id.current, frequency.current)
-      .then()
-      .catch((err) => console.log(err));
-  }, [addToDatabase]);
-
-  for (let wi = 0; wi < words.length; wi++) {
-    word.current = words[wi];
-    if (word === "") continue;
-    //useeffects
-    // If the word doesn't exist, we need to add it to the database.
-    if (word_id.current !== 0) {
-      //changed from christo
-      let wordRecord = newWords.find((w) => w.word === word);
-      if (!wordRecord) {
-        wordRecord = { word_id: real_word_id++, word };
-        newWords.push(wordRecord);
-      }
-      word_id.current = wordRecord.real_word_id;
-    }
-
-    if (!frequencies[word_id.current]) frequencies[word_id.current] = 1;
-    else frequencies[word_id.current]++;
-    frequency.current = frequencies[word_id.current];
-    setAddToDatabase(addToDatabase + 1); //use effects
-    word_id.current = 0;
-  }
-}
-
 function UploadDocument({ refresh, publisherId }) {
   const titleInput = useRef("");
   const authorInput = useRef("");
@@ -127,6 +65,15 @@ function UploadDocument({ refresh, publisherId }) {
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
   const classes = useStyles();
+
+  const blocks = [];
+
+  //add words to database
+  const documentId = useRef(0);
+  const word = useRef("");
+  // const [addToDatabase, setAddToDatabase] = useState();
+  const word_id = useRef(0);
+  const frequency = useRef(0);
 
   const handleAddOpen = () => {
     setOpen(true);
@@ -147,7 +94,6 @@ function UploadDocument({ refresh, publisherId }) {
     let reader = new FileReader();
     reader.readAsText(uploadedFile);
 
-    const blocks = [];
     let currentType;
     let currentContent;
 
@@ -211,6 +157,7 @@ function UploadDocument({ refresh, publisherId }) {
         }
       });
 
+      //HERE
       contentInput.current = JSON.stringify(blocks).replace(/\\/g, "\\\\");
     };
   }
@@ -246,8 +193,80 @@ function UploadDocument({ refresh, publisherId }) {
     contentInput.current = "";
   }
 
+  const addToDatabase = () => {
+    api
+      .addNewWord(word.current)
+      .then((res) => {
+        if (res) word_id.current = res.data;
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const newDocumentWords = [];
+
+  const handleAdding = () => {
+    if (word_id.current !== 0) {
+      //word is already in database
+      console.log("word is already in database");
+      let wordInNewDocumentWords = newDocumentWords.find((w) => w.wordId === word_id.current);
+      if (wordInNewDocumentWords) {
+        // word is already in document words
+        let index = newDocumentWords.indexOf({ wordId: word_id.current }); //todo
+        frequency.current = newDocumentWords[index].frequency;
+        newDocumentWords[index] = { wordId: word_id.current, frequency: frequency.current + 1 };
+      } else {
+        //word is only in database, not in document words
+        newDocumentWords.push({ wordId: word_id.current, frequency: 1 }); //added to new Document Words
+      }
+    } else {
+      // word is not in database
+      console.log("word is not in databse - next add");
+      addToDatabase();
+      newDocumentWords.push({ wordId: word_id, frequency: 1 }); //added to new Document Words
+    }
+    console.log("current word", word.current);
+    console.log("current word id", word_id.current);
+    word_id.current = 0;
+  };
+
+  function addWordsFromNewDocument(document_id) {
+    console.log("reingekommen");
+
+    console.log("document id", document_id);
+
+    const content = blocks.map((b) => b.content).join(" ");
+
+    const words = content
+      .split(/\s/)
+      .map((token) => clean(token))
+      .filter((word) => word !== "");
+
+    console.log("map", content);
+
+    console.log("vor for schleife");
+
+    for (let wi = 0; wi < words.length; wi++) {
+      word.current = words[wi];
+      if (word.current === "") continue;
+
+      // If the word doesn't exist, we need to add it to the database.
+      //finder();
+      api
+        .findWordId(word.current)
+        .then((res) => {
+          console.log("res.data", res.data);
+          if (res) word_id.current = res.data;
+          handleAdding();
+        })
+        .catch((err) => console.log(err));
+    }
+
+    console.log("nach for schleife");
+
+    //add to junction table document_words
+  }
+
   const addThisDocument = () => {
-    let documentId; //where to get my document id? just use length?
     readFile();
 
     api
@@ -260,14 +279,15 @@ function UploadDocument({ refresh, publisherId }) {
         publicDocument,
         contentInput.current
       )
-      .then(() => {
+      .then((res) => {
+        if (res) documentId.current = res.data;
         toasts.toastSuccess("The document was successfully added!");
         refresh();
         resetValues();
-        handleAddClose(); //todo
-        AddWordsFromNewDocument(documentId, contentInput.current).then(() => {
-          toasts.toastSuccess("Words were added.");
-        });
+        handleAddClose();
+        addWordsFromNewDocument(documentId);
+        console.log("dokument id", documentId.current);
+        console.log("geschafft danach!");
       })
       .catch((err) => {
         console.log(err);

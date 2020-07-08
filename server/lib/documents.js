@@ -77,12 +77,14 @@ async function addDocument(req, res) {
       res.status(400).send("Invalid document upload.");
     }
     const {
-      rows: [documentData],
+      rows: [{ document_id }],
     } = await query(
-      "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+      "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) " +
+        "VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
       [publisher, title, author, description, category, isPublic, premium, content]
     );
-    res.status(201).send(`Successfully uploaded document ${title}.`);
+    res.status(201).json(document_id);
+    return document_id;
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -101,8 +103,10 @@ async function usersHandler(req, res) {
 
 async function findWordId(req, res) {
   try {
-    const word = req.body;
-    const { rows: word_id } = await pool.query("SELECT word_id FROM words WHERE word=$1", [word]);
+    const word = req.query.word;
+    const {
+      rows: [word_id],
+    } = await query("SELECT word_id FROM words WHERE words.word = $1", [word]);
     log("find word id: word ", word);
     log("find word id: word_id", word_id);
     res.status(200).json(word_id);
@@ -112,16 +116,27 @@ async function findWordId(req, res) {
   }
 }
 
-async function addWords(req, res) {
+async function addNewWord(req, res) {
   try {
-    const { newWord, document_id, word_id, frequency } = req.body;
+    const { newWord } = req.body;
     const ignore = false;
     const language = "english";
-    const { rows: words } = await query("INSERT INTO words(word, ignore, language) VALUES ($1, $2, $3)", [
+    const { word_id } = await query("INSERT INTO words(word, ignore, language) VALUES ($1, $2, $3) RETURNING word_id", [
       newWord,
       ignore,
       language,
     ]);
+    res.status(200).json(word_id);
+    //    return word_id;
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function addWordsToDocument(req, res) {
+  try {
+    const { document_id, word_id, frequency } = req.body;
     const {
       rows: documentWords,
     } = await query("INSERT INTO document_words(document_id, word_id, frequency) VALUES ($1,$2, $3)", [
@@ -129,10 +144,20 @@ async function addWords(req, res) {
       word_id,
       frequency,
     ]);
+    res.status(200).json(documentWords);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
   }
 }
 
-module.exports = { documentHandler, usersHandler, dummyDataHandler, deleteDocument, addDocument, findWordId, addWords };
+module.exports = {
+  documentHandler,
+  usersHandler,
+  dummyDataHandler,
+  deleteDocument,
+  addDocument,
+  findWordId,
+  addNewWord,
+  addWordsToDocument,
+};
