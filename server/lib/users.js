@@ -26,7 +26,7 @@ async function allUsersHandler(req, res) {
     res.status(200).json({ rows });
   } catch (err) {
     log(err);
-    res.status(500).send("Something went wrong with the all users handler.");
+    res.status(500).send("Something went wrong.");
   }
 }
 
