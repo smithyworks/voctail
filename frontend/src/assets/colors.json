@@ -69,5 +69,23 @@
       "backgroundColor": "darkblue",
       "borderColor": "darkblue"
     }
+  },
+  "statusTile": {
+    "color": [
+      "#696969",
+      "#bada55",
+      "#ff0000",
+      "#420420",
+      "#133337",
+      "#003366",
+      "#ffa500",
+      "#ffd700",
+      "#0000ff",
+      "#faebd7",
+      "#333333",
+      "#0e2f44",
+      "#b6fcd5",
+      "#cbbeb5"
+    ]
   }
 }
