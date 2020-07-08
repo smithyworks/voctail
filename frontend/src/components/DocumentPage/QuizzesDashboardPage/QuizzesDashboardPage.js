@@ -141,6 +141,15 @@ function QuizSection({ title, icon, action, component, disablePadding, children 
 
 function QuizItemSection({ items, del, disablePadding }) {
   const classes = useStyles();
+  const max = (vl) => {
+    let a = [0, 0];
+    vl.map((vv) => vv.suggestions.length).forEach((v, i) => {
+      if (v > a[0]) {
+        a = [v, i];
+      }
+    });
+    return vl[a[1]];
+  };
   /*
   <TableCell align="right">Suggestion 1</TableCell>
   <TableCell align="right">Suggestion 2</TableCell>
@@ -157,10 +166,8 @@ function QuizItemSection({ items, del, disablePadding }) {
                   <TableCell align="right">Vocabulary</TableCell>
                   <TableCell align="right">Translation</TableCell>
                   {items.length > 0
-                    ? items[0].suggestions.map((vv, i) => (
-                        <TableCell key={i} align="right">
-                          {"Suggestion " + (i + 1)}
-                        </TableCell>
+                    ? max(items).suggestions.map((vv, i) => (
+                        <TableCell align="right">{"Suggestion " + (i + 1)}</TableCell>
                       ))
                     : undefined}
                   <TableCell align="right">Actions</TableCell>
@@ -168,13 +175,14 @@ function QuizItemSection({ items, del, disablePadding }) {
               </TableHead>
               <TableBody>
                 {items.map((v, i) => (
-                  <TableRow key={i}>
+                  <TableRow>
                     <TableCell align="right">{v.vocabulary}</TableCell>
                     <TableCell align="right">{v.translation}</TableCell>
                     {v.suggestions.map((vv) => (
-                      <TableCell key={i} align="right">
-                        {vv}
-                      </TableCell>
+                      <TableCell align="right">{vv}</TableCell>
+                    ))}
+                    {[...Array(max(items).suggestions.length - v.suggestions.length)].map((v) => (
+                      <TableCell align="right"></TableCell>
                     ))}
                     <TableCell align="right">
                       <VTButton danger onClick={() => del(i)}>
@@ -221,6 +229,145 @@ function QuizTile({ ...props }) {
   );
 }
 
+function Suggestion({ onRefresh, update, index }) {
+  const sugg = useRef("");
+  if (update) {
+    onRefresh(sugg.current, index);
+  }
+  return (
+    <TextField
+      autoFocus
+      margin="dense"
+      id={"suggestion " + index}
+      label={"Suggestion " + index + "*"}
+      type="suggestion"
+      onChange={(e) => (sugg.current = e.target.value)}
+      fullWidth
+    />
+  );
+}
+
+function QuizItem({ addItem }) {
+  const vocabulary = useRef("");
+  const translation = useRef("");
+
+  const [suggestions, setSuggestions] = useState(["", "", ""]);
+  const [updateSuggs, setUpdateSuggs] = useState(suggestions.map((v) => false));
+  //const [flatSuggs, setFlatSuggs] = useState(false);
+
+  const addSuggestion = () => setSuggestions(suggestions.concat(""));
+  const removeSuggestion = () =>
+    suggestions.length > 1
+      ? setSuggestions(suggestions.slice(0, suggestions.length - 1))
+      : toasts.toastError("At least one suggestion needed.");
+
+  const refreshSuggestions = (v, i) => {
+    //const last = suggestions.filter((v)=>v!=="").length === 1;
+    //const last = updateSuggs.filter((v)=>v===true).length === 1;
+    setSuggestions(
+      suggestions
+        .slice(0, i)
+        .concat([v])
+        .concat(suggestions.slice(i + 1))
+    );
+    setUpdateSuggs(
+      updateSuggs
+        .slice(0, i)
+        .concat([false])
+        .concat(updateSuggs.slice(i + 1))
+    );
+    //rerender occurs on true->false (setFlagSuggs)
+    //setFlatSuggs(!(last && updateSuggs.every((v)=>!v)));
+  };
+
+  const updateSuggestions = () => {
+    setUpdateSuggs(updateSuggs.map((v) => true));
+    //effort
+    //setFlatSuggs(true);
+  };
+
+  const [fieldKey, setFieldKey] = useState(0);
+  const resetFields = () => {
+    vocabulary.current = "";
+    translation.current = "";
+    //force rerender to clear fields + handle reset of suggestions
+    setFieldKey(fieldKey + 1);
+    setSuggestions(suggestions.map((v) => ""));
+  };
+
+  const toItem = () => {
+    return {
+      vocabulary: vocabulary.current,
+      translation: translation.current,
+      suggestions: suggestions,
+    };
+  };
+
+  const validateItem = () =>
+    vocabulary.current.length > 0 && translation.current.length > 0 && suggestions.map((v) => v.length > 0);
+
+  const update = () => {
+    const item = toItem();
+    console.log("suggestions witihin update ", suggestions);
+    if (validateItem(item)) {
+      addItem(item);
+      resetFields();
+
+      //toasts.toastSuccess("Quiz item added!");
+    } else if (suggestions.filter((v) => v !== "").length > 0) {
+      //toasts.toastError("Please ensure all fields are filled out.");
+    }
+  };
+
+  useEffect(() => {
+    //only rerenders once all have returned
+    update();
+    console.log("render", suggestions);
+  }, [suggestions]);
+
+  return (
+    <div>
+      <DialogTitle id="add-item">Add a quiz item</DialogTitle>
+      <DialogContent key={fieldKey}>
+        <Grid container justify="flex-start" alignItems="center" direction="column">
+          <TextField
+            autoFocus
+            margin="dense"
+            id="vocabulary"
+            label="Vocabulary*"
+            type="vocabulary"
+            onChange={(e) => (vocabulary.current = e.target.value)}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="translation"
+            label="Translation*"
+            type="translation"
+            onChange={(e) => (translation.current = e.target.value)}
+            fullWidth
+          />
+          {suggestions.map((v, i) => (
+            <Suggestion index={i} onRefresh={refreshSuggestions} update={updateSuggs[i]} />
+          ))}
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <VTButton success onClick={() => addSuggestion()} color="primary">
+          Add Suggestion
+        </VTButton>
+        <VTButton success onClick={() => removeSuggestion()} color="primary">
+          Remove Suggestion
+        </VTButton>
+        <VTButton success onClick={() => updateSuggestions()} color="primary">
+          Add quiz item
+        </VTButton>
+      </DialogActions>
+    </div>
+  );
+}
+
 function AddCustomQuiz({ onAdd }) {
   const styles = makeStyles();
 
@@ -231,38 +378,27 @@ function AddCustomQuiz({ onAdd }) {
   const handleAddClose = () => {
     setOpen(false);
     setItems([]);
-    resetFields(true);
+    resetFields();
   };
 
   const title = useRef("");
   const [items, setItems] = useState([]);
 
-  const item = {
-    vocabulary: useRef(""),
-    translation: useRef(""),
-    suggestions: [useRef(""), useRef(""), useRef("")],
+  const addItem = (item) => {
+    setItems((il) => [...il, item]);
+    //reset new fields
+    resetFields();
   };
 
-  const toItem = () => {
-    return {
-      vocabulary: item.vocabulary.current,
-      translation: item.translation.current,
-      suggestions: item.suggestions.map((vv) => vv.current),
-    };
+  const deleteItem = (i) => {
+    setItems((il) => il.slice(0, i).concat(il.slice(i + 1)));
+    toasts.toastSuccess("Quiz item deleted!");
   };
-
-  const resetFields = (all = false) => {
-    console.log(all);
-    if (all) {
-      title.current = "";
-    }
-    item.vocabulary.current = "";
-    item.translation.current = "";
-    item.suggestions.forEach((v) => (v.current = ""));
+  const resetFields = () => {
+    title.current = "";
   };
 
   const addQuiz = () => {
-    console.log(title.current);
     if (title.current.length > 0 && items.length > 0) {
       api.createCustomQuiz(title.current, items).then((res) => {
         toasts.toastSuccess("Custom quiz added with " + items.length + " questions!");
@@ -273,38 +409,6 @@ function AddCustomQuiz({ onAdd }) {
       toasts.toastError(
         "You cannot add a quiz without title or quiz items. Please add title and at least one" + " quiz item first."
       );
-    }
-  };
-
-  const [fieldKey, setFieldKey] = useState(0);
-  const addItem = () => {
-    if (validate_item()) {
-      setItems((il) => [...il, toItem()]);
-      //reset new fields
-      resetFields();
-
-      toasts.toastSuccess("Quiz item added!");
-      setFieldKey(fieldKey + 1);
-    } else {
-      toasts.toastError("Please ensure all fields are filled out.");
-    }
-  };
-
-  const deleteItem = (i) => {
-    setItems((il) => il.slice(0, i).concat(il.slice(i + 1)));
-  };
-
-  const validate_item = () => {
-    if (
-      item.vocabulary.current.length > 0 &&
-      item.translation.current.length > 0 &&
-      item.suggestions[0].current.length > 0 &&
-      item.suggestions[1].current.length > 0 &&
-      item.suggestions[2].current.length > 0
-    ) {
-      return true;
-    } else {
-      return false;
     }
   };
 
@@ -327,63 +431,12 @@ function AddCustomQuiz({ onAdd }) {
             onChange={(e) => (title.current = e.target.value)}
             fullWidth
           />
-          <QuizItemSection items={items} del={deleteItem} />
         </DialogContent>
-        <DialogTitle id="add-item">Add a quiz item</DialogTitle>
-        <DialogContent key={fieldKey}>
-          <Grid container justify="flex-start" alignItems="center" direction="column">
-            <TextField
-              autoFocus
-              margin="dense"
-              id="vocabulary"
-              label="Vocabulary*"
-              type="vocabulary"
-              onChange={(e) => (item.vocabulary.current = e.target.value)}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="translation"
-              label="Translation*"
-              type="translation"
-              onChange={(e) => (item.translation.current = e.target.value)}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="suggestion 1"
-              label="Suggestion 1*"
-              type="suggestion"
-              onChange={(e) => (item.suggestions[0].current = e.target.value)}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="suggestion 2"
-              label="Suggestion 2*"
-              type="suggestion"
-              onChange={(e) => (item.suggestions[1].current = e.target.value)}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="suggestion 3"
-              label="Suggestion 3*"
-              type="suggestion"
-              onChange={(e) => (item.suggestions[2].current = e.target.value)}
-              fullWidth
-            />
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <VTButton success onClick={() => addItem()} color="primary">
-            Add quiz item
-          </VTButton>
-        </DialogActions>
+
+        <QuizItemSection items={items} del={deleteItem} />
+
+        <QuizItem items={items} setItems={setItems} addItem={addItem} />
+
         <DialogContent>
           <DialogContentText align={"right"}>
             Once you have filled out the title and at least one question item feel free to add the Quiz.
