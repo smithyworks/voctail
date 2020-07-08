@@ -18,6 +18,10 @@ export function user(user_id) {
   return axios.post(`${base}/user`, { user_id });
 }
 
+export function getAllUsers() {
+  return axios.get(`${base}/users-all`);
+}
+
 export function document(document_id) {
   return axios.post(`${base}/document`, { document_id });
 }
@@ -78,11 +82,19 @@ export function fetchDocuments() {
   return axios.get(`${base}/handle-documents`);
 }
 
-// add and delete documents (WIP)
-export function addDocument(publisher, title, author, description, category, isPublic, content) {
-  return axios.post(`${base}/add-document`, { publisher, title, author, description, category, isPublic, content });
+// add and delete documents
+export function addDocument(publisher, title, author, description, category, isPublic, content, blocks) {
+  return axios.post(`${base}/add-document`, {
+    publisher,
+    title,
+    author,
+    description,
+    category,
+    isPublic,
+    content,
+    blocks,
+  });
 }
-//WIP
 export function deleteDocument(document_id) {
   return axios.post(`${base}/delete-document`, { document_id });
 }
@@ -99,24 +111,39 @@ export function addTranslation(word_id, translation) {
 
 //classrooms
 
-export function getClassrooms() {
+export function fetchClassrooms() {
   return axios.get(`${base}/classrooms`);
 }
 
-export function createClassroom(title, topic, description, open) {
-  return axios.post(`${base}/create-classroom`, { title, topic, description, open });
+export function getClassroom(classroom_id) {
+  return axios.get(`${base}/classroom`, { params: { classroom_id: classroom_id } });
 }
 
-export function addStudentToClassroom(student_id) {
-  return axios.post(`${base}/add-student-to-classroom`, { student_id });
+export function getStudents(classroom_id) {
+  return axios.get(`${base}/classrooms-students`, { params: { classroom_id: classroom_id } });
 }
 
-export function addDocumentToClassroom(document_id) {
-  return axios.post(`${base}/add-document-to-classroom`, { document_id });
+export function getDocuments(classroom_id) {
+  return axios.get(`${base}/classrooms-documents`, { params: { classroom_id: classroom_id } });
+}
+
+export function createClassroom(teacher, title, topic, description, open) {
+  return axios.post(`${base}/create-classroom`, { teacher, title, topic, description, open });
+}
+
+export function addStudentToClassroom(classroom_id, student_id) {
+  return axios.post(`${base}/add-student-to-classroom`, { classroom_id, student_id });
+}
+
+export function addDocumentToClassroom(classroom_id, document_id) {
+  return axios.post(`${base}/add-document-to-classroom`, { classroom_id, document_id });
 }
 
 // user
 
+export function allUsers() {
+  return axios.get(`${base}/all-users`);
+}
 export function setPremium(premium) {
   return axios.post(`${base}/set-premium`, { premium: !!premium });
 }

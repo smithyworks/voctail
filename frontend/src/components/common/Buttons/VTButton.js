@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import colors from "../../assets/colors.json";
+import colors from "../../../assets/colors.json";
 
 const useStyles = makeStyles({
   neutral: { ...colors.button.neutral, "&:hover": { ...colors.button.neutralHover } },

@@ -1,8 +1,7 @@
 import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
-import VTButton from "../common/VTButton";
-import AddIcon from "@material-ui/icons/Add";
+import VTButton from "../common/Buttons/VTButton";
 import {
   Checkbox,
   Dialog,
@@ -21,6 +20,7 @@ import {
 import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
 import { makeStyles } from "@material-ui/core/styles";
+import VTIconButton from "../common/Buttons/IconButton";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -38,104 +38,15 @@ const useStyles = makeStyles(() => ({
   gridList: { width: "100%", height: 800, justifyContent: "space-around" },
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
-/*
-function clean(word) {
-  try {
-    word = word.replace(/[ \t\r\n]/g, "");
-    return word
-      .toLowerCase()
-      .replace(/[.,;:"()?!><’‘”“`]/g, "")
-      .replace(/[^a-z]s$/g, "")
-      .replace(/(^'|'$)/g, "");
-  } catch (err) {
-    console.log(err);
-    return "";
-  }
-}
 
- */
-
-/*
-function AddWordsFromNewDocument() {
-    //const { document_id } = req.body;
-    const { rows: documentRecords } = await pool.query(
-        "SELECT * FROM documents WHERE document_id=$1;"
-    );
-    const wordSet = new Set();
-
-    // Make sure it's offset to the right value
-    const {
-        rows: [{ nextval }],
-    } = await pool.query("SELECT nextval('words_word_id_seq');");
-    let word_id = parseInt(nextval);
-
-    const newWords = [];
-    const documentWords = [];
-
-    for (let dri = 0; dri < documentRecords.length; dri++) {
-        const document = documentRecords[dri];
-
-        const content = document.blocks.map((b) => b.content).join(" ");
-        const words = content
-            .split(/\s/)
-            .map((token) => clean(token))
-            .filter((word) => word !== "");
-
-        const frequencies = {};
-
-        for (let wi = 0; wi < words.length; wi++) {
-            const word = words[wi];
-
-            if (word === "") continue;
-
-            const {
-                rows,
-            } = await pool.query("SELECT word_id FROM words WHERE word = $1", [word]);
-            let current_word_id = rows[0]?.word_id;
-
-            // If the word doesn't exist, we need to add it to the database.
-            if (!current_word_id) {
-                let wordRecord = newWords.find((w) => w.word === word);
-                if (!wordRecord) {
-                    wordRecord = { word_id: word_id++, word };
-                    newWords.push(wordRecord);
-                }
-
-                current_word_id = wordRecord.word_id;
-            }
-
-            if (!frequencies[current_word_id]) frequencies[current_word_id] = 1;
-            else frequencies[current_word_id]++;
-        }
-
-        documentWords[document.document_id] = frequencies;
-    }
-
-    console.log("COPY words (word_id, word, ignore, language) FROM stdin;");
-    newWords.forEach((nw) => {
-        console.log(`${nw.word_id}\t${nw.word}\tf\tenglish`);
-    });
-    console.log("\\.");
-    console.log(`ALTER SEQUENCE words_word_id_seq RESTART WITH ${word_id};`);
-
-    console.log(
-        "COPY documents_words (document_id, word_id, frequency) FROM stdin;"
-    );
-    Object.entries(documentWords).forEach(([document_id, frequencies]) => {
-        Object.entries(frequencies).forEach(([word_id, frequency]) => {
-            console.log(`${document_id}\t${word_id}\t${frequency}`);
-        });
-    });
-    console.log("\\.");
-}
-*/
 function UploadDocument({ refresh, publisherId }) {
   const titleInput = useRef("");
   const authorInput = useRef("");
   const descriptionInput = useRef("");
   const [publicDocument, setPublicDocument] = useState(true);
-
   const contentInput = useRef("");
+  const blocks = [];
+
   //const imageInput = useRef(); todo use image
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
@@ -154,20 +65,18 @@ function UploadDocument({ refresh, publisherId }) {
     setCategory(event.target.value);
   };
 
+  //read uploaded file and stringify it for the database (format in blocks, see more in the schema)
   function readFile() {
     const uploadedFile = document.getElementById("upload-file").files[0];
 
     let reader = new FileReader();
     reader.readAsText(uploadedFile);
 
-    const blocks = [];
     let currentType;
     let currentContent;
 
     reader.onloadend = function () {
-      console.log("onload", reader.result);
       const lines = reader.result.split(/\r?\n/);
-      console.log("lines in onload", lines);
 
       lines.forEach((line, i) => {
         // Encountered newline, current block set empty
@@ -226,6 +135,7 @@ function UploadDocument({ refresh, publisherId }) {
         }
       });
 
+      //HERE
       contentInput.current = JSON.stringify(blocks).replace(/\\/g, "\\\\");
     };
   }
@@ -263,7 +173,6 @@ function UploadDocument({ refresh, publisherId }) {
 
   const addThisDocument = () => {
     readFile();
-    console.log("contentInput in add this document", contentInput.current);
 
     api
       .addDocument(
@@ -273,7 +182,8 @@ function UploadDocument({ refresh, publisherId }) {
         descriptionInput.current,
         category,
         publicDocument,
-        contentInput.current
+        contentInput.current,
+        blocks
       )
       .then(() => {
         toasts.toastSuccess("The document was successfully added!");
@@ -289,9 +199,7 @@ function UploadDocument({ refresh, publisherId }) {
 
   return (
     <div>
-      <VTButton neutral startIcon={<AddIcon />} onClick={handleAddOpen}>
-        Add a new document
-      </VTButton>
+      <VTIconButton onClick={handleAddOpen} />
 
       <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-new-document">
         <DialogTitle id="add-new-document">Add a document</DialogTitle>
