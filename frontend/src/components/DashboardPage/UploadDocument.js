@@ -40,40 +40,18 @@ const useStyles = makeStyles(() => ({
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
 
-function clean(word) {
-  try {
-    word = word.replace(/[ \t\r\n]/g, "");
-    return word
-      .toLowerCase()
-      .replace(/[.,;:"()?!><’‘”“`]/g, "")
-      .replace(/[^a-z]s$/g, "")
-      .replace(/(^'|'$)/g, "");
-  } catch (err) {
-    console.log(err);
-    return "";
-  }
-}
-
 function UploadDocument({ refresh, publisherId }) {
   const titleInput = useRef("");
   const authorInput = useRef("");
   const descriptionInput = useRef("");
   const [publicDocument, setPublicDocument] = useState(true);
-
   const contentInput = useRef("");
+  const blocks = [];
+
   //const imageInput = useRef(); todo use image
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
   const classes = useStyles();
-
-  const blocks = [];
-
-  //add words to database
-  const documentId = useRef(0);
-  const word = useRef("");
-  // const [addToDatabase, setAddToDatabase] = useState();
-  const word_id = useRef(0);
-  const frequency = useRef(0);
 
   const handleAddOpen = () => {
     setOpen(true);
@@ -88,6 +66,7 @@ function UploadDocument({ refresh, publisherId }) {
     setCategory(event.target.value);
   };
 
+  //read uploaded file and stringify it for the database (format in blocks, see more in the schema)
   function readFile() {
     const uploadedFile = document.getElementById("upload-file").files[0];
 
@@ -193,79 +172,6 @@ function UploadDocument({ refresh, publisherId }) {
     contentInput.current = "";
   }
 
-  const addToDatabase = () => {
-    api
-      .addNewWord(word.current)
-      .then((res) => {
-        if (res) word_id.current = res.data;
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const newDocumentWords = [];
-
-  const handleAdding = () => {
-    if (word_id.current !== 0) {
-      //word is already in database
-      console.log("word is already in database");
-      let wordInNewDocumentWords = newDocumentWords.find((w) => w.wordId === word_id.current);
-      if (wordInNewDocumentWords) {
-        // word is already in document words
-        let index = newDocumentWords.indexOf({ wordId: word_id.current }); //todo
-        frequency.current = newDocumentWords[index].frequency;
-        newDocumentWords[index] = { wordId: word_id.current, frequency: frequency.current + 1 };
-      } else {
-        //word is only in database, not in document words
-        newDocumentWords.push({ wordId: word_id.current, frequency: 1 }); //added to new Document Words
-      }
-    } else {
-      // word is not in database
-      console.log("word is not in databse - next add");
-      addToDatabase();
-      newDocumentWords.push({ wordId: word_id, frequency: 1 }); //added to new Document Words
-    }
-    console.log("current word", word.current);
-    console.log("current word id", word_id.current);
-    word_id.current = 0;
-  };
-
-  function addWordsFromNewDocument(document_id) {
-    console.log("reingekommen");
-
-    console.log("document id", document_id);
-
-    const content = blocks.map((b) => b.content).join(" ");
-
-    const words = content
-      .split(/\s/)
-      .map((token) => clean(token))
-      .filter((word) => word !== "");
-
-    console.log("map", content);
-
-    console.log("vor for schleife");
-
-    for (let wi = 0; wi < words.length; wi++) {
-      word.current = words[wi];
-      if (word.current === "") continue;
-
-      // If the word doesn't exist, we need to add it to the database.
-      //finder();
-      api
-        .findWordId(word.current)
-        .then((res) => {
-          console.log("res.data", res.data);
-          if (res) word_id.current = res.data;
-          handleAdding();
-        })
-        .catch((err) => console.log(err));
-    }
-
-    console.log("nach for schleife");
-
-    //add to junction table document_words
-  }
-
   const addThisDocument = () => {
     readFile();
 
@@ -277,17 +183,14 @@ function UploadDocument({ refresh, publisherId }) {
         descriptionInput.current,
         category,
         publicDocument,
-        contentInput.current
+        contentInput.current,
+        blocks
       )
-      .then((res) => {
-        if (res) documentId.current = res.data;
+      .then(() => {
         toasts.toastSuccess("The document was successfully added!");
         refresh();
         resetValues();
         handleAddClose();
-        addWordsFromNewDocument(documentId);
-        console.log("dokument id", documentId.current);
-        console.log("geschafft danach!");
       })
       .catch((err) => {
         console.log(err);
