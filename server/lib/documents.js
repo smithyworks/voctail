@@ -69,13 +69,30 @@ async function deleteDocument(req, res) {
 }
 
 async function addDocument(req, res) {
-  try {
-    const { publisher, title, author, description, category, isPublic, content } = req.body;
-    const premium = true;
-    if (title.length < 1 || author.length < 1) {
-      log(`"Invalid document data ${title} ${author}.`);
-      res.status(400).send("Invalid document upload.");
+  function clean(word) {
+    try {
+      word = word.replace(/[ \t\r\n]/g, "");
+      return word
+        .toLowerCase()
+        .replace(/[.,;:"()?!><’‘”“`]/g, "")
+        .replace(/[^a-z]s$/g, "")
+        .replace(/(^'|'$)/g, "");
+    } catch (err) {
+      console.log(err);
+      return "";
     }
+  }
+
+  try {
+    const { publisher, title, author, description, category, isPublic, content, blocks } = req.body;
+    const premium = true;
+    const newDocumentWords = [];
+    let word_id = 0;
+    let word = "";
+    let frequency = 0;
+    const ignore = false;
+    const language = "english";
+
     const {
       rows: [{ document_id }],
     } = await query(
@@ -83,8 +100,78 @@ async function addDocument(req, res) {
         "VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
       [publisher, title, author, description, category, isPublic, premium, content]
     );
-    res.status(201).json(document_id);
-    return document_id;
+    const documentId = document_id;
+
+    const contentData = blocks.map((b) => b.content).join(" ");
+    const words = contentData
+      .split(/\s/)
+      .map((token) => clean(token))
+      .filter((word) => word !== "");
+
+    // go through all words from the new documents
+    for (let wi = 0; wi < words.length; wi++) {
+      word = words[wi];
+      if (word === "") continue;
+
+      console.log("word", word);
+
+      // If the word doesn't exist, we need to add it to the database.
+
+      const {
+        // search for the word in the database
+        rows: [{ searchedWord_id }],
+      } = await query("SELECT word_id FROM words WHERE words.word = $1 AND words.language=$2", [word, language]);
+      word_id = searchedWord_id;
+      console.log("word id", word_id);
+      console.log("searched word id", searchedWord_id);
+
+      if (word_id !== 0) {
+        //word is already in database
+        console.log("word is already in database");
+
+        let index = newDocumentWords.indexOf({ wordId: word_id }); //todo
+        if (index > 0) {
+          // word is already in document words
+          console.log("index", index);
+          console.log("wordid", word_id);
+          console.log();
+          frequency = newDocumentWords[index].frequency;
+          newDocumentWords[index] = { wordId: word_id, frequency: frequency + 1 };
+        } else {
+          //word is only in database, not in document words
+          newDocumentWords.push({ wordId: word_id, frequency: 1 }); //added to new Document Words
+        }
+      } else {
+        // word is not in database
+        console.log("word is not in databse - next add");
+
+        const {
+          word_id,
+        } = await query("INSERT INTO words(word, ignore, language) VALUES ($1, $2, $3) RETURNING word_id", [
+          word,
+          ignore,
+          language,
+        ]);
+        newDocumentWords.push({ wordId: word_id, frequency: 1 }); //added to new Document Words
+      }
+      console.log("current word", word);
+      console.log("current word id", word_id);
+
+      word_id = 0;
+      frequency = 0;
+    }
+
+    for (let ndw = 0; ndw < newDocumentWords.length; ndw++) {
+      const {
+        rows: documentWords,
+      } = await query("INSERT INTO documents_words(document_id, word_id, frequency) VALUES ($1,$2, $3)", [
+        document_id,
+        newDocumentWords[ndw].word_id,
+        newDocumentWords[ndw].frequency,
+      ]);
+    }
+
+    res.status(201).json({ document_id });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -101,63 +188,10 @@ async function usersHandler(req, res) {
   }
 }
 
-async function findWordId(req, res) {
-  try {
-    const word = req.query.word;
-    const {
-      rows: [word_id],
-    } = await query("SELECT word_id FROM words WHERE words.word = $1", [word]);
-    log("find word id: word ", word);
-    log("find word id: word_id", word_id);
-    res.status(200).json(word_id);
-  } catch (e) {
-    log(e);
-    res.status(500).send("Something went wrong.");
-  }
-}
-
-async function addNewWord(req, res) {
-  try {
-    const { newWord } = req.body;
-    const ignore = false;
-    const language = "english";
-    const { word_id } = await query("INSERT INTO words(word, ignore, language) VALUES ($1, $2, $3) RETURNING word_id", [
-      newWord,
-      ignore,
-      language,
-    ]);
-    res.status(200).json(word_id);
-    //    return word_id;
-  } catch (err) {
-    log(err);
-    res.status(500).send("Something went wrong.");
-  }
-}
-
-async function addWordsToDocument(req, res) {
-  try {
-    const { document_id, word_id, frequency } = req.body;
-    const {
-      rows: documentWords,
-    } = await query("INSERT INTO document_words(document_id, word_id, frequency) VALUES ($1,$2, $3)", [
-      document_id,
-      word_id,
-      frequency,
-    ]);
-    res.status(200).json(documentWords);
-  } catch (err) {
-    log(err);
-    res.status(500).send("Something went wrong.");
-  }
-}
-
 module.exports = {
   documentHandler,
   usersHandler,
   dummyDataHandler,
   deleteDocument,
   addDocument,
-  findWordId,
-  addNewWord,
-  addWordsToDocument,
 };

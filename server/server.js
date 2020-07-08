@@ -39,9 +39,6 @@ server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
 server.get("/api/handle-documents", auth.tokenMiddleWare, documents.dummyDataHandler);
 server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
-server.get("/api/find-word-id", auth.tokenMiddleWare, documents.findWordId);
-server.post("/api/add-word", auth.tokenMiddleWare, documents.addNewWord);
-server.post("/api/add-words-to-document", auth.tokenMiddleWare, documents.addWordsToDocument);
 
 server.post("/api/update-vocabulary", auth.tokenMiddleWare, vocabulary.updateUserVocabHandler);
 server.post("/api/add-translation", auth.tokenMiddleWare, vocabulary.addTranslationHandler);
