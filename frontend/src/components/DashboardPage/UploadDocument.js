@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
-import VTButton from "../common/VTButton";
+import VTButton from "../common/Buttons/VTButton";
 import {
   Checkbox,
   Dialog,
@@ -20,7 +20,7 @@ import {
 import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
 import { makeStyles } from "@material-ui/core/styles";
-import VTIconButton from "../common/IconButton";
+import VTIconButton from "../common/Buttons/IconButton";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },

@@ -2,7 +2,7 @@ import React from "react";
 import { Tooltip } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/styles";
 
-import colors from "../../assets/colors.json";
+import colors from "../../../assets/colors.json";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 

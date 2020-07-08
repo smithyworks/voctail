@@ -7,7 +7,7 @@ import Text from "./Text.js";
 import BlockContainer from "./BlockContainer";
 import AddTranslationDialog from "./AddTranslationDialog";
 import { api } from "../../utils";
-import VTDeleteButton from "../common/VTDeleteButton";
+import VTDeleteButton from "../common/Buttons/VTDeleteButton";
 
 const useStyles = makeStyles({
   headerContainer: { textAlign: "center" },
