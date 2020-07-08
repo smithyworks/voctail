@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Typography as T,
   Button,
   ButtonBase,
   Dialog,
@@ -16,18 +15,19 @@ import AppPage from "./common/AppPage";
 import { api } from "../utils";
 import logo_classroom from "../assets/classroom_logo.png";
 import Header from "./common/HeaderSection";
-import { dummyClassroom } from "./ClassroomViewPage";
 import { DashboardSection } from "./common";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { toasts } from "./common/AppPage/AppPage";
 import { Link } from "react-router-dom";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import TextField from "@material-ui/core/TextField";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   text: {
     paddingTop: "5%",
     paddingBottom: "5%",
@@ -120,6 +120,7 @@ const useStyles = makeStyles((theme) => ({
 function ClassroomItem({
   classes,
   setPopUpOpen,
+  setClassroomId,
   setClassroomTitle,
   setClassroomTopic,
   setClassroomAuthor,
@@ -137,9 +138,10 @@ function ClassroomItem({
       }}
       onClick={() => {
         setPopUpOpen(true);
+        setClassroomId(tile.classroom_id);
         setClassroomTitle(tile.title);
         setClassroomTopic(tile.topic);
-        setClassroomAuthor(tile.classroom_owner);
+        teacherData(tile.classroom_owner, setClassroomAuthor);
         setClassroomDescription(tile.description);
       }}
     >
@@ -177,7 +179,7 @@ function ClassroomOverviewPopUp({
       TransitionComponent={Transition}
       keepMounted
     >
-      <DialogTitle id="classroom-overview-popup" onClose={onClose}>
+      <DialogTitle id="classroom-overview-popup-title" onClose={onClose}>
         {classroomTitle}
       </DialogTitle>
       <DialogContent dividers>
@@ -200,16 +202,96 @@ function ClassroomOverviewPopUp({
   );
 }
 
-function createClassroom() {
+function FormDialog({
+  user,
+  openCreateForm,
+  newTitle,
+  setNewTitle,
+  newTopic,
+  setNewTopic,
+  newDescription,
+  setNewDescription,
+}) {
+  const handleChangeTitle = (event) => {
+    setNewTitle(event.target.value);
+  };
+  const handleChangeTopic = (event) => {
+    setNewTopic(event.target.value);
+  };
+  const handleChangeDescription = (event) => {
+    setNewDescription(event.target.value);
+  };
+  return (
+    <div>
+      <Dialog open={openCreateForm} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">New Classroom</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Please fill the details to create your classroom</DialogContentText>
+          <TextField
+            autoFocus
+            value={newTitle}
+            onChange={handleChangeTitle}
+            margin="dense"
+            id="name"
+            label="Title"
+            type="text"
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            value={newTopic}
+            onChange={handleChangeTopic}
+            margin="dense"
+            id="name"
+            label="Topic"
+            type="text"
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            value={newDescription}
+            onChange={handleChangeDescription}
+            margin="dense"
+            id="name"
+            label="Description"
+            multiline
+            rowsMax={10}
+            type="text"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              return toasts.toastError("You cancelled");
+            }}
+            color="primary"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              createClassroom(user, newTitle, newTopic, newDescription);
+            }}
+            color="primary"
+          >
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
+function createClassroom(user, title, topic, description) {
   const addThisClassroom = () => {
-    api.createClassroom("MyTitle", "MyTopic", "My description", true).catch((err) => console.log(err));
+    api.createClassroom(user, title, topic, description, true).catch((err) => console.log(err));
   };
   addThisClassroom();
   toasts.toastSuccess("Classroom added to the database!");
 }
 
 function teacherData(user_id, setClassroomAuthorData) {
-  console.log("Debugging here");
   api
     .user(user_id)
     .then((res) => {
@@ -220,16 +302,20 @@ function teacherData(user_id, setClassroomAuthorData) {
 
 function Classrooms() {
   const classes = useStyles();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
   const [openPopUp, setPopUpOpen] = useState(false);
+
   //Accessor to a current classroom
   const [classroomId, setClassroomId] = useState(null);
   const [classroomTitle, setClassroomTitle] = useState(null);
   const [classroomTopic, setClassroomTopic] = useState(null);
-  const [classroomAuthor, setClassroomAuthor] = useState(null);
-  const [classroomAuthorData, setClassroomAuthorData] = useState(null);
+  const [classroomAuthor, setClassroomAuthor] = useState([]);
   const [classroomDescription, setClassroomDescription] = useState(null);
+  const [openCreateForm, setOpenCreateForm] = React.useState(false);
+  const [newTitle, setNewTitle] = React.useState("Title");
+  const [newTopic, setNewTopic] = React.useState("Topic");
+  const [newDescription, setNewDescription] = React.useState("Description");
 
   useEffect(() => {
     api
@@ -242,7 +328,7 @@ function Classrooms() {
 
   useEffect(() => {
     api
-      .getClassrooms()
+      .fetchClassrooms()
       .then((res) => {
         if (res) {
           setClassroomDataFromDatabase(res.data.rows);
@@ -259,16 +345,27 @@ function Classrooms() {
         title="My Classrooms"
         description="You have here the classrooms you are registered to."
         Button={
-          <IconButton aria-label="new-classroom" onClick={() => setPopUpOpen(true)}>
+          <IconButton aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
             <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
           </IconButton>
         }
       >
+        <FormDialog
+          openCreateForm={openCreateForm}
+          user={user.user_id}
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newTopic={newTopic}
+          setNewTopic={setNewTopic}
+          newDescription={newDescription}
+          setNewDescription={setNewDescription}
+        />
         {classroomDataFromDatabase.map((tile) => (
           <React.Fragment key={tile.classroom_id}>
             <ClassroomItem
               classes={classes}
               setPopUpOpen={setPopUpOpen}
+              setClassroomId={setClassroomId}
               setClassroomTitle={setClassroomTitle}
               setClassroomTopic={setClassroomTopic}
               setClassroomAuthor={setClassroomAuthor}
@@ -281,9 +378,10 @@ function Classrooms() {
               onClose={() => {
                 setPopUpOpen(false);
               }}
+              classroomId={classroomId}
               classroomTitle={classroomTitle}
               classroomTopic={classroomTopic}
-              classroomAuthor={classroomAuthor}
+              classroomAuthor={classroomAuthor.name}
               classroomDescription={classroomDescription}
             />
           </React.Fragment>

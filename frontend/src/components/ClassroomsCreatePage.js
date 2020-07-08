@@ -1,15 +1,13 @@
 //This page will be used to test components
 
-import React, { useState, useEffect, useRef } from "react";
-import { Grid, Typography, ButtonBase, Button } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AppPage from "./common/AppPage";
-import MuiAlert from "@material-ui/lab/Alert";
 import { api } from "../utils";
 import userIcon from "../assets/icon_user.png";
 import documentIcon from "../assets/icon_document.png";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
+
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -20,7 +18,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { toasts } from "./common/AppPage/AppPage";
 import VTButton from "./common/VTButton";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   headUpText: {
     margin: "auto",
     textAlign: "center",
@@ -41,10 +39,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px 10px",
   },
 }));
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 function HeadUpText(props) {
   const classes = useStyles();
@@ -67,7 +61,7 @@ function addDocuments() {
   toasts.toastSuccess("Document added to the database!");
 }
 
-function ClassroomsCreatePage({ ...props }) {
+function ClassroomsCreatePage() {
   const classes = useStyles();
   const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
   const [classroomDocumentsFromDatabase, setClassroomDocumentsFromDatabase] = useState([]);

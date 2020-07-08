@@ -100,8 +100,12 @@ export function addTranslation(word_id, translation) {
 
 //classrooms
 
-export function getClassrooms() {
+export function fetchClassrooms() {
   return axios.get(`${base}/classrooms`);
+}
+
+export function getClassroom(classroom_id) {
+  return axios.get(`${base}/classroom`, { params: { classroom_id: classroom_id } });
 }
 
 export function getStudents(classroom_id) {
@@ -112,8 +116,8 @@ export function getDocuments(classroom_id) {
   return axios.get(`${base}/classrooms-documents`, { params: { classroom_id: classroom_id } });
 }
 
-export function createClassroom(title, topic, description, open) {
-  return axios.post(`${base}/create-classroom`, { title, topic, description, open });
+export function createClassroom(teacher, title, topic, description, open) {
+  return axios.post(`${base}/create-classroom`, { teacher, title, topic, description, open });
 }
 
 export function addStudentToClassroom(classroom_id, student_id) {

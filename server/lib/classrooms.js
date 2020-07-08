@@ -1,13 +1,23 @@
 const { log } = require("./log.js");
 const { query } = require("./db.js");
 
-async function classroomHandler(req, res) {
+async function classroomsHandler(req, res) {
   try {
     const { rows } = await query("SELECT * FROM classrooms");
     res.status(200).json({ rows });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong with the classrooms handler.");
+  }
+}
+
+async function classroomHandler(req, res) {
+  try {
+    const { rows } = await query("SELECT * FROM classrooms WHERE classroom_id = $1", [req.query.classroom_id]);
+    res.status(200).json({ rows });
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong with the classroom handler.");
   }
 }
 
@@ -56,7 +66,7 @@ async function documentsHandler(req, res) {
 
 async function createClassroom(req, res) {
   try {
-    const { title, description, topic, open } = req.body;
+    const { teacher, title, description, topic, open } = req.body;
     if (title.length < 1 || topic.length < 1) {
       log(`"Invalid document data ${title} ${topic}.`);
       res.status(400).send("Invalid classroom data.");
@@ -65,7 +75,7 @@ async function createClassroom(req, res) {
       rows: [classroom],
     } = await query(
       "INSERT INTO classrooms (classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4, $5)",
-      [6, title, description, topic, open]
+      [teacher, title, description, topic, open]
     );
     res.status(201).send(`Successfully created classroom ${title}.`);
   } catch (err) {
@@ -102,6 +112,7 @@ async function addDocumentToClassroom(req, res) {
 
 module.exports = {
   classroomHandler,
+  classroomsHandler,
   documentsHandler,
   studentsHandler,
   usersHandler,
