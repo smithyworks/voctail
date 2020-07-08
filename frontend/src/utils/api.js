@@ -82,11 +82,19 @@ export function fetchDocuments() {
   return axios.get(`${base}/handle-documents`);
 }
 
-// add and delete documents (WIP)
-export function addDocument(publisher, title, author, description, category, isPublic, content) {
-  return axios.post(`${base}/add-document`, { publisher, title, author, description, category, isPublic, content });
+// add and delete documents
+export function addDocument(publisher, title, author, description, category, isPublic, content, blocks) {
+  return axios.post(`${base}/add-document`, {
+    publisher,
+    title,
+    author,
+    description,
+    category,
+    isPublic,
+    content,
+    blocks,
+  });
 }
-//WIP
 export function deleteDocument(document_id) {
   return axios.post(`${base}/delete-document`, { document_id });
 }

@@ -7,7 +7,6 @@ const useStyles = makeStyles({
     padding: "30px 30px 8px 30px",
     border: "1px solid lightgrey",
     marginBottom: "20px",
-    boxShadow: "1px 1px 12px #555",
   },
   title: { fontWeight: "bold" },
   innerContainer: {
@@ -25,6 +24,12 @@ const useStyles = makeStyles({
     fontSize: "20px",
     marginBottom: "-5px",
   },
+
+  buttonPosition: {
+    position: "flexible",
+    marginLeft: "initial",
+    marginTop: "-5px",
+  },
 });
 
 function DashboardSection({ title, description, children, Button }) {
@@ -33,12 +38,12 @@ function DashboardSection({ title, description, children, Button }) {
   return (
     <Paper elevation={0} className={classes.paper}>
       <Grid container justify="space-between" direction="row" alignItems="center">
-        <Grid item xs={2} style={{ paddingLeft: "10px" }}>
+        <Grid item xs={10} style={{ paddingLeft: "10px" }}>
           <Typography variant="h5" className={classes.title}>
             {title}
           </Typography>
         </Grid>
-        <Grid item xs={2} style={{ paddingRight: "10px" }}>
+        <Grid item xs={1}>
           {Button}
         </Grid>
         <Grid item xs={8} style={{ paddingRight: "10px" }}>
