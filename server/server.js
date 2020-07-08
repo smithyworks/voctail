@@ -28,7 +28,7 @@ server.post("/api/token", auth.tokenHandler);
 server.get("/api/logout", auth.tokenMiddleWare, auth.logoutHandler);
 
 server.post("/api/user", auth.tokenMiddleWare, users.userHandler);
-server.get("/api/all-users", auth.tokenMiddleWare, users.allUsersHandler);
+server.get("/api/users-all", auth.tokenMiddleWare, users.allUsersHandler);
 server.post("/api/set-premium", auth.tokenMiddleWare, users.setPremiumHandler);
 server.post("/api/set-name", auth.tokenMiddleWare, users.setNameHandler);
 server.post("/api/set-email", auth.tokenMiddleWare, users.setEmailHandler);
@@ -59,7 +59,10 @@ server.post("/api/create-quiz", auth.tokenMiddleWare, quizzes.createQuizHandler)
 server.post("/api/create-document-quiz", auth.tokenMiddleWare, quizzes.createQuizFromDocHandler);
 server.post("/api/create-custom-quiz", auth.tokenMiddleWare, quizzes.createCustomQuizHandler);
 
-server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomHandler);
+server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomsHandler);
+server.get("/api/classroom", auth.tokenMiddleWare, classrooms.classroomHandler);
+server.get("/api/classrooms-students", auth.tokenMiddleWare, classrooms.studentsHandler);
+server.get("/api/classrooms-documents", auth.tokenMiddleWare, classrooms.documentsHandler);
 server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClassroom);
 server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.addStudentToClassroom);
 server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);

@@ -13,7 +13,7 @@ import {
   QuizPage,
   ClassroomsPage,
   ClassroomsCreatePage,
-  ClassroomsSavedPage,
+  ClassroomViewPage,
   AccountPage,
   ProfilePage,
 } from "./components";
@@ -69,7 +69,7 @@ function App() {
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
           <ProtectedRoute path="/documents/:document_id" component={DocumentPage} />
           <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
-          <ProtectedRoute path="/classrooms/saved" component={ClassroomsSavedPage} />
+          <ProtectedRoute path="/classrooms/view" component={ClassroomViewPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
           <ProtectedRoute path="/account" component={AccountPage} />
           <ProtectedRoute path="/profile" component={ProfilePage} />

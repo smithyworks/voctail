@@ -1,5 +1,6 @@
 #! /bin/bash
 
+kill $(lsof -t -i:8080)
 docker run \
   --name standalone-voctail-db \
   -p 5555:5432 \
