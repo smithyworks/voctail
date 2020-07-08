@@ -182,6 +182,7 @@ async function quizCategoryHandler(req, res) {
         quizRandom.push(v);
       }
     });
+
     res.status(200).json({ quizChallenges, quizCustom, quizRandom, quizDocuments });
   } catch (err) {
     log(err);
@@ -227,7 +228,7 @@ async function createQuizHandler(req, res) {
 
     const questions = generateQuestions(wordList, transList, length);
 
-    const quiz = await insertSQL(title, questions, user_id);
+    const quiz = await insertSQL(title, questions, user_id, {});
 
     res.status(200).json(quiz);
   } catch (err) {
