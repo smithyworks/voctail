@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, makeStyles, Typography, Divider } from "@material-ui/core";
+import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles({
@@ -7,25 +7,46 @@ const useStyles = makeStyles({
     padding: "30px 30px 8px 30px",
     border: "1px solid lightgrey",
     marginBottom: "20px",
+    boxShadow: "1px 1px 12px #555",
   },
-  title: { fontWeight: "lighter" },
+  title: { fontWeight: "bold" },
   innerContainer: {
     padding: "20px 20px 8px 20px",
   },
+
+  description: {
+    fontWeight: "lighter",
+    margin: "auto",
+    textAlign: "right",
+    fontStyle: "italic",
+  },
+
   expansionIcon: {
     fontSize: "20px",
     marginBottom: "-5px",
   },
 });
 
-function DashboardSection({ title, children }) {
+function DashboardSection({ title, description, children, Button }) {
   const classes = useStyles();
 
   return (
     <Paper elevation={0} className={classes.paper}>
-      <Typography variant="h5" className={classes.title}>
-        {title}
-      </Typography>
+      <Grid container justify="space-between" direction="row" alignItems="center">
+        <Grid item xs={2} style={{ paddingLeft: "10px" }}>
+          <Typography variant="h5" className={classes.title}>
+            {title}
+          </Typography>
+        </Grid>
+        <Grid item xs={2} style={{ paddingRight: "10px" }}>
+          {Button}
+        </Grid>
+        <Grid item xs={8} style={{ paddingRight: "10px" }}>
+          <Typography variant="h6" className={classes.description}>
+            {description}
+          </Typography>
+        </Grid>
+      </Grid>
       <Divider />
       <div className={classes.innerContainer}>{children}</div>
       <Typography align="right" variant="body2" className={classes.expansionToggle}>

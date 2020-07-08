@@ -43,7 +43,7 @@ async function documentHandler(req, res) {
 
 async function dummyDataHandler(req, res) {
   try {
-    const { rows: documents } = await query("SELECT * FROM documents");
+    const { rows: documents } = await query("SELECT * FROM documents ORDER BY title ASC");
     const { rows: newspaperArticles } = await query("SELECT * FROM documents WHERE category = 'Newspaper Article'");
     const { rows: fairyTales } = await query("SELECT * FROM documents WHERE category = 'Fairy Tale'");
     const { rows: shortStories } = await query("SELECT * FROM documents WHERE category = '(Short) Story'");

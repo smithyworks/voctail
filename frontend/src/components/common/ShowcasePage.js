@@ -4,13 +4,23 @@ import { Grid, Typography } from "@material-ui/core";
 import { AppPage, toasts, VTButton } from ".";
 import ConfirmDialog from "./ConfirmDialog";
 import DashboardSection from "./DashboardSection";
+import Header from "./HeaderSection";
+import UserCard from "./UserCard";
+import IconButton from "@material-ui/core/IconButton";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import InviteStudentsDialog from "./InviteStudentsDialog";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
 
   return (
     <AppPage title="Common components Showcase">
+      <Typography variant="h5" style={{ marginTop: "20px" }}>
+        Header
+      </Typography>
+      <Header mainTitle="Main Title" subtitle="Subtitle" description="Description" />
       <Typography variant="h5" style={{ marginTop: "20px" }}>
         Toasts
       </Typography>
@@ -90,10 +100,55 @@ function ShowcasePage() {
         </ConfirmDialog>
       </Grid>
 
+      <Typography variant="h5" style={{ marginTop: "20px" }}>
+        UserCard
+      </Typography>
+      <Grid container>
+        <Grid item style={{ padding: "10px" }}>
+          <UserCard name="Name" email="email@voctail.com" initials={false} tip="This is a detail about the user." />
+        </Grid>
+        <Grid item style={{ padding: "10px" }}>
+          <UserCard name="Name" email="email@voctail.com" tip="This is a detail about the user." />
+        </Grid>
+        <Grid item style={{ padding: "10px" }}>
+          <UserCard name="Name" email="email@voctail.com" tip="This is a detail about the user." />
+        </Grid>
+      </Grid>
+
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
         DashboardSection
       </Typography>
-      <DashboardSection title="My Documents">This is where the content goes</DashboardSection>
+      <DashboardSection
+        title="My Documents"
+        description="This is my description"
+        Button={
+          <IconButton aria-label="test">
+            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
+          </IconButton>
+        }
+      >
+        This is where the content goes
+      </DashboardSection>
+
+      <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
+        InviteStudentsDialog
+      </Typography>
+      <VTButton
+        neutral
+        onClick={() => {
+          setInviteDialogOpen(true);
+        }}
+      >
+        Invite students
+      </VTButton>
+      <InviteStudentsDialog
+        open={inviteDialogOpen}
+        onClose={() => setInviteDialogOpen(false)}
+        onInvite={(ids) => {
+          toasts.toastSuccess(JSON.stringify(ids));
+          setInviteDialogOpen(false);
+        }}
+      ></InviteStudentsDialog>
     </AppPage>
   );
 }
