@@ -55,6 +55,9 @@ export function fetchQuiz(quiz_id) {
 export function fetchQuizByDocument(document_id) {
   return axios.get(`${base}/quiz-by-document`, { params: { document_id: document_id } });
 }
+export function fetchQuizzesByCategory() {
+  return axios.get(`${base}/quiz-category`);
+}
 export function deleteQuiz(quiz_id) {
   return axios.post(`${base}/delete-quiz`, { quiz_id });
 }
@@ -76,8 +79,8 @@ export function fetchDocuments() {
 }
 
 // add and delete documents (WIP)
-export function addDocument(title, description, isPublic, content, author) {
-  return axios.post(`${base}/add-document`, { title, description, isPublic, content, author });
+export function addDocument(publisher, title, author, description, category, isPublic, content) {
+  return axios.post(`${base}/add-document`, { publisher, title, author, description, category, isPublic, content });
 }
 //WIP
 export function deleteDocument(document_id) {

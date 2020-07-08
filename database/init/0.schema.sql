@@ -15,7 +15,9 @@ CREATE TABLE quizzes (
   title           text      NOT NULL,
   questions       jsonb,
   is_day          boolean   NOT NULL DEFAULT false,
-  last_seen       timestamptz
+  is_custom       boolean   NOT NULL DEFAULT false,
+  last_seen       timestamptz,
+  created         timestamptz
 );
 
 
