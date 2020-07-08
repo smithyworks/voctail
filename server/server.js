@@ -53,6 +53,7 @@ server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasquerad
 server.get("/api/quizzes", auth.tokenMiddleWare, quizzes.quizzesHandler);
 server.get("/api/quiz", auth.tokenMiddleWare, quizzes.quizHandler);
 server.get("/api/quiz-by-document", auth.tokenMiddleWare, quizzes.quizByDocHandler);
+server.get("/api/quiz-category", auth.tokenMiddleWare, quizzes.quizCategoryHandler);
 server.post("/api/delete-quiz", auth.tokenMiddleWare, quizzes.quizDeleteHandler);
 server.post("/api/create-quiz", auth.tokenMiddleWare, quizzes.createQuizHandler);
 server.post("/api/create-document-quiz", auth.tokenMiddleWare, quizzes.createQuizFromDocHandler);

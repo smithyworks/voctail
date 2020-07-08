@@ -52,15 +52,20 @@ function generateQuestions(wordList, transList, length) {
   return questions;
 }
 
-async function insertSQL(title, questions, user_id, document_id = null, is_day = false) {
+async function insertSQL(title, questions, user_id, { ...props }) {
+  //document_id = null, is_day = false, is_custom=false) {
   //insert quiz object - throws error
+  const document_id = props.document_id ? props.document_id : null;
+  const is_day = props.is_day ? true : false;
+  const is_custom = props.is_custom ? true : false;
+
   const {
     rows: [{ quiz_id }],
-  } = await query("INSERT INTO quizzes (title, questions, is_day) VALUES($1, $2, $3) RETURNING quiz_id", [
-    title,
-    JSON.stringify(questions),
-    is_day,
-  ]);
+  } = await query(
+    "INSERT INTO quizzes (title, questions, is_day, is_custom, created) \
+      VALUES($1, $2, $3, $4, NOW()) RETURNING quiz_id",
+    [title, JSON.stringify(questions), is_day, is_custom]
+  );
 
   //mod junction table
   await query("INSERT INTO users_quizzes (user_id, quiz_id) VALUES($1,$2)", [user_id, quiz_id]);
@@ -118,6 +123,66 @@ async function quizByDocHandler(req, res) {
     );
 
     res.status(200).json(quizList);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+//fetch all quizzes that are created from documents
+async function quizCategoryHandler(req, res) {
+  try {
+    const { user_id } = req.authData.user;
+    const {
+      rows: quizDocuments,
+    } = await query(
+      "SELECT  quizzes.* FROM quizzes \
+    INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
+    INNER JOIN quizzes_documents \
+        ON quizzes_documents.quiz_id = quizzes.quiz_id \
+        ORDER BY quizzes.last_seen",
+      [user_id]
+    );
+
+    const {
+      rows: quizCustom,
+    } = await query(
+      "SELECT  quizzes.* FROM quizzes \
+    INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
+    WHERE quizzes.is_custom = true\
+    ORDER BY quizzes.last_seen",
+      [user_id]
+    );
+
+    const {
+      rows: quizChallenges,
+    } = await query(
+      "SELECT  quizzes.* FROM quizzes \
+    INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
+    WHERE quizzes.is_day = true\
+    ORDER BY quizzes.created",
+      [user_id]
+    );
+
+    const {
+      rows: quizzes,
+    } = await query(
+      "SELECT  quizzes.* FROM quizzes \
+    INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
+    ORDER BY quizzes.last_seen",
+      [user_id]
+    );
+
+    const nonRandom = quizChallenges
+      .map((v) => v.quiz_id)
+      .concat(quizCustom.map((v) => v.quiz_id).concat(quizDocuments.map((v) => v.quiz_id)));
+    const quizRandom = [];
+    quizzes.forEach((v) => {
+      if (!nonRandom.includes(v.quiz_id)) {
+        quizRandom.push(v);
+      }
+    });
+    res.status(200).json({ quizChallenges, quizCustom, quizRandom, quizDocuments });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -205,7 +270,7 @@ async function createQuizFromDocHandler(req, res) {
 
     const questions = generateQuestions(wordList, transList, length);
 
-    const quiz = await insertSQL(document.title, questions, user_id, document.document_id);
+    const quiz = await insertSQL(document.title, questions, user_id, { document_id: document.document_id });
 
     res.status(200).json(quiz);
   } catch (err) {
@@ -219,8 +284,8 @@ async function createCustomQuizHandler(req, res) {
     const { user_id } = req.authData.user;
     const questions = req.body.questions;
     const title = req.body.title;
-
-    const quiz = await insertSQL(title, questions, user_id);
+    const is_custom = true;
+    const quiz = await insertSQL(title, questions, user_id, { is_custom });
 
     res.status(200).json(quiz);
   } catch (err) {
@@ -233,6 +298,7 @@ module.exports = {
   quizzesHandler,
   quizHandler,
   quizByDocHandler,
+  quizCategoryHandler,
   quizDeleteHandler,
   createQuizHandler,
   createQuizFromDocHandler,
