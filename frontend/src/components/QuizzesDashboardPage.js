@@ -267,6 +267,7 @@ function AddCustomQuiz() {
     }
   };
 
+  const [fieldKey, setFieldKey] = useState(0);
   const addItem = () => {
     if (validate_item()) {
       setItems((il) => [...il, toItem()]);
@@ -276,6 +277,7 @@ function AddCustomQuiz() {
       item.suggestions.forEach((v) => (v.current = ""));
 
       toasts.toastSuccess("Quiz item added!");
+      setFieldKey(fieldKey + 1);
     } else {
       toasts.toastError("Please ensure all fields are filled out.");
     }
@@ -336,7 +338,7 @@ function AddCustomQuiz() {
       <IconButton onClick={handleAddOpen}>
         <LibraryAddIcon />
       </IconButton>
-      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz" fullScreen>
+      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz" fullScreen key={fieldKey}>
         <DialogTitle id="add-custom-quiz">
           To add a new quiz please fill out as many quiz items as you like.
         </DialogTitle>
