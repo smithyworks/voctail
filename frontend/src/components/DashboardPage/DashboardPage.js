@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Grid,
   Typography as T,
   GridList,
   GridListTile,
@@ -11,7 +10,6 @@ import {
   DialogActions,
   DialogContent,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import UploadDocument from "./UploadDocument";
 
@@ -19,8 +17,8 @@ import UploadDocument from "./UploadDocument";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 
 import AppPage, { toasts } from "../common/AppPage";
-import VTButton from "../common/VTButton";
-import DashboardSection from "../common/DashboardSection";
+import { VTButton, DashboardSection } from "../common";
+import HeaderSection from "../common/HeaderSection";
 
 import { api } from "../../utils";
 
@@ -29,7 +27,7 @@ import shortStoriesPreview from "../../assets/books.jpg";
 import fairyTalesPreview from "../../assets/fairytale.jpg";
 import newspaperArticlesPreview from "../../assets/newspaper.jpg";
 import otherDocumentsPreview from "../../assets/others.jpg";
-
+/*
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
   grid: { height: 100, width: "100%" },
@@ -46,7 +44,7 @@ const useStyles = makeStyles(() => ({
   gridList: { width: "100%", height: 800, justifyContent: "space-around" },
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
-
+*/
 //popup for the document you click on (get some information about the doc before entering view mode)
 function DocumentOverviewPopUp({
   open,
@@ -156,8 +154,6 @@ function PresentChildren({ classes, data, previewImage, refresh }) {
 
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
-  const classes = useStyles();
-
   const [user, setUser] = useState();
 
   //const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
@@ -197,26 +193,33 @@ function Dashboard() {
 
   return (
     <AppPage location="dashboard" id="dashboard-page">
-      <Grid className={classes.grid} container justify="center" alignItems="center" direction="column">
-        <T variant="h4">Welcome {user ? user.name : "..."}!</T>
-        <T variant="h4">Improve your language skills with text documents, videos and more...</T>
-      </Grid>
+      <HeaderSection mainTitle="Dashboard" description="Enjoy your media!" />
 
-      <UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />
-
-      <DashboardSection title={"Short Stories"}>
+      <DashboardSection
+        title={"Short Stories"}
+        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
+      >
         <PresentChildren classes data={shortStories} previewImage={shortStoriesPreview} refresh={refresh} />
       </DashboardSection>
 
-      <DashboardSection title={"Fairy Tales"}>
+      <DashboardSection
+        title={"Fairy Tales"}
+        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
+      >
         <PresentChildren classes data={fairyTales} previewImage={fairyTalesPreview} refresh={refresh} />
       </DashboardSection>
 
-      <DashboardSection title={"Newspaper Articles"}>
+      <DashboardSection
+        title={"Newspaper Articles"}
+        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
+      >
         <PresentChildren classes data={newspaperArticles} previewImage={newspaperArticlesPreview} refresh={refresh} />
       </DashboardSection>
 
-      <DashboardSection title={"Other documents"}>
+      <DashboardSection
+        title={"Other documents"}
+        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
+      >
         <PresentChildren classes data={otherDocuments} previewImage={otherDocumentsPreview} refresh={refresh} />
       </DashboardSection>
     </AppPage>

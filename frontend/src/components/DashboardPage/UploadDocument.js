@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/VTButton";
-import AddIcon from "@material-ui/icons/Add";
 import {
   Checkbox,
   Dialog,
@@ -21,7 +20,7 @@ import {
 import DescriptionIcon from "@material-ui/icons/Description";
 import ImageIcon from "@material-ui/icons/Image";
 import { makeStyles } from "@material-ui/core/styles";
-//const { Pool } = require("pg");
+import VTIconButton from "../common/IconButton";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -200,9 +199,7 @@ function UploadDocument({ refresh, publisherId }) {
 
   return (
     <div>
-      <VTButton neutral startIcon={<AddIcon />} onClick={handleAddOpen}>
-        Add a new document
-      </VTButton>
+      <VTIconButton onClick={handleAddOpen} />
 
       <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-new-document">
         <DialogTitle id="add-new-document">Add a document</DialogTitle>
