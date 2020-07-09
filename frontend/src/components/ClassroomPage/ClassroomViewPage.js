@@ -13,6 +13,9 @@ import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage/AppPage";
+import { api } from "../utils";
+import { timeParser, urlParser, isConnected } from "../utils/parsers";
+import { toasts } from "./common/AppPage/AppPage";
 
 const useStyles = makeStyles(() => ({
   headUpText: {
@@ -40,16 +43,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function urlParser() {
-  const parsed = window.location.href.split("=");
-  return parsed[1];
-}
 function addStudents(classroomId) {
   const addStudentsToThisClassroom = () => {
     api.addStudentToClassroom(classroomId, Math.floor(Math.random() * 30)).catch((err) => console.log(err));
   };
   addStudentsToThisClassroom();
-  toasts.toastSuccess("Student added to the database!");
+  toasts.toastSuccess("Student added to the classroom!");
 }
 
 function ClassroomViewPage() {
@@ -167,7 +166,13 @@ function ClassroomViewPage() {
           {classroomStudentsFromDatabase.map((member) => {
             return (
               <Grid item style={{ padding: "10px" }}>
-                <UserCard name={member.name} email={member.email} avatar={iconUser} tip={"Freemium"} />
+                <UserCard
+                  name={member.name}
+                  email={member.email}
+                  avatar={iconUser}
+                  tip={timeParser(member.last_seen)}
+                  connected={isConnected(member.last_seen)}
+                />
               </Grid>
             );
           })}

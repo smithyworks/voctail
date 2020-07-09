@@ -191,8 +191,13 @@ function ClassroomOverviewPopUp({
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={onClose} color="secondary">
-          Leave
+        <Button
+          onClick={() => {
+            deleteClassroom(classroomId);
+          }}
+          color="secondary"
+        >
+          Delete
         </Button>
         <Button component={Link} to={"/classrooms/view?classroom=" + classroomId} color="primary">
           Open
@@ -289,6 +294,11 @@ function createClassroom(user, title, topic, description) {
   };
   addThisClassroom();
   toasts.toastSuccess("Classroom added to the database!");
+}
+
+function deleteClassroom(classroomId) {
+  api.deleteClassroom(classroomId).catch((err) => console.log(err));
+  toasts.toastSuccess("Classroom deleted from the database!");
 }
 
 function teacherData(user_id, setClassroomAuthorData) {

@@ -1,11 +1,12 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import cx from "clsx";
 import CardContent from "@material-ui/core/CardContent";
-import Avatar from "@material-ui/core/Avatar";
+import { Avatar, Box } from "@material-ui/core";
+import Badge from "@material-ui/core/Badge";
 import Tooltip from "@material-ui/core/Tooltip";
-import withStyles from "@material-ui/core/styles/withStyles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { display } from "@material-ui/system";
 
 const LightTooltip = withStyles((theme) => ({
   tooltip: {
@@ -15,6 +16,54 @@ const LightTooltip = withStyles((theme) => ({
     fontSize: 11,
   },
 }))(Tooltip);
+
+const StyledBadgeConnected = withStyles((theme) => ({
+  badge: {
+    backgroundColor: "#44b700",
+    color: "#44b700",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "$ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""',
+    },
+  },
+  "@keyframes ripple": {
+    "0%": {
+      transform: "scale(.8)",
+      opacity: 1,
+    },
+    "100%": {
+      transform: "scale(2.4)",
+      opacity: 0,
+    },
+  },
+}))(Badge);
+
+const StyledBadgeDisconnected = withStyles((theme) => ({
+  badge: {
+    backgroundColor: "grey",
+    color: "grey",
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    "&::after": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%",
+      animation: "$ripple 1.2s infinite ease-in-out",
+      border: "1px solid currentColor",
+      content: '""',
+    },
+  },
+}))(Badge);
 
 const useStyles = makeStyles(() => ({
   actionArea: {
@@ -63,10 +112,30 @@ function UserCard(props) {
       <Card className={cx(styles.card, styles.actionArea)}>
         <LightTooltip title={props.tip}>
           <CardContent>
-            <Avatar
-              className={styles.avatar}
-              src={"https://eu.ui-avatars.com/api/?name=" + avatarUrlBuilder(props.name)}
-            />
+            <StyledBadgeConnected
+              invisible={!props.connected}
+              overlap="circle"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              variant="dot"
+            >
+              <StyledBadgeDisconnected
+                invisible={props.connected}
+                overlap="circle"
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                variant="dot"
+              >
+                <Avatar
+                  className={styles.avatar}
+                  src={"https://eu.ui-avatars.com/api/?name=" + avatarUrlBuilder(props.name)}
+                />
+              </StyledBadgeDisconnected>
+            </StyledBadgeConnected>
             <h3 className={styles.heading}>{props.name}</h3>
             <span className={styles.subheader}>{props.email}</span>
           </CardContent>
