@@ -1,6 +1,7 @@
 import React from "react";
-import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
+import { Paper, makeStyles, Typography, Divider, Grid, IconButton } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 
 const useStyles = makeStyles({
   paper: {
@@ -9,9 +10,7 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
   title: { fontWeight: "lighter" },
-  innerContainer: {
-    paddingTop: "10px",
-  },
+  innerContainer: {},
 
   expansionIcon: {
     fontSize: "20px",
@@ -19,8 +18,12 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardSection({ title, children, Button }) {
+function QuizSection({ title, children, onAdd, hasAddButton }) {
   const classes = useStyles();
+
+  function _onAdd(e) {
+    if (typeof onAdd === "function") onAdd(e);
+  }
 
   return (
     <Paper elevation={0} className={classes.paper}>
@@ -30,7 +33,13 @@ function DashboardSection({ title, children, Button }) {
             {title}
           </Typography>
         </Grid>
-        <Grid item>{Button}</Grid>
+        <Grid item>
+          {!!hasAddButton && (
+            <IconButton onClick={_onAdd}>
+              <AddBoxIcon />
+            </IconButton>
+          )}
+        </Grid>
       </Grid>
       <Divider />
 
@@ -45,4 +54,4 @@ function DashboardSection({ title, children, Button }) {
   );
 }
 
-export default DashboardSection;
+export default QuizSection;

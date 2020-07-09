@@ -11,6 +11,8 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import InviteStudentsDialog from "./InviteStudentsDialog";
 import DashboardTile from "./DashboardTile";
 import pic from "../../assets/fairytale.jpg";
+import QuizSection from "./Quiz/QuizSection";
+import QuizTile from "./Quiz/QuizTile";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -122,7 +124,6 @@ function ShowcasePage() {
       </Typography>
       <DashboardSection
         title="My Documents"
-        description="This is my description"
         Button={
           <IconButton aria-label="test">
             <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
@@ -133,7 +134,6 @@ function ShowcasePage() {
           thumbnail={pic}
           title="Chechnya"
           author="Anthony Marra"
-          linkTo="/documents/1"
           isOwned
           onOpen={() => toasts.toastSuccess("Clicked open.")}
           onDelete={() => toasts.toastSuccess("Clicked delete.")}
@@ -143,38 +143,79 @@ function ShowcasePage() {
           thumbnail={pic}
           title="Chechnya"
           author="Anthony Marra"
-          linkTo="/documents/1"
           onOpen={() => toasts.toastSuccess("Clicked open.")}
         />
         <DashboardTile
           thumbnail={pic}
           title="Chechnya"
           author="Anthony Marra"
-          linkTo="/documents/1"
           onOpen={() => toasts.toastSuccess("Clicked open.")}
         />
         <DashboardTile
           thumbnail={pic}
           title="Chechnya"
           author="Anthony Marra"
-          linkTo="/documents/1"
           onOpen={() => toasts.toastSuccess("Clicked open.")}
         />
         <DashboardTile
           thumbnail={pic}
           title="Chechnya"
           author="Anthony Marra"
-          linkTo="/documents/1"
           onOpen={() => toasts.toastSuccess("Clicked open.")}
         />
         <DashboardTile
           thumbnail={pic}
           title="Chechnya"
           author="Anthony Marra"
-          linkTo="/documents/1"
           onOpen={() => toasts.toastSuccess("Clicked open.")}
         />
       </DashboardSection>
+
+      <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
+        QuizSection
+      </Typography>
+      <QuizSection title="My Quizzes" hasAddButton onAdd={() => toasts.toastSuccess("Clicked add.")}>
+        <QuizTile
+          name="Custom Quiz 1"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={75}
+          linkTo="/quizzes/2"
+        />
+        <QuizTile
+          name="Custom Quiz 2"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={50}
+          linkTo="/quizzes/2"
+        />
+        <QuizTile
+          name="Yet Another Quiz"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={0}
+          linkTo="/quizzes/2"
+        />
+        <QuizTile
+          name="Custom Quiz 3"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={90}
+          linkTo="/quizzes/2"
+        />
+        <QuizTile
+          name="Custom Quiz 4"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={10}
+          linkTo="/quizzes/2"
+        />
+      </QuizSection>
 
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
         InviteStudentsDialog
