@@ -36,7 +36,7 @@ export function usePalette(colors) {
   };
 }
 
-export function useSimplePalette(colors) {
+export function generatePalette(colors) {
   /*returns (id)=>c; with c in colors; a consistent mapping
     (succesive calls for same id -> same c) */
   const colorPalette = shuffle(colors);

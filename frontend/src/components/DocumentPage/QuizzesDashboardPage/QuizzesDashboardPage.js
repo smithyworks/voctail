@@ -10,7 +10,7 @@ import QuizSection from "./QuizSection";
 import QuizTile from "./QuizTile";
 import AddRandomQuiz from "./AddRandomQuiz";
 import AddCustomQuiz from "./AddCustomQuiz";
-import { usePalette, useSimplePalette } from "../../common/QuizzesUtilities";
+import { generatePalette } from "../../common/QuizzesUtilities";
 import colors from "../../../assets/colors.json";
 
 const useStyles = makeStyles({
@@ -42,17 +42,7 @@ function QuizzesDashboard({ ...props }) {
       .catch((err) => console.log(err));
   }, [reloadCount]);
 
-  const palette = useSimplePalette(colors.statusTile.color);
-  /*console.log(colors.statusTile.color)
-  for(let i in [1,2,3,4,5]){
-    //console.log("bla");
-    console.log(i,palette(i));
-    palette(i);
-  }
-
-  palette(6);
-  palette(7);
-*/
+  const palette = generatePalette(colors.statusTile.color);
 
   return (
     <AppPage location="quizzes" id="quizzes-page">
