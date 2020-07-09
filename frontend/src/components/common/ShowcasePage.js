@@ -10,6 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import InviteStudentsDialog from "./InviteStudentsDialog";
 import DashboardTile from "./DashboardTile";
+import pic from "../../assets/fairytale.jpg";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -128,7 +129,51 @@ function ShowcasePage() {
           </IconButton>
         }
       >
-        <DashboardTile />
+        <DashboardTile
+          thumbnail={pic}
+          title="Chechnya"
+          author="Anthony Marra"
+          linkTo="/documents/1"
+          isOwned
+          onOpen={() => toasts.toastSuccess("Clicked open.")}
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+        />
+        <DashboardTile
+          thumbnail={pic}
+          title="Chechnya"
+          author="Anthony Marra"
+          linkTo="/documents/1"
+          onOpen={() => toasts.toastSuccess("Clicked open.")}
+        />
+        <DashboardTile
+          thumbnail={pic}
+          title="Chechnya"
+          author="Anthony Marra"
+          linkTo="/documents/1"
+          onOpen={() => toasts.toastSuccess("Clicked open.")}
+        />
+        <DashboardTile
+          thumbnail={pic}
+          title="Chechnya"
+          author="Anthony Marra"
+          linkTo="/documents/1"
+          onOpen={() => toasts.toastSuccess("Clicked open.")}
+        />
+        <DashboardTile
+          thumbnail={pic}
+          title="Chechnya"
+          author="Anthony Marra"
+          linkTo="/documents/1"
+          onOpen={() => toasts.toastSuccess("Clicked open.")}
+        />
+        <DashboardTile
+          thumbnail={pic}
+          title="Chechnya"
+          author="Anthony Marra"
+          linkTo="/documents/1"
+          onOpen={() => toasts.toastSuccess("Clicked open.")}
+        />
       </DashboardSection>
 
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
