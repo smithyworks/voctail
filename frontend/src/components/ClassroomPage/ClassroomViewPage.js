@@ -12,10 +12,8 @@ import UserCard from "../common/UserCard";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { api } from "../../utils";
+import { timeParser, urlParser, isConnected } from "../../utils/parsers";
 import { toasts } from "../common/AppPage/AppPage";
-import { api } from "../utils";
-import { timeParser, urlParser, isConnected } from "../utils/parsers";
-import { toasts } from "./common/AppPage/AppPage";
 
 const useStyles = makeStyles(() => ({
   headUpText: {
