@@ -7,7 +7,6 @@ import Text from "./Text.js";
 import BlockContainer from "./BlockContainer";
 import AddTranslationDialog from "./AddTranslationDialog";
 import { api } from "../../utils";
-import VTDeleteButton from "../common/Buttons/VTDeleteButton";
 
 const useStyles = makeStyles({
   headerContainer: { textAlign: "center" },
@@ -106,9 +105,7 @@ function DocumentPage() {
       <div className={classes.headerContainer}>
         <div className={classes.header}>
           <Grid container justify="space-between">
-            <T>
-              Published by: The Voctail Team <VTDeleteButton />
-            </T>
+            <T>Published by: The Voctail Team</T>
 
             <div />
           </Grid>

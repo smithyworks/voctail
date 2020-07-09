@@ -10,15 +10,15 @@ import {
   Slide,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AppPage from "./common/AppPage";
+import AppPage from "../common/AppPage";
 
-import { api } from "../utils";
-import logo_classroom from "../assets/classroom_logo.png";
-import Header from "./common/HeaderSection";
-import { DashboardSection } from "./common";
+import { api } from "../../utils";
+import logo_classroom from "../../assets/classroom_logo.png";
+import Header from "../common/HeaderSection";
+import { DashboardSection } from "../common";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import { toasts } from "./common/AppPage/AppPage";
+import { toasts } from "../common/AppPage/AppPage";
 import { Link } from "react-router-dom";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";

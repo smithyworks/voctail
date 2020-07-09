@@ -4,7 +4,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
-import { VTButton } from "../../common";
+import { VTButton } from "../common";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
