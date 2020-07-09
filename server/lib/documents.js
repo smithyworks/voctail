@@ -119,13 +119,12 @@ async function addDocument(req, res) {
 
       const {
         // search for the word in the database
-        rows: [{ searchedWord_id }],
+        rows,
       } = await query("SELECT word_id FROM words WHERE words.word = $1 AND words.language=$2", [word, language]);
-      word_id = searchedWord_id;
+      word_id = rows[0]?.word_id;
       console.log("word id", word_id);
-      console.log("searched word id", searchedWord_id);
 
-      if (word_id !== 0) {
+      if (word_id) {
         //word is already in database
         console.log("word is already in database");
 
