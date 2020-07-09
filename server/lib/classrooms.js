@@ -34,7 +34,7 @@ async function usersHandler(req, res) {
 async function studentsHandler(req, res) {
   try {
     const { rows } = await query(
-      "SELECT user_id, name " +
+      "SELECT *" +
         "FROM users " +
         "INNER JOIN classroom_members ON user_id = student_id " +
         "WHERE classroom_id = $1 " +
@@ -84,10 +84,33 @@ async function createClassroom(req, res) {
   }
 }
 
+async function deleteClassroom(req, res) {
+  try {
+    const { classroom_id } = req.body;
+    const { rows } = await query("DELETE FROM classrooms WHERE classroom_id = $1", [classroom_id]);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 async function addStudentToClassroom(req, res) {
   try {
     const { classroom_id, student_id } = req.body;
     const { rows } = await query("INSERT INTO classroom_members (classroom_id, student_id) VALUES ($1,$2)", [
+      classroom_id,
+      student_id,
+    ]);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function deleteStudentFromClassroom(req, res) {
+  try {
+    const { classroom_id, student_id } = req.body;
+    const { rows } = await query("DELETE FROM classroom_members WHERE classroom_id = $1 AND student_id = $2", [
       classroom_id,
       student_id,
     ]);
@@ -117,6 +140,8 @@ module.exports = {
   studentsHandler,
   usersHandler,
   createClassroom,
+  deleteClassroom,
   addStudentToClassroom,
+  deleteStudentToClassroom: deleteStudentFromClassroom,
   addDocumentToClassroom,
 };
