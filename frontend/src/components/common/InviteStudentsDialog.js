@@ -48,10 +48,11 @@ function InviteStudentsDialog({ open, onInvite, onClose }) {
   const [users, setUsers] = useState();
   useEffect(() => {
     api
-      .allUsers()
+      .getAllUsers()
       .then((res) => setUsers(res.data))
       .catch((err) => toasts.toastError("Encountered an error while communicating with the server."));
   }, []);
+  console.log(users);
 
   const [selectedIDs, setSelectedIDs] = useState(new Set());
   function selectStudent(id) {

@@ -95,7 +95,7 @@ function ClassroomsCreatePage() {
       .getAllUsers()
       .then((res) => {
         if (res) {
-          setAllUsersFromDatabase(res.data.rows);
+          setAllUsersFromDatabase(res.data);
         }
       })
       .catch((err) => console.log(err));
