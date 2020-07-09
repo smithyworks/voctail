@@ -6,6 +6,8 @@ import LocalBarIcon from "@material-ui/icons/LocalBar";
 import AppPage from "./common/AppPage";
 import { api } from "../utils";
 
+import { shuffle } from "./common/QuizzesUtilities";
+
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
   gridHeader: { height: "20%", width: "100%", backgroundColor: "rgba(0,0,0,0.3)" },
@@ -265,17 +267,6 @@ function QuizItem(props) {
     setQState(qst.untaken);
     props.nextQ();
   };
-
-  function shuffle(list) {
-    var i, j, tmp;
-    for (i = list.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * i);
-      tmp = list[i];
-      list[i] = list[j];
-      list[j] = tmp;
-    }
-    return list;
-  }
 
   function suggestionsFromQ(q) {
     var suggs = [q.translation];
