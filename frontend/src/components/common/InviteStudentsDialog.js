@@ -72,7 +72,6 @@ function InviteStudentsDialog({ open, onInvite, onClose }) {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const inputRef = useRef();
   const [users, setUsers] = useState();
   useEffect(() => {
     api
