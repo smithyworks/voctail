@@ -10,6 +10,8 @@ import QuizSection from "./QuizSection";
 import QuizTile from "./QuizTile";
 import AddRandomQuiz from "./AddRandomQuiz";
 import AddCustomQuiz from "./AddCustomQuiz";
+import { usePalette, useSimplePalette } from "../../common/QuizzesUtilities";
+import colors from "../../../assets/colors.json";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
@@ -40,37 +42,24 @@ function QuizzesDashboard({ ...props }) {
       .catch((err) => console.log(err));
   }, [reloadCount]);
 
-  /*
-  let [count,setCount] = useState(0);
-
-  let [colInd, setColInd] = useState(0);
-  let [colTrack, setColTrack] = useState({})
-  function mixer(){
-    const colorPalette = shuffle(colors.statusTile.color);
-    return (id)=>{console.log(id, colInd, colTrack);if(!id in colTrack){setColInd(i=>i+1); setColTrack((v)=>v.id = colorPalette[colInd]);
-        return colorPalette[colInd];
-    }else{
-      return colTrack.id;
-    }};
-  }
-
-  const palette = mixer();
-
+  const palette = useSimplePalette(colors.statusTile.color);
+  /*console.log(colors.statusTile.color)
   for(let i in [1,2,3,4,5]){
     //console.log("bla");
-    //console.log(palette(i));
+    console.log(i,palette(i));
     palette(i);
   }
-  */
 
-  const palette = "#555";
+  palette(6);
+  palette(7);
+*/
 
   return (
     <AppPage location="quizzes" id="quizzes-page">
       <QuizSection title={"Challenges"}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizChallenges.map((v) => (
-            <QuizTile key={v.quiz_id} color={palette}>
+            <QuizTile key={v.quiz_id} color={palette(v.quiz_id)}>
               {v}
             </QuizTile>
           ))}
@@ -79,7 +68,7 @@ function QuizzesDashboard({ ...props }) {
       <QuizSection title={"Custom Quizzes"} component={<AddCustomQuiz onAdd={refresh} />}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizCustom.map((v) => (
-            <QuizTile key={v.quiz_id} color={palette}>
+            <QuizTile key={v.quiz_id} color={palette(v.quiz_id)}>
               {v}
             </QuizTile>
           ))}
@@ -88,7 +77,7 @@ function QuizzesDashboard({ ...props }) {
       <QuizSection title={"Random Quizzes"} component={<AddRandomQuiz onAdd={refresh} />}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizRandom.map((v) => (
-            <QuizTile key={v.quiz_id} color={palette}>
+            <QuizTile key={v.quiz_id} color={palette(v.quiz_id)}>
               {v}
             </QuizTile>
           ))}
@@ -97,7 +86,7 @@ function QuizzesDashboard({ ...props }) {
       <QuizSection title={"Quizzes From Documents"}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizDocuments.map((v) => (
-            <QuizTile key={v.quiz_id} color={palette}>
+            <QuizTile key={v.quiz_id} color={palette(v.quiz_id)}>
               {v}
             </QuizTile>
           ))}

@@ -54,7 +54,7 @@ function AddCustomQuiz({ onAdd }) {
       });
     } else {
       toasts.toastError(
-        "You cannot add a quiz without title or quiz items. Please add title and at least one" + "quiz item first."
+        "You cannot add a quiz without title or quiz items. Please add title and at least one quiz item first."
       );
     }
   };
