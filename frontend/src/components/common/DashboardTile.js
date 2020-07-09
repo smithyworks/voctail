@@ -5,10 +5,11 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 const useStyles = makeStyles({
   container: {
     padding: "10px",
+    height: "190px",
   },
   paper: {
     width: "100%",
-    height: "175px",
+    height: "100%",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",

@@ -59,7 +59,6 @@ const useStyles = makeStyles({
   infoTextContainer: { paddingTop: "10px" },
   progressText: {
     fontWeight: "lighter",
-    fontStyle: "italic",
   },
   lastSeenText: { fontWeight: "lighter", fontStyle: "italic" },
 });
