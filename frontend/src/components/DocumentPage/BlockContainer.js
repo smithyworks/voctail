@@ -3,9 +3,14 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import TranslationPopup from "./TranslationPopup.js";
 import { api } from "../../utils";
+import colors from "../../assets/colors.json";
 
 const useStyles = makeStyles({
-  container: { textAlign: "center", fontFamily: "crimson-text, serif", "& .word-unknown": { backgroundColor: "blue" } },
+  container: {
+    textAlign: "center",
+    fontFamily: "crimson-text, serif",
+    "& .word-unknown": { ...colors.documentViewer.unkownHighlight },
+  },
 });
 
 function BlockContainer({ children, lookupWord, onAddTranslation, lookupTranslations }) {

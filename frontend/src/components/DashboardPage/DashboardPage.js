@@ -16,7 +16,7 @@ import UploadDocument from "./UploadDocument";
 //icons
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 
-import AppPage, { toasts } from "../common/AppPage";
+import AppPage from "../common/AppPage";
 import { VTButton, DashboardSection } from "../common";
 import HeaderSection from "../common/HeaderSection";
 
@@ -56,7 +56,7 @@ function DocumentOverviewPopUp({
   documentImage,
   refresh,
 }) {
-  function deleteThisDocument(documentId) {
+  /* function deleteThisDocument(documentId) {
     if (documentId)
       api
         .deleteDocument(documentId)
@@ -70,7 +70,7 @@ function DocumentOverviewPopUp({
           toasts.toastError("Error communicating with the server!");
         });
     else toasts.toastWarning("The document could not be found.");
-  }
+  } */
 
   return (
     <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
@@ -87,9 +87,9 @@ function DocumentOverviewPopUp({
         <VTButton neutral onClick={onClose}>
           Cancel
         </VTButton>
-        <VTButton danger onClick={() => deleteThisDocument(documentId)}>
+        {/*<VTButton danger onClick={() => deleteThisDocument(documentId)}>
           Delete document
-        </VTButton>
+        </VTButton> */}
         <VTButton accept component={Link} to={"/documents/" + documentId}>
           View document
         </VTButton>

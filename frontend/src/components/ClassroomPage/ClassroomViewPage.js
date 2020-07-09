@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AppPage from "./common/AppPage";
+import AppPage from "../common/AppPage";
 
-import iconUser from "../assets/icon_user.png";
-import iconDoc from "../assets/icon_document.png";
+import iconUser from "../../assets/icon_user.png";
+import iconDoc from "../../assets/icon_document.png";
 
-import Header from "./common/HeaderSection";
-import DashboardSection from "./common/DashboardSection";
-import UserCard from "./common/UserCard";
+import Header from "../common/HeaderSection";
+import { ClassroomSection } from "../common";
+import UserCard from "../common/UserCard";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import { api } from "../utils";
-import { toasts } from "./common/AppPage/AppPage";
+import { api } from "../../utils";
+import { timeParser, urlParser, isConnected } from "../../utils/parsers";
+import { toasts } from "../common/AppPage/AppPage";
 
 const useStyles = makeStyles(() => ({
   headUpText: {
@@ -40,16 +41,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function urlParser() {
-  const parsed = window.location.href.split("=");
-  return parsed[1];
-}
 function addStudents(classroomId) {
   const addStudentsToThisClassroom = () => {
     api.addStudentToClassroom(classroomId, Math.floor(Math.random() * 30)).catch((err) => console.log(err));
   };
   addStudentsToThisClassroom();
-  toasts.toastSuccess("Student added to the database!");
+  toasts.toastSuccess("Student added to the classroom!");
 }
 
 function ClassroomViewPage() {
@@ -154,7 +151,7 @@ function ClassroomViewPage() {
         description={classroomDataFromDatabase.description}
       />
 
-      <DashboardSection
+      <ClassroomSection
         title="Students"
         description="Add students to share your material and get started."
         Button={
@@ -167,14 +164,20 @@ function ClassroomViewPage() {
           {classroomStudentsFromDatabase.map((member) => {
             return (
               <Grid item style={{ padding: "10px" }}>
-                <UserCard name={member.name} email={member.email} avatar={iconUser} tip={"Freemium"} />
+                <UserCard
+                  name={member.name}
+                  email={member.email}
+                  avatar={iconUser}
+                  tip={timeParser(member.last_seen)}
+                  connected={isConnected(member.last_seen)}
+                />
               </Grid>
             );
           })}
         </Grid>
-      </DashboardSection>
+      </ClassroomSection>
 
-      <DashboardSection
+      <ClassroomSection
         title="Sections"
         description="Organize your classroom in several sections."
         Button={
@@ -192,7 +195,7 @@ function ClassroomViewPage() {
             );
           })}
         </Grid>
-      </DashboardSection>
+      </ClassroomSection>
     </AppPage>
   );
 }

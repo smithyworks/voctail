@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AppPage from "./common/AppPage";
-import { api } from "../utils";
-import userIcon from "../assets/icon_user.png";
-import documentIcon from "../assets/icon_document.png";
+import AppPage from "../common/AppPage";
+import { api } from "../../utils";
+import userIcon from "../../assets/icon_user.png";
+import documentIcon from "../../assets/icon_document.png";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -15,8 +15,8 @@ import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
-import { toasts } from "./common/AppPage/AppPage";
-import VTButton from "./common/Buttons/VTButton";
+import { toasts } from "../common/AppPage/AppPage";
+import VTButton from "../common/Buttons/VTButton";
 
 const useStyles = makeStyles(() => ({
   headUpText: {

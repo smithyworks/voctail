@@ -8,9 +8,16 @@ const useStyles = makeStyles({
     border: "1px solid lightgrey",
     marginBottom: "20px",
   },
-  title: { fontWeight: "lighter" },
+  title: { fontWeight: "bold" },
   innerContainer: {
-    padding: "10px 10px 0 10px",
+    padding: "20px 20px 8px 20px",
+  },
+
+  description: {
+    fontWeight: "lighter",
+    margin: "auto",
+    textAlign: "right",
+    fontStyle: "italic",
   },
 
   expansionIcon: {
@@ -25,13 +32,13 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardSection({ title, children, Button }) {
+function ClassroomSection({ title, description, children, Button }) {
   const classes = useStyles();
 
   return (
     <Paper elevation={0} className={classes.paper}>
       <Grid container justify="space-between" direction="row" alignItems="center">
-        <Grid item xs style={{ paddingLeft: "10px" }}>
+        <Grid item xs={10} style={{ paddingLeft: "10px" }}>
           <Typography variant="h5" className={classes.title}>
             {title}
           </Typography>
@@ -39,13 +46,14 @@ function DashboardSection({ title, children, Button }) {
         <Grid item xs={1}>
           {Button}
         </Grid>
+        <Grid item xs={8} style={{ paddingRight: "10px" }}>
+          <Typography variant="h6" className={classes.description}>
+            {description}
+          </Typography>
+        </Grid>
       </Grid>
       <Divider />
-
-      <Grid container className={classes.innerContainer}>
-        {children}
-      </Grid>
-
+      <div className={classes.innerContainer}>{children}</div>
       <Typography align="right" variant="body2" className={classes.expansionToggle}>
         <ExpandMoreIcon className={classes.expansionIcon} fontSize="inherit" /> Show All...
       </Typography>
@@ -53,4 +61,4 @@ function DashboardSection({ title, children, Button }) {
   );
 }
 
-export default DashboardSection;
+export default ClassroomSection;

@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
-import { api } from "../../../utils";
-import { toasts } from "../../common/AppPage";
+import { api } from "../../utils";
+import { toasts } from "../common/AppPage";
 import IconButton from "@material-ui/core/IconButton";
 import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@material-ui/core";
-import { VTButton } from "../../common";
+import { VTButton } from "../common";
 
 function AddRandomQuiz({ onAdd }) {
   const [open, setOpen] = useState(false);

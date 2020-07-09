@@ -10,15 +10,15 @@ import {
   Slide,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AppPage from "./common/AppPage";
+import AppPage from "../common/AppPage";
 
-import { api } from "../utils";
-import logo_classroom from "../assets/classroom_logo.png";
-import Header from "./common/HeaderSection";
-import { DashboardSection } from "./common";
+import { api } from "../../utils";
+import logo_classroom from "../../assets/classroom_logo.png";
+import Header from "../common/HeaderSection";
+import { ClassroomSection } from "../common";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import { toasts } from "./common/AppPage/AppPage";
+import { toasts } from "../common/AppPage/AppPage";
 import { Link } from "react-router-dom";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
@@ -191,8 +191,13 @@ function ClassroomOverviewPopUp({
         <Button onClick={onClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={onClose} color="secondary">
-          Leave
+        <Button
+          onClick={() => {
+            deleteClassroom(classroomId);
+          }}
+          color="secondary"
+        >
+          Delete
         </Button>
         <Button component={Link} to={"/classrooms/view?classroom=" + classroomId} color="primary">
           Open
@@ -291,6 +296,11 @@ function createClassroom(user, title, topic, description) {
   toasts.toastSuccess("Classroom added to the database!");
 }
 
+function deleteClassroom(classroomId) {
+  api.deleteClassroom(classroomId).catch((err) => console.log(err));
+  toasts.toastSuccess("Classroom deleted from the database!");
+}
+
 function teacherData(user_id, setClassroomAuthorData) {
   api
     .user(user_id)
@@ -341,7 +351,7 @@ function Classrooms() {
     <AppPage location="classrooms/saved" id="classrooms-saved-page">
       <Header mainTitle="Classrooms" description="Attend and manage your classrooms!" />
 
-      <DashboardSection
+      <ClassroomSection
         title="My Classrooms"
         description="You have here the classrooms you are registered to."
         Button={
@@ -386,7 +396,7 @@ function Classrooms() {
             />
           </React.Fragment>
         ))}
-      </DashboardSection>
+      </ClassroomSection>
     </AppPage>
   );
 }
