@@ -9,6 +9,7 @@ import UserCard from "./UserCard";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import InviteStudentsDialog from "./InviteStudentsDialog";
+import DashboardTile from "./DashboardTile";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -127,7 +128,7 @@ function ShowcasePage() {
           </IconButton>
         }
       >
-        This is where the content goes
+        <DashboardTile />
       </DashboardSection>
 
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>

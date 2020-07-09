@@ -7,7 +7,7 @@ import iconUser from "../../assets/icon_user.png";
 import iconDoc from "../../assets/icon_document.png";
 
 import Header from "../common/HeaderSection";
-import DashboardSection from "../common/DashboardSection";
+import { ClassroomSection } from "../common";
 import UserCard from "../common/UserCard";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -151,7 +151,7 @@ function ClassroomViewPage() {
         description={classroomDataFromDatabase.description}
       />
 
-      <DashboardSection
+      <ClassroomSection
         title="Students"
         description="Add students to share your material and get started."
         Button={
@@ -175,9 +175,9 @@ function ClassroomViewPage() {
             );
           })}
         </Grid>
-      </DashboardSection>
+      </ClassroomSection>
 
-      <DashboardSection
+      <ClassroomSection
         title="Sections"
         description="Organize your classroom in several sections."
         Button={
@@ -195,7 +195,7 @@ function ClassroomViewPage() {
             );
           })}
         </Grid>
-      </DashboardSection>
+      </ClassroomSection>
     </AppPage>
   );
 }
