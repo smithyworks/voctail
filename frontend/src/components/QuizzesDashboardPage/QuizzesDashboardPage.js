@@ -10,8 +10,8 @@ import QuizSection from "./QuizSection";
 import QuizTile from "./QuizTile";
 import AddRandomQuiz from "./AddRandomQuiz";
 import AddCustomQuiz from "./AddCustomQuiz";
-import { generatePalette } from "../../common/QuizzesUtilities";
-import colors from "../../../assets/colors.json";
+import { generatePalette } from "../common/QuizzesUtilities";
+import colors from "../../assets/colors.json";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
