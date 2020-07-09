@@ -19,6 +19,7 @@ const useStyles = makeStyles({
   },
   quizLink: {
     display: "inline-block",
+    color: "#000",
     "&:hover": {
       color: "white",
     },
