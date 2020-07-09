@@ -8,10 +8,12 @@ import Header from "./HeaderSection";
 import UserCard from "./UserCard";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import InviteStudentsDialog from "./InviteStudentsDialog";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
 
   return (
     <AppPage title="Common components Showcase">
@@ -127,6 +129,26 @@ function ShowcasePage() {
       >
         This is where the content goes
       </DashboardSection>
+
+      <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
+        InviteStudentsDialog
+      </Typography>
+      <VTButton
+        neutral
+        onClick={() => {
+          setInviteDialogOpen(true);
+        }}
+      >
+        Invite students
+      </VTButton>
+      <InviteStudentsDialog
+        open={inviteDialogOpen}
+        onClose={() => setInviteDialogOpen(false)}
+        onInvite={(ids) => {
+          toasts.toastSuccess(JSON.stringify(ids));
+          setInviteDialogOpen(false);
+        }}
+      ></InviteStudentsDialog>
     </AppPage>
   );
 }

@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Header(props) {
+function HeaderSection(props) {
   const classes = useStyles();
   return (
     <Container className={classes.container} maxWidth="xl">
@@ -53,4 +53,4 @@ function Header(props) {
   );
 }
 
-export default Header;
+export default HeaderSection;

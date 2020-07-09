@@ -16,7 +16,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import { toasts } from "./common/AppPage/AppPage";
-import VTButton from "./common/VTButton";
+import VTButton from "./common/Buttons/VTButton";
 
 const useStyles = makeStyles(() => ({
   headUpText: {
