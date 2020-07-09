@@ -123,8 +123,16 @@ export function createClassroom(teacher, title, topic, description, open) {
   return axios.post(`${base}/create-classroom`, { teacher, title, topic, description, open });
 }
 
+export function deleteClassroom(classroom_id) {
+  return axios.post(`${base}/delete-classroom`, { classroom_id });
+}
+
 export function addStudentToClassroom(classroom_id, student_id) {
   return axios.post(`${base}/add-student-to-classroom`, { classroom_id, student_id });
+}
+
+export function deleteStudentFromClassroom(classroom_id, student_id) {
+  return axios.post(`${base}/delete-student-from-classroom`, { classroom_id, student_id });
 }
 
 export function addDocumentToClassroom(classroom_id, document_id) {
