@@ -4,6 +4,7 @@ import {
   Block as BlockIcon,
   DeleteForever as DeleteForeverIcon,
   SupervisedUserCircle as SupervisedUserCircleIcon,
+  VpnKey as KeyIcon,
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import timediff from "timediff";
@@ -57,6 +58,7 @@ function UserRow({
   onDelete,
   header,
   searchPattern,
+  admin,
 }) {
   const classes = useStyles();
 
@@ -166,7 +168,9 @@ function UserRow({
       <TableCell align="right" className={classes.cell}>
         {id_val}
       </TableCell>
-      <TableCell className={classes.cell}>{name_val}</TableCell>
+      <TableCell className={classes.cell}>
+        {name_val} {admin && <KeyIcon fontSize="inherit" />}
+      </TableCell>
       <TableCell className={classes.cell}>{email_val}</TableCell>
       <TableCell className={classes.cell}>{premium_val}</TableCell>
       <TableCell align="right" className={classes.cell}>
