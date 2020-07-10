@@ -59,7 +59,7 @@ function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete, searchSt
         onChange={(_, p) => setPage(p)}
         className={classes.pagination}
       />
-      <Table size="small">
+      <Table size="small" style={{ backgroundColor: "white" }}>
         <TableHead>
           <UserRow header onSortPremium={onSortPremium} />
         </TableHead>

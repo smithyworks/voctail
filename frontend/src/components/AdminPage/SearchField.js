@@ -37,6 +37,7 @@ function SearchField({ onSearch }) {
           </InputAdornment>
         ),
       }}
+      style={{ backgroundColor: "white" }}
     />
   );
 }
