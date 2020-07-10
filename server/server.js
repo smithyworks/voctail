@@ -37,7 +37,7 @@ server.post("/api/user-vocabulary", auth.tokenMiddleWare, users.userVocabularyHa
 
 server.post("/api/document", auth.tokenMiddleWare, documents.documentHandler);
 server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
-server.get("/api/handle-documents", auth.tokenMiddleWare, documents.dummyDataHandler);
+server.get("/api/handle-documents", auth.tokenMiddleWare, documents.documentDataHandler);
 server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
 
