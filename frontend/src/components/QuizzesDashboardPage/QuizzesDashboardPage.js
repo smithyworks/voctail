@@ -3,15 +3,14 @@ import { Grid, GridList, Button } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import AppPage from "../common/AppPage";
+import AppPage, { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 
-import QuizSection from "./QuizSection";
-import QuizTile from "./QuizTile";
+import QuizSection from "../common/Quiz/QuizSection";
+import QuizTile from "../common/Quiz/QuizTile";
 import AddRandomQuiz from "./AddRandomQuiz";
 import AddCustomQuiz from "./AddCustomQuiz";
-import { generatePalette } from "../common/QuizzesUtilities";
-import colors from "../../assets/colors.json";
+import RenameQuiz from "./RenameQuiz";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
@@ -19,6 +18,7 @@ const useStyles = makeStyles({
 
 function QuizzesDashboard({ ...props }) {
   const classes = useStyles();
+  const base = "quizzes";
 
   const [reloadCount, setReloadCount] = useState(0);
   const refresh = () => setReloadCount(reloadCount + 1);
@@ -27,6 +27,42 @@ function QuizzesDashboard({ ...props }) {
   const [quizCustom, setCustom] = useState([]);
   const [quizRandom, setRandom] = useState([]);
   const [quizDocuments, setDocuments] = useState([]);
+
+  //Add Quiz dialogs custom and random
+  const [openCustom, setOpenCustom] = useState(false);
+  const handleCustomOpen = () => {
+    setOpenCustom(true);
+  };
+  const handleCustomClose = () => {
+    setOpenCustom(false);
+  };
+
+  const [openRandom, setOpenRandom] = useState(false);
+  const handleRandomOpen = () => {
+    setOpenRandom(true);
+  };
+  const handleRandomClose = () => {
+    setOpenRandom(false);
+  };
+
+  const [openRename, setOpenRename] = useState(false);
+  const [idRename, setIdRename] = useState(-1);
+  const handleRenameOpen = (id) => {
+    setOpenRename(true);
+    setIdRename(id);
+  };
+  const handleRenameClose = () => {
+    setOpenRename(false);
+  };
+
+  const deleteQuiz = (id) => {
+    api.deleteQuiz(id).then((r) => {
+      if (r) {
+        toasts.toastSuccess("Quiz deleted.");
+      }
+    });
+    refresh();
+  };
 
   useEffect(() => {
     api
@@ -42,46 +78,76 @@ function QuizzesDashboard({ ...props }) {
       .catch((err) => console.log(err));
   }, [reloadCount]);
 
-  const palette = generatePalette(colors.statusTile.color);
-
   return (
     <AppPage location="quizzes" id="quizzes-page">
       <QuizSection title={"Challenges"}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizChallenges.map((v) => (
-            <QuizTile key={v.quiz_id} color={palette(v.quiz_id)}>
+            <QuizTile
+              key={v.quiz_id}
+              name={v.title}
+              onDelete={() => deleteQuiz(v.quiz_id)}
+              onEdit={() => handleRenameOpen(v.quiz_id)}
+              isOwned={true}
+              linkTo={base + "/" + v.quiz_id}
+            >
               {v}
             </QuizTile>
           ))}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Custom Quizzes"} component={<AddCustomQuiz onAdd={refresh} />}>
+      <QuizSection title={"Custom Quizzes"} onAdd={() => handleCustomOpen()} hasAddButton={true}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizCustom.map((v) => (
-            <QuizTile key={v.quiz_id} color={palette(v.quiz_id)}>
+            <QuizTile
+              key={v.quiz_id}
+              name={v.title}
+              onDelete={() => deleteQuiz(v.quiz_id)}
+              onEdit={() => handleRenameOpen(v.quiz_id)}
+              isOwned={true}
+              linkTo={base + "/" + v.quiz_id}
+            >
               {v}
             </QuizTile>
           ))}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Random Quizzes"} component={<AddRandomQuiz onAdd={refresh} />}>
+      <QuizSection title={"Random Quizzes"} onAdd={() => handleRandomOpen()} hasAddButton={true}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizRandom.map((v) => (
-            <QuizTile key={v.quiz_id} color={palette(v.quiz_id)}>
+            <QuizTile
+              key={v.quiz_id}
+              name={v.title}
+              onDelete={() => deleteQuiz(v.quiz_id)}
+              onEdit={() => handleRenameOpen(v.quiz_id)}
+              isOwned={true}
+              linkTo={base + "/" + v.quiz_id}
+            >
               {v}
             </QuizTile>
           ))}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Quizzes From Documents"}>
+      <QuizSection title={"Document Quizzes"}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizDocuments.map((v) => (
-            <QuizTile key={v.quiz_id} color={palette(v.quiz_id)}>
+            <QuizTile
+              key={v.quiz_id}
+              name={v.title}
+              onDelete={() => deleteQuiz(v.quiz_id)}
+              onEdit={() => handleRenameOpen(v.quiz_id)}
+              isOwned={true}
+              linkTo={base + "/" + v.quiz_id}
+            >
               {v}
             </QuizTile>
           ))}
         </Grid>
       </QuizSection>
+
+      <AddCustomQuiz onAdd={refresh} onClose={handleCustomClose} open={openCustom} />
+      <AddRandomQuiz onAdd={refresh} onClose={handleRandomClose} open={openRandom} />
+      <RenameQuiz onAdd={refresh} onClose={handleRenameClose} open={openRename} quiz_id={idRename} />
 
       <Grid className={classes.grid} container justify="space-evenly" alignItems="center" direction="row">
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">

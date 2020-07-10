@@ -78,10 +78,16 @@ function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress }) {
   }
 
   function _onDelete(e) {
-    if (typeof onDelete === "function") onDelete(e);
+    if (typeof onDelete === "function") {
+      onDelete(e);
+      setMenuOpen(false);
+    }
   }
   function _onEdit(e) {
-    if (typeof onDelete === "function") onEdit(e);
+    if (typeof onDelete === "function") {
+      onEdit(e);
+      setMenuOpen(false);
+    }
   }
 
   return (
@@ -129,7 +135,7 @@ function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress }) {
       </Paper>
 
       <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
-        <MenuItem onClick={_onEdit}>Edit</MenuItem>
+        <MenuItem onClick={_onEdit}>Rename</MenuItem>
         <MenuItem onClick={_onDelete}>Delete</MenuItem>
       </Menu>
     </Grid>
