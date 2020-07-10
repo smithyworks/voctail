@@ -57,6 +57,7 @@ function Dashboard() {
   const [shortStories, setShortStories] = useState([]);
   const [fairyTales, setFairyTales] = useState([]);
   const [otherDocuments, setOtherDocuments] = useState([]);
+  const [usersDocuments, setUsersDocuments] = useState([]);
 
   const [openPopUp, setPopUpOpen] = useState(false);
   const [documentId, setDocumentId] = useState(null);
@@ -64,7 +65,6 @@ function Dashboard() {
   const [documentDetails, setDocumentDetails] = useState(null);
   const [documentImage, setDocumentImage] = useState(otherDocumentsPreview);
   const [documentAuthor, setDocumentAuthor] = useState(null);
-  const [documentOwner, setDocumentOwner] = useState(false);
 
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -82,8 +82,11 @@ function Dashboard() {
     setDocumentImage(image);
   }
   function verifyOwner(owner, user) {
-    if (owner === user) return "isOwned";
+    if (owner === user) setIsOwned(true);
+    else setIsOwned(false);
   }
+
+  const [isOwned, setIsOwned] = useState(false);
 
   function verifyDelete(title, author, id) {
     setDialogOpen(true);
@@ -137,6 +140,7 @@ function Dashboard() {
           setFairyTales(res.data.fairyTales);
           setShortStories(res.data.shortStories);
           setOtherDocuments(res.data.others);
+          setUsersDocuments(res.data.usersDocuments);
         }
       })
       .catch((err) => console.log(err));
@@ -147,9 +151,25 @@ function Dashboard() {
       <HeaderSection mainTitle="Dashboard" description="Enjoy your media!" />
 
       <DashboardSection
-        title={"Short Stories"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
+        title={"My Documents"}
+        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 1} />}
       >
+        {usersDocuments.map((tile) => (
+          <DashboardTile
+            thumbnail={shortStoriesPreview}
+            title={tile.title}
+            author={tile.author}
+            isOwned
+            onOpen={() =>
+              handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
+            }
+            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+            onEdit={() => toasts.toastSuccess("Clicked edit")}
+          />
+        ))}
+      </DashboardSection>
+
+      <DashboardSection title={"Short Stories"}>
         {shortStories.map((tile) => (
           <DashboardTile
             thumbnail={shortStoriesPreview}
@@ -165,10 +185,7 @@ function Dashboard() {
         ))}
       </DashboardSection>
 
-      <DashboardSection
-        title={"Fairy Tales"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
-      >
+      <DashboardSection title={"Fairy Tales"}>
         {fairyTales.map((tile) => (
           <DashboardTile
             thumbnail={fairyTalesPreview}
@@ -182,10 +199,7 @@ function Dashboard() {
         ))}
       </DashboardSection>
 
-      <DashboardSection
-        title={"Newspaper Articles"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
-      >
+      <DashboardSection title={"Newspaper Articles"}>
         {newspaperArticles.map((tile) => (
           <DashboardTile
             thumbnail={newspaperArticlesPreview}
@@ -201,10 +215,7 @@ function Dashboard() {
         ))}
       </DashboardSection>
 
-      <DashboardSection
-        title={"Other documents"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
-      >
+      <DashboardSection title={"Other documents"}>
         {otherDocuments.map((tile) => (
           <DashboardTile
             thumbnail={otherDocumentsPreview}

@@ -43,13 +43,23 @@ async function documentHandler(req, res) {
 
 async function documentDataHandler(req, res) {
   try {
+    const { user_id } = req.authData.user;
     const { rows: documents } = await query("SELECT * FROM documents ORDER BY title ASC");
-    const { rows: newspaperArticles } = await query("SELECT * FROM documents WHERE category = 'Newspaper Article'");
-    const { rows: fairyTales } = await query("SELECT * FROM documents WHERE category = 'Fairy Tale'");
-    const { rows: shortStories } = await query("SELECT * FROM documents WHERE category = '(Short) Story'");
-    const { rows: others } = await query("SELECT * FROM documents WHERE category = 'Others'");
+    const { rows: newspaperArticles } = await query(
+      "SELECT * FROM documents WHERE category = 'Newspaper Article' ORDER BY title ASC"
+    );
+    const { rows: fairyTales } = await query(
+      "SELECT * FROM documents WHERE category = 'Fairy Tale' ORDER BY title ASC"
+    );
+    const { rows: shortStories } = await query(
+      "SELECT * FROM documents WHERE category = '(Short) Story' ORDER BY title ASC"
+    );
+    const { rows: others } = await query("SELECT * FROM documents WHERE category = 'Others' ORDER BY title ASC");
+    const {
+      rows: usersDocuments,
+    } = await query("SELECT * FROM documents WHERE publisher_id = $1 ORDER BY document_id ASC", [user_id]);
 
-    res.status(200).json({ documents, newspaperArticles, fairyTales, shortStories, others });
+    res.status(200).json({ documents, newspaperArticles, fairyTales, shortStories, others, usersDocuments });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong with the dummy documents.");
