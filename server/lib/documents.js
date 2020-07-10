@@ -82,7 +82,6 @@ async function addDocument(req, res) {
       return "";
     }
   }
-
   function myIndexOf(arr, id) {
     for (let j = 0; j < arr.length; j++) {
       if (arr[j].wordId == id) return j;
@@ -101,7 +100,7 @@ async function addDocument(req, res) {
     const language = "english";
 
     const {
-      rows: documents,
+      rows: [{ document_id }],
     } = await query(
       "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) " +
         "VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
@@ -130,7 +129,6 @@ async function addDocument(req, res) {
         let index = myIndexOf(newDocumentWords, word_id);
         if (index >= 0) {
           // word is already in document words
-          console.log("index", index);
           frequency = newDocumentWords[index].frequency;
           newDocumentWords[index] = { wordId: word_id, frequency: frequency + 1 };
         } else {
@@ -148,23 +146,20 @@ async function addDocument(req, res) {
         ]);
         newDocumentWords.push({ wordId: words.word_id, frequency: 1 }); //added to new Document Words
       }
-      console.log("current word", word);
-      console.log("current word id", word_id);
-
       frequency = 0;
     }
 
     for (let ndw = 0; ndw < newDocumentWords.length; ndw++) {
       const {
-        rows: documentWords,
+        documentWords,
       } = await query("INSERT INTO documents_words(document_id, word_id, frequency) VALUES ($1,$2, $3)", [
-        documents.document_id,
-        newDocumentWords[ndw].word_id,
+        document_id,
+        newDocumentWords[ndw].wordId,
         newDocumentWords[ndw].frequency,
       ]);
     }
 
-    res.status(200).json({ documents, words, documentWords });
+    res.status(200).json({ document_id });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
