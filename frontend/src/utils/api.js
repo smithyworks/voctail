@@ -68,6 +68,9 @@ export function deleteQuiz(quiz_id) {
 export function createQuiz(title, length) {
   return axios.post(`${base}/create-quiz`, { title, length });
 }
+export function renameQuiz(quiz_id, title) {
+  return axios.post(`${base}/rename-quiz`, { quiz_id, title });
+}
 export function createQuizFromDoc(document_id, length) {
   //"document_id":document_id, "length":length
   return axios.post(`${base}/create-document-quiz`, { document_id, length });

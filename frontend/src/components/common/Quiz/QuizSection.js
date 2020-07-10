@@ -44,6 +44,7 @@ function QuizSection({ title, children, onAdd, hasAddButton, expandable }) {
   const innerContainerRef = useRef();
   const [expanded, setExpanded] = useState(false);
   const [height, setHeight] = useState();
+
   useEffect(() => {
     if (expanded) {
       try {
