@@ -51,6 +51,15 @@ function AdminPage({ ...props }) {
     [usersList]
   );
 
+  const [sortedUSers, setSortedUsers] = useState();
+  const [sortPremium, setSortPremium] = useState(false);
+  useEffect(() => {
+    if (sortPremium && filteredUsers) {
+      const arr = [...filteredUsers];
+      setSortedUsers(arr.sort((a, b) => (a.premium ? -1 : b.premium ? 1 : 0)));
+    } else setSortedUsers(filteredUsers);
+  }, [filteredUsers, sortPremium]);
+
   function revoke(id) {
     setDialogOpen(false);
     if (id)
@@ -104,7 +113,8 @@ function AdminPage({ ...props }) {
       <Divider />
 
       <UsersPaginatedTable
-        users={filteredUsers}
+        onSortPremium={() => setSortPremium(!sortPremium)}
+        users={sortedUSers}
         searchString={searchString.current}
         onMasquerade={(user_id, name) => {
           dialogInfo.current = {

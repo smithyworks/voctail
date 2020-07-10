@@ -36,9 +36,13 @@ function Grey({ children }) {
   return <span className={classes.greyed}>{children}</span>;
 }
 
-function Header({ children }) {
+function Header({ children, style, onClick }) {
   const classes = useStyles();
-  return <span className={classes.header}>{children}</span>;
+  return (
+    <span className={classes.header} style={{ cursor: onClick ? "pointer" : undefined }} onClick={onClick}>
+      {children}
+    </span>
+  );
 }
 
 function Match({ children }) {
@@ -59,6 +63,7 @@ function UserRow({
   header,
   searchPattern,
   admin,
+  onSortPremium,
 }) {
   const classes = useStyles();
 
@@ -67,7 +72,7 @@ function UserRow({
     id_val = <Header>ID</Header>;
     name_val = <Header>Name</Header>;
     email_val = <Header>Email</Header>;
-    premium_val = <Header>Account</Header>;
+    premium_val = <Header onClick={onSortPremium}>Account</Header>;
     duration_val = <Header>Last Seen</Header>;
     token_val = <Header>Tokens</Header>;
   } else {

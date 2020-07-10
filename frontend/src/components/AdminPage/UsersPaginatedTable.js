@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete, searchString }) {
+function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete, searchString, onSortPremium }) {
   const classes = useStyles();
 
   const listLength = users?.length ?? 0;
@@ -61,7 +61,7 @@ function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete, searchSt
       />
       <Table size="small">
         <TableHead>
-          <UserRow header />
+          <UserRow header onSortPremium={onSortPremium} />
         </TableHead>
         <TableBody>{userRows}</TableBody>
       </Table>
