@@ -57,6 +57,7 @@ server.get("/api/quiz-category", auth.tokenMiddleWare, quizzes.quizCategoryHandl
 server.post("/api/delete-quiz", auth.tokenMiddleWare, quizzes.quizDeleteHandler);
 server.post("/api/create-quiz", auth.tokenMiddleWare, quizzes.createQuizHandler);
 server.post("/api/rename-quiz", auth.tokenMiddleWare, quizzes.renameQuizHandler);
+server.post("/api/viewed-now-quiz", auth.tokenMiddleWare, quizzes.viewedNowQuizHandler);
 server.post("/api/create-document-quiz", auth.tokenMiddleWare, quizzes.createQuizFromDocHandler);
 server.post("/api/create-custom-quiz", auth.tokenMiddleWare, quizzes.createCustomQuizHandler);
 

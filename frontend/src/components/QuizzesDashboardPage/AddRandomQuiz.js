@@ -1,11 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage";
-import IconButton from "@material-ui/core/IconButton";
-import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@material-ui/core";
 import { VTButton } from "../common";
-import AddCustomQuiz from "./AddCustomQuiz";
 
 function AddRandomQuiz({ onAdd, onClose, open }) {
   const handleClose = () => {

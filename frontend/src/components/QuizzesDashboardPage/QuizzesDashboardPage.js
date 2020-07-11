@@ -90,6 +90,8 @@ function QuizzesDashboard({ ...props }) {
               onEdit={() => handleRenameOpen(v.quiz_id)}
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -106,6 +108,8 @@ function QuizzesDashboard({ ...props }) {
               onEdit={() => handleRenameOpen(v.quiz_id)}
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -122,6 +126,8 @@ function QuizzesDashboard({ ...props }) {
               onEdit={() => handleRenameOpen(v.quiz_id)}
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -138,6 +144,8 @@ function QuizzesDashboard({ ...props }) {
               onEdit={() => handleRenameOpen(v.quiz_id)}
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+              dateCreated={v.created}
             >
               {v}
             </QuizTile>
