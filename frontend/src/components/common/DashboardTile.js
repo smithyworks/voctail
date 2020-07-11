@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
   title: {
     color: "white",
-    fontSize: "24px",
+    fontSize: "18px",
   },
   author: { color: "white", fontWeight: "lighter", fontStyle: "italic" },
   menuIconContainer: {

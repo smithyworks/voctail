@@ -203,6 +203,18 @@ async function quizDeleteHandler(req, res) {
   }
 }
 
+async function renameQuizHandler(req, res) {
+  try {
+    const quiz_id = req.body.quiz_id;
+    const title = req.body.title;
+    await query("UPDATE quizzes SET title = $1 WHERE quizzes.quiz_id=$2", [title, quiz_id]);
+    res.status(200).send("Successful update of quiz title with id " + quiz_id + ".");
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 // potentially think about a more sophisticated approach to determining suitable translations eg rank metric
 async function createQuizHandler(req, res) {
   try {
@@ -302,6 +314,7 @@ module.exports = {
   quizCategoryHandler,
   quizDeleteHandler,
   createQuizHandler,
+  renameQuizHandler,
   createQuizFromDocHandler,
   createCustomQuizHandler,
 };

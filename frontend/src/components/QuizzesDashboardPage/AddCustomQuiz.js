@@ -17,13 +17,9 @@ import { VTButton } from "../common";
 import QuizItemSection from "./QuizItemSection";
 import QuizItem from "./QuizItem";
 
-function AddCustomQuiz({ onAdd }) {
-  const [open, setOpen] = useState(false);
-  const handleAddOpen = () => {
-    setOpen(true);
-  };
-  const handleAddClose = () => {
-    setOpen(false);
+function AddCustomQuiz({ onAdd, onClose, open }) {
+  const handleClose = () => {
+    onClose();
     setItems([]);
     resetFields();
   };
@@ -33,8 +29,6 @@ function AddCustomQuiz({ onAdd }) {
 
   const addItem = (item) => {
     setItems((il) => [...il, item]);
-    //reset new fields
-    resetFields();
   };
 
   const deleteItem = (i) => {
@@ -49,7 +43,7 @@ function AddCustomQuiz({ onAdd }) {
     if (title.current.length > 0 && items.length > 0) {
       api.createCustomQuiz(title.current, items).then((res) => {
         toasts.toastSuccess("Custom quiz added with " + items.length + " questions!");
-        handleAddClose();
+        handleClose();
         onAdd();
       });
     } else {
@@ -61,10 +55,7 @@ function AddCustomQuiz({ onAdd }) {
 
   return (
     <div>
-      <IconButton onClick={handleAddOpen}>
-        <LibraryAddIcon />
-      </IconButton>
-      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz" fullScreen>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz" fullScreen>
         <DialogTitle id="add-custom-quiz">
           To add a new quiz please fill out as many quiz items as you like.
         </DialogTitle>
@@ -90,7 +81,7 @@ function AddCustomQuiz({ onAdd }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleAddClose} color="primary">
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <VTButton

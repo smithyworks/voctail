@@ -13,6 +13,7 @@ import DashboardTile from "./DashboardTile";
 import pic from "../../assets/fairytale.jpg";
 import QuizSection from "./Quiz/QuizSection";
 import QuizTile from "./Quiz/QuizTile";
+import VTIconButton from "./Buttons/IconButton";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -66,6 +67,15 @@ function ShowcasePage() {
         </Grid>
         <Grid item style={{ padding: "10px" }}>
           <VTButton secondary>secondary</VTButton>
+        </Grid>
+      </Grid>
+
+      <Typography variant="h5" style={{ marginTop: "20px" }}>
+        + Button with Hover
+      </Typography>
+      <Grid container>
+        <Grid item style={{ padding: "10px" }}>
+          <VTIconButton />
         </Grid>
       </Grid>
 

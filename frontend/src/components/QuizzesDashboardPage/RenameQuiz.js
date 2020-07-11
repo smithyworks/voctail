@@ -7,38 +7,35 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextFi
 import { VTButton } from "../common";
 import AddCustomQuiz from "./AddCustomQuiz";
 
-function AddRandomQuiz({ onAdd, onClose, open }) {
+function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
   const handleClose = () => {
     onClose();
     resetFields();
   };
 
   const title = useRef("");
-  const length = useRef("");
 
   const resetFields = () => {
     title.current = "";
-    length.current = "";
   };
 
-  const addQuiz = () => {
-    const len = parseInt(length.current);
-    //console.log(title.current.length > 0, length.current.length > 0, len!==NaN, len>0);
-    if (title.current.length > 0 && length.current.length > 0 && !isNaN(len) && len > 0) {
-      api.createQuiz(title.current, len).then(() => {
-        toasts.toastSuccess("Random quiz added with " + len + " questions!");
-        handleClose();
-        onAdd();
+  const renameQuiz = () => {
+    if (title.current.length > 0) {
+      api.renameQuiz(quiz_id, title.current).then((r) => {
+        if (r) {
+          toasts.toastSuccess("Quiz renamed.");
+        }
       });
+      onAdd();
+      handleClose();
     } else {
-      toasts.toastError("You cannot add a quiz without title or length.");
+      toasts.toastError("Please insert a title first.");
     }
   };
-
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz">
-        <DialogTitle id="add-custom-quiz">Please provide the title and length of your quiz.</DialogTitle>
+        <DialogTitle id="add-custom-quiz">Please provide a new title for renaming.</DialogTitle>
         <DialogContent>
           <Grid container justify="flex-start" alignItems="center" direction="column">
             <TextField
@@ -50,15 +47,6 @@ function AddRandomQuiz({ onAdd, onClose, open }) {
               onChange={(e) => (title.current = e.target.value)}
               fullWidth
             />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="length"
-              label="Length*"
-              type="length"
-              onChange={(e) => (length.current = e.target.value)}
-              fullWidth
-            />
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -68,11 +56,11 @@ function AddRandomQuiz({ onAdd, onClose, open }) {
           <VTButton
             success
             onClick={() => {
-              addQuiz();
+              renameQuiz();
             }}
             color="primary"
           >
-            Add quiz
+            Rename
           </VTButton>
         </DialogActions>
       </Dialog>
@@ -80,4 +68,4 @@ function AddRandomQuiz({ onAdd, onClose, open }) {
   );
 }
 
-export default AddRandomQuiz;
+export default RenameQuiz;
