@@ -62,8 +62,8 @@ async function insertSQL(title, questions, user_id, { ...props }) {
   const {
     rows: [{ quiz_id }],
   } = await query(
-    "INSERT INTO quizzes (title, questions, is_day, is_custom, created) \
-      VALUES($1, $2, $3, $4, NOW()) RETURNING quiz_id",
+    "INSERT INTO quizzes (title, questions, is_day, is_custom, last_seen, created) \
+      VALUES($1, $2, $3, $4, NOW(), NOW()) RETURNING quiz_id",
     [title, JSON.stringify(questions), is_day, is_custom]
   );
 
@@ -131,6 +131,7 @@ async function quizByDocHandler(req, res) {
 
 //fetch all quizzes that are created from documents
 async function quizCategoryHandler(req, res) {
+  /*if desired deal with null last_seen, created values via 'NULLS LAST|FIRST' when sorting */
   try {
     const { user_id } = req.authData.user;
     const {
@@ -140,7 +141,7 @@ async function quizCategoryHandler(req, res) {
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     INNER JOIN quizzes_documents \
         ON quizzes_documents.quiz_id = quizzes.quiz_id \
-        ORDER BY quizzes.last_seen",
+        ORDER BY quizzes.last_seen DESC",
       [user_id]
     );
 
@@ -150,7 +151,7 @@ async function quizCategoryHandler(req, res) {
       "SELECT  quizzes.* FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     WHERE quizzes.is_custom = true\
-    ORDER BY quizzes.last_seen",
+    ORDER BY quizzes.last_seen DESC",
       [user_id]
     );
 
@@ -160,7 +161,7 @@ async function quizCategoryHandler(req, res) {
       "SELECT  quizzes.* FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     WHERE quizzes.is_day = true\
-    ORDER BY quizzes.created",
+    ORDER BY quizzes.created DESC",
       [user_id]
     );
 
@@ -169,7 +170,7 @@ async function quizCategoryHandler(req, res) {
     } = await query(
       "SELECT  quizzes.* FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
-    ORDER BY quizzes.last_seen",
+    ORDER BY quizzes.last_seen DESC",
       [user_id]
     );
 
@@ -209,6 +210,17 @@ async function renameQuizHandler(req, res) {
     const title = req.body.title;
     await query("UPDATE quizzes SET title = $1 WHERE quizzes.quiz_id=$2", [title, quiz_id]);
     res.status(200).send("Successful update of quiz title with id " + quiz_id + ".");
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function viewedNowQuizHandler(req, res) {
+  try {
+    const quiz_id = req.body.quiz_id;
+    await query("UPDATE quizzes SET last_seen = NOW() WHERE quizzes.quiz_id=$1", [quiz_id]);
+    res.status(200).send("Successful update of quiz with id " + quiz_id + ".");
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -317,4 +329,5 @@ module.exports = {
   renameQuizHandler,
   createQuizFromDocHandler,
   createCustomQuizHandler,
+  viewedNowQuizHandler,
 };

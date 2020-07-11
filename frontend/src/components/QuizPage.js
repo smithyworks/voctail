@@ -7,6 +7,7 @@ import AppPage from "./common/AppPage";
 import { api } from "../utils";
 
 import { shuffle } from "./common/QuizzesUtilities";
+import { toasts } from "./common/AppPage/AppPage";
 
 const useStyles = makeStyles({
   container: { height: "100%", width: "100%" },
@@ -306,6 +307,15 @@ function Quiz({ ...props }) {
   const classes = useStyles();
   let { id } = useParams();
   id = parseInt(id);
+
+  //update  db to last_seen or do before leaving together with metrics
+  api.viewedNowQuiz(id).then((r) => {
+    if (!r) {
+      toasts.toastError("Viewing could not be read.");
+    } else {
+      console.log("Success");
+    }
+  });
 
   const [show, setShow] = useState(false);
   const [result, setResult] = useState([]);

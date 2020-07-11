@@ -1,8 +1,6 @@
 import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
-import IconButton from "@material-ui/core/IconButton";
-import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import {
   Button,
   Dialog,

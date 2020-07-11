@@ -63,7 +63,7 @@ const useStyles = makeStyles({
   lastSeenText: { fontWeight: "lighter", fontStyle: "italic" },
 });
 
-function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress }) {
+function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress, lastSeen, dateCreated }) {
   const classes = useStyles();
   const backgroundColor = useRef(getColor());
 
@@ -89,6 +89,13 @@ function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress }) {
       setMenuOpen(false);
     }
   }
+
+  const lastSeenToHoursElapsed = (last, created) =>
+    !isNaN(Date.parse(last)) || !last === created
+      ? Math.round((Date.now() - Date.parse(last)) / (1000 * 3600 * 24)) + " D"
+      : "Untaken";
+
+  const hoursElapsed = useRef(lastSeenToHoursElapsed(lastSeen, dateCreated));
 
   return (
     <Grid item xs={12} sm={6} md={3} lg={3} className={classes.container}>
@@ -118,7 +125,7 @@ function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress }) {
           </Grid>
           <Grid item>
             <Typography align="right" className={classes.lastSeenText}>
-              last seen ...
+              {hoursElapsed.current}
             </Typography>
           </Grid>
         </Grid>
