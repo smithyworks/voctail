@@ -11,6 +11,7 @@ import QuizTile from "../common/Quiz/QuizTile";
 import AddRandomQuiz from "./AddRandomQuiz";
 import AddCustomQuiz from "./AddCustomQuiz";
 import RenameQuiz from "./RenameQuiz";
+import Metrics from "./Metrics";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
@@ -43,6 +44,16 @@ function QuizzesDashboard({ ...props }) {
   };
   const handleRandomClose = () => {
     setOpenRandom(false);
+  };
+
+  const [openViewStat, setOpenViewStat] = useState(false);
+  const [viewQuiz, setViewQuiz] = useState({});
+  const handleViewStatOpen = (quiz) => {
+    setOpenViewStat(true);
+    setViewQuiz(quiz);
+  };
+  const handleViewStatClose = () => {
+    setOpenViewStat(false);
   };
 
   const [openRename, setOpenRename] = useState(false);
@@ -86,10 +97,14 @@ function QuizzesDashboard({ ...props }) {
             <QuizTile
               key={v.quiz_id}
               name={v.title}
+              id={v.quiz_id}
               onDelete={() => deleteQuiz(v.quiz_id)}
               onEdit={() => handleRenameOpen(v.quiz_id)}
+              onViewStatistic={() => handleViewStatOpen(v)}
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -102,10 +117,14 @@ function QuizzesDashboard({ ...props }) {
             <QuizTile
               key={v.quiz_id}
               name={v.title}
+              id={v.quiz_id}
               onDelete={() => deleteQuiz(v.quiz_id)}
               onEdit={() => handleRenameOpen(v.quiz_id)}
+              onViewStatistic={() => handleViewStatOpen(v)}
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -118,10 +137,14 @@ function QuizzesDashboard({ ...props }) {
             <QuizTile
               key={v.quiz_id}
               name={v.title}
+              id={v.quiz_id}
               onDelete={() => deleteQuiz(v.quiz_id)}
               onEdit={() => handleRenameOpen(v.quiz_id)}
+              onViewStatistic={() => handleViewStatOpen(v)}
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -134,10 +157,14 @@ function QuizzesDashboard({ ...props }) {
             <QuizTile
               key={v.quiz_id}
               name={v.title}
+              id={v.quiz_id}
               onDelete={() => deleteQuiz(v.quiz_id)}
               onEdit={() => handleRenameOpen(v.quiz_id)}
+              onViewStatistic={() => handleViewStatOpen(v)}
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -148,6 +175,7 @@ function QuizzesDashboard({ ...props }) {
       <AddCustomQuiz onAdd={refresh} onClose={handleCustomClose} open={openCustom} />
       <AddRandomQuiz onAdd={refresh} onClose={handleRandomClose} open={openRandom} />
       <RenameQuiz onAdd={refresh} onClose={handleRenameClose} open={openRename} quiz_id={idRename} />
+      <Metrics onClose={handleViewStatClose} open={openViewStat} quiz={viewQuiz} />
 
       <Grid className={classes.grid} container justify="space-evenly" alignItems="center" direction="row">
         <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">

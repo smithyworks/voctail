@@ -62,6 +62,9 @@ export function fetchQuizByDocument(document_id) {
 export function fetchQuizzesByCategory() {
   return axios.get(`${base}/quiz-category`);
 }
+export function fetchQuizMetrics(quiz_id) {
+  return axios.get(`${base}/quiz-metrics`, { params: { quiz_id: quiz_id } });
+}
 export function deleteQuiz(quiz_id) {
   return axios.post(`${base}/delete-quiz`, { quiz_id });
 }
@@ -70,6 +73,13 @@ export function createQuiz(title, length) {
 }
 export function renameQuiz(quiz_id, title) {
   return axios.post(`${base}/rename-quiz`, { quiz_id, title });
+}
+
+export function viewedNowQuiz(quiz_id) {
+  return axios.post(`${base}/viewed-now-quiz`, { quiz_id });
+}
+export function updateMetricsQuiz(quiz_id, results) {
+  return axios.post(`${base}/update-metrics-quiz`, { quiz_id, results });
 }
 export function createQuizFromDoc(document_id, length) {
   //"document_id":document_id, "length":length
