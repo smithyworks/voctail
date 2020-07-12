@@ -45,16 +45,30 @@ async function documentDataHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
     const { rows: documents } = await query("SELECT * FROM documents ORDER BY title ASC");
-    const { rows: newspaperArticles } = await query(
-      "SELECT * FROM documents WHERE category = 'Newspaper Article' ORDER BY title ASC"
+    const {
+      rows: newspaperArticles,
+    } = await query(
+      "SELECT * FROM documents WHERE category = 'Newspaper Article' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
+      [user_id]
     );
-    const { rows: fairyTales } = await query(
-      "SELECT * FROM documents WHERE category = 'Fairy Tale' ORDER BY title ASC"
+    const {
+      rows: fairyTales,
+    } = await query(
+      "SELECT * FROM documents WHERE category = 'Fairy Tale' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
+      [user_id]
     );
-    const { rows: shortStories } = await query(
-      "SELECT * FROM documents WHERE category = '(Short) Story' ORDER BY title ASC"
+    const {
+      rows: shortStories,
+    } = await query(
+      "SELECT * FROM documents WHERE category = '(Short) Story' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
+      [user_id]
     );
-    const { rows: others } = await query("SELECT * FROM documents WHERE category = 'Others' ORDER BY title ASC");
+    const {
+      rows: others,
+    } = await query(
+      "SELECT * FROM documents WHERE category = 'Others' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
+      [user_id]
+    );
     const {
       rows: usersDocuments,
     } = await query("SELECT * FROM documents WHERE publisher_id = $1 ORDER BY document_id ASC", [user_id]);
@@ -98,24 +112,27 @@ async function addDocument(req, res) {
     }
     return -1;
   }
+  const premium = true;
+  const newDocumentWords = [];
+  let word_id = 0;
+  let word = "";
+  let frequency = 0;
+  const ignore = false;
+  const language = "english";
 
   try {
+    log("in add document try block");
     const { publisher, title, author, description, category, isPublic, content, blocks } = req.body;
-    const premium = true;
-    const newDocumentWords = [];
-    let word_id = 0;
-    let word = "";
-    let frequency = 0;
-    const ignore = false;
-    const language = "english";
 
+    log("req body done");
     const {
       rows: [{ document_id }],
     } = await query(
-      "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) " +
-        "VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
+      "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
       [publisher, title, author, description, category, isPublic, premium, content]
     );
+
+    log("insert into docs done");
 
     const contentData = blocks.map((b) => b.content).join(" ");
     const words = contentData
@@ -158,6 +175,7 @@ async function addDocument(req, res) {
       }
       frequency = 0;
     }
+    log("inser into words done");
 
     for (let ndw = 0; ndw < newDocumentWords.length; ndw++) {
       const {
@@ -168,6 +186,7 @@ async function addDocument(req, res) {
         newDocumentWords[ndw].frequency,
       ]);
     }
+    log("insert into doc words done");
 
     res.status(200).json({ document_id });
   } catch (err) {
@@ -176,6 +195,21 @@ async function addDocument(req, res) {
   }
 }
 
+async function editDocument(req, res) {
+  try {
+    const { document_id, title, author, description, category, isPublic } = req.body;
+    const {
+      editedDocuments,
+    } = await query(
+      "UPDATE documents SET title = $1 AND author = $2 AND description = $3 AND category = $4 AND public = $5 WHERE document_id = $6 ",
+      [title, author, description, category, isPublic, document_id]
+    );
+    res.status(200).json(editedDocuments);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
 async function usersHandler(req, res) {
   try {
     const { rows } = await query("SELECT * FROM users ORDER BY user_id ASC");
@@ -192,4 +226,5 @@ module.exports = {
   documentDataHandler,
   deleteDocument,
   addDocument,
+  editDocument,
 };

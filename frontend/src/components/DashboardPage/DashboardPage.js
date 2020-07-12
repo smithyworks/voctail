@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Typography as T, Dialog, DialogTitle, DialogActions, DialogContent } from "@material-ui/core";
+import { Typography as T, Dialog, DialogTitle, DialogActions, DialogContent, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
@@ -8,6 +8,7 @@ import AppPage, { toasts } from "../common/AppPage";
 import { VTButton, DashboardSection } from "../common";
 import HeaderSection from "../common/HeaderSection";
 import WarningDialog from "../AdminPage/WarningDialog";
+import EditDocument from "./EditDocument";
 
 //example tile images
 import shortStoriesPreview from "../../assets/books.jpg";
@@ -30,7 +31,7 @@ function DocumentOverviewPopUp({
       <DialogTitle id="document-overview-popup" onClose={onClose}>
         {documentTitle}
       </DialogTitle>
-      <img src={documentImage} alt={documentImage} width="100%" height="40%" />
+      {/*} <img src={documentImage} alt={documentImage} width="100%" height="40%" /> */}
       <DialogContent dividers>
         <T gutterBottom>
           {documentDetails} Written by {documentAuthor}
@@ -81,12 +82,6 @@ function Dashboard() {
     setDocumentDetails(description);
     setDocumentImage(image);
   }
-  function verifyOwner(owner, user) {
-    if (owner === user) setIsOwned(true);
-    else setIsOwned(false);
-  }
-
-  const [isOwned, setIsOwned] = useState(false);
 
   function verifyDelete(title, author, id) {
     setDialogOpen(true);
@@ -121,6 +116,19 @@ function Dashboard() {
     else toasts.toastWarning("The document could not be found.");
   }
 
+  /* function editThisDocument(documentId, title, author, description, isPublic, category) {
+      if (documentId)
+          api
+              .editDocument(documentId, title, author, description, category, isPublic)
+              .then(() => {
+                  toasts.toastSuccess("The document was successfully edited!");
+              })
+              .catch((err) => {
+                  console.log(err)
+                  toasts.toastError("Error editing the document.");
+              });
+  } */
+
   useEffect(() => {
     api
       .user()
@@ -154,19 +162,25 @@ function Dashboard() {
         title={"My Documents"}
         Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 1} />}
       >
-        {usersDocuments.map((tile) => (
-          <DashboardTile
-            thumbnail={shortStoriesPreview}
-            title={tile.title}
-            author={tile.author}
-            isOwned
-            onOpen={() =>
-              handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
-            }
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
-          />
-        ))}
+        {usersDocuments.length !== 0 ? (
+          usersDocuments.map((tile) => (
+            <DashboardTile
+              thumbnail={shortStoriesPreview}
+              title={tile.title}
+              author={tile.author}
+              isOwned
+              onOpen={() =>
+                handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
+              }
+              onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+              onEdit={() =>
+                EditDocument(refresh(), tile.document_id, tile.title, tile.author, tile.description, tile.category)
+              }
+            />
+          ))
+        ) : (
+          <Typography>You have no own documents.</Typography>
+        )}
       </DashboardSection>
 
       <DashboardSection title={"Short Stories"}>
@@ -175,7 +189,6 @@ function Dashboard() {
             thumbnail={shortStoriesPreview}
             title={tile.title}
             author={tile.author}
-            isOwned
             onOpen={() =>
               handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
             }
@@ -191,7 +204,6 @@ function Dashboard() {
             thumbnail={fairyTalesPreview}
             title={tile.title}
             author={tile.author}
-            isOwned
             onOpen={() => handleData(tile.document_id, tile.title, tile.author, tile.description, fairyTalesPreview)}
             onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
             onEdit={() => toasts.toastSuccess("Clicked edit")}
@@ -205,7 +217,6 @@ function Dashboard() {
             thumbnail={newspaperArticlesPreview}
             title={tile.title}
             author={tile.author}
-            isOwned
             onOpen={() =>
               handleData(tile.document_id, tile.title, tile.author, tile.description, newspaperArticlesPreview)
             }
@@ -221,7 +232,6 @@ function Dashboard() {
             thumbnail={otherDocumentsPreview}
             title={tile.title}
             author={tile.author}
-            isOwned
             onOpen={() =>
               handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
             }
