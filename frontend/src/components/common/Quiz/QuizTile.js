@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, LinearProgress } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./colorCycler";
+import { api } from "../../../utils";
 
 const useStyles = makeStyles({
   container: {
@@ -63,7 +64,7 @@ const useStyles = makeStyles({
   lastSeenText: { fontWeight: "lighter", fontStyle: "italic" },
 });
 
-function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress, lastSeen, dateCreated }) {
+function QuizTile({ name, id, isOwned, onDelete, onEdit, onViewStatistic, linkTo, lastSeen, dateCreated }) {
   const classes = useStyles();
   const backgroundColor = useRef(getColor());
 
@@ -77,6 +78,18 @@ function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress, lastSeen,
     e.stopPropagation();
   }
 
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    api
+      .fetchQuizMetrics(id)
+      .then((res) => {
+        if (res) {
+          setProgress(res.data.bestRun);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
+
   function _onDelete(e) {
     if (typeof onDelete === "function") {
       onDelete(e);
@@ -86,6 +99,13 @@ function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress, lastSeen,
   function _onEdit(e) {
     if (typeof onDelete === "function") {
       onEdit(e);
+      setMenuOpen(false);
+    }
+  }
+
+  function _onViewStatistic(e) {
+    if (typeof onViewStatistic === "function") {
+      onViewStatistic(e);
       setMenuOpen(false);
     }
   }
@@ -142,6 +162,7 @@ function QuizTile({ name, isOwned, onDelete, onEdit, linkTo, progress, lastSeen,
       </Paper>
 
       <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
+        <MenuItem onClick={_onViewStatistic}>Statistics</MenuItem>
         <MenuItem onClick={_onEdit}>Rename</MenuItem>
         <MenuItem onClick={_onDelete}>Delete</MenuItem>
       </Menu>
