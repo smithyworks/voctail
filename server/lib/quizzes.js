@@ -76,6 +76,20 @@ async function insertSQL(title, questions, user_id, { ...props }) {
   return quiz_id;
 }
 
+async function fetchMetrics(user_id, quiz_id) {
+  let {
+    rows: [{ best_run, metrics }],
+  } = await query(
+    "SELECT  best_run, metrics FROM users_quizzes  WHERE users_quizzes.quiz_id = $1 \
+        AND users_quizzes.user_id=$2 ",
+    [quiz_id, user_id]
+  );
+
+  const bestRun = best_run === null ? 0 : best_run;
+  metrics = metrics === null ? {} : metrics;
+  return { bestRun, metrics };
+}
+
 async function quizzesHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
@@ -227,6 +241,45 @@ async function viewedNowQuizHandler(req, res) {
   }
 }
 
+async function updateMetricsQuizHandler(req, res) {
+  try {
+    const { user_id } = req.authData.user;
+    const quiz_id = req.body.quiz_id;
+    const results = req.body.results;
+
+    let { bestRun, metrics } = await fetchMetrics(user_id, quiz_id);
+
+    metrics[Date.now()] = results;
+    bestRun = results.percentageTotal > bestRun ? results.percentageTotal : bestRun;
+
+    await query(
+      "UPDATE users_quizzes SET best_run=$1, metrics=$2 WHERE users_quizzes.quiz_id=$3 \
+        AND users_quizzes.user_id=$4 ",
+      [bestRun, metrics, quiz_id, user_id]
+    );
+    res
+      .status(200)
+      .send("Successful update of quiz metrics for user with id " + user_id + "and quiz with id " + quiz_id + ".");
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function viewMetricsHandler(req, res) {
+  try {
+    const { user_id } = req.authData.user;
+    const quiz_id = req.query.quiz_id;
+
+    const { bestRun, metrics } = await fetchMetrics(user_id, quiz_id);
+
+    res.status(200).json({ bestRun, metrics });
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 // potentially think about a more sophisticated approach to determining suitable translations eg rank metric
 async function createQuizHandler(req, res) {
   try {
@@ -330,4 +383,6 @@ module.exports = {
   createQuizFromDocHandler,
   createCustomQuizHandler,
   viewedNowQuizHandler,
+  updateMetricsQuizHandler,
+  viewMetricsHandler,
 };

@@ -49,16 +49,10 @@ function Header(props) {
 }
 
 //continue here add other parts
-function Results(props) {
+function Results({ onReport }) {
   const classes = useStyles();
-  let unknowns = [];
-  let num_taken = props.result.length;
-  for (let i in props.result) {
-    if (props.result[i] === false) {
-      unknowns.push(props.questions[i].vocabulary); //Object.keys(props.questions[i])[0])
-    }
-  }
-
+  const results = onReport();
+  console.log("Results", onReport());
   //<T>{unknowns.length.toLocaleString() + props.qstate.result.length.toLocaleString()}</T>
   return (
     <Grid
@@ -69,19 +63,32 @@ function Results(props) {
       alignItems="center"
       direction="column"
     >
-      <T variant="h4">
-        Your Score:{" "}
-        {num_taken > 0
-          ? num_taken -
-            unknowns.length +
+      <T variant="h4">Your Score:</T>
+      <T variant={"h5"}>
+        {results.taken > 0
+          ? "  on questions taken:  " +
+            (results.taken - results.wrong) +
             "/" +
-            num_taken +
+            results.taken +
             "  ( " +
-            Math.round(((num_taken - unknowns.length) / num_taken) * 100) +
+            results.percentageTaken +
             "% )"
-          : "Answer at least one question"}
+          : undefined}
       </T>
-      <T variant="h4">Recap: {unknowns.length > 0 ? unknowns.join(", ") : "Good job. Nothing to recap."}</T>
+      <T variant={"h5"}>
+        {results.taken > 0
+          ? "  on questions total:  " +
+            (results.total - results.wrong) +
+            "/" +
+            results.total +
+            "  ( " +
+            results.percentageTotal +
+            "% )"
+          : "  Answer at least one question"}
+      </T>
+      <T variant="h4">
+        Recap: {results.unknowns.length > 0 ? results.unknowns.join(", ") : "Good job. Nothing to recap."}
+      </T>
     </Grid>
   );
 }
@@ -320,6 +327,8 @@ function Quiz({ ...props }) {
   const [show, setShow] = useState(false);
   const [result, setResult] = useState([]);
   const [itemCount, setItemCount] = useState(0);
+  const [quiz, setQuiz] = useState({});
+
   let nextQ = () => {
     setItemCount((itemCount) => itemCount + 1);
   };
@@ -328,9 +337,17 @@ function Quiz({ ...props }) {
   };
   let showResult = () => {
     setShow(true);
+    //update best results if improved
+    const results = getResults();
+
+    // add results to json metrics, best_result
+    api.updateMetricsQuiz(quiz.quiz_id, results).then((r) => {
+      if (!r) {
+        console.log("Updating metrics failed.");
+      }
+    });
   };
 
-  const [quiz, setQuiz] = useState({});
   useEffect(() => {
     api
       .fetchQuiz(id)
@@ -341,6 +358,21 @@ function Quiz({ ...props }) {
       })
       .catch((err) => console.log(err));
   }, [id]);
+
+  //Results
+  const getResults = () => {
+    const perc = (wrong, absolute) => (absolute > 0 ? Math.round(((absolute - wrong) / absolute) * 100) : 0);
+    let unknowns = [];
+    result.forEach((v, i) => {
+      if (v === false) {
+        unknowns.push(quiz.questions[i].vocabulary);
+      }
+    });
+    const [wrong, taken, total] = [unknowns.length, result.length, quiz.questions.length];
+    const [percentageTaken, percentageTotal] = [perc(wrong, taken), perc(wrong, total)];
+    console.log("getResulst", wrong, taken, total, percentageTaken, percentageTotal, unknowns);
+    return { wrong, taken, total, percentageTaken, percentageTotal, unknowns };
+  };
 
   return (
     <AppPage location={"quizzes/" + id} id={"quiz-" + id + "page"}>
@@ -373,7 +405,7 @@ function Quiz({ ...props }) {
             direction="row"
           >
             <Header title={quiz.title}>Your results.</Header>
-            <Results questions={quiz.questions} result={result} />
+            <Results onReport={getResults} />
           </Grid>
         )
       ) : (
