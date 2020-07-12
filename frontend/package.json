@@ -42,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "dateformat": "^3.0.3",
     "eslint-plugin-react-hooks": "^4.0.4",
     "husky": "^4.2.5",
     "prettier": "2.0.5",
