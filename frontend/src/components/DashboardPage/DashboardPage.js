@@ -60,7 +60,7 @@ function Dashboard() {
   const [otherDocuments, setOtherDocuments] = useState([]);
   const [usersDocuments, setUsersDocuments] = useState([]);
 
-  const [openPopUp, setPopUpOpen] = useState(false);
+  //const [openPopUp, setPopUpOpen] = useState(false);
   const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
@@ -107,7 +107,7 @@ function Dashboard() {
         .then(() => {
           toasts.toastSuccess("The document was successfully deleted!");
           refresh();
-          setPopUpOpen(false);
+          //setPopUpOpen(false);
         })
         .catch((err) => {
           console.log(err);
@@ -173,9 +173,17 @@ function Dashboard() {
                 handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
               }
               onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-              onEdit={() =>
-                EditDocument(refresh(), tile.document_id, tile.title, tile.author, tile.description, tile.category)
-              }
+              onEdit={() => (
+                <EditDocument
+                  refresh={refresh()}
+                  documentId={tile.document_id}
+                  title={tile.title}
+                  author={tile.author}
+                  description={tile.description}
+                  isPublic={tile.public}
+                  currentCategory={tile.category}
+                />
+              )}
             />
           ))
         ) : (

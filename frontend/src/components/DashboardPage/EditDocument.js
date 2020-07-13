@@ -36,14 +36,14 @@ const useStyles = makeStyles(() => ({
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
 
-function EditDocument(refresh, documentId) {
-  const titleInput = useRef("");
-  const authorInput = useRef("");
-  const descriptionInput = useRef("");
-  const [publicDocument, setPublicDocument] = useState(true);
-  const [category, setCategory] = useState("");
+function EditDocument(refresh, documentId, title, author, description, isPublic, currentCategory) {
+  const titleInput = useRef(title);
+  const authorInput = useRef(author);
+  const descriptionInput = useRef(description);
+  const [publicDocument, setPublicDocument] = useState(isPublic);
+  const [category, setCategory] = useState(currentCategory);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const classes = useStyles();
 
   const handleEditOpen = () => {
