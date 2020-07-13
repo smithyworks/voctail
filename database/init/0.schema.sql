@@ -23,12 +23,14 @@ CREATE TABLE quizzes (
 
 CREATE TABLE users_quizzes (
   user_id         integer    NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
-  quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE
+  quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE,
+  best_run        integer,
+  metrics         jsonb
 );
 
 CREATE TABLE quizzes_documents (
   quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE,
-  document_id         integer    NOT NULL REFERENCES users(user_id) ON DELETE CASCADE
+  document_id     integer    NOT NULL REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE words (

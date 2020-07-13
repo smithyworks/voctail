@@ -4,6 +4,7 @@ import {
   Block as BlockIcon,
   DeleteForever as DeleteForeverIcon,
   SupervisedUserCircle as SupervisedUserCircleIcon,
+  VpnKey as KeyIcon,
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import timediff from "timediff";
@@ -17,6 +18,8 @@ const useStyles = makeStyles({
   },
   header: {
     fontWeight: "bold",
+    padding: "10px 0",
+    display: "inline-block",
   },
   cell: {
     padding: "0 10px",
@@ -35,9 +38,13 @@ function Grey({ children }) {
   return <span className={classes.greyed}>{children}</span>;
 }
 
-function Header({ children }) {
+function Header({ children, onClick }) {
   const classes = useStyles();
-  return <span className={classes.header}>{children}</span>;
+  return (
+    <span className={classes.header} style={{ cursor: onClick ? "pointer" : undefined }} onClick={onClick}>
+      {children}
+    </span>
+  );
 }
 
 function Match({ children }) {
@@ -57,6 +64,8 @@ function UserRow({
   onDelete,
   header,
   searchPattern,
+  admin,
+  onSortPremium,
 }) {
   const classes = useStyles();
 
@@ -65,7 +74,7 @@ function UserRow({
     id_val = <Header>ID</Header>;
     name_val = <Header>Name</Header>;
     email_val = <Header>Email</Header>;
-    premium_val = <Header>Account</Header>;
+    premium_val = <Header onClick={onSortPremium}>Account</Header>;
     duration_val = <Header>Last Seen</Header>;
     token_val = <Header>Tokens</Header>;
   } else {
@@ -166,7 +175,9 @@ function UserRow({
       <TableCell align="right" className={classes.cell}>
         {id_val}
       </TableCell>
-      <TableCell className={classes.cell}>{name_val}</TableCell>
+      <TableCell className={classes.cell}>
+        {name_val} {admin && <KeyIcon fontSize="inherit" />}
+      </TableCell>
       <TableCell className={classes.cell}>{email_val}</TableCell>
       <TableCell className={classes.cell}>{premium_val}</TableCell>
       <TableCell align="right" className={classes.cell}>

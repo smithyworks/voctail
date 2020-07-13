@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AppPage from "./common/AppPage";
+import AppPage from "../common/AppPage";
 
-import iconUser from "../assets/icon_user.png";
-import iconDoc from "../assets/icon_document.png";
+import iconUser from "../../assets/icon_user.png";
+import iconDoc from "../../assets/icon_document.png";
 
-import Header from "./common/HeaderSection";
-import DashboardSection from "./common/DashboardSection";
-import UserCard from "./common/UserCard";
+import Header from "../common/HeaderSection";
+import { ClassroomSection } from "../common";
+import UserCard from "../common/UserCard";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import { api } from "../utils";
-import { timeParser, urlParser, isConnected } from "../utils/parsers";
-import { toasts } from "./common/AppPage/AppPage";
+import { api } from "../../utils";
+import { timeParser, urlParser, isConnected } from "../../utils/parsers";
+import { toasts } from "../common/AppPage/AppPage";
 
 const useStyles = makeStyles(() => ({
   headUpText: {
@@ -101,7 +101,7 @@ function ClassroomViewPage() {
       .getAllUsers()
       .then((res) => {
         if (res) {
-          setAllUsersFromDatabase(res.data.rows);
+          setAllUsersFromDatabase(res.data);
         }
       })
       .catch((err) => console.log(err));
@@ -151,7 +151,7 @@ function ClassroomViewPage() {
         description={classroomDataFromDatabase.description}
       />
 
-      <DashboardSection
+      <ClassroomSection
         title="Students"
         description="Add students to share your material and get started."
         Button={
@@ -175,9 +175,9 @@ function ClassroomViewPage() {
             );
           })}
         </Grid>
-      </DashboardSection>
+      </ClassroomSection>
 
-      <DashboardSection
+      <ClassroomSection
         title="Sections"
         description="Organize your classroom in several sections."
         Button={
@@ -195,7 +195,7 @@ function ClassroomViewPage() {
             );
           })}
         </Grid>
-      </DashboardSection>
+      </ClassroomSection>
     </AppPage>
   );
 }

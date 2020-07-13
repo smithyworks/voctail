@@ -1,7 +1,7 @@
 import { DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@material-ui/core";
 import React, { useRef, useState } from "react";
-import { toasts } from "../../common/AppPage";
-import { VTButton } from "../../common";
+import { toasts } from "../common/AppPage";
+import { VTButton } from "../common";
 
 function Suggestion({ sugg, index }) {
   return (

@@ -1,18 +1,12 @@
-import React, { useRef, useState } from "react";
-import { api } from "../../../utils";
-import { toasts } from "../../common/AppPage";
-import IconButton from "@material-ui/core/IconButton";
-import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
+import React, { useRef } from "react";
+import { api } from "../../utils";
+import { toasts } from "../common/AppPage";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@material-ui/core";
-import { VTButton } from "../../common";
+import { VTButton } from "../common";
 
-function AddRandomQuiz({ onAdd }) {
-  const [open, setOpen] = useState(false);
-  const handleAddOpen = () => {
-    setOpen(true);
-  };
-  const handleAddClose = () => {
-    setOpen(false);
+function AddRandomQuiz({ onAdd, onClose, open }) {
+  const handleClose = () => {
+    onClose();
     resetFields();
   };
 
@@ -30,7 +24,7 @@ function AddRandomQuiz({ onAdd }) {
     if (title.current.length > 0 && length.current.length > 0 && !isNaN(len) && len > 0) {
       api.createQuiz(title.current, len).then(() => {
         toasts.toastSuccess("Random quiz added with " + len + " questions!");
-        handleAddClose();
+        handleClose();
         onAdd();
       });
     } else {
@@ -40,10 +34,7 @@ function AddRandomQuiz({ onAdd }) {
 
   return (
     <div>
-      <IconButton onClick={handleAddOpen}>
-        <LibraryAddIcon />
-      </IconButton>
-      <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-custom-quiz">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz">
         <DialogTitle id="add-custom-quiz">Please provide the title and length of your quiz.</DialogTitle>
         <DialogContent>
           <Grid container justify="flex-start" alignItems="center" direction="column">
@@ -68,7 +59,7 @@ function AddRandomQuiz({ onAdd }) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleAddClose} color="primary">
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <VTButton

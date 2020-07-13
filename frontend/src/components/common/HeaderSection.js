@@ -43,7 +43,7 @@ function HeaderSection(props) {
       <Typography className={classes.headUp1} variant="h2">
         {props.mainTitle}
       </Typography>
-      <Typography align="center" classeName={classes.headUp2} variant="h4">
+      <Typography align="center" className={classes.headUp2} variant="h4">
         {props.subtitle}
       </Typography>
       <Typography className={classes.headUp3} align="center" variant="h5">

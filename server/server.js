@@ -37,7 +37,7 @@ server.post("/api/user-vocabulary", auth.tokenMiddleWare, users.userVocabularyHa
 
 server.post("/api/document", auth.tokenMiddleWare, documents.documentHandler);
 server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
-server.get("/api/handle-documents", auth.tokenMiddleWare, documents.dummyDataHandler);
+server.get("/api/handle-documents", auth.tokenMiddleWare, documents.documentDataHandler);
 server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
 
@@ -54,8 +54,12 @@ server.get("/api/quizzes", auth.tokenMiddleWare, quizzes.quizzesHandler);
 server.get("/api/quiz", auth.tokenMiddleWare, quizzes.quizHandler);
 server.get("/api/quiz-by-document", auth.tokenMiddleWare, quizzes.quizByDocHandler);
 server.get("/api/quiz-category", auth.tokenMiddleWare, quizzes.quizCategoryHandler);
+server.get("/api/quiz-metrics", auth.tokenMiddleWare, quizzes.viewMetricsHandler);
 server.post("/api/delete-quiz", auth.tokenMiddleWare, quizzes.quizDeleteHandler);
 server.post("/api/create-quiz", auth.tokenMiddleWare, quizzes.createQuizHandler);
+server.post("/api/rename-quiz", auth.tokenMiddleWare, quizzes.renameQuizHandler);
+server.post("/api/viewed-now-quiz", auth.tokenMiddleWare, quizzes.viewedNowQuizHandler);
+server.post("/api/update-metrics-quiz", auth.tokenMiddleWare, quizzes.updateMetricsQuizHandler);
 server.post("/api/create-document-quiz", auth.tokenMiddleWare, quizzes.createQuizFromDocHandler);
 server.post("/api/create-custom-quiz", auth.tokenMiddleWare, quizzes.createCustomQuizHandler);
 

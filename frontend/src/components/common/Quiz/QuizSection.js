@@ -1,6 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
+import React, { useRef, useState, useEffect } from "react";
+import { Paper, makeStyles, Typography, Divider, Grid, IconButton } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
 const useStyles = makeStyles({
@@ -10,9 +11,7 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
   title: { fontWeight: "lighter" },
-  innerContainer: {
-    paddingTop: "10px",
-  },
+  innerContainer: {},
 
   expandContainer: {
     height: "200px",
@@ -35,12 +34,17 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardSection({ title, children, Button, expandable }) {
+function QuizSection({ title, children, onAdd, hasAddButton, expandable }) {
   const classes = useStyles();
+
+  function _onAdd(e) {
+    if (typeof onAdd === "function") onAdd(e);
+  }
 
   const innerContainerRef = useRef();
   const [expanded, setExpanded] = useState(false);
   const [height, setHeight] = useState();
+
   useEffect(() => {
     if (expanded) {
       try {
@@ -60,12 +64,18 @@ function DashboardSection({ title, children, Button, expandable }) {
             {title}
           </Typography>
         </Grid>
-        <Grid item>{Button}</Grid>
+        <Grid item>
+          {!!hasAddButton && (
+            <IconButton onClick={_onAdd}>
+              <AddBoxIcon />
+            </IconButton>
+          )}
+        </Grid>
       </Grid>
       <Divider />
 
       <div className={expandable ? classes.expandContainer : null} style={{ height }}>
-        <Grid container className={classes.innerContainer} ref={innerContainerRef}>
+        <Grid container className={classes.innerContainer}>
           {children}
         </Grid>
       </div>
@@ -86,4 +96,4 @@ function DashboardSection({ title, children, Button, expandable }) {
   );
 }
 
-export default DashboardSection;
+export default QuizSection;

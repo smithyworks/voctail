@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Typography as T } from "@material-ui/core";
+import React, { useEffect, useState, useRef } from "react";
+import { Typography as T, Paper, Grid, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { api } from "../../utils";
+import { toasts } from "../common/AppPage/AppPage";
 
 function clean(word) {
   try {
@@ -23,11 +26,17 @@ const useStyles = makeStyles({
     maxWidth: "860px",
     padding: "30px 40px",
     backgroundColor: "white",
+    borderRadius: "0",
   },
   title: { fontSize: "34px", marginBottom: "10px", textAlign: "center", fontWeight: "bold" },
   subtitle: { fontSize: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold" },
   paragraph: { fontSize: "18px", marginBottom: "10px", textAlign: "left" },
   block: { fontFamily: "crimson-text, serif" },
+  header: {
+    width: "100%",
+    fontStyle: "italic",
+    marginBottom: "20px",
+  },
 });
 
 function Text({ document, lookupWordByWord }) {
@@ -70,7 +79,33 @@ function Text({ document, lookupWordByWord }) {
     setBlocks(newBlocks);
   }, [document]); // eslint-disable-line
 
-  return <div className={classes.narrowContainer}>{blocks}</div>;
+  const menuAnchor = useRef();
+  const [menuOpen, setMenuOpen] = useState(false);
+  function _onCreateQuiz() {
+    setMenuOpen(false);
+    api
+      .createQuizFromDoc(document.document_id, 20)
+      .then((res) => toasts.toastSuccess("Successfully created a quiz for this document!"))
+      .catch((err) => toasts.toastError("Encountered a problem while creating your quiz!"));
+  }
+
+  return (
+    <Paper className={classes.narrowContainer}>
+      <div className={classes.header}>
+        <Grid container justify="space-between" alignItems="center">
+          <T>Published by: The Voctail Team</T>
+
+          <IconButton ref={menuAnchor} onClick={() => setMenuOpen(!menuOpen)}>
+            <MoreVertIcon />
+          </IconButton>
+        </Grid>
+        <Menu anchorEl={menuAnchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
+          <MenuItem onClick={_onCreateQuiz}>Create Quiz</MenuItem>
+        </Menu>
+      </div>
+      {blocks}
+    </Paper>
+  );
 }
 
 export default Text;

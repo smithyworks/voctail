@@ -1,50 +1,20 @@
-import React, { useState, useEffect } from "react";
-import {
-  Typography as T,
-  GridList,
-  GridListTile,
-  GridListTileBar,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-} from "@material-ui/core";
+import React, { useState, useEffect, useRef } from "react";
+import { Typography as T, Dialog, DialogTitle, DialogActions, DialogContent } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
-
-//icons
-import LocalBarIcon from "@material-ui/icons/LocalBar";
-
+import DashboardTile from "../common/DashboardTile";
 import AppPage, { toasts } from "../common/AppPage";
 import { VTButton, DashboardSection } from "../common";
 import HeaderSection from "../common/HeaderSection";
-
-import { api } from "../../utils";
+import WarningDialog from "../AdminPage/WarningDialog";
 
 //example tile images
 import shortStoriesPreview from "../../assets/books.jpg";
 import fairyTalesPreview from "../../assets/fairytale.jpg";
 import newspaperArticlesPreview from "../../assets/newspaper.jpg";
 import otherDocumentsPreview from "../../assets/others.jpg";
-/*
-const useStyles = makeStyles(() => ({
-  container: { height: 200, width: "100%" },
-  grid: { height: 100, width: "100%" },
-  userItem: { width: "150px" },
 
-  //gridlist with documents
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
-    backgroundColor: "rgba(255,255,255,0.54)",
-  },
-  gridList: { width: "100%", height: 800, justifyContent: "space-around" },
-  icon: { color: "rgba(255,255,255,0.54)" },
-}));
-*/
 //popup for the document you click on (get some information about the doc before entering view mode)
 function DocumentOverviewPopUp({
   open,
@@ -54,24 +24,7 @@ function DocumentOverviewPopUp({
   documentDetails,
   documentAuthor,
   documentImage,
-  refresh,
 }) {
-  function deleteThisDocument(documentId) {
-    if (documentId)
-      api
-        .deleteDocument(documentId)
-        .then(() => {
-          toasts.toastSuccess("The document was successfully deleted!");
-          refresh();
-          onClose();
-        })
-        .catch((err) => {
-          console.log(err);
-          toasts.toastError("Error communicating with the server!");
-        });
-    else toasts.toastWarning("The document could not be found.");
-  }
-
   return (
     <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
       <DialogTitle id="document-overview-popup" onClose={onClose}>
@@ -87,68 +40,11 @@ function DocumentOverviewPopUp({
         <VTButton neutral onClick={onClose}>
           Cancel
         </VTButton>
-        <VTButton danger onClick={() => deleteThisDocument(documentId)}>
-          Delete document
-        </VTButton>
         <VTButton accept component={Link} to={"/documents/" + documentId}>
           View document
         </VTButton>
       </DialogActions>
     </Dialog>
-  );
-}
-
-function PresentChildren({ classes, data, previewImage, refresh }) {
-  const [openPopUp, setPopUpOpen] = useState(false);
-  const [documentId, setDocumentId] = useState(null);
-  const [documentTitle, setDocumentTitle] = useState(null);
-  const [documentDetails, setDocumentDetails] = useState(null);
-  const [documentImage, setDocumentImage] = useState(previewImage);
-  const [documentAuthor, setDocumentAuthor] = useState(null);
-
-  return (
-    <div>
-      <GridList cellHeight={200} cols={3} container justify="center" alignItems="center" className={classes.gridList}>
-        {data.map((tile) => (
-          <GridListTile key={tile.document_id} cols={1}>
-            <img src={documentImage} alt={tile.title} />
-
-            <GridListTileBar
-              title={tile.title}
-              subtitle={
-                <span>
-                  {tile.description} Written by {tile.author}
-                </span>
-              }
-              onClick={() => {
-                setPopUpOpen(true);
-                setDocumentId(tile.document_id);
-                setDocumentTitle(tile.title);
-                setDocumentAuthor(tile.author);
-                setDocumentDetails(tile.description);
-                setDocumentImage(previewImage);
-              }}
-              actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                  <LocalBarIcon />
-                </IconButton>
-              }
-            />
-          </GridListTile>
-        ))}
-      </GridList>
-
-      <DocumentOverviewPopUp
-        open={openPopUp}
-        onClose={() => setPopUpOpen(false)}
-        documentId={documentId}
-        documentTitle={documentTitle}
-        documentAuthor={documentAuthor}
-        documentDetails={documentDetails}
-        documentImage={documentImage}
-        refresh={refresh}
-      />
-    </div>
   );
 }
 
@@ -162,9 +58,64 @@ function Dashboard() {
   const [fairyTales, setFairyTales] = useState([]);
   const [otherDocuments, setOtherDocuments] = useState([]);
 
+  const [openPopUp, setPopUpOpen] = useState(false);
+  const [documentId, setDocumentId] = useState(null);
+  const [documentTitle, setDocumentTitle] = useState(null);
+  const [documentDetails, setDocumentDetails] = useState(null);
+  const [documentImage, setDocumentImage] = useState(otherDocumentsPreview);
+  const [documentAuthor, setDocumentAuthor] = useState(null);
+  const [documentOwner, setDocumentOwner] = useState(false);
+
+  const dialogInfo = useRef();
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const [countToRefresh, setCount] = useState(0);
   function refresh() {
     setCount(countToRefresh + 1);
+  }
+  function handleData(document_id, title, author, description, image) {
+    setPopUpOpen(true);
+    setDocumentId(document_id);
+    setDocumentTitle(title);
+    setDocumentAuthor(author);
+    setDocumentDetails(description);
+    setDocumentImage(image);
+  }
+  function verifyOwner(owner, user) {
+    if (owner === user) return "isOwned";
+  }
+
+  function verifyDelete(title, author, id) {
+    setDialogOpen(true);
+    dialogInfo.current = {
+      title: "You are about to delete a document forever!",
+      body: `Are you sure you want to delete document "${title}" by ${author}?`,
+      confirmText: title,
+      onClose: () => {
+        setDialogOpen(false);
+        dialogInfo.current.onConfirm = null;
+      },
+      onConfirm: () => {
+        deleteThisDocument(id);
+        setDialogOpen(false);
+      },
+    };
+  }
+
+  function deleteThisDocument(documentId) {
+    if (documentId)
+      api
+        .deleteDocument(documentId)
+        .then(() => {
+          toasts.toastSuccess("The document was successfully deleted!");
+          refresh();
+          setPopUpOpen(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          toasts.toastError("Error communicating with the server!");
+        });
+    else toasts.toastWarning("The document could not be found.");
   }
 
   useEffect(() => {
@@ -199,29 +150,87 @@ function Dashboard() {
         title={"Short Stories"}
         Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
       >
-        <PresentChildren classes data={shortStories} previewImage={shortStoriesPreview} refresh={refresh} />
+        {shortStories.map((tile) => (
+          <DashboardTile
+            thumbnail={shortStoriesPreview}
+            title={tile.title}
+            author={tile.author}
+            isOwned
+            onOpen={() =>
+              handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
+            }
+            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+            onEdit={() => toasts.toastSuccess("Clicked edit")}
+          />
+        ))}
       </DashboardSection>
 
       <DashboardSection
         title={"Fairy Tales"}
         Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
       >
-        <PresentChildren classes data={fairyTales} previewImage={fairyTalesPreview} refresh={refresh} />
+        {fairyTales.map((tile) => (
+          <DashboardTile
+            thumbnail={fairyTalesPreview}
+            title={tile.title}
+            author={tile.author}
+            isOwned
+            onOpen={() => handleData(tile.document_id, tile.title, tile.author, tile.description, fairyTalesPreview)}
+            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+            onEdit={() => toasts.toastSuccess("Clicked edit")}
+          />
+        ))}
       </DashboardSection>
 
       <DashboardSection
         title={"Newspaper Articles"}
         Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
       >
-        <PresentChildren classes data={newspaperArticles} previewImage={newspaperArticlesPreview} refresh={refresh} />
+        {newspaperArticles.map((tile) => (
+          <DashboardTile
+            thumbnail={newspaperArticlesPreview}
+            title={tile.title}
+            author={tile.author}
+            isOwned
+            onOpen={() =>
+              handleData(tile.document_id, tile.title, tile.author, tile.description, newspaperArticlesPreview)
+            }
+            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+            onEdit={() => toasts.toastSuccess("Clicked edit")}
+          />
+        ))}
       </DashboardSection>
 
       <DashboardSection
         title={"Other documents"}
         Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
       >
-        <PresentChildren classes data={otherDocuments} previewImage={otherDocumentsPreview} refresh={refresh} />
+        {otherDocuments.map((tile) => (
+          <DashboardTile
+            thumbnail={otherDocumentsPreview}
+            title={tile.title}
+            author={tile.author}
+            isOwned
+            onOpen={() =>
+              handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
+            }
+            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+            onEdit={() => toasts.toastSuccess("Clicked edit")}
+          />
+        ))}
       </DashboardSection>
+
+      <WarningDialog open={dialogOpen} info={dialogInfo.current} />
+
+      <DocumentOverviewPopUp
+        open={openPopUp}
+        onClose={() => setPopUpOpen(false)}
+        documentId={documentId}
+        documentTitle={documentTitle}
+        documentAuthor={documentAuthor}
+        documentDetails={documentDetails}
+        documentImage={documentImage}
+      />
     </AppPage>
   );
 }

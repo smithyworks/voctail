@@ -23,7 +23,7 @@ async function userHandler(req, res) {
 async function allUsersHandler(req, res) {
   try {
     const { rows } = await query("SELECT user_id, name, email FROM users ORDER BY name ASC");
-    res.status(200).json({ rows });
+    res.status(200).json(rows);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");

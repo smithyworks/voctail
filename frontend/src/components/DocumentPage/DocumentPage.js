@@ -1,27 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Typography as T, CircularProgress, makeStyles } from "@material-ui/core";
+import { Grid, CircularProgress } from "@material-ui/core";
 
 import { AppPage, toasts } from "../common";
 import Text from "./Text.js";
 import BlockContainer from "./BlockContainer";
 import AddTranslationDialog from "./AddTranslationDialog";
 import { api } from "../../utils";
-import VTDeleteButton from "../common/Buttons/VTDeleteButton";
-
-const useStyles = makeStyles({
-  headerContainer: { textAlign: "center" },
-  header: {
-    display: "inline-block",
-    width: "100%",
-    maxWidth: "860px",
-    padding: "15px 10px 10px 10px",
-    backgroundColor: "skyblue",
-  },
-});
 
 function DocumentPage() {
-  const classes = useStyles();
   const { document_id } = useParams();
 
   const [document, setDocument] = useState();
@@ -103,23 +90,12 @@ function DocumentPage() {
 
   return (
     <AppPage location="documents" id="document-markup-page">
-      <div className={classes.headerContainer}>
-        <div className={classes.header}>
-          <Grid container justify="space-between">
-            <T>
-              Published by: The Voctail Team <VTDeleteButton />
-            </T>
-
-            <div />
-          </Grid>
-        </div>
-      </div>
       <BlockContainer
         lookupWord={lookupWord}
         lookupTranslations={lookupTranslations}
         onAddTranslation={onAddTranslationIntent}
       >
-        <Text document={document} lookupWordByWord={lookupWordByWord} />
+        <Text document={document} lookupWordByWord={lookupWordByWord} showHeader />
       </BlockContainer>
 
       <AddTranslationDialog
