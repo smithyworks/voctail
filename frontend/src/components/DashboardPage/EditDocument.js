@@ -36,15 +36,17 @@ const useStyles = makeStyles(() => ({
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
 
-function EditDocument(editOpen, onClose, documentId, title, author, description, isPublic, currentCategory) {
-  const titleInput = useRef(title);
-  const authorInput = useRef(author);
-  const descriptionInput = useRef(description);
-  const [publicDocument, setPublicDocument] = useState(isPublic);
-  const [category, setCategory] = useState(currentCategory);
+function EditDocument(editOpen, onClose, document) {
+  const titleInput = useRef(document.title);
+  const authorInput = useRef(document.author);
+  const descriptionInput = useRef(document.description);
+  const [publicDocument, setPublicDocument] = useState(document.public);
+  const [category, setCategory] = useState(document.category);
 
   const classes = useStyles();
 
+  console.log("open", editOpen);
+  console.log("document", document);
   const handleStatusChange = (event) => {
     setPublicDocument(event.target.checked);
   };
@@ -76,7 +78,7 @@ function EditDocument(editOpen, onClose, documentId, title, author, description,
   const editThisDocument = () => {
     api
       .editDocument(
-        documentId,
+        document.document_id,
         titleInput.current,
         authorInput.current,
         descriptionInput.current,

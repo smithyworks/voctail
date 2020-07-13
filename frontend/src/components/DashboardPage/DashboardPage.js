@@ -1,27 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Typography as T,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  Typography,
-  DialogContentText,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
-} from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Typography as T } from "@material-ui/core";
 import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
 import DashboardTile from "../common/DashboardTile";
 import AppPage, { toasts } from "../common/AppPage";
-import { VTButton, DashboardSection } from "../common";
+import { DashboardSection } from "../common";
 import HeaderSection from "../common/HeaderSection";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
@@ -43,7 +26,8 @@ function Dashboard() {
   const [otherDocuments, setOtherDocuments] = useState([]);
   const [usersDocuments, setUsersDocuments] = useState([]);
 
-  const [editOpen, setEditOpen] = useState(false);
+  //const [editOpen, setEditOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
@@ -51,6 +35,7 @@ function Dashboard() {
   const [documentAuthor, setDocumentAuthor] = useState(null);
   const [isPublic, setIsPublic] = useState(false);
   const [category, setDocumentCategory] = useState(null);
+  const [document, setDocument] = useState(null);
 
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -60,14 +45,9 @@ function Dashboard() {
     setCount(countToRefresh + 1);
   }
 
-  const handleEdit = (document_id, title, author, description, isPublic, category) => {
-    setEditOpen(true);
-    setDocumentId(document_id);
-    setDocumentTitle(title);
-    setDocumentDetails(description);
-    setDocumentAuthor(author);
-    setIsPublic(isPublic);
-    setDocumentCategory(category);
+  const handleEdit = (document_id, document) => {
+    setEditDialogOpen(true);
+    setDocument(document);
   };
 
   function verifyDelete(title, author, id) {
@@ -125,6 +105,7 @@ function Dashboard() {
           setShortStories(res.data.shortStories);
           setOtherDocuments(res.data.others);
           setUsersDocuments(res.data.usersDocuments);
+          console.log("edit dailog open", editDialogOpen);
         }
       })
       .catch((err) => console.log(err));
@@ -145,15 +126,13 @@ function Dashboard() {
               title={tile.title}
               author={tile.author}
               isOwned
-              onEdit={() =>
-                handleEdit(tile.document_id, tile.title, tile.author, tile.description, tile.public, tile.category)
-              }
+              onEdit={() => handleEdit(tile)}
               onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
               linkTo={"/documents/" + tile.document_id}
             />
           ))
         ) : (
-          <Typography>You have no own documents.</Typography>
+          <T>You have no own documents.</T>
         )}
       </DashboardSection>
 
@@ -202,16 +181,7 @@ function Dashboard() {
       </DashboardSection>
 
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
-      <EditDocument
-        editOpen={editOpen}
-        onClose={() => setEditOpen(false)}
-        documentId={documentId}
-        title={documentTitle}
-        author={documentAuthor}
-        description={documentDetails}
-        isPublic={isPublic}
-        currentCategory={category}
-      />
+      <EditDocument editOpen={editDialogOpen} onClose={() => setEditDialogOpen(false)} document={document} />
     </AppPage>
   );
 }

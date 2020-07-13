@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onEdit, onOpen, linkTo }) {
+function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onEdit, linkTo }) {
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
@@ -68,9 +68,6 @@ function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onE
     e.stopPropagation();
   }
 
-  function _onOpen(e) {
-    if (typeof onOpen === "function") onOpen(e);
-  }
   function _onDelete(e) {
     if (typeof onDelete === "function") onDelete(e);
   }
