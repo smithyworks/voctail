@@ -60,7 +60,7 @@ function ClassroomViewPage() {
 
   useEffect(() => {
     setCurrentClassroomId(urlParser());
-  });
+  }, []);
 
   useEffect(() => {
     api

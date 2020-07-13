@@ -3,7 +3,7 @@ const { query } = require("./db.js");
 
 async function classroomsHandler(req, res) {
   try {
-    const { rows } = await query("SELECT * FROM classrooms");
+    const { rows } = await query("SELECT * FROM classrooms ORDER BY classroom_id DESC");
     res.status(200).json({ rows });
   } catch (err) {
     log(err);
@@ -72,12 +72,18 @@ async function createClassroom(req, res) {
       res.status(400).send("Invalid classroom data.");
     }
     const {
-      rows: [classroom],
+      input,
     } = await query(
       "INSERT INTO classrooms (classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4, $5)",
       [teacher, title, description, topic, open]
     );
-    res.status(201).send(`Successfully created classroom ${title}.`);
+    const {
+      rows,
+    } = await query(
+      "SELECT * FROM classrooms WHERE classroom_id = (SELECT MAX(classroom_id) AS LastClass FROM classrooms WHERE title = $1 AND topic = $2)",
+      [title, topic]
+    );
+    res.status(201).json({ rows });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
