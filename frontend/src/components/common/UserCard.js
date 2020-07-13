@@ -2,11 +2,10 @@ import React from "react";
 import Card from "@material-ui/core/Card";
 import cx from "clsx";
 import CardContent from "@material-ui/core/CardContent";
-import { Avatar, Box } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import Badge from "@material-ui/core/Badge";
 import Tooltip from "@material-ui/core/Tooltip";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { display } from "@material-ui/system";
 
 const LightTooltip = withStyles((theme) => ({
   tooltip: {
