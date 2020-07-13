@@ -115,7 +115,6 @@ function Dashboard() {
           setShortStories(res.data.shortStories);
           setOtherDocuments(res.data.others);
           setUsersDocuments(res.data.usersDocuments);
-          console.log("edit dailog open", editDialogOpen);
         }
       })
       .catch((err) => console.log(err));
