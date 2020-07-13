@@ -18,7 +18,7 @@ import Header from "../common/HeaderSection";
 import { ClassroomSection } from "../common";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import VTButton from "./common/Buttons/VTButton";
+import VTButton from "../common/Buttons/VTButton";
 import { toasts } from "../common/AppPage/AppPage";
 import { Link } from "react-router-dom";
 import DialogContentText from "@material-ui/core/DialogContentText";
