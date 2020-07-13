@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, TableHead, TableBody, TableRow, TableContainer } from "@material-ui/core";
+import { Table, TableHead, TableBody, TableRow, TableContainer, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Pagination } from "@material-ui/lab";
 
@@ -59,7 +59,12 @@ function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete, searchSt
         onChange={(_, p) => setPage(p)}
         className={classes.pagination}
       />
-      <Table size="small">
+      <Table
+        size="small"
+        style={{ backgroundColor: "white", border: "1px solid lightgrey" }}
+        component={Paper}
+        elevation={0}
+      >
         <TableHead>
           <UserRow header onSortPremium={onSortPremium} />
         </TableHead>

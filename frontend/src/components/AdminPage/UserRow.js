@@ -18,6 +18,8 @@ const useStyles = makeStyles({
   },
   header: {
     fontWeight: "bold",
+    padding: "10px 0",
+    display: "inline-block",
   },
   cell: {
     padding: "0 10px",
@@ -36,7 +38,7 @@ function Grey({ children }) {
   return <span className={classes.greyed}>{children}</span>;
 }
 
-function Header({ children, style, onClick }) {
+function Header({ children, onClick }) {
   const classes = useStyles();
   return (
     <span className={classes.header} style={{ cursor: onClick ? "pointer" : undefined }} onClick={onClick}>
