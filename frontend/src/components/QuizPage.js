@@ -78,7 +78,7 @@ function Results({ onReport }) {
       <T variant={"h5"}>
         {results.taken > 0
           ? "  on questions total:  " +
-            (results.total - results.wrong) +
+            (results.taken - results.wrong) +
             "/" +
             results.total +
             "  ( " +
@@ -361,7 +361,7 @@ function Quiz({ ...props }) {
 
   //Results
   const getResults = () => {
-    const perc = (wrong, absolute) => (absolute > 0 ? Math.round(((absolute - wrong) / absolute) * 100) : 0);
+    const perc = (correct, absolute) => (absolute > 0 ? Math.round((correct / absolute) * 100) : 0);
     let unknowns = [];
     result.forEach((v, i) => {
       if (v === false) {
@@ -369,7 +369,7 @@ function Quiz({ ...props }) {
       }
     });
     const [wrong, taken, total] = [unknowns.length, result.length, quiz.questions.length];
-    const [percentageTaken, percentageTotal] = [perc(wrong, taken), perc(wrong, total)];
+    const [percentageTaken, percentageTotal] = [perc(taken - wrong, taken), perc(taken - wrong, total)];
     console.log("getResulst", wrong, taken, total, percentageTaken, percentageTotal, unknowns);
     return { wrong, taken, total, percentageTaken, percentageTotal, unknowns };
   };

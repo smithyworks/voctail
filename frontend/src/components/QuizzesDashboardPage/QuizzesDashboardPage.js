@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Grid, GridList, Button } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +12,7 @@ import AddRandomQuiz from "./AddRandomQuiz";
 import AddCustomQuiz from "./AddCustomQuiz";
 import RenameQuiz from "./RenameQuiz";
 import Metrics from "./Metrics";
+import WarningDialog from "../AdminPage/WarningDialog";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
@@ -66,6 +67,10 @@ function QuizzesDashboard({ ...props }) {
     setOpenRename(false);
   };
 
+  //delete dialog
+  const deleteInfo = useRef();
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
   const deleteQuiz = (id) => {
     api.deleteQuiz(id).then((r) => {
       if (r) {
@@ -73,6 +78,23 @@ function QuizzesDashboard({ ...props }) {
       }
     });
     refresh();
+  };
+
+  const onDelete = (quiz) => {
+    deleteInfo.current = {
+      title: "You are about to delete the quiz forever!",
+      body: `Are you sure you want to delete the quiz "${quiz.title}" (${quiz.quiz_id})?\nThis cannot be undone!`,
+      confirmText: quiz.title,
+      onClose: () => {
+        setDeleteOpen(false);
+        deleteInfo.current.onConfirm = null;
+      },
+      onConfirm: () => {
+        setDeleteOpen(false);
+        deleteQuiz(quiz.quiz_id);
+      },
+    };
+    setDeleteOpen(true);
   };
 
   useEffect(() => {
@@ -98,7 +120,7 @@ function QuizzesDashboard({ ...props }) {
               key={v.quiz_id}
               name={v.title}
               id={v.quiz_id}
-              onDelete={() => deleteQuiz(v.quiz_id)}
+              onDelete={() => onDelete(v)}
               onEdit={() => handleRenameOpen(v.quiz_id)}
               onViewStatistic={() => handleViewStatOpen(v)}
               isOwned={true}
@@ -117,7 +139,7 @@ function QuizzesDashboard({ ...props }) {
               key={v.quiz_id}
               name={v.title}
               id={v.quiz_id}
-              onDelete={() => deleteQuiz(v.quiz_id)}
+              onDelete={() => onDelete(v)}
               onEdit={() => handleRenameOpen(v.quiz_id)}
               onViewStatistic={() => handleViewStatOpen(v)}
               isOwned={true}
@@ -136,7 +158,7 @@ function QuizzesDashboard({ ...props }) {
               key={v.quiz_id}
               name={v.title}
               id={v.quiz_id}
-              onDelete={() => deleteQuiz(v.quiz_id)}
+              onDelete={() => onDelete(v)}
               onEdit={() => handleRenameOpen(v.quiz_id)}
               onViewStatistic={() => handleViewStatOpen(v)}
               isOwned={true}
@@ -155,7 +177,7 @@ function QuizzesDashboard({ ...props }) {
               key={v.quiz_id}
               name={v.title}
               id={v.quiz_id}
-              onDelete={() => deleteQuiz(v.quiz_id)}
+              onDelete={() => onDelete(v)}
               onEdit={() => handleRenameOpen(v.quiz_id)}
               onViewStatistic={() => handleViewStatOpen(v)}
               isOwned={true}
@@ -172,13 +194,7 @@ function QuizzesDashboard({ ...props }) {
       <AddRandomQuiz onAdd={refresh} onClose={handleRandomClose} open={openRandom} />
       <RenameQuiz onAdd={refresh} onClose={handleRenameClose} open={openRename} quiz_id={idRename} />
       <Metrics onClose={handleViewStatClose} open={openViewStat} quiz={viewQuiz} />
-
-      <Grid className={classes.grid} container justify="space-evenly" alignItems="center" direction="row">
-        <GridList cellHeight={200} cols={3} container justify="center" alignItems="center">
-          <Button onClick={() => api.createQuizFromDoc(2, 10)}>Generate From Document (2)</Button>
-          <Button onClick={() => api.fetchQuizByDocument(2)}>Fetch By Document (2)</Button>
-        </GridList>
-      </Grid>
+      <WarningDialog open={deleteOpen} info={deleteInfo.current} />
     </AppPage>
   );
 }

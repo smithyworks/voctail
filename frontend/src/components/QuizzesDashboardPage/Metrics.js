@@ -24,7 +24,7 @@ function Metrics({ onClose, open, quiz }) {
 
   return (
     <div>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="stats" fullScreen>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="stats" fullWidth={true} maxWidth={"xl"}>
         <DialogTitle id="stats">Quiz statistics for quiz {quiz.title}.</DialogTitle>
         <MetricView questions={quiz.questions} results={results} />
         <DialogActions>
