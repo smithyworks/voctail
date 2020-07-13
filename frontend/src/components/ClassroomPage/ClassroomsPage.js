@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
+  Grid,
   Typography,
   Slide,
 } from "@material-ui/core";
@@ -15,7 +16,7 @@ import AppPage from "../common/AppPage";
 import { api } from "../../utils";
 import logo_classroom from "../../assets/classroom_logo.png";
 import Header from "../common/HeaderSection";
-import { ClassroomSection } from "../common";
+import { ClassroomSection, ConfirmDialog } from "../common";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import VTButton from "../common/Buttons/VTButton";
@@ -183,12 +184,16 @@ function ClassroomItem({
 function ClassroomOverviewPopUp({
   open,
   onClose,
+  classroomDataFromDatabase,
+  setClassroomDataFromDatabase,
   classroomId,
   classroomTitle,
   classroomTopic,
   classroomAuthor,
   classroomDescription,
 }) {
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+
   return (
     <Dialog
       onClose={onClose}
@@ -211,7 +216,7 @@ function ClassroomOverviewPopUp({
         </Button>
         <Button
           onClick={() => {
-            deleteClassroom(classroomId);
+            setConfirmDialogOpen(true);
           }}
           color="secondary"
         >
@@ -221,6 +226,32 @@ function ClassroomOverviewPopUp({
           Open
         </Button>
       </DialogActions>
+      <ConfirmDialog
+        open={confirmDialogOpen}
+        title="Deleting a classroom..."
+        onConfirm={() => {
+          deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDataFromDatabase);
+          setConfirmDialogOpen(false);
+          onClose();
+        }}
+        onClose={() => {
+          setConfirmDialogOpen(false);
+        }}
+      >
+        <Grid container>
+          <Grid element>
+            <Typography> Are you sure you want to delete</Typography>
+          </Grid>
+          <Grid element>
+            <Typography style={{ color: "red", marginLeft: "5px", marginRight: "5px", fontWeight: "bold" }}>
+              {" " + classroomTitle}
+            </Typography>
+          </Grid>
+          <Grid element>
+            <Typography>?</Typography>
+          </Grid>
+        </Grid>
+      </ConfirmDialog>
     </Dialog>
   );
 }
@@ -373,8 +404,28 @@ function createClassroom(user, title, topic, description, classroomDataFromDatab
   toasts.toastSuccess("Classroom added to the database!");
 }
 
-function deleteClassroom(classroomId) {
-  api.deleteClassroom(classroomId).catch((err) => console.log(err));
+function indexOfClassroom(classroomId, classrooms) {
+  let output = 0;
+  classrooms.forEach((classroom, index) => {
+    if (classroom.classroom_id === classroomId) {
+      output = index;
+    }
+  });
+  return output;
+}
+
+function deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDataFromDatabase) {
+  const indexOfDeletedClassroom = indexOfClassroom(classroomId, classroomDataFromDatabase);
+  api
+    .deleteClassroom(classroomId)
+    .then((res) => {
+      setClassroomDataFromDatabase(
+        classroomDataFromDatabase
+          .slice(0, indexOfDeletedClassroom)
+          .concat(classroomDataFromDatabase.slice(indexOfDeletedClassroom + 1))
+      );
+    })
+    .catch((err) => console.log(err));
   toasts.toastSuccess("Classroom deleted from the database!");
 }
 
@@ -470,6 +521,8 @@ function Classrooms() {
               onClose={() => {
                 setPopUpOpen(false);
               }}
+              classroomDataFromDatabase={classroomDataFromDatabase}
+              setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               classroomId={classroomId}
               classroomTitle={classroomTitle}
               classroomTopic={classroomTopic}
