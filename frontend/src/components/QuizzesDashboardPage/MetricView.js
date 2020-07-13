@@ -52,14 +52,16 @@ function MetricView({ questions, results, disablePadding }) {
     return strQ;
   };
 
+  // questions
+  //<T variant={"h4"}>{formatQ(questions)}</T>
+  //<Divider />
+
   return (
     <div>
       {results.length === 0 ? (
         <T variant={"h4"}>As of yet no metrics are available. Please take a quiz and show results.</T>
       ) : (
         <Paper className={classes.quizItem} elevation={0}>
-          <T variant={"h4"}>{formatQ(questions)}</T>
-          <Divider />
           <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
             <Table>
               <TableHead>

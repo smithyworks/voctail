@@ -1,4 +1,4 @@
-INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, last_seen, created) VALUES
+INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, created) VALUES
   (1, 'Quiz Fruits','[
     {"vocabulary":"banana", "suggestions":["Himbeere", "Erdbeere", "Apfel"], "translation":"Banane"},
     {"vocabulary":"pineapple", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Ananas"},
@@ -10,7 +10,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, last_seen, cr
     {"vocabulary":"raspberry", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Himbeere"},
     {"vocabulary":"grape", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Traube"},
     {"vocabulary":"acai", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Acai"}
-    ]',false,true, NOW(), NOW()),
+    ]',false,true, NOW()),
 
   (2, 'Quiz Vehicles','[
     {"vocabulary":"car", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Auto"},
@@ -19,7 +19,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, last_seen, cr
     {"vocabulary":"bike", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Fahrrad"},
     {"vocabulary":"scooter", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Roller"},
     {"vocabulary":"rocket", "suggestions":["Zug", "Flugzeug", "Fahrrad"], "translation":"Rakete"}
-    ]',false,true, NOW(), NOW()),
+    ]',false,true, NOW()),
 
 
   (3, 'Quiz Colors','[
@@ -33,7 +33,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, last_seen, cr
     {"vocabulary":"grey", "suggestions":["weiß", "schwarz", "gelb"], "translation":"grau"},
     {"vocabulary":"violet", "suggestions":["weiß", "schwarz", "gelb"], "translation":"violett"},
     {"vocabulary":"turquoise", "suggestions":["weiß", "schwarz", "gelb"], "translation":"türkis"}
-    ]',false,true, NOW(), NOW()),
+    ]',false,true, NOW()),
 
   (4, 'Quiz Numbers','[
     {"vocabulary":"one", "suggestions":["zwei", "sechs", "acht"], "translation":"eins"},
@@ -46,7 +46,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, last_seen, cr
     {"vocabulary":"eight", "suggestions":["zwei", "sechs", "sieben"], "translation":"acht"},
     {"vocabulary":"nine", "suggestions":["zwei", "sechs", "acht"], "translation":"neun"},
     {"vocabulary":"ten", "suggestions":["zwei", "sechs", "acht"], "translation":"zehn"}
-    ]',false, true, NOW(), NOW()),
+    ]',false, true, NOW()),
 
   (5, 'Challenge10', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
     {"vocabulary": "soul", "suggestions": ["Bezüge", "Tage", "Dirn"], "translation": "Gefühl"}, 
@@ -57,7 +57,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, last_seen, cr
     {"vocabulary": "members", "suggestions": ["auf der Hand liegend", "Tschetschenien", "Böden"], "translation": "Angehörige"}, 
     {"vocabulary": "works", "suggestions": ["Knappheit", "Augenblick", "Ansicht"], "translation": "Arbeiten"}, 
     {"vocabulary": "how", "suggestions": ["Abrechnung", "Kabinette", "Aussprache"], "translation": "auf welche Weise"}
-    ]', true, false, NOW(), NOW()),
+    ]', true, false, NOW()),
 
   (6, 'Challenge50', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
     {"vocabulary": "soul", "suggestions": ["Bezüge", "Tage", "Dirn"], "translation": "Gefühl"}, 
@@ -68,7 +68,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, last_seen, cr
     {"vocabulary": "members", "suggestions": ["auf der Hand liegend", "Tschetschenien", "Böden"], "translation": "Angehörige"}, 
     {"vocabulary": "works", "suggestions": ["Knappheit", "Augenblick", "Ansicht"], "translation": "Arbeiten"}, 
     {"vocabulary": "how", "suggestions": ["Abrechnung", "Kabinette", "Aussprache"], "translation": "auf welche Weise"}
-    ]', true, false, NOW(), NOW()),
+    ]', true, false, NOW()),
 
   (7, 'Challenge100', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
     {"vocabulary": "soul", "suggestions": ["Bezüge", "Tage", "Dirn"], "translation": "Gefühl"}, 
@@ -79,7 +79,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, last_seen, cr
     {"vocabulary": "members", "suggestions": ["auf der Hand liegend", "Tschetschenien", "Böden"], "translation": "Angehörige"}, 
     {"vocabulary": "works", "suggestions": ["Knappheit", "Augenblick", "Ansicht"], "translation": "Arbeiten"}, 
     {"vocabulary": "how", "suggestions": ["Abrechnung", "Kabinette", "Aussprache"], "translation": "auf welche Weise"}
-    ]', true, false, NOW(), NOW());
+    ]', true, false, NOW());
 
 
 SELECT setval(pg_get_serial_sequence('quizzes','quiz_id'), (SELECT MAX(quiz_id) from quizzes));
