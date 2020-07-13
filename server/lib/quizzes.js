@@ -62,8 +62,8 @@ async function insertSQL(title, questions, user_id, { ...props }) {
   const {
     rows: [{ quiz_id }],
   } = await query(
-    "INSERT INTO quizzes (title, questions, is_day, is_custom, last_seen, created) \
-      VALUES($1, $2, $3, $4, NOW(), NOW()) RETURNING quiz_id",
+    "INSERT INTO quizzes (title, questions, is_day, is_custom, created) \
+      VALUES($1, $2, $3, $4, NOW()) RETURNING quiz_id",
     [title, JSON.stringify(questions), is_day, is_custom]
   );
 
@@ -151,40 +151,40 @@ async function quizCategoryHandler(req, res) {
     const {
       rows: quizDocuments,
     } = await query(
-      "SELECT  quizzes.* FROM quizzes \
+      "SELECT  quizzes.*, users_quizzes.last_seen FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     INNER JOIN quizzes_documents \
         ON quizzes_documents.quiz_id = quizzes.quiz_id \
-        ORDER BY quizzes.last_seen DESC",
+        ORDER BY COALESCE(users_quizzes.last_seen, quizzes.created) DESC",
       [user_id]
     );
 
     const {
       rows: quizCustom,
     } = await query(
-      "SELECT  quizzes.* FROM quizzes \
+      "SELECT  quizzes.*, users_quizzes.last_seen FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     WHERE quizzes.is_custom = true\
-    ORDER BY quizzes.last_seen DESC",
+    ORDER BY COALESCE(users_quizzes.last_seen, quizzes.created) DESC",
       [user_id]
     );
 
     const {
       rows: quizChallenges,
     } = await query(
-      "SELECT  quizzes.* FROM quizzes \
+      "SELECT  quizzes.*, users_quizzes.last_seen FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     WHERE quizzes.is_day = true\
-    ORDER BY quizzes.created DESC",
+    ORDER BY COALESCE(users_quizzes.last_seen, quizzes.created) DESC",
       [user_id]
     );
 
     const {
       rows: quizzes,
     } = await query(
-      "SELECT  quizzes.* FROM quizzes \
+      "SELECT  quizzes.*, users_quizzes.last_seen FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
-    ORDER BY quizzes.last_seen DESC",
+    ORDER BY COALESCE(users_quizzes.last_seen, quizzes.created) DESC",
       [user_id]
     );
 
@@ -232,8 +232,13 @@ async function renameQuizHandler(req, res) {
 
 async function viewedNowQuizHandler(req, res) {
   try {
+    const { user_id } = req.authData.user;
     const quiz_id = req.body.quiz_id;
-    await query("UPDATE quizzes SET last_seen = NOW() WHERE quizzes.quiz_id=$1", [quiz_id]);
+    await query(
+      "UPDATE users_quizzes SET last_seen = NOW() WHERE users_quizzes.quiz_id=$1 \
+        AND users_quizzes.user_id=$2",
+      [quiz_id, user_id]
+    );
     res.status(200).send("Successful update of quiz with id " + quiz_id + ".");
   } catch (err) {
     log(err);

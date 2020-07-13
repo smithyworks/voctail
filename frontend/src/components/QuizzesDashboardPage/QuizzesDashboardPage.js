@@ -104,7 +104,6 @@ function QuizzesDashboard({ ...props }) {
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
               lastSeen={v.last_seen}
-              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -124,7 +123,6 @@ function QuizzesDashboard({ ...props }) {
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
               lastSeen={v.last_seen}
-              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -144,7 +142,6 @@ function QuizzesDashboard({ ...props }) {
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
               lastSeen={v.last_seen}
-              dateCreated={v.created}
             >
               {v}
             </QuizTile>
@@ -164,7 +161,6 @@ function QuizzesDashboard({ ...props }) {
               isOwned={true}
               linkTo={base + "/" + v.quiz_id}
               lastSeen={v.last_seen}
-              dateCreated={v.created}
             >
               {v}
             </QuizTile>
