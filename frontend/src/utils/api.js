@@ -140,6 +140,10 @@ export function getDocuments(classroom_id) {
   return axios.get(`${base}/classrooms-documents`, { params: { classroom_id: classroom_id } });
 }
 
+export function getSections(classroom_id) {
+  return axios.get(`${base}/classrooms-sections`, { params: { classroom_id: classroom_id } });
+}
+
 export function createClassroom(teacher, title, topic, description, open) {
   return axios.post(`${base}/create-classroom`, { teacher, title, topic, description, open });
 }

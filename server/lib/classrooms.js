@@ -64,6 +64,18 @@ async function documentsHandler(req, res) {
   }
 }
 
+async function sectionsHandler(req, res) {
+  try {
+    const { rows } = await query("SELECT section FROM classroom_documents WHERE classroom_id = $1 GROUP BY section", [
+      req.query.classroom_id,
+    ]);
+    res.status(200).json({ rows });
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something wrong happened while fetching sections from the database.");
+  }
+}
+
 async function createClassroom(req, res) {
   try {
     const { teacher, title, description, topic, open } = req.body;
@@ -144,6 +156,7 @@ module.exports = {
   classroomHandler,
   classroomsHandler,
   documentsHandler,
+  sectionsHandler,
   studentsHandler,
   usersHandler,
   createClassroom,

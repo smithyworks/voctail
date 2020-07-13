@@ -67,6 +67,7 @@ server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomsHandler
 server.get("/api/classroom", auth.tokenMiddleWare, classrooms.classroomHandler);
 server.get("/api/classrooms-students", auth.tokenMiddleWare, classrooms.studentsHandler);
 server.get("/api/classrooms-documents", auth.tokenMiddleWare, classrooms.documentsHandler);
+server.get("/api/classrooms-sections", auth.tokenMiddleWare, classrooms.sectionsHandler);
 server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClassroom);
 server.post("/api/delete-classroom", auth.tokenMiddleWare, classrooms.deleteClassroom);
 server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.addStudentToClassroom);
