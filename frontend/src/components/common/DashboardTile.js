@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Paper, makeStyles, Grid, Typography, Menu, MenuItem } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   container: {
@@ -54,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onEdit, onOpen }) {
+function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo }) {
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
@@ -67,14 +68,14 @@ function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onE
     e.stopPropagation();
   }
 
-  function _onOpen(e) {
-    if (typeof onOpen === "function") onOpen(e);
-  }
   function _onDelete(e) {
     if (typeof onDelete === "function") onDelete(e);
   }
   function _onEdit(e) {
-    if (typeof onDelete === "function") onEdit(e);
+    if (typeof onEdit === "function") onEdit(e);
+  }
+  function _onGenerateQuiz(e) {
+    if (typeof onGenerateQuiz === "function") onGenerateQuiz(e);
   }
 
   return (
@@ -85,7 +86,8 @@ function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onE
         elevation={hovered ? 5 : 2}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={_onOpen}
+        component={Link}
+        to={linkTo}
       >
         <div className={classes.infoContainer}>
           <Typography className={classes.title}>{title}</Typography>
@@ -105,6 +107,7 @@ function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onE
       <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
         <MenuItem onClick={_onEdit}>Edit</MenuItem>
         <MenuItem onClick={_onDelete}>Delete</MenuItem>
+        <MenuItem onClick={_onGenerateQuiz}>Create Quiz from Document</MenuItem>
       </Menu>
     </Grid>
   );

@@ -40,6 +40,7 @@ server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
 server.get("/api/handle-documents", auth.tokenMiddleWare, documents.documentDataHandler);
 server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
+server.post("/api/edit-document", auth.tokenMiddleWare, documents.editDocument);
 
 server.post("/api/update-vocabulary", auth.tokenMiddleWare, vocabulary.updateUserVocabHandler);
 server.post("/api/add-translation", auth.tokenMiddleWare, vocabulary.addTranslationHandler);
