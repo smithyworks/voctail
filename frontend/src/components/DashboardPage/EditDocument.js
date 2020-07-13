@@ -36,22 +36,15 @@ const useStyles = makeStyles(() => ({
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
 
-function EditDocument(refresh, documentId, title, author, description, isPublic, currentCategory) {
+function EditDocument(editOpen, onClose, documentId, title, author, description, isPublic, currentCategory) {
   const titleInput = useRef(title);
   const authorInput = useRef(author);
   const descriptionInput = useRef(description);
   const [publicDocument, setPublicDocument] = useState(isPublic);
   const [category, setCategory] = useState(currentCategory);
 
-  const [open, setOpen] = useState(true);
   const classes = useStyles();
 
-  const handleEditOpen = () => {
-    setOpen(true);
-  };
-  const handleEditClose = () => {
-    setOpen(false);
-  };
   const handleStatusChange = (event) => {
     setPublicDocument(event.target.checked);
   };
@@ -91,8 +84,8 @@ function EditDocument(refresh, documentId, title, author, description, isPublic,
         publicDocument
       )
       .then(() => {
-        handleEditClose();
-        refresh();
+        onClose();
+        //refresh();
         toasts.toastSuccess("The document was successfully edited!");
         resetValues();
       })
@@ -104,7 +97,7 @@ function EditDocument(refresh, documentId, title, author, description, isPublic,
 
   return (
     <div>
-      <Dialog open={open} onClose={handleEditClose} aria-labelledby="edit-document">
+      <Dialog open={editOpen} onClose={onClose} aria-labelledby="edit-document">
         <DialogTitle id="edit-document">Edit your document</DialogTitle>
         <DialogContent>
           <DialogContentText>You can change the additional information of your document.</DialogContentText>
@@ -171,7 +164,7 @@ function EditDocument(refresh, documentId, title, author, description, isPublic,
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <VTButton neutral onClick={handleEditClose}>
+          <VTButton neutral onClick={onClose}>
             Cancel
           </VTButton>
           <VTButton

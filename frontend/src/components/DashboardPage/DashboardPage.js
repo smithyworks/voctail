@@ -1,5 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Typography as T, Dialog, DialogTitle, DialogActions, DialogContent, Typography } from "@material-ui/core";
+import {
+  Typography as T,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  Typography,
+  DialogContentText,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
@@ -16,39 +32,6 @@ import fairyTalesPreview from "../../assets/fairytale.jpg";
 import newspaperArticlesPreview from "../../assets/newspaper.jpg";
 import otherDocumentsPreview from "../../assets/others.jpg";
 
-//popup for the document you click on (get some information about the doc before entering view mode)
-function DocumentOverviewPopUp({
-  open,
-  onClose,
-  documentId,
-  documentTitle,
-  documentDetails,
-  documentAuthor,
-  documentImage,
-}) {
-  return (
-    <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
-      <DialogTitle id="document-overview-popup" onClose={onClose}>
-        {documentTitle}
-      </DialogTitle>
-      {/*} <img src={documentImage} alt={documentImage} width="100%" height="40%" /> */}
-      <DialogContent dividers>
-        <T gutterBottom>
-          {documentDetails} Written by {documentAuthor}
-        </T>
-      </DialogContent>
-      <DialogActions>
-        <VTButton neutral onClick={onClose}>
-          Cancel
-        </VTButton>
-        <VTButton accept component={Link} to={"/documents/" + documentId}>
-          View document
-        </VTButton>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
   const [user, setUser] = useState();
@@ -60,12 +43,14 @@ function Dashboard() {
   const [otherDocuments, setOtherDocuments] = useState([]);
   const [usersDocuments, setUsersDocuments] = useState([]);
 
-  //const [openPopUp, setPopUpOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
   const [documentImage, setDocumentImage] = useState(otherDocumentsPreview);
   const [documentAuthor, setDocumentAuthor] = useState(null);
+  const [isPublic, setIsPublic] = useState(false);
+  const [category, setDocumentCategory] = useState(null);
 
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -74,14 +59,16 @@ function Dashboard() {
   function refresh() {
     setCount(countToRefresh + 1);
   }
-  function handleData(document_id, title, author, description, image) {
-    setPopUpOpen(true);
+
+  const handleEdit = (document_id, title, author, description, isPublic, category) => {
+    setEditOpen(true);
     setDocumentId(document_id);
     setDocumentTitle(title);
-    setDocumentAuthor(author);
     setDocumentDetails(description);
-    setDocumentImage(image);
-  }
+    setDocumentAuthor(author);
+    setIsPublic(isPublic);
+    setDocumentCategory(category);
+  };
 
   function verifyDelete(title, author, id) {
     setDialogOpen(true);
@@ -116,19 +103,7 @@ function Dashboard() {
     else toasts.toastWarning("The document could not be found.");
   }
 
-  /* function editThisDocument(documentId, title, author, description, isPublic, category) {
-      if (documentId)
-          api
-              .editDocument(documentId, title, author, description, category, isPublic)
-              .then(() => {
-                  toasts.toastSuccess("The document was successfully edited!");
-              })
-              .catch((err) => {
-                  console.log(err)
-                  toasts.toastError("Error editing the document.");
-              });
-  } */
-
+  //get current user
   useEffect(() => {
     api
       .user()
@@ -136,8 +111,9 @@ function Dashboard() {
         if (res) setUser(res.data);
       })
       .catch((err) => console.log(err));
-  }, [countToRefresh]);
+  }, []);
 
+  //fetch documents (rerender when documents were added, deleted, edited
   useEffect(() => {
     api
       .fetchDocuments()
@@ -169,21 +145,11 @@ function Dashboard() {
               title={tile.title}
               author={tile.author}
               isOwned
-              onOpen={() =>
-                handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
+              onEdit={() =>
+                handleEdit(tile.document_id, tile.title, tile.author, tile.description, tile.public, tile.category)
               }
               onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-              onEdit={() => (
-                <EditDocument
-                  refresh={refresh()}
-                  documentId={tile.document_id}
-                  title={tile.title}
-                  author={tile.author}
-                  description={tile.description}
-                  isPublic={tile.public}
-                  currentCategory={tile.category}
-                />
-              )}
+              linkTo={"/documents/" + tile.document_id}
             />
           ))
         ) : (
@@ -197,11 +163,7 @@ function Dashboard() {
             thumbnail={shortStoriesPreview}
             title={tile.title}
             author={tile.author}
-            onOpen={() =>
-              handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
-            }
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
+            linkTo={"/documents/" + tile.document_id}
           />
         ))}
       </DashboardSection>
@@ -212,9 +174,7 @@ function Dashboard() {
             thumbnail={fairyTalesPreview}
             title={tile.title}
             author={tile.author}
-            onOpen={() => handleData(tile.document_id, tile.title, tile.author, tile.description, fairyTalesPreview)}
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
+            linkTo={"/documents/" + tile.document_id}
           />
         ))}
       </DashboardSection>
@@ -225,11 +185,7 @@ function Dashboard() {
             thumbnail={newspaperArticlesPreview}
             title={tile.title}
             author={tile.author}
-            onOpen={() =>
-              handleData(tile.document_id, tile.title, tile.author, tile.description, newspaperArticlesPreview)
-            }
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
+            linkTo={"/documents/" + tile.document_id}
           />
         ))}
       </DashboardSection>
@@ -240,25 +196,21 @@ function Dashboard() {
             thumbnail={otherDocumentsPreview}
             title={tile.title}
             author={tile.author}
-            onOpen={() =>
-              handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
-            }
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
+            linkTo={"/documents/" + tile.document_id}
           />
         ))}
       </DashboardSection>
 
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
-
-      <DocumentOverviewPopUp
-        open={openPopUp}
-        onClose={() => setPopUpOpen(false)}
+      <EditDocument
+        editOpen={editOpen}
+        onClose={() => setEditOpen(false)}
         documentId={documentId}
-        documentTitle={documentTitle}
-        documentAuthor={documentAuthor}
-        documentDetails={documentDetails}
-        documentImage={documentImage}
+        title={documentTitle}
+        author={documentAuthor}
+        description={documentDetails}
+        isPublic={isPublic}
+        currentCategory={category}
       />
     </AppPage>
   );
