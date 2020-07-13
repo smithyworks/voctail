@@ -93,7 +93,8 @@ async function createClassroom(req, res) {
 async function deleteClassroom(req, res) {
   try {
     const { classroom_id } = req.body;
-    const { rows } = await query("DELETE FROM classrooms WHERE classroom_id = $1", [classroom_id]);
+    const { output } = await query("DELETE FROM classrooms WHERE classroom_id = $1", [classroom_id]);
+    res.status(200).send("Classroom correctly deleted.");
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
