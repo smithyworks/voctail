@@ -273,7 +273,7 @@ function UploadDocument({ refresh, publisherId }) {
             <Select
               labelId="demo-simple-select-placeholder-label-label"
               id="choose-category"
-              value={category}
+              value={"Others"}
               onChange={handleCategoryChange}
               displayEmpty
               className={classes.selectEmpty}

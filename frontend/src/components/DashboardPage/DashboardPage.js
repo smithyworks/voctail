@@ -31,11 +31,10 @@ function Dashboard() {
   const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
-  const [documentImage, setDocumentImage] = useState(otherDocumentsPreview);
+  //const [documentImage, setDocumentImage] = useState(otherDocumentsPreview);
   const [documentAuthor, setDocumentAuthor] = useState(null);
   const [isPublic, setIsPublic] = useState(false);
   const [category, setDocumentCategory] = useState(null);
-  const [document, setDocument] = useState(null);
 
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -45,9 +44,14 @@ function Dashboard() {
     setCount(countToRefresh + 1);
   }
 
-  const handleEdit = (document_id, document) => {
+  const handleEdit = (document) => {
     setEditDialogOpen(true);
-    setDocument(document);
+    setDocumentId(document.document_id);
+    setIsPublic(document.public);
+    setDocumentAuthor(document.author);
+    setDocumentDetails(document.description);
+    setDocumentTitle(document.title);
+    setDocumentCategory(document.category);
   };
 
   function verifyDelete(title, author, id) {
@@ -181,7 +185,16 @@ function Dashboard() {
       </DashboardSection>
 
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
-      <EditDocument editOpen={editDialogOpen} onClose={() => setEditDialogOpen(false)} document={document} />
+      <EditDocument
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        documentId={documentId}
+        title={documentTitle}
+        author={documentAuthor}
+        description={documentDetails}
+        isPublic={isPublic}
+        currentCategory={category}
+      />
     </AppPage>
   );
 }

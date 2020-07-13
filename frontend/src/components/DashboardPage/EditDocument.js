@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
@@ -23,30 +23,24 @@ const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
   grid: { height: 100, width: "100%" },
   userItem: { width: "150px" },
-
-  //gridlist with documents
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
-    backgroundColor: "rgba(255,255,255,0.54)",
-  },
-  gridList: { width: "100%", height: 800, justifyContent: "space-around" },
-  icon: { color: "rgba(255,255,255,0.54)" },
 }));
 
-function EditDocument(editOpen, onClose, document) {
-  const titleInput = useRef(document.title);
-  const authorInput = useRef(document.author);
-  const descriptionInput = useRef(document.description);
-  const [publicDocument, setPublicDocument] = useState(document.public);
-  const [category, setCategory] = useState(document.category);
+function EditDocument({ open, onClose, documentId, title, author, description, isPublic, currentCategory }) {
+  const titleInput = useRef(null);
+  const authorInput = useRef(null);
+  const descriptionInput = useRef(null);
+  const [publicDocument, setPublicDocument] = useState(false);
+  const [category, setCategory] = useState(null);
 
   const classes = useStyles();
+  titleInput.current = title;
+  authorInput.current = author;
+  descriptionInput.current = description;
+  useEffect(() => {
+    setPublicDocument(isPublic);
+    setCategory(currentCategory);
+  }, [open, isPublic, currentCategory]);
 
-  console.log("open", editOpen);
-  console.log("document", document);
   const handleStatusChange = (event) => {
     setPublicDocument(event.target.checked);
   };
@@ -78,7 +72,7 @@ function EditDocument(editOpen, onClose, document) {
   const editThisDocument = () => {
     api
       .editDocument(
-        document.document_id,
+        documentId,
         titleInput.current,
         authorInput.current,
         descriptionInput.current,
@@ -99,7 +93,7 @@ function EditDocument(editOpen, onClose, document) {
 
   return (
     <div>
-      <Dialog open={editOpen} onClose={onClose} aria-labelledby="edit-document">
+      <Dialog open={open} onClose={onClose} aria-labelledby="edit-document">
         <DialogTitle id="edit-document">Edit your document</DialogTitle>
         <DialogContent>
           <DialogContentText>You can change the additional information of your document.</DialogContentText>
@@ -109,6 +103,7 @@ function EditDocument(editOpen, onClose, document) {
             id="title"
             label="Title*"
             type="title"
+            defaultValue={titleInput.current}
             onChange={(e) => (titleInput.current = e.target.value)}
             fullWidth
           />
@@ -118,6 +113,7 @@ function EditDocument(editOpen, onClose, document) {
             id="author"
             label="Author*"
             type="author"
+            defaultValue={authorInput.current}
             onChange={(e) => (authorInput.current = e.target.value)}
             fullWidth
           />
@@ -127,6 +123,7 @@ function EditDocument(editOpen, onClose, document) {
             id="description"
             label="Description"
             type="description"
+            defaultValue={descriptionInput.current}
             onChange={(e) => (descriptionInput.current = e.target.value)}
             fullWidth
           />
@@ -148,7 +145,6 @@ function EditDocument(editOpen, onClose, document) {
               Category
             </InputLabel>
             <Select
-              labelId="demo-simple-select-placeholder-label-label"
               id="choose-category"
               value={category}
               onChange={handleCategoryChange}
