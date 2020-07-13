@@ -186,15 +186,21 @@ function ClassroomViewPage() {
           </IconButton>
         }
       >
-        <Grid container>
-          {classroomDocumentsFromDatabase.map(() => {
-            return (
-              <Grid item style={{ padding: "10px" }}>
-                <img src={iconDoc} className={classes.logo} alt="VocTail" />
+        {[1, 2, 3].map((item) => {
+          return (
+            <ClassroomSection title={item} description="hello">
+              <Grid container>
+                {classroomDocumentsFromDatabase.map(() => {
+                  return (
+                    <Grid item style={{ padding: "10px" }}>
+                      <img src={iconDoc} className={classes.logo} alt="VocTail" />
+                    </Grid>
+                  );
+                })}
               </Grid>
-            );
-          })}
-        </Grid>
+            </ClassroomSection>
+          );
+        })}
       </ClassroomSection>
     </AppPage>
   );
