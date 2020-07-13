@@ -122,6 +122,8 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
             margin="dense"
             id="description"
             label="Description"
+            multiline
+            rows={3}
             type="description"
             defaultValue={descriptionInput.current}
             onChange={(e) => (descriptionInput.current = e.target.value)}
