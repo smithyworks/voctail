@@ -3,6 +3,7 @@ import { api } from "../../utils";
 import { toasts } from "../common/AppPage";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@material-ui/core";
 import { VTButton } from "../common";
+import Input from "@material-ui/core/Input";
 
 function AddRandomQuiz({ onAdd, onClose, open }) {
   const handleClose = () => {
@@ -37,7 +38,7 @@ function AddRandomQuiz({ onAdd, onClose, open }) {
       <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz">
         <DialogTitle id="add-custom-quiz">Please provide the title and length of your quiz.</DialogTitle>
         <DialogContent>
-          <Grid container justify="flex-start" alignItems="center" direction="column">
+          <Grid container justify="flex-start" alignItems="left" direction="column">
             <TextField
               autoFocus
               margin="dense"
@@ -47,14 +48,17 @@ function AddRandomQuiz({ onAdd, onClose, open }) {
               onChange={(e) => (title.current = e.target.value)}
               fullWidth
             />
-            <TextField
-              autoFocus
+            <Input
               margin="dense"
               id="length"
               label="Length*"
-              type="length"
               onChange={(e) => (length.current = e.target.value)}
-              fullWidth
+              inputProps={{
+                step: 1,
+                min: 0,
+                max: 1000,
+                type: "number",
+              }}
             />
           </Grid>
         </DialogContent>

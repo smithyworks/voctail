@@ -1,4 +1,4 @@
-import { Paper, Divider, Typography as T } from "@material-ui/core";
+import { Paper, Typography as T } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -10,9 +10,8 @@ import dateFormat from "dateformat";
 
 const useStyles = makeStyles({
   quizItem: {
-    marginTop: "10px",
-    marginBottom: "10px",
-    padding: "30px",
+    margin: "10px",
+    padding: "20px",
     border: "1px solid lightgrey",
   },
   innerContainer: {
@@ -57,42 +56,40 @@ function MetricView({ questions, results, disablePadding }) {
   //<Divider />
 
   return (
-    <div>
-      {results.length === 0 ? (
-        <T variant={"h4"}>As of yet no metrics are available. Please take a quiz and show results.</T>
+    <Paper className={classes.quizItem} elevation={0}>
+      {Object.keys(results).length === 0 ? (
+        <T variant={"h7"}>As of yet no metrics are available. Please take a quiz and show results.</T>
       ) : (
-        <Paper className={classes.quizItem} elevation={0}>
-          <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
-            <Table>
-              <TableHead>
+        <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="right">Date</TableCell>
+                <TableCell align="right">Wrong</TableCell>
+                <TableCell align="right">Taken</TableCell>
+                <TableCell align="right">Total</TableCell>
+                <TableCell align="right">percentageTaken</TableCell>
+                <TableCell align="right">percentageTotal</TableCell>
+                <TableCell align="right">unknowns</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {resultsList.map((v) => (
                 <TableRow>
-                  <TableCell align="right">Date</TableCell>
-                  <TableCell align="right">Wrong</TableCell>
-                  <TableCell align="right">Taken</TableCell>
-                  <TableCell align="right">Total</TableCell>
-                  <TableCell align="right">percentageTaken</TableCell>
-                  <TableCell align="right">percentageTotal</TableCell>
-                  <TableCell align="right">unknowns</TableCell>
+                  <TableCell align="right">{v.date}</TableCell>
+                  <TableCell align="right">{v.wrong}</TableCell>
+                  <TableCell align="right">{v.taken}</TableCell>
+                  <TableCell align="right">{v.total}</TableCell>
+                  <TableCell align="right">{v.percentageTaken}</TableCell>
+                  <TableCell align="right">{v.percentageTotal}</TableCell>
+                  <TableCell align="right">{v.unknowns}</TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {resultsList.map((v) => (
-                  <TableRow>
-                    <TableCell align="right">{v.date}</TableCell>
-                    <TableCell align="right">{v.wrong}</TableCell>
-                    <TableCell align="right">{v.taken}</TableCell>
-                    <TableCell align="right">{v.total}</TableCell>
-                    <TableCell align="right">{v.percentageTaken}</TableCell>
-                    <TableCell align="right">{v.percentageTotal}</TableCell>
-                    <TableCell align="right">{v.unknowns}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </Paper>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       )}
-    </div>
+    </Paper>
   );
 }
 
