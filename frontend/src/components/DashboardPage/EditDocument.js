@@ -39,7 +39,7 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
   useEffect(() => {
     setPublicDocument(isPublic);
     setCategory(currentCategory);
-  }, [open, isPublic, currentCategory]);
+  }, [isPublic, currentCategory]);
 
   const handleStatusChange = (event) => {
     setPublicDocument(event.target.checked);

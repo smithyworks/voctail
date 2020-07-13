@@ -5,7 +5,6 @@ import UploadDocument from "./UploadDocument";
 import DashboardTile from "../common/DashboardTile";
 import AppPage, { toasts } from "../common/AppPage";
 import { DashboardSection } from "../common";
-import HeaderSection from "../common/HeaderSection";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
 
@@ -87,6 +86,13 @@ function Dashboard() {
     else toasts.toastWarning("The document could not be found.");
   }
 
+  function createQuiz(documentId) {
+    api
+      .createQuizFromDoc(documentId, 20)
+      .then(() => toasts.toastSuccess("Successfully created a quiz for this document!"))
+      .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
+  }
+
   //get current user
   useEffect(() => {
     api
@@ -117,8 +123,6 @@ function Dashboard() {
 
   return (
     <AppPage location="dashboard" id="dashboard-page">
-      <HeaderSection mainTitle="Dashboard" description="Enjoy your media!" />
-
       <DashboardSection
         title={"My Documents"}
         Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 1} />}
@@ -132,6 +136,7 @@ function Dashboard() {
               isOwned
               onEdit={() => handleEdit(tile)}
               onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+              onGenerateQuiz={() => createQuiz(tile.document_id)}
               linkTo={"/documents/" + tile.document_id}
             />
           ))
