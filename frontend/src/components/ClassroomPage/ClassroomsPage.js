@@ -231,6 +231,7 @@ function ClassroomOverviewPopUp({
         title="Deleting a classroom..."
         onConfirm={() => {
           deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDataFromDatabase);
+          setConfirmDialogOpen(false);
           onClose();
         }}
         onClose={() => {
@@ -406,7 +407,7 @@ function createClassroom(user, title, topic, description, classroomDataFromDatab
 function indexOfClassroom(classroomId, classrooms) {
   let output = 0;
   classrooms.forEach((classroom, index) => {
-    if (classroom.classroom_id == classroomId) {
+    if (classroom.classroom_id === classroomId) {
       output = index;
     }
   });
