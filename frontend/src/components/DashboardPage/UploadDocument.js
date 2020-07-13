@@ -157,8 +157,6 @@ function UploadDocument({ refresh, publisherId }) {
       toasts.toastWarning("Please upload the text document.");
       return false;
     }
-
-    toasts.toastInfo("Metadata verified.");
     return true;
   }
 
@@ -173,7 +171,7 @@ function UploadDocument({ refresh, publisherId }) {
 
   const addThisDocument = () => {
     readFile();
-
+    console.log("in addthis document after readfile");
     api
       .addDocument(
         publisherId,
@@ -186,10 +184,14 @@ function UploadDocument({ refresh, publisherId }) {
         blocks
       )
       .then(() => {
-        toasts.toastSuccess("The document was successfully added!");
-        refresh();
-        resetValues();
+        console.log("then");
         handleAddClose();
+        console.log("add closed");
+        refresh();
+        console.log("refreshed");
+        toasts.toastSuccess("The document was successfully added!");
+        resetValues();
+        console.log("reseted");
       })
       .catch((err) => {
         console.log(err);
@@ -271,7 +273,7 @@ function UploadDocument({ refresh, publisherId }) {
             <Select
               labelId="demo-simple-select-placeholder-label-label"
               id="choose-category"
-              value={category}
+              value={"Others"}
               onChange={handleCategoryChange}
               displayEmpty
               className={classes.selectEmpty}
@@ -293,6 +295,7 @@ function UploadDocument({ refresh, publisherId }) {
           <VTButton
             accept
             onClick={() => {
+              verify();
               if (verify()) addThisDocument();
               //else toasts.toastWarning("Please review your entries.");
             }}
