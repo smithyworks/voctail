@@ -230,6 +230,8 @@ function UploadDocument({ refresh, publisherId }) {
             margin="dense"
             id="description"
             label="Description"
+            multiline
+            rows={3}
             type="description"
             onChange={(e) => (descriptionInput.current = e.target.value)}
             fullWidth
