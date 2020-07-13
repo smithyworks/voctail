@@ -198,13 +198,18 @@ async function addDocument(req, res) {
 async function editDocument(req, res) {
   try {
     const { document_id, title, author, description, category, isPublic } = req.body;
-    const {
-      editedDocuments,
-    } = await query(
-      "UPDATE documents SET title = $1 AND author = $2 AND description = $3 AND category = $4 AND public = $5 WHERE document_id = $6 ",
+    log("id", document_id);
+    log("title", title);
+    log("author", author);
+    log("description", description);
+    log("categoryy", category);
+    log("isPublic", isPublic);
+
+    await query(
+      "UPDATE documents SET title = $1, author = $2, description = $3, category = $4, public = $5  WHERE documents.document_id = $6 ",
       [title, author, description, category, isPublic, document_id]
     );
-    res.status(200).json(editedDocuments);
+    res.status(200).send("Successfully edited your document.");
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");

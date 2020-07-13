@@ -186,6 +186,7 @@ function Dashboard() {
 
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
       <EditDocument
+        refresh={refresh}
         open={editDialogOpen}
         onClose={() => setEditDialogOpen(false)}
         documentId={documentId}

@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   userItem: { width: "150px" },
 }));
 
-function EditDocument({ open, onClose, documentId, title, author, description, isPublic, currentCategory }) {
+function EditDocument({ refresh, open, onClose, documentId, title, author, description, isPublic, currentCategory }) {
   const titleInput = useRef(null);
   const authorInput = useRef(null);
   const descriptionInput = useRef(null);
@@ -81,7 +81,7 @@ function EditDocument({ open, onClose, documentId, title, author, description, i
       )
       .then(() => {
         onClose();
-        //refresh();
+        refresh();
         toasts.toastSuccess("The document was successfully edited!");
         resetValues();
       })
