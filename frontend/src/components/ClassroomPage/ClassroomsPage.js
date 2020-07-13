@@ -9,6 +9,7 @@ import {
   Grid,
   Typography,
   Slide,
+  Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AppPage from "../common/AppPage";
@@ -484,9 +485,15 @@ function Classrooms() {
         title="My Classrooms"
         description="You have here the classrooms you are registered to."
         Button={
-          <IconButton aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
-            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-          </IconButton>
+          <Tooltip
+            title={user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"}
+          >
+            <span>
+              <IconButton disabled={!user.premium} aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
+                <AddBoxIcon fontSize="large" style={user.premium ? { color: "darkblue" } : { color: "grey" }} />
+              </IconButton>
+            </span>
+          </Tooltip>
         }
       >
         <Typography> You have {classroomDataFromDatabase.length} classes </Typography>
