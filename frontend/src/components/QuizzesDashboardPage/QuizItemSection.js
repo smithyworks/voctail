@@ -1,4 +1,4 @@
-import { Typography as T, Paper } from "@material-ui/core";
+import { Typography as T } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";

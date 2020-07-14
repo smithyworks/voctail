@@ -31,4 +31,16 @@ function VTIconButton({ ...props }) {
   );
 }
 
+export function VTIconFlexButton({ toolTipLabel, ...props }) {
+  const classes = useStyles();
+
+  return (
+    <LightTooltip title={toolTipLabel} placement="top">
+      <IconButton className={classes.button} variant="contained" {...props}>
+        <AddBoxIcon fontSize="large" />
+      </IconButton>
+    </LightTooltip>
+  );
+}
+
 export default VTIconButton;

@@ -353,7 +353,23 @@ async function createQuizFromDocHandler(req, res) {
 
     const questions = generateQuestions(wordList, transList, length);
 
-    const quiz = await insertSQL(document.title, questions, user_id, { document_id: document.document_id });
+    //check number of quizzes with this title
+    //fetch all quizzes by this user created for the document with the document_id
+    const {
+      rows: quizList,
+    } = await query(
+      "SELECT users_quizzes.quiz_id FROM users_quizzes \
+    INNER JOIN quizzes ON quizzes.quiz_id=users_quizzes.quiz_id \
+    INNER JOIN quizzes_documents ON quizzes_documents.quiz_id=quizzes.quiz_id \
+    WHERE users_quizzes.user_id=$1 AND quizzes_documents.document_id=$2",
+      [user_id, document_id]
+    );
+
+    const format_title = (title, len) => (len > 0 ? title + " (" + len + ")" : title);
+
+    const quiz = await insertSQL(format_title(document.title, quizList.length), questions, user_id, {
+      document_id: document.document_id,
+    });
 
     res.status(200).json(quiz);
   } catch (err) {

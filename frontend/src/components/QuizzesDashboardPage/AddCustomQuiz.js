@@ -7,7 +7,6 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   Grid,
   TextField,
   Typography as T,
@@ -21,9 +20,7 @@ import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles({
   quizItem: {
-    margin: "10px",
     padding: "20px",
-    border: "1px solid lightgrey",
   },
   innerContainer: {
     paddingTop: "20px",
@@ -92,29 +89,28 @@ function AddCustomQuiz({ onAdd, onClose, open }) {
               </DialogContent>
 
               <QuizItem items={items} setItems={setItems} addItem={addItem} />
-
-              <DialogContent>
-                <DialogContentText align={"right"}>
-                  Once you have filled out the title and at least one question item feel free to add the Quiz.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                  Cancel
-                </Button>
-                <VTButton
-                  success
-                  onClick={() => {
-                    addQuiz();
-                  }}
-                  color="primary"
-                >
-                  Add a custom quiz
-                </VTButton>
-              </DialogActions>
             </div>
             <QuizItemSection items={items} del={deleteItem} styling={classes.innerContainer} />
           </Grid>
+          <DialogContent>
+            <DialogContentText align={"right"}>
+              Once you have filled out the title and at least one question item feel free to add the Quiz.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <VTButton
+              success
+              onClick={() => {
+                addQuiz();
+              }}
+              color="primary"
+            >
+              Add a custom quiz
+            </VTButton>
+          </DialogActions>
         </Paper>
       </Dialog>
     </div>

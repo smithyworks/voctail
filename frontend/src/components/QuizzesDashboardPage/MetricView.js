@@ -1,4 +1,4 @@
-import { Paper, Typography as T } from "@material-ui/core";
+import { Typography as T } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -7,12 +7,12 @@ import TableBody from "@material-ui/core/TableBody";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import dateFormat from "dateformat";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles({
   quizItem: {
     margin: "10px",
     padding: "20px",
-    border: "1px solid lightgrey",
   },
   innerContainer: {
     paddingTop: "20px",
@@ -51,12 +51,17 @@ function MetricView({ questions, results, disablePadding }) {
     return strQ;
   };
 
-  // questions
-  //<T variant={"h4"}>{formatQ(questions)}</T>
-  //<Divider />
+  const questionList =
+    questions === undefined ? undefined : (
+      <div>
+        <T variant={"h4"}>{formatQ(questions)}</T>
+        <Divider />
+      </div>
+    );
 
   return (
-    <Paper className={classes.quizItem} elevation={0}>
+    <div className={classes.quizItem}>
+      {questionList}
       {Object.keys(results).length === 0 ? (
         <T variant={"h7"}>As of yet no metrics are available. Please take a quiz and show results.</T>
       ) : (
@@ -68,8 +73,8 @@ function MetricView({ questions, results, disablePadding }) {
                 <TableCell align="right">Wrong</TableCell>
                 <TableCell align="right">Taken</TableCell>
                 <TableCell align="right">Total</TableCell>
-                <TableCell align="right">percentageTaken</TableCell>
-                <TableCell align="right">percentageTotal</TableCell>
+                <TableCell align="right">Taken (%)</TableCell>
+                <TableCell align="right">Total (%)</TableCell>
                 <TableCell align="right">unknowns</TableCell>
               </TableRow>
             </TableHead>
@@ -82,14 +87,14 @@ function MetricView({ questions, results, disablePadding }) {
                   <TableCell align="right">{v.total}</TableCell>
                   <TableCell align="right">{v.percentageTaken}</TableCell>
                   <TableCell align="right">{v.percentageTotal}</TableCell>
-                  <TableCell align="right">{v.unknowns}</TableCell>
+                  <TableCell align="right">{v.unknowns.join(", ")}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
       )}
-    </Paper>
+    </div>
   );
 }
 

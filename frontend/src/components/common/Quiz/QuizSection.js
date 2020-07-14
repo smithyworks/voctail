@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Paper, makeStyles, Typography, Divider, Grid, IconButton } from "@material-ui/core";
+import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import { VTIconFlexButton } from "../Buttons/IconButton";
 
 const useStyles = makeStyles({
   paper: {
@@ -57,6 +57,10 @@ function QuizSection({ title, children, onAdd, hasAddButton, expandable }) {
     } else setHeight();
   }, [expanded]);
 
+  // <IconButton onClick={_onAdd}>
+  //               <AddBoxIcon />
+  //             </IconButton>
+
   return (
     <Paper elevation={0} className={classes.paper}>
       <Grid container justify="space-between" direction="row" alignItems="center">
@@ -65,13 +69,7 @@ function QuizSection({ title, children, onAdd, hasAddButton, expandable }) {
             {title}
           </Typography>
         </Grid>
-        <Grid item>
-          {!!hasAddButton && (
-            <IconButton onClick={_onAdd}>
-              <AddBoxIcon />
-            </IconButton>
-          )}
-        </Grid>
+        <Grid item>{!!hasAddButton && <VTIconFlexButton toolTipLabel={"Add a new Quiz"} onClick={_onAdd} />}</Grid>
       </Grid>
       <Divider />
 
