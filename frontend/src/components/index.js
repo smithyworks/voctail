@@ -1,6 +1,6 @@
 import DashboardPage from "./DashboardPage/DashboardPage.js";
 import QuizzesDashboardPage from "./QuizzesDashboardPage/QuizzesDashboardPage.js";
-import QuizPage from "./QuizPage.js";
+import QuizPage from "./QuizPage/QuizPage.js";
 import ClassroomsPage from "./ClassroomPage/ClassroomsPage.js";
 import ClassroomsCreatePage from "./ClassroomPage/ClassroomsCreatePage";
 import ClassroomViewPage from "./ClassroomPage/ClassroomViewPage";

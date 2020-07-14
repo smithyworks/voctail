@@ -88,6 +88,44 @@
       "#cbbeb5"
     ]
   },
+  "quizChoiceButton": {
+    "neutral": {
+      "color": "#000",
+      "backgroundColor": "#FFF",
+      "borderColor": "#000",
+      "&:hover": {
+        "borderColor": "#000",
+        "opacity": 0.7
+      }
+    },
+    "accept": {
+      "color": "#000",
+      "backgroundColor": "#FFF",
+      "borderColor": "#388e3c",
+      "&:hover": {
+        "borderColor": "#388e3c",
+        "opacity": 0.7
+      }
+    },
+    "reject": {
+      "color": "#000",
+      "backgroundColor": "#F00",
+      "borderColor": "#000",
+      "&:hover": {
+        "backgroundColor": "#F00",
+        "opacity": 0.7
+      }
+    },
+    "show": {
+      "color": "#000",
+      "backgroundColor": "#FFF",
+      "borderColor": "#F00",
+      "&:hover": {
+        "borderColor": "#F00",
+        "opacity": 0.7
+      }
+    }
+  },
   "documentViewer": {
     "unkownHighlight": {
       "backgroundColor": "rgba(255,0,0,0.2)"

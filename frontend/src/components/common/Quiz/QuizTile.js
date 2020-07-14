@@ -114,14 +114,16 @@ function QuizTile({ name, id, isOwned, onDelete, onEdit, onViewStatistic, linkTo
   const lastSeenTimeElapsed = (last) => {
     let d = "";
     if (!isNaN(Date.parse(last))) {
-      const { days, hours, minutes } = timediff(Date.parse(last), new Date(), "DHm");
-      if (days > 0 || hours > 0 || minutes > 0) {
-        if (days > 0) {
-          d += `${hours} D `;
+      const { months, days, hours, minutes } = timediff(Date.parse(last), new Date(), "MDHm");
+      if (months > 0 || days > 0 || hours > 0 || minutes > 0) {
+        if (months > 0) {
+          d += `${hours} M`;
+        } else if (days > 0) {
+          d += `${hours} D`;
         } else if (hours > 0) {
-          d += `${hours}h `;
+          d += `${hours} h`;
         } else if (minutes > 0) {
-          d += `${minutes} min `;
+          d += `${minutes} min`;
         }
       } else d = "just now";
     } else d = "Untaken";
