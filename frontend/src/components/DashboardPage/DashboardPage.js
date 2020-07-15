@@ -8,12 +8,6 @@ import { DashboardSection } from "../common";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
 
-//example tile images
-import shortStoriesPreview from "../../assets/books.jpg";
-import fairyTalesPreview from "../../assets/fairytale.jpg";
-import newspaperArticlesPreview from "../../assets/newspaper.jpg";
-import otherDocumentsPreview from "../../assets/others.jpg";
-
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
   const [user, setUser] = useState();
@@ -89,7 +83,10 @@ function Dashboard() {
   function createQuiz(documentId) {
     api
       .createQuizFromDoc(documentId, 20)
-      .then(() => toasts.toastSuccess("Successfully created a quiz for this document!"))
+      .then(() => {
+        toasts.toastSuccess("Successfully created a quiz for this document!");
+        //setMenuOpen(false);
+      }) //todo check it out
       .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
   }
 
@@ -129,7 +126,6 @@ function Dashboard() {
         {usersDocuments.length !== 0 ? (
           usersDocuments.map((tile) => (
             <DashboardTile
-              thumbnail={shortStoriesPreview}
               title={tile.title}
               author={tile.author}
               isOwned
@@ -137,6 +133,7 @@ function Dashboard() {
               onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
               onGenerateQuiz={() => createQuiz(tile.document_id)}
               linkTo={"/documents/" + tile.document_id}
+              category={tile.category}
             />
           ))
         ) : (
@@ -147,10 +144,10 @@ function Dashboard() {
       <DashboardSection title={"Short Stories"}>
         {shortStories.map((tile) => (
           <DashboardTile
-            thumbnail={shortStoriesPreview}
             title={tile.title}
             author={tile.author}
             linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
@@ -158,10 +155,10 @@ function Dashboard() {
       <DashboardSection title={"Fairy Tales"}>
         {fairyTales.map((tile) => (
           <DashboardTile
-            thumbnail={fairyTalesPreview}
             title={tile.title}
             author={tile.author}
             linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
@@ -169,10 +166,10 @@ function Dashboard() {
       <DashboardSection title={"Newspaper Articles"}>
         {newspaperArticles.map((tile) => (
           <DashboardTile
-            thumbnail={newspaperArticlesPreview}
             title={tile.title}
             author={tile.author}
             linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
@@ -180,10 +177,10 @@ function Dashboard() {
       <DashboardSection title={"Other documents"}>
         {otherDocuments.map((tile) => (
           <DashboardTile
-            thumbnail={otherDocumentsPreview}
             title={tile.title}
             author={tile.author}
             linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
