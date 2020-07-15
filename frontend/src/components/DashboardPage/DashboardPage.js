@@ -20,16 +20,16 @@ function Dashboard() {
   const [otherDocuments, setOtherDocuments] = useState([]);
   const [usersDocuments, setUsersDocuments] = useState([]);
 
-  //const [editOpen, setEditOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
-  //const [documentImage, setDocumentImage] = useState(otherDocumentsPreview);
   const [documentAuthor, setDocumentAuthor] = useState(null);
   const [isPublic, setIsPublic] = useState(false);
   const [category, setDocumentCategory] = useState(null);
   const [addOpen, setAddOpen] = useState(false);
+  const dialogInfo = useRef();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleAddOpen = () => {
     setAddOpen(true);
@@ -37,8 +37,6 @@ function Dashboard() {
   const handleAddClose = () => {
     setAddOpen(false);
   };
-  const dialogInfo = useRef();
-  const [dialogOpen, setDialogOpen] = useState(false);
 
   const [countToRefresh, setCount] = useState(0);
   function refresh() {
@@ -154,6 +152,7 @@ function Dashboard() {
           <DashboardTile
             title={tile.title}
             author={tile.author}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
             category={tile.category}
           />
@@ -165,6 +164,7 @@ function Dashboard() {
           <DashboardTile
             title={tile.title}
             author={tile.author}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
             category={tile.category}
           />
@@ -176,6 +176,7 @@ function Dashboard() {
           <DashboardTile
             title={tile.title}
             author={tile.author}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
             category={tile.category}
           />
@@ -187,6 +188,7 @@ function Dashboard() {
           <DashboardTile
             title={tile.title}
             author={tile.author}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
             category={tile.category}
           />
