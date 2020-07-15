@@ -7,6 +7,7 @@ import DashboardTile from "./DashboardTile";
 import QuizSection from "./Quiz/QuizSection";
 import QuizTile from "./Quiz/QuizTile";
 import ClassroomSection from "./ClassroomSection";
+import PlaceholderTile from "./PlaceholderTile";
 
 export {
   AppPage,
@@ -19,4 +20,5 @@ export {
   QuizSection,
   QuizTile,
   ClassroomSection,
+  PlaceholderTile,
 };

@@ -178,3 +178,13 @@ export function setPassword(password) {
 export function vocabulary(user_id) {
   return axios.post(`${base}/user-vocabulary`, { user_id });
 }
+
+// breadcrumbs
+
+export function documentTitle(document_id) {
+  return axios.get(`${base}/document-title`, { params: { document_id } });
+}
+
+export function quizTitle(quiz_id) {
+  return axios.get(`${base}/quiz-title`, { params: { quiz_id } });
+}

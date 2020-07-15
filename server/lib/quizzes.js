@@ -393,6 +393,21 @@ async function createCustomQuizHandler(req, res) {
   }
 }
 
+async function quizTitleHandler(req, res) {
+  try {
+    const { quiz_id } = req.query;
+
+    const {
+      rows: [{ title }],
+    } = await query("SELECT title FROM quizzes WHERE quiz_id = $1", [quiz_id]);
+
+    res.status(200).send(title);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Somethign went wrong.");
+  }
+}
+
 module.exports = {
   quizzesHandler,
   quizHandler,
@@ -406,4 +421,5 @@ module.exports = {
   viewedNowQuizHandler,
   updateMetricsQuizHandler,
   viewMetricsHandler,
+  quizTitleHandler,
 };

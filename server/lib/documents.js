@@ -225,6 +225,21 @@ async function usersHandler(req, res) {
   }
 }
 
+async function documentTitleHandler(req, res) {
+  try {
+    const { document_id } = req.query;
+
+    const {
+      rows: [{ title }],
+    } = await query("SELECT title FROM documents WHERE document_id = $1", [document_id]);
+
+    res.status(200).send(title);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Somethign went wrong.");
+  }
+}
+
 module.exports = {
   documentHandler,
   usersHandler,
@@ -232,4 +247,5 @@ module.exports = {
   deleteDocument,
   addDocument,
   editDocument,
+  documentTitleHandler,
 };
