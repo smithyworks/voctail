@@ -10,6 +10,7 @@ const useStyles = makeStyles({
   numberField: {
     width: "30%",
     height: "100%",
+    paddingTop: "30px",
   },
   dialog: {
     padding: "30px",
@@ -68,7 +69,7 @@ function AddRandomQuiz({ onAdd, onClose, open }) {
               className={classes.numberField}
               margin="dense"
               id="length"
-              label="Length*"
+              placeholder="Length*"
               onChange={(e) => (length.current = e.target.value)}
               inputProps={{
                 step: 1,

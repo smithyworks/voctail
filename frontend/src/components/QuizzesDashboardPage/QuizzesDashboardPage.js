@@ -170,25 +170,27 @@ function QuizzesDashboard({ ...props }) {
           ))}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Document Quizzes"}>
-        <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
-          {quizDocuments.map((v) => (
-            <QuizTile
-              key={v.quiz_id}
-              name={v.title}
-              id={v.quiz_id}
-              onDelete={() => onDelete(v)}
-              onEdit={() => handleRenameOpen(v.quiz_id)}
-              onViewStatistic={() => handleViewStatOpen(v)}
-              isOwned={true}
-              linkTo={base + "/" + v.quiz_id}
-              lastSeen={v.last_seen}
-            >
-              {v}
-            </QuizTile>
-          ))}
-        </Grid>
-      </QuizSection>
+      {quizDocuments.length > 0 ? (
+        <QuizSection title={"Document Quizzes"}>
+          <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
+            {quizDocuments.map((v) => (
+              <QuizTile
+                key={v.quiz_id}
+                name={v.title}
+                id={v.quiz_id}
+                onDelete={() => onDelete(v)}
+                onEdit={() => handleRenameOpen(v.quiz_id)}
+                onViewStatistic={() => handleViewStatOpen(v)}
+                isOwned={true}
+                linkTo={base + "/" + v.quiz_id}
+                lastSeen={v.last_seen}
+              >
+                {v}
+              </QuizTile>
+            ))}
+          </Grid>
+        </QuizSection>
+      ) : undefined}
 
       <AddCustomQuiz onAdd={refresh} onClose={handleCustomClose} open={openCustom} />
       <AddRandomQuiz onAdd={refresh} onClose={handleRandomClose} open={openRandom} />
