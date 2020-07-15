@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
@@ -18,7 +18,6 @@ import {
   TextField,
 } from "@material-ui/core";
 import DescriptionIcon from "@material-ui/icons/Description";
-import ImageIcon from "@material-ui/icons/Image";
 import { makeStyles } from "@material-ui/core/styles";
 import VTIconButton from "../common/Buttons/IconButton";
 
@@ -43,9 +42,11 @@ function UploadDocument({ refresh, publisherId }) {
   const titleInput = useRef("");
   const authorInput = useRef("");
   const descriptionInput = useRef("");
+  const blocksInput = useRef([]);
   const [publicDocument, setPublicDocument] = useState(true);
   const contentInput = useRef("");
   const blocks = [];
+  const [documentLoaded, setDocumentLoaded] = useState(false);
 
   //const imageInput = useRef(); todo use image
   const [open, setOpen] = useState(false);
@@ -68,7 +69,7 @@ function UploadDocument({ refresh, publisherId }) {
   };
 
   //read uploaded file and stringify it for the database (format in blocks, see more in the schema)
-  function readFile(then) {
+  function readFile() {
     const uploadedFile = document.getElementById("upload-file").files[0];
 
     let reader = new FileReader();
@@ -76,7 +77,6 @@ function UploadDocument({ refresh, publisherId }) {
 
     let currentType;
     let currentContent;
-
     reader.onloadend = function () {
       const lines = reader.result.split(/\r?\n/);
 
@@ -137,13 +137,9 @@ function UploadDocument({ refresh, publisherId }) {
         }
       });
 
-      console.log("i am before what was missing.");
-      //HERE
       contentInput.current = JSON.stringify(blocks).replace(/\\/g, "\\\\");
-
-      // Chain the next function once contehtInput is populated
-      if (typeof then === "function") then();
-      console.log("i did what was missing");
+      blocksInput.current = blocks;
+      setDocumentLoaded(true);
     };
   }
   //verify the metadata and the document for the upload to prevent false uploads
@@ -176,45 +172,35 @@ function UploadDocument({ refresh, publisherId }) {
     authorInput.current = "";
     descriptionInput.current = "";
     contentInput.current = "";
+    setDocumentLoaded(false);
   }
 
-  const addThisDocument = () => {
-    readFile();
-    console.log("in addthis document after readfile");
-    console.log("publisher id", publisherId);
-    console.log("title Input", titleInput.current);
-    console.log("author", authorInput.current);
-    console.log("description", descriptionInput.current);
-    console.log("category", category);
-    console.log("public", publicDocument);
-    console.log("content", contentInput.current);
-    console.log("blocks", blocks);
-    api
-      .addDocument(
-        publisherId,
-        titleInput.current,
-        authorInput.current,
-        descriptionInput.current,
-        category,
-        publicDocument,
-        contentInput.current,
-        blocks
-      )
-      .then(() => {
-        console.log("then");
-        handleAddClose();
-        console.log("add closed");
-        refresh();
-        console.log("refreshed");
-        toasts.toastSuccess("The document was successfully added!");
-        resetValues();
-        console.log("reseted");
-      })
-      .catch((err) => {
-        console.log(err);
-        toasts.toastError("Error uploading the document!");
-      });
-  };
+  //add this document after reading the file witht the file reader (use effects gets triggered by the documentLoaded which is activated in readFile()
+  useEffect(() => {
+    if (documentLoaded) {
+      api
+        .addDocument(
+          publisherId,
+          titleInput.current,
+          authorInput.current,
+          descriptionInput.current,
+          category,
+          publicDocument,
+          contentInput.current,
+          blocksInput.current
+        )
+        .then(() => {
+          handleAddClose();
+          refresh();
+          toasts.toastSuccess("The document was successfully added!");
+          resetValues();
+        })
+        .catch((err) => {
+          console.log(err);
+          toasts.toastError("Error uploading the document!");
+        });
+    }
+  }, [documentLoaded]);
 
   return (
     <div>
@@ -315,7 +301,6 @@ function UploadDocument({ refresh, publisherId }) {
             onClick={() => {
               if (verify()) {
                 readFile();
-                addThisDocument();
               }
             }}
           >

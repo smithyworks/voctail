@@ -32,7 +32,6 @@ async function documentHandler(req, res) {
       [user_id, document_id]
     );
     document.vocabulary = vocabulary;
-    console.log(vocabulary.length);
 
     res.status(200).json(document);
   } catch (err) {
@@ -83,8 +82,8 @@ async function documentDataHandler(req, res) {
 async function deleteDocument(req, res) {
   try {
     const { document_id } = req.body;
-    log("delete document", document_id);
     await query("DELETE FROM documents WHERE document_id = $1", [document_id]);
+    log("deleted document", document_id);
     res.sendStatus(200);
   } catch (err) {
     log(err);
@@ -121,18 +120,14 @@ async function addDocument(req, res) {
   const language = "english";
 
   try {
-    log("in add document try block");
     const { publisher, title, author, description, category, isPublic, content, blocks } = req.body;
 
-    log("req body done");
     const {
       rows: [{ document_id }],
     } = await query(
       "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
       [publisher, title, author, description, category, isPublic, premium, content]
     );
-
-    log("insert into docs done");
 
     const contentData = blocks.map((b) => b.content).join(" ");
     const words = contentData
@@ -175,8 +170,6 @@ async function addDocument(req, res) {
       }
       frequency = 0;
     }
-    log("inser into words done");
-
     for (let ndw = 0; ndw < newDocumentWords.length; ndw++) {
       const {
         documentWords,
@@ -186,8 +179,6 @@ async function addDocument(req, res) {
         newDocumentWords[ndw].frequency,
       ]);
     }
-    log("insert into doc words done");
-
     res.status(200).json({ document_id });
   } catch (err) {
     log(err);
@@ -198,13 +189,6 @@ async function addDocument(req, res) {
 async function editDocument(req, res) {
   try {
     const { document_id, title, author, description, category, isPublic } = req.body;
-    log("id", document_id);
-    log("title", title);
-    log("author", author);
-    log("description", description);
-    log("categoryy", category);
-    log("isPublic", isPublic);
-
     await query(
       "UPDATE documents SET title = $1, author = $2, description = $3, category = $4, public = $5  WHERE documents.document_id = $6 ",
       [title, author, description, category, isPublic, document_id]
