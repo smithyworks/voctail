@@ -66,7 +66,7 @@ function UploadDocument({ refresh, publisherId }) {
   };
 
   //read uploaded file and stringify it for the database (format in blocks, see more in the schema)
-  function readFile() {
+  function readFile(then) {
     const uploadedFile = document.getElementById("upload-file").files[0];
 
     let reader = new FileReader();
@@ -137,6 +137,9 @@ function UploadDocument({ refresh, publisherId }) {
 
       //HERE
       contentInput.current = JSON.stringify(blocks).replace(/\\/g, "\\\\");
+
+      // Chain the next function once contehtInput is populated
+      if (typeof then === "function") then();
     };
   }
   //verify the metadata and the document for the upload to prevent false uploads
