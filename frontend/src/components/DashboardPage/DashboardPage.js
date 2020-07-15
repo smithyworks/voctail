@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Typography as T } from "@material-ui/core";
 import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
 import DashboardTile from "../common/DashboardTile";
@@ -7,7 +6,8 @@ import AppPage, { toasts } from "../common/AppPage";
 import { DashboardSection } from "../common";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
-import EmptyTile from "../common/EmptyTile";
+import PlaceholderTile from "../common/PlaceholderTile";
+import VTIconButton from "../common/Buttons/IconButton";
 
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
@@ -29,7 +29,14 @@ function Dashboard() {
   const [documentAuthor, setDocumentAuthor] = useState(null);
   const [isPublic, setIsPublic] = useState(false);
   const [category, setDocumentCategory] = useState(null);
+  const [addOpen, setAddOpen] = useState(false);
 
+  const handleAddOpen = () => {
+    setAddOpen(true);
+  };
+  const handleAddClose = () => {
+    setAddOpen(false);
+  };
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -85,7 +92,7 @@ function Dashboard() {
     api
       .createQuizFromDoc(documentId, 20)
       .then(() => {
-        toasts.toastSuccess("Successfully created a quiz for this document!");
+        toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
         //setMenuOpen(false);
       }) //todo check it out
       .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
@@ -120,10 +127,7 @@ function Dashboard() {
 
   return (
     <AppPage location="dashboard" id="dashboard-page">
-      <DashboardSection
-        title={"My Documents"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 1} />}
-      >
+      <DashboardSection title={"My Documents"} Button={<VTIconButton onClick={handleAddOpen} />}>
         {usersDocuments.length !== 0 ? (
           usersDocuments.map((tile) => (
             <DashboardTile
@@ -138,8 +142,10 @@ function Dashboard() {
             />
           ))
         ) : (
-          <EmptyTile />
-          /*<T>You have no own documents.</T>*/
+          <PlaceholderTile
+            tooltipTitle={"You have no own documents. Add your own document now!"}
+            onClick={handleAddOpen}
+          />
         )}
       </DashboardSection>
 
@@ -187,6 +193,12 @@ function Dashboard() {
         ))}
       </DashboardSection>
 
+      <UploadDocument
+        refresh={refresh}
+        publisherId={user ? user.user_id : 1}
+        handleAddClose={handleAddClose}
+        open={addOpen}
+      />
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
       <EditDocument
         refresh={refresh}

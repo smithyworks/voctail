@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
@@ -19,7 +19,6 @@ import {
 } from "@material-ui/core";
 import DescriptionIcon from "@material-ui/icons/Description";
 import { makeStyles } from "@material-ui/core/styles";
-import VTIconButton from "../common/Buttons/IconButton";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -38,7 +37,7 @@ const useStyles = makeStyles(() => ({
   icon: { color: "rgba(255,255,255,0.54)" },
 }));
 
-function UploadDocument({ refresh, publisherId }) {
+function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
   const titleInput = useRef("");
   const authorInput = useRef("");
   const descriptionInput = useRef("");
@@ -49,18 +48,11 @@ function UploadDocument({ refresh, publisherId }) {
   const [documentLoaded, setDocumentLoaded] = useState(false);
 
   //const imageInput = useRef(); todo use image
-  const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
   const classes = useStyles();
   const [errorTitle, setErrorTitle] = useState(false);
   const [errorAuthor, setErrorAuthor] = useState(false);
 
-  const handleAddOpen = () => {
-    setOpen(true);
-  };
-  const handleAddClose = () => {
-    setOpen(false);
-  };
   const handleStatusChange = (event) => {
     setPublicDocument(event.target.checked);
   };
@@ -175,8 +167,9 @@ function UploadDocument({ refresh, publisherId }) {
     setDocumentLoaded(false);
   }
 
-  //add this document after reading the file witht the file reader (use effects gets triggered by the documentLoaded which is activated in readFile()
-  useEffect(() => {
+  //add this document after reading the file with the file reader (use effects gets triggered by the documentLoaded which is activated in readFile()
+  async function addThisDocument() {
+    //todo
     if (documentLoaded) {
       api
         .addDocument(
@@ -199,13 +192,13 @@ function UploadDocument({ refresh, publisherId }) {
           console.log(err);
           toasts.toastError("Error uploading the document!");
         });
+    } else {
+      toasts.toastWarning("Are you sure?");
     }
-  }, [documentLoaded]);
+  }
 
   return (
     <div>
-      <VTIconButton onClick={handleAddOpen} />
-
       <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-new-document">
         <DialogTitle id="add-new-document">Add document</DialogTitle>
         <DialogContent>
@@ -301,6 +294,7 @@ function UploadDocument({ refresh, publisherId }) {
             onClick={() => {
               if (verify()) {
                 readFile();
+                addThisDocument();
               }
             }}
           >
