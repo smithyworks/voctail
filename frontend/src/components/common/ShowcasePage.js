@@ -14,6 +14,7 @@ import pic from "../../assets/fairytale.jpg";
 import QuizSection from "./Quiz/QuizSection";
 import QuizTile from "./Quiz/QuizTile";
 import VTIconButton from "./Buttons/IconButton";
+import PlaceholderTile from "./PlaceholderTile";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -140,6 +141,10 @@ function ShowcasePage() {
           </IconButton>
         }
       >
+        <PlaceholderTile
+          onClick={() => toasts.toastSuccess("Clicked placeholder tile.")}
+          tooltipTitle="Upload a file!"
+        />
         <DashboardTile
           thumbnail={pic}
           title="Chechnya"

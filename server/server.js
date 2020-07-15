@@ -41,6 +41,7 @@ server.get("/api/handle-documents", auth.tokenMiddleWare, documents.documentData
 server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
 server.post("/api/edit-document", auth.tokenMiddleWare, documents.editDocument);
+server.get("/api/document-title", auth.tokenMiddleWare, documents.documentTitleHandler);
 
 server.post("/api/update-vocabulary", auth.tokenMiddleWare, vocabulary.updateUserVocabHandler);
 server.post("/api/add-translation", auth.tokenMiddleWare, vocabulary.addTranslationHandler);
@@ -63,6 +64,7 @@ server.post("/api/viewed-now-quiz", auth.tokenMiddleWare, quizzes.viewedNowQuizH
 server.post("/api/update-metrics-quiz", auth.tokenMiddleWare, quizzes.updateMetricsQuizHandler);
 server.post("/api/create-document-quiz", auth.tokenMiddleWare, quizzes.createQuizFromDocHandler);
 server.post("/api/create-custom-quiz", auth.tokenMiddleWare, quizzes.createCustomQuizHandler);
+server.get("/api/quiz-title", auth.tokenMiddleWare, quizzes.quizTitleHandler);
 
 server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomsHandler);
 server.get("/api/classroom", auth.tokenMiddleWare, classrooms.classroomHandler);
