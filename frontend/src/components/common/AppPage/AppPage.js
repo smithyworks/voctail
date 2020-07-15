@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef } from "react";
-import { Grid, Container, Snackbar, IconButton } from "@material-ui/core";
+import { Grid, Container, Snackbar, IconButton, Typography } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { localStorage } from "../../../utils";
 import { UserContext } from "../../../App.js";
 import TopNav from "./TopNav.js";
+import { useRouteMatch, Link } from "react-router-dom";
 
 export const toasts = {
   _toast: (type, msg) => console.log(type, msg), // will be overwritten
@@ -46,6 +47,15 @@ function AppPage({ children, id, location, title }) {
   const classes = useStyles();
   const user = useContext(UserContext);
 
+  const { path } = useRouteMatch();
+  let breadcrumbs = path;
+  if (path === "/documents/:document_id")
+    breadcrumbs = (
+      <Typography>
+        <Link to="/dashboard">Dashboard</Link> > document
+      </Typography>
+    );
+
   if (title) window.document.title = title;
   else if (location === "dashboard") window.document.title = "VocTail | Dashboard";
   else if (location === "documents") window.document.title = "VocTail | Documents";
@@ -73,6 +83,7 @@ function AppPage({ children, id, location, title }) {
 
       <Grid item xs className={classes.bodyContainer}>
         <Container id={id} className={classes.body}>
+          <div className={classes.breadcrumbs}>{breadcrumbs}</div>
           {children}
         </Container>
       </Grid>

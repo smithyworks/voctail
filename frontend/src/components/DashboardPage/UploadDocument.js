@@ -18,6 +18,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import DescriptionIcon from "@material-ui/icons/Description";
+import ImageIcon from "@material-ui/icons/Image";
 import { makeStyles } from "@material-ui/core/styles";
 import VTIconButton from "../common/Buttons/IconButton";
 
@@ -67,7 +68,7 @@ function UploadDocument({ refresh, publisherId }) {
   };
 
   //read uploaded file and stringify it for the database (format in blocks, see more in the schema)
-  function readFile() {
+  function readFile(then) {
     const uploadedFile = document.getElementById("upload-file").files[0];
 
     let reader = new FileReader();
@@ -139,9 +140,11 @@ function UploadDocument({ refresh, publisherId }) {
       console.log("i am before what was missing.");
       //HERE
       contentInput.current = JSON.stringify(blocks).replace(/\\/g, "\\\\");
+
+      // Chain the next function once contehtInput is populated
+      if (typeof then === "function") then();
       console.log("i did what was missing");
     };
-    return true;
   }
   //verify the metadata and the document for the upload to prevent false uploads
   function verify() {
@@ -175,7 +178,8 @@ function UploadDocument({ refresh, publisherId }) {
     contentInput.current = "";
   }
 
-  function addThisDocument() {
+  const addThisDocument = () => {
+    readFile();
     console.log("in addthis document after readfile");
     console.log("publisher id", publisherId);
     console.log("title Input", titleInput.current);
@@ -210,7 +214,7 @@ function UploadDocument({ refresh, publisherId }) {
         console.log(err);
         toasts.toastError("Error uploading the document!");
       });
-  }
+  };
 
   return (
     <div>
