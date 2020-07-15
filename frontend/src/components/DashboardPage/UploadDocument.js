@@ -18,7 +18,6 @@ import {
   TextField,
 } from "@material-ui/core";
 import DescriptionIcon from "@material-ui/icons/Description";
-import ImageIcon from "@material-ui/icons/Image";
 import { makeStyles } from "@material-ui/core/styles";
 import VTIconButton from "../common/Buttons/IconButton";
 
@@ -51,6 +50,8 @@ function UploadDocument({ refresh, publisherId }) {
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
   const classes = useStyles();
+  const [errorTitle, setErrorTitle] = useState(false);
+  const [errorAuthor, setErrorAuthor] = useState(false);
 
   const handleAddOpen = () => {
     setOpen(true);
@@ -103,7 +104,7 @@ function UploadDocument({ refresh, publisherId }) {
           currentType = null;
           currentContent = null;
 
-          return; // no need to check for other block types
+          // return; // no need to check for other block types
         }
 
         // Test for marked up line
@@ -135,17 +136,22 @@ function UploadDocument({ refresh, publisherId }) {
         }
       });
 
+      console.log("i am before what was missing.");
       //HERE
       contentInput.current = JSON.stringify(blocks).replace(/\\/g, "\\\\");
+      console.log("i did what was missing");
     };
+    return true;
   }
   //verify the metadata and the document for the upload to prevent false uploads
   function verify() {
     if (titleInput.current.length <= 1) {
+      setErrorTitle(true);
       toasts.toastWarning("Please insert the title before uploading your document.");
       return false;
     }
     if (authorInput.current.length <= 1) {
+      setErrorAuthor(true);
       toasts.toastWarning("Please insert an author before uploading your document.");
       return false;
     }
@@ -169,9 +175,16 @@ function UploadDocument({ refresh, publisherId }) {
     contentInput.current = "";
   }
 
-  const addThisDocument = () => {
-    readFile();
+  function addThisDocument() {
     console.log("in addthis document after readfile");
+    console.log("publisher id", publisherId);
+    console.log("title Input", titleInput.current);
+    console.log("author", authorInput.current);
+    console.log("description", descriptionInput.current);
+    console.log("category", category);
+    console.log("public", publicDocument);
+    console.log("content", contentInput.current);
+    console.log("blocks", blocks);
     api
       .addDocument(
         publisherId,
@@ -197,23 +210,26 @@ function UploadDocument({ refresh, publisherId }) {
         console.log(err);
         toasts.toastError("Error uploading the document!");
       });
-  };
+  }
 
   return (
     <div>
       <VTIconButton onClick={handleAddOpen} />
 
       <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-new-document">
-        <DialogTitle id="add-new-document">Add a document</DialogTitle>
+        <DialogTitle id="add-new-document">Add document</DialogTitle>
         <DialogContent>
-          <DialogContentText>To add a new text document please fill in the additional data.</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="title"
             label="Title*"
             type="title"
-            onChange={(e) => (titleInput.current = e.target.value)}
+            error={errorTitle}
+            onChange={(e) => {
+              titleInput.current = e.target.value;
+              setErrorTitle(false);
+            }}
             fullWidth
           />
           <TextField
@@ -222,7 +238,11 @@ function UploadDocument({ refresh, publisherId }) {
             id="author"
             label="Author*"
             type="author"
-            onChange={(e) => (authorInput.current = e.target.value)}
+            error={errorAuthor}
+            onChange={(e) => {
+              authorInput.current = e.target.value;
+              setErrorAuthor(false);
+            }}
             fullWidth
           />
           <TextField
@@ -236,26 +256,29 @@ function UploadDocument({ refresh, publisherId }) {
             onChange={(e) => (descriptionInput.current = e.target.value)}
             fullWidth
           />
-          <DialogContentText>Please upload your text document.</DialogContentText>
-          <input accept="txt/*" className={classes.input} id="upload-file" multiple type="file" />
-          <label htmlFor="upload-text">
-            <VTButton secondary component="span" startIcon={<DescriptionIcon />}>
-              Upload
-            </VTButton>
-          </label>
-          <DialogContentText>
-            You can upload a preview image for your text document or choose one from our example pictures.
-          </DialogContentText>
-          <input accept="image/*" className={classes.input} id="upload-preview-image" multiple type="file" />
-          <label htmlFor="upload-preview-image">
-            <VTButton secondary component="span" startIcon={<ImageIcon />}>
-              Upload
-            </VTButton>
-          </label>
-          <DialogContentText>
-            Your document is public and available to all users. If you want to keep your document private please
-            deactivate the document status.
-          </DialogContentText>
+
+          <FormControl className={classes.formControl}>
+            <InputLabel shrink id="choose-category">
+              Category
+            </InputLabel>
+            <Select
+              id="choose-category"
+              onChange={handleCategoryChange}
+              displayEmpty
+              className={classes.selectEmpty}
+              value={category}
+            >
+              <MenuItem value={"Others"}>
+                <em>Others</em>
+              </MenuItem>
+              <MenuItem value={"Fairy Tale"}>Fairy Tale</MenuItem>
+              <MenuItem value={"(Short) Story"}>Short Story</MenuItem>
+              <MenuItem value={"Newspaper Article"}>Newspaper Article</MenuItem>
+            </Select>
+            <FormHelperText>Please choose a category for your document</FormHelperText>
+          </FormControl>
+          <DialogContentText />
+
           <FormControlLabel
             control={
               <Checkbox
@@ -267,28 +290,17 @@ function UploadDocument({ refresh, publisherId }) {
             }
             label="Public Document"
           />
+          <DialogContentText>
+            Your document is public and available to all users. If you want to keep your document private please
+            deactivate the status.
+          </DialogContentText>
 
-          <FormControl className={classes.formControl}>
-            <InputLabel shrink id="choose-category">
-              Category
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-placeholder-label-label"
-              id="choose-category"
-              value={"Others"}
-              onChange={handleCategoryChange}
-              displayEmpty
-              className={classes.selectEmpty}
-            >
-              <MenuItem value={"Others"}>
-                <em>Others</em>
-              </MenuItem>
-              <MenuItem value={"Fairy Tale"}>Fairy Tale</MenuItem>
-              <MenuItem value={"(Short) Story"}>Short Story</MenuItem>
-              <MenuItem value={"Newspaper Article"}>Newspaper Article</MenuItem>
-            </Select>
-            <FormHelperText>Please choose a category for your document</FormHelperText>
-          </FormControl>
+          <input accept="txt/*" className={classes.input} id="upload-file" multiple type="file" />
+          <label htmlFor="upload-text">
+            <VTButton secondary component="span" startIcon={<DescriptionIcon />}>
+              Upload .txt
+            </VTButton>
+          </label>
         </DialogContent>
         <DialogActions>
           <VTButton neutral onClick={handleAddClose}>
@@ -297,9 +309,10 @@ function UploadDocument({ refresh, publisherId }) {
           <VTButton
             accept
             onClick={() => {
-              verify();
-              if (verify()) addThisDocument();
-              //else toasts.toastWarning("Please review your entries.");
+              if (verify()) {
+                readFile();
+                addThisDocument();
+              }
             }}
           >
             Add new document

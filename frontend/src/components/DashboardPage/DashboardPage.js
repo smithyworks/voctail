@@ -7,6 +7,7 @@ import AppPage, { toasts } from "../common/AppPage";
 import { DashboardSection } from "../common";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
+import EmptyTile from "../common/EmptyTile";
 
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
@@ -137,7 +138,8 @@ function Dashboard() {
             />
           ))
         ) : (
-          <T>You have no own documents.</T>
+          <EmptyTile />
+          /*<T>You have no own documents.</T>*/
         )}
       </DashboardSection>
 
