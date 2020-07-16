@@ -361,7 +361,7 @@ function ShowcasePage() {
           toasts.toastSuccess(JSON.stringify(ids));
           setInviteDialogOpen(false);
         }}
-      ></InviteStudentsDialog>
+      />
     </AppPage>
   );
 }

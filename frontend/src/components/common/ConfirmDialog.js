@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   icon: { marginRight: "5px", fontSize: "30px" },
 });
 
-function ConfirmDialog({ open, title, variant, disabled, onConfirm, onClose, children }) {
+function ConfirmDialog({ open, title, disabled, onConfirm, onClose, children }) {
   const classes = useStyles();
 
   return (

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AppPage from "../common/AppPage";
@@ -11,10 +10,10 @@ import Header from "../common/HeaderSection";
 import { ClassroomSection, SectionSection, ChapterSection, DashboardTile } from "../common";
 import InviteStudentsDialog from "../common/InviteStudentsDialog";
 import UserCard from "../common/UserCard";
-import { IconButton, Typography as T, Menu, MenuItem } from "@material-ui/core";
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { api } from "../../utils";
-import { timeParser, urlParser, isConnected, teacherParser } from "../../utils/parsers";
+import { timeParser, urlParser, isConnected } from "../../utils/parsers";
 import { toasts } from "../common/AppPage/AppPage";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
@@ -61,7 +60,7 @@ function addStudents(classroomId, studentId, classroomStudentsFromDatabase, setC
 }
 
 function ClassroomViewPage() {
-  const classes = useStyles();
+  //const classes = useStyles();
   const [currentClassroomId, setCurrentClassroomId] = useState(null);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
   const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
@@ -178,7 +177,7 @@ function ClassroomViewPage() {
             toasts.toastSuccess("Students added to the database!");
             setInviteDialogOpen(false);
           }}
-        ></InviteStudentsDialog>
+        />
 
         <Grid container>
           {classroomOwnerFromDatabase.concat(classroomTeachersFromDatabase).map((member) => {
@@ -215,7 +214,7 @@ function ClassroomViewPage() {
             toasts.toastSuccess("Students added to the database!");
             setInviteDialogOpen(false);
           }}
-        ></InviteStudentsDialog>
+        />
 
         <Grid container>
           {classroomStudentsFromDatabase.map((member) => {

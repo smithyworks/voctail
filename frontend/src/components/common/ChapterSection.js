@@ -1,6 +1,5 @@
 import React from "react";
 import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles({
   paper: {

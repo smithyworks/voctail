@@ -1,11 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Paper, makeStyles, Grid, Typography, Menu, MenuItem } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./Quiz/colorCycler";
 import { api } from "../../utils";
 import { ConfirmDialog } from "../common";
-import { toasts } from ".";
 
 const useStyles = makeStyles({
   container: {

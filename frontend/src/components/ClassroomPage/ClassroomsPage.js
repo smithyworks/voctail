@@ -15,7 +15,6 @@ import AppPage from "../common/AppPage";
 
 import { api } from "../../utils";
 import logo_classroom from "../../assets/classroom_logo.png";
-import Header from "../common/HeaderSection";
 import { ClassroomSection, ConfirmDialog } from "../common";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
