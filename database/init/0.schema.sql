@@ -100,15 +100,17 @@ CREATE TABLE classrooms (
   title             text            NOT NULL,
   description       text,
   topic             text,
-  open              boolean         DEFAULT false
+  open              boolean         NOT NULL DEFAULT false
 );
 
 CREATE TABLE classroom_members (
     classroom_id    integer     NOT NULL REFERENCES classrooms(classroom_id) ON DELETE CASCADE,
-    student_id      integer     REFERENCES users(user_id) ON DELETE CASCADE
+    member_id       integer     REFERENCES users(user_id) ON DELETE CASCADE,
+    teacher         boolean     NOT NULL DEFAULT false
 );
 
 CREATE TABLE classroom_documents (
     classroom_id    integer     NOT NULL REFERENCES classrooms(classroom_id) ON DELETE CASCADE,
-    document_id     integer     REFERENCES documents(document_id) ON DELETE CASCADE
+    document_id     integer     REFERENCES documents(document_id) ON DELETE CASCADE,
+    section         text        NOT NULL DEFAULT 'Others'
 )

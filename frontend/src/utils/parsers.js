@@ -46,3 +46,17 @@ export function isConnected(lastSeen) {
   //isConnected checks if the user was connected in the 5 last minutes
   return new Date() - new Date(lastSeen) < 5 * 60 * 1000;
 }
+
+export function teacherParser(teachersList, teacher) {
+  if (teachersList.length < 2) {
+    return [teacher.name, " "];
+  } else {
+    if (teachersList.indexOf(teacher) < teachersList.length - 2) {
+      return [teacher.name, ", "];
+    }
+    if (teachersList.indexOf(teacher) === teachersList.length - 2) {
+      return [teacher.name, " & "];
+    }
+    return [teacher.name, " "];
+  }
+}
