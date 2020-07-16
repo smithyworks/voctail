@@ -62,8 +62,8 @@ async function insertSQL(title, questions, user_id, { ...props }) {
   const {
     rows: [{ quiz_id }],
   } = await query(
-    "INSERT INTO quizzes (title, questions, is_day, is_custom, last_seen, created) \
-      VALUES($1, $2, $3, $4, NOW(), NOW()) RETURNING quiz_id",
+    "INSERT INTO quizzes (title, questions, is_day, is_custom, created) \
+      VALUES($1, $2, $3, $4, NOW()) RETURNING quiz_id",
     [title, JSON.stringify(questions), is_day, is_custom]
   );
 
@@ -151,40 +151,40 @@ async function quizCategoryHandler(req, res) {
     const {
       rows: quizDocuments,
     } = await query(
-      "SELECT  quizzes.* FROM quizzes \
+      "SELECT  quizzes.*, users_quizzes.last_seen FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     INNER JOIN quizzes_documents \
         ON quizzes_documents.quiz_id = quizzes.quiz_id \
-        ORDER BY quizzes.last_seen DESC",
+        ORDER BY COALESCE(users_quizzes.last_seen, quizzes.created) DESC",
       [user_id]
     );
 
     const {
       rows: quizCustom,
     } = await query(
-      "SELECT  quizzes.* FROM quizzes \
+      "SELECT  quizzes.*, users_quizzes.last_seen FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     WHERE quizzes.is_custom = true\
-    ORDER BY quizzes.last_seen DESC",
+    ORDER BY COALESCE(users_quizzes.last_seen, quizzes.created) DESC",
       [user_id]
     );
 
     const {
       rows: quizChallenges,
     } = await query(
-      "SELECT  quizzes.* FROM quizzes \
+      "SELECT  quizzes.*, users_quizzes.last_seen FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
     WHERE quizzes.is_day = true\
-    ORDER BY quizzes.created DESC",
+    ORDER BY COALESCE(users_quizzes.last_seen, quizzes.created) DESC",
       [user_id]
     );
 
     const {
       rows: quizzes,
     } = await query(
-      "SELECT  quizzes.* FROM quizzes \
+      "SELECT  quizzes.*, users_quizzes.last_seen FROM quizzes \
     INNER JOIN users_quizzes ON users_quizzes.quiz_id = quizzes.quiz_id AND users_quizzes.user_id = $1\
-    ORDER BY quizzes.last_seen DESC",
+    ORDER BY COALESCE(users_quizzes.last_seen, quizzes.created) DESC",
       [user_id]
     );
 
@@ -232,8 +232,13 @@ async function renameQuizHandler(req, res) {
 
 async function viewedNowQuizHandler(req, res) {
   try {
+    const { user_id } = req.authData.user;
     const quiz_id = req.body.quiz_id;
-    await query("UPDATE quizzes SET last_seen = NOW() WHERE quizzes.quiz_id=$1", [quiz_id]);
+    await query(
+      "UPDATE users_quizzes SET last_seen = NOW() WHERE users_quizzes.quiz_id=$1 \
+        AND users_quizzes.user_id=$2",
+      [quiz_id, user_id]
+    );
     res.status(200).send("Successful update of quiz with id " + quiz_id + ".");
   } catch (err) {
     log(err);
@@ -348,7 +353,23 @@ async function createQuizFromDocHandler(req, res) {
 
     const questions = generateQuestions(wordList, transList, length);
 
-    const quiz = await insertSQL(document.title, questions, user_id, { document_id: document.document_id });
+    //check number of quizzes with this title
+    //fetch all quizzes by this user created for the document with the document_id
+    const {
+      rows: quizList,
+    } = await query(
+      "SELECT users_quizzes.quiz_id FROM users_quizzes \
+    INNER JOIN quizzes ON quizzes.quiz_id=users_quizzes.quiz_id \
+    INNER JOIN quizzes_documents ON quizzes_documents.quiz_id=quizzes.quiz_id \
+    WHERE users_quizzes.user_id=$1 AND quizzes_documents.document_id=$2",
+      [user_id, document_id]
+    );
+
+    const format_title = (title, len) => (len > 0 ? title + " (" + len + ")" : title);
+
+    const quiz = await insertSQL(format_title(document.title, quizList.length), questions, user_id, {
+      document_id: document.document_id,
+    });
 
     res.status(200).json(quiz);
   } catch (err) {
@@ -372,6 +393,21 @@ async function createCustomQuizHandler(req, res) {
   }
 }
 
+async function quizTitleHandler(req, res) {
+  try {
+    const { quiz_id } = req.query;
+
+    const {
+      rows: [{ title }],
+    } = await query("SELECT title FROM quizzes WHERE quiz_id = $1", [quiz_id]);
+
+    res.status(200).send(title);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Somethign went wrong.");
+  }
+}
+
 module.exports = {
   quizzesHandler,
   quizHandler,
@@ -385,4 +421,5 @@ module.exports = {
   viewedNowQuizHandler,
   updateMetricsQuizHandler,
   viewMetricsHandler,
+  quizTitleHandler,
 };

@@ -16,7 +16,6 @@ CREATE TABLE quizzes (
   questions       jsonb,
   is_day          boolean   NOT NULL DEFAULT false,
   is_custom       boolean   NOT NULL DEFAULT false,
-  last_seen       timestamptz,
   created         timestamptz
 );
 
@@ -24,6 +23,7 @@ CREATE TABLE quizzes (
 CREATE TABLE users_quizzes (
   user_id         integer    NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
   quiz_id         integer    NOT NULL REFERENCES quizzes(quiz_id) ON DELETE CASCADE,
+  last_seen       timestamptz,
   best_run        integer,
   metrics         jsonb
 );

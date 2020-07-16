@@ -27,6 +27,7 @@ const useStyles = makeStyles({
 });
 
 function WarningDialog({ open, info }) {
+  //console.log(open, info);
   const classes = useStyles();
 
   const [inputText, setInputText] = useState("");

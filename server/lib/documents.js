@@ -32,7 +32,6 @@ async function documentHandler(req, res) {
       [user_id, document_id]
     );
     document.vocabulary = vocabulary;
-    console.log(vocabulary.length);
 
     res.status(200).json(document);
   } catch (err) {
@@ -43,13 +42,37 @@ async function documentHandler(req, res) {
 
 async function documentDataHandler(req, res) {
   try {
+    const { user_id } = req.authData.user;
     const { rows: documents } = await query("SELECT * FROM documents ORDER BY title ASC");
-    const { rows: newspaperArticles } = await query("SELECT * FROM documents WHERE category = 'Newspaper Article'");
-    const { rows: fairyTales } = await query("SELECT * FROM documents WHERE category = 'Fairy Tale'");
-    const { rows: shortStories } = await query("SELECT * FROM documents WHERE category = '(Short) Story'");
-    const { rows: others } = await query("SELECT * FROM documents WHERE category = 'Others'");
+    const {
+      rows: newspaperArticles,
+    } = await query(
+      "SELECT * FROM documents WHERE category = 'Newspaper Article' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
+      [user_id]
+    );
+    const {
+      rows: fairyTales,
+    } = await query(
+      "SELECT * FROM documents WHERE category = 'Fairy Tale' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
+      [user_id]
+    );
+    const {
+      rows: shortStories,
+    } = await query(
+      "SELECT * FROM documents WHERE category = '(Short) Story' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
+      [user_id]
+    );
+    const {
+      rows: others,
+    } = await query(
+      "SELECT * FROM documents WHERE category = 'Others' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
+      [user_id]
+    );
+    const {
+      rows: usersDocuments,
+    } = await query("SELECT * FROM documents WHERE publisher_id = $1 ORDER BY document_id ASC", [user_id]);
 
-    res.status(200).json({ documents, newspaperArticles, fairyTales, shortStories, others });
+    res.status(200).json({ documents, newspaperArticles, fairyTales, shortStories, others, usersDocuments });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong with the dummy documents.");
@@ -59,8 +82,8 @@ async function documentDataHandler(req, res) {
 async function deleteDocument(req, res) {
   try {
     const { document_id } = req.body;
-    log("delete document", document_id);
     await query("DELETE FROM documents WHERE document_id = $1", [document_id]);
+    log("deleted document", document_id);
     res.sendStatus(200);
   } catch (err) {
     log(err);
@@ -88,22 +111,21 @@ async function addDocument(req, res) {
     }
     return -1;
   }
+  const premium = true;
+  const newDocumentWords = [];
+  let word_id = 0;
+  let word = "";
+  let frequency = 0;
+  const ignore = false;
+  const language = "english";
 
   try {
     const { publisher, title, author, description, category, isPublic, content, blocks } = req.body;
-    const premium = true;
-    const newDocumentWords = [];
-    let word_id = 0;
-    let word = "";
-    let frequency = 0;
-    const ignore = false;
-    const language = "english";
 
     const {
       rows: [{ document_id }],
     } = await query(
-      "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) " +
-        "VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
+      "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
       [publisher, title, author, description, category, isPublic, premium, content]
     );
 
@@ -148,7 +170,6 @@ async function addDocument(req, res) {
       }
       frequency = 0;
     }
-
     for (let ndw = 0; ndw < newDocumentWords.length; ndw++) {
       const {
         documentWords,
@@ -158,7 +179,6 @@ async function addDocument(req, res) {
         newDocumentWords[ndw].frequency,
       ]);
     }
-
     res.status(200).json({ document_id });
   } catch (err) {
     log(err);
@@ -166,6 +186,19 @@ async function addDocument(req, res) {
   }
 }
 
+async function editDocument(req, res) {
+  try {
+    const { document_id, title, author, description, category, isPublic } = req.body;
+    await query(
+      "UPDATE documents SET title = $1, author = $2, description = $3, category = $4, public = $5  WHERE documents.document_id = $6 ",
+      [title, author, description, category, isPublic, document_id]
+    );
+    res.status(200).send("Successfully edited your document.");
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
 async function usersHandler(req, res) {
   try {
     const { rows } = await query("SELECT * FROM users ORDER BY user_id ASC");
@@ -176,10 +209,27 @@ async function usersHandler(req, res) {
   }
 }
 
+async function documentTitleHandler(req, res) {
+  try {
+    const { document_id } = req.query;
+
+    const {
+      rows: [{ title }],
+    } = await query("SELECT title FROM documents WHERE document_id = $1", [document_id]);
+
+    res.status(200).send(title);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Somethign went wrong.");
+  }
+}
+
 module.exports = {
   documentHandler,
   usersHandler,
   documentDataHandler,
   deleteDocument,
   addDocument,
+  editDocument,
+  documentTitleHandler,
 };

@@ -94,8 +94,6 @@ export function createCustomQuiz(title, questions) {
 export function fetchDocuments() {
   return axios.get(`${base}/handle-documents`);
 }
-
-// add and delete documents
 export function addDocument(publisher, title, author, description, category, isPublic, content, blocks) {
   return axios.post(`${base}/add-document`, {
     publisher,
@@ -110,6 +108,9 @@ export function addDocument(publisher, title, author, description, category, isP
 }
 export function deleteDocument(document_id) {
   return axios.post(`${base}/delete-document`, { document_id });
+}
+export function editDocument(document_id, title, author, description, category, isPublic) {
+  return axios.post(`${base}/edit-document`, { document_id, title, author, description, category, isPublic });
 }
 
 // vocabulary
@@ -188,4 +189,14 @@ export function setPassword(password) {
 }
 export function vocabulary(user_id) {
   return axios.post(`${base}/user-vocabulary`, { user_id });
+}
+
+// breadcrumbs
+
+export function documentTitle(document_id) {
+  return axios.get(`${base}/document-title`, { params: { document_id } });
+}
+
+export function quizTitle(quiz_id) {
+  return axios.get(`${base}/quiz-title`, { params: { quiz_id } });
 }

@@ -11,6 +11,7 @@ import ClassroomTile from "./ClassroomTile";
 import ClassroomSection from "./ClassroomSection";
 import SectionSection from "./SectionSection";
 import ChapterSection from "./ChapterSection";
+import PlaceholderTile from "./PlaceholderTile";
 
 export {
   AppPage,
@@ -27,4 +28,5 @@ export {
   ClassroomSection,
   SectionSection,
   ChapterSection,
+  PlaceholderTile,
 };

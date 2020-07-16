@@ -1,52 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Typography as T, Dialog, DialogTitle, DialogActions, DialogContent } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
 import DashboardTile from "../common/DashboardTile";
 import AppPage, { toasts } from "../common/AppPage";
-import { VTButton, DashboardSection } from "../common";
-import HeaderSection from "../common/HeaderSection";
+import { DashboardSection } from "../common";
 import WarningDialog from "../AdminPage/WarningDialog";
-
-//example tile images
-import shortStoriesPreview from "../../assets/books.jpg";
-import fairyTalesPreview from "../../assets/fairytale.jpg";
-import newspaperArticlesPreview from "../../assets/newspaper.jpg";
-import otherDocumentsPreview from "../../assets/others.jpg";
-
-//popup for the document you click on (get some information about the doc before entering view mode)
-function DocumentOverviewPopUp({
-  open,
-  onClose,
-  documentId,
-  documentTitle,
-  documentDetails,
-  documentAuthor,
-  documentImage,
-}) {
-  return (
-    <Dialog onClose={onClose} aria-labelledby="document-overview-popup" open={open}>
-      <DialogTitle id="document-overview-popup" onClose={onClose}>
-        {documentTitle}
-      </DialogTitle>
-      <img src={documentImage} alt={documentImage} width="100%" height="40%" />
-      <DialogContent dividers>
-        <T gutterBottom>
-          {documentDetails} Written by {documentAuthor}
-        </T>
-      </DialogContent>
-      <DialogActions>
-        <VTButton neutral onClick={onClose}>
-          Cancel
-        </VTButton>
-        <VTButton accept component={Link} to={"/documents/" + documentId}>
-          View document
-        </VTButton>
-      </DialogActions>
-    </Dialog>
-  );
-}
+import EditDocument from "./EditDocument";
+import PlaceholderTile from "../common/PlaceholderTile";
+import VTIconButton from "../common/Buttons/IconButton";
 
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
@@ -57,33 +18,40 @@ function Dashboard() {
   const [shortStories, setShortStories] = useState([]);
   const [fairyTales, setFairyTales] = useState([]);
   const [otherDocuments, setOtherDocuments] = useState([]);
+  const [usersDocuments, setUsersDocuments] = useState([]);
 
-  const [openPopUp, setPopUpOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
-  const [documentImage, setDocumentImage] = useState(otherDocumentsPreview);
   const [documentAuthor, setDocumentAuthor] = useState(null);
-  const [documentOwner, setDocumentOwner] = useState(false);
-
+  const [isPublic, setIsPublic] = useState(false);
+  const [category, setDocumentCategory] = useState(null);
+  const [addOpen, setAddOpen] = useState(false);
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleAddOpen = () => {
+    setAddOpen(true);
+  };
+  const handleAddClose = () => {
+    setAddOpen(false);
+  };
 
   const [countToRefresh, setCount] = useState(0);
   function refresh() {
     setCount(countToRefresh + 1);
   }
-  function handleData(document_id, title, author, description, image) {
-    setPopUpOpen(true);
-    setDocumentId(document_id);
-    setDocumentTitle(title);
-    setDocumentAuthor(author);
-    setDocumentDetails(description);
-    setDocumentImage(image);
-  }
-  function verifyOwner(owner, user) {
-    if (owner === user) return "isOwned";
-  }
+
+  const handleEdit = (document) => {
+    setEditDialogOpen(true);
+    setDocumentId(document.document_id);
+    setIsPublic(document.public);
+    setDocumentAuthor(document.author);
+    setDocumentDetails(document.description);
+    setDocumentTitle(document.title);
+    setDocumentCategory(document.category);
+  };
 
   function verifyDelete(title, author, id) {
     setDialogOpen(true);
@@ -109,7 +77,7 @@ function Dashboard() {
         .then(() => {
           toasts.toastSuccess("The document was successfully deleted!");
           refresh();
-          setPopUpOpen(false);
+          //setPopUpOpen(false);
         })
         .catch((err) => {
           console.log(err);
@@ -118,6 +86,17 @@ function Dashboard() {
     else toasts.toastWarning("The document could not be found.");
   }
 
+  function createQuiz(documentId) {
+    api
+      .createQuizFromDoc(documentId, 20)
+      .then(() => {
+        toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
+        //setMenuOpen(false);
+      }) //todo check it out
+      .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
+  }
+
+  //get current user
   useEffect(() => {
     api
       .user()
@@ -125,8 +104,9 @@ function Dashboard() {
         if (res) setUser(res.data);
       })
       .catch((err) => console.log(err));
-  }, [countToRefresh]);
+  }, []);
 
+  //fetch documents (rerender when documents were added, deleted, edited
   useEffect(() => {
     api
       .fetchDocuments()
@@ -137,6 +117,7 @@ function Dashboard() {
           setFairyTales(res.data.fairyTales);
           setShortStories(res.data.shortStories);
           setOtherDocuments(res.data.others);
+          setUsersDocuments(res.data.usersDocuments);
         }
       })
       .catch((err) => console.log(err));
@@ -144,92 +125,93 @@ function Dashboard() {
 
   return (
     <AppPage location="dashboard" id="dashboard-page">
-      <HeaderSection mainTitle="Dashboard" description="Enjoy your media!" />
+      <DashboardSection title={"My Documents"} Button={<VTIconButton onClick={handleAddOpen} />}>
+        {usersDocuments.length !== 0 ? (
+          usersDocuments.map((tile) => (
+            <DashboardTile
+              title={tile.title}
+              author={tile.author}
+              isOwned
+              onEdit={() => handleEdit(tile)}
+              onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+              onGenerateQuiz={() => createQuiz(tile.document_id)}
+              linkTo={"/documents/" + tile.document_id}
+              category={tile.category}
+            />
+          ))
+        ) : (
+          <PlaceholderTile
+            tooltipTitle={"You have no own documents. Add your own document now!"}
+            onClick={handleAddOpen}
+          />
+        )}
+      </DashboardSection>
 
-      <DashboardSection
-        title={"Short Stories"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
-      >
+      <DashboardSection title={"Short Stories"}>
         {shortStories.map((tile) => (
           <DashboardTile
-            thumbnail={shortStoriesPreview}
             title={tile.title}
             author={tile.author}
-            isOwned
-            onOpen={() =>
-              handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
-            }
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
+            linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
 
-      <DashboardSection
-        title={"Fairy Tales"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
-      >
+      <DashboardSection title={"Fairy Tales"}>
         {fairyTales.map((tile) => (
           <DashboardTile
-            thumbnail={fairyTalesPreview}
             title={tile.title}
             author={tile.author}
-            isOwned
-            onOpen={() => handleData(tile.document_id, tile.title, tile.author, tile.description, fairyTalesPreview)}
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
+            linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
 
-      <DashboardSection
-        title={"Newspaper Articles"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
-      >
+      <DashboardSection title={"Newspaper Articles"}>
         {newspaperArticles.map((tile) => (
           <DashboardTile
-            thumbnail={newspaperArticlesPreview}
             title={tile.title}
             author={tile.author}
-            isOwned
-            onOpen={() =>
-              handleData(tile.document_id, tile.title, tile.author, tile.description, newspaperArticlesPreview)
-            }
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
+            linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
 
-      <DashboardSection
-        title={"Other documents"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 0} />}
-      >
+      <DashboardSection title={"Other documents"}>
         {otherDocuments.map((tile) => (
           <DashboardTile
-            thumbnail={otherDocumentsPreview}
             title={tile.title}
             author={tile.author}
-            isOwned
-            onOpen={() =>
-              handleData(tile.document_id, tile.title, tile.author, tile.description, otherDocumentsPreview)
-            }
-            onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-            onEdit={() => toasts.toastSuccess("Clicked edit")}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
+            linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
 
+      <UploadDocument
+        refresh={refresh}
+        publisherId={user ? user.user_id : 1}
+        handleAddClose={handleAddClose}
+        open={addOpen}
+      />
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
-
-      <DocumentOverviewPopUp
-        open={openPopUp}
-        onClose={() => setPopUpOpen(false)}
+      <EditDocument
+        refresh={refresh}
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
         documentId={documentId}
-        documentTitle={documentTitle}
-        documentAuthor={documentAuthor}
-        documentDetails={documentDetails}
-        documentImage={documentImage}
+        title={documentTitle}
+        author={documentAuthor}
+        description={documentDetails}
+        isPublic={isPublic}
+        currentCategory={category}
       />
     </AppPage>
   );

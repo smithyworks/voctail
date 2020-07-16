@@ -17,6 +17,7 @@ import QuizTile from "./Quiz/QuizTile";
 import VTIconButton from "./Buttons/IconButton";
 import ClassroomSection from "./ClassroomSection";
 import ClassroomTile from "./ClassroomTile";
+import PlaceholderTile from "./PlaceholderTile";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -158,6 +159,10 @@ function ShowcasePage() {
           </IconButton>
         }
       >
+        <PlaceholderTile
+          onClick={() => toasts.toastSuccess("Clicked placeholder tile.")}
+          tooltipTitle="Upload a file!"
+        />
         <DashboardTile
           thumbnail={pic}
           title="Chechnya"
@@ -353,7 +358,6 @@ function ShowcasePage() {
         open={inviteDialogOpen}
         onClose={() => setInviteDialogOpen(false)}
         onInvite={(ids) => {
-          console.log(JSON.stringify(ids));
           toasts.toastSuccess(JSON.stringify(ids));
           setInviteDialogOpen(false);
         }}
