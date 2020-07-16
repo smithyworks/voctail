@@ -192,8 +192,6 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
           console.log(err);
           toasts.toastError("Error uploading the document!");
         });
-    } else {
-      toasts.toastWarning("Are you sure?");
     }
   }
 

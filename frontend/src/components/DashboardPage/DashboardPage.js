@@ -98,6 +98,8 @@ function Dashboard() {
   const [docFit, setDocFit] = useState(5);
 
   function getDocumentFit(documentId) {
+    // todo this makes no sense! better push it to [] of usestate
+    console.log("document id", documentId);
     api.calcDocumentFit(documentId).then((res) => {
       setDocFit(res.data.fit);
       console.log("res.data", res.data.fit);
