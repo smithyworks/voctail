@@ -76,6 +76,8 @@ CREATE TABLE documents (
   author          text          NOT NULL,
   description     text,
   category        text,
+  video           boolean       NOT NULL DEFAULT FALSE,
+  embed_link      text,
   public          boolean       NOT NULL DEFAULT false,
   premium         boolean       NOT NULL DEFAULT false,
   blocks          jsonb
