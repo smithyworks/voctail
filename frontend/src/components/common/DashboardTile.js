@@ -68,17 +68,6 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
-  const [tooltipOpen, setTooltipOpen] = useState();
-  const tooltipTimeout = useRef();
-  function _hoverStart() {
-    setHovered(true);
-    tooltipTimeout.current = setTimeout(() => setTooltipOpen(true), 500);
-  }
-  function _hoverStop() {
-    setHovered(false);
-    setTooltipOpen(false);
-    clearTimeout(tooltipTimeout.current);
-  }
 
   const anchor = useRef();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -132,6 +121,7 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
           </>
         }
         enterDelay={1000}
+        enterNextDelay={1000}
       >
         <Paper
           className={classes.paper}
