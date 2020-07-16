@@ -261,13 +261,16 @@ async function getDocumentLastSeen(req, res) {
 async function calcDocumentFit(req, res) {
   try {
     const { document_id } = req.body;
-    const { user_id } = req.authData.user_id;
+    const { user_id } = req.authData.user;
     //get all words from document
-    const { document_words } = await query("SELECT word_id FROM document_words WHERE document_id = $1", [document_id]);
+    const { rows: document_words } = await query("SELECT word_id FROM documents_words WHERE document_id = $1", [
+      document_id,
+    ]);
+    log("document words", document_words);
     const word_sum = document_words.length; // sum of all document words
 
     //get all users words
-    const { users_words } = await query("SELECT word_id FROM users_words WHERE user_id = $1", [user_id]);
+    const { rows: users_words } = await query("SELECT word_id FROM users_words WHERE user_id = $1", [user_id]);
 
     const unknownWords = users_words.filter((word) => word.known == false);
     let unknownWords_inDocument = 0;
@@ -275,10 +278,14 @@ async function calcDocumentFit(req, res) {
     document_words.map((word) => {
       if (unknownWords.includes(word)) unknownWords_inDocument++;
     });
+    log("unknown words in document", unknownWords_inDocument);
+    log("word sum", word_sum);
+    log("word sum mal 0.1", word_sum * 0.1);
     let fit;
-    if (unknownWords_inDocument < 0.1 * word_sum) fit = 1;
+    if (unknownWords_inDocument <= 0.1 * word_sum) fit = 1;
     else fit = 0;
 
+    log("fit", fit);
     res.status(200).json({ fit });
   } catch (err) {
     log(err);

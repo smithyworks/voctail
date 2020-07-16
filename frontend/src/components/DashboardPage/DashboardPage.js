@@ -95,6 +95,15 @@ function Dashboard() {
       }) //todo check it out
       .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
   }
+  const [docFit, setDocFit] = useState(5);
+
+  function getDocumentFit(documentId) {
+    api.calcDocumentFit(documentId).then((res) => {
+      setDocFit(res.data.fit);
+      console.log("res.data", res.data.fit);
+    });
+    return docFit;
+  }
 
   //get current user
   useEffect(() => {
@@ -129,7 +138,7 @@ function Dashboard() {
         {usersDocuments.length !== 0 ? (
           usersDocuments.map((tile) => (
             <DashboardTile
-              title={tile.title}
+              title={tile.title + getDocumentFit(tile.document_id)}
               author={tile.author}
               isOwned
               onEdit={() => handleEdit(tile)}
@@ -150,7 +159,7 @@ function Dashboard() {
       <DashboardSection title={"Short Stories"}>
         {shortStories.map((tile) => (
           <DashboardTile
-            title={tile.title}
+            title={tile.title + getDocumentFit(tile.document_id)}
             author={tile.author}
             onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}

@@ -121,6 +121,10 @@ export function getLastSeen(user_id, document_id) {
   return axios.post(`${base}/get-last-seen`, { user_id, document_id });
 }
 
+export function calcDocumentFit(document_id) {
+  return axios.get(`${base}/calc-document-fit`, { params: { document_id: document_id } });
+}
+
 // vocabulary
 
 export function updateVocabulary(entries) {
