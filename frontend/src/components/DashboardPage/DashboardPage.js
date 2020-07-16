@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Typography as T } from "@material-ui/core";
 import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
 import DashboardTile from "../common/DashboardTile";
@@ -7,12 +6,8 @@ import AppPage, { toasts } from "../common/AppPage";
 import { DashboardSection } from "../common";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
-
-//example tile images
-import shortStoriesPreview from "../../assets/books.jpg";
-import fairyTalesPreview from "../../assets/fairytale.jpg";
-import newspaperArticlesPreview from "../../assets/newspaper.jpg";
-import otherDocumentsPreview from "../../assets/others.jpg";
+import PlaceholderTile from "../common/PlaceholderTile";
+import VTIconButton from "../common/Buttons/IconButton";
 
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
@@ -25,18 +20,23 @@ function Dashboard() {
   const [otherDocuments, setOtherDocuments] = useState([]);
   const [usersDocuments, setUsersDocuments] = useState([]);
 
-  //const [editOpen, setEditOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [documentId, setDocumentId] = useState(null);
   const [documentTitle, setDocumentTitle] = useState(null);
   const [documentDetails, setDocumentDetails] = useState(null);
-  //const [documentImage, setDocumentImage] = useState(otherDocumentsPreview);
   const [documentAuthor, setDocumentAuthor] = useState(null);
   const [isPublic, setIsPublic] = useState(false);
   const [category, setDocumentCategory] = useState(null);
-
+  const [addOpen, setAddOpen] = useState(false);
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleAddOpen = () => {
+    setAddOpen(true);
+  };
+  const handleAddClose = () => {
+    setAddOpen(false);
+  };
 
   const [countToRefresh, setCount] = useState(0);
   function refresh() {
@@ -89,7 +89,10 @@ function Dashboard() {
   function createQuiz(documentId) {
     api
       .createQuizFromDoc(documentId, 20)
-      .then(() => toasts.toastSuccess("Successfully created a quiz for this document!"))
+      .then(() => {
+        toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
+        //setMenuOpen(false);
+      }) //todo check it out
       .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
   }
 
@@ -122,14 +125,10 @@ function Dashboard() {
 
   return (
     <AppPage location="dashboard" id="dashboard-page">
-      <DashboardSection
-        title={"My Documents"}
-        Button={<UploadDocument refresh={refresh} publisherId={user ? user.user_id : 1} />}
-      >
+      <DashboardSection title={"My Documents"} Button={<VTIconButton onClick={handleAddOpen} />}>
         {usersDocuments.length !== 0 ? (
           usersDocuments.map((tile) => (
             <DashboardTile
-              thumbnail={shortStoriesPreview}
               title={tile.title}
               author={tile.author}
               isOwned
@@ -137,20 +136,25 @@ function Dashboard() {
               onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
               onGenerateQuiz={() => createQuiz(tile.document_id)}
               linkTo={"/documents/" + tile.document_id}
+              category={tile.category}
             />
           ))
         ) : (
-          <T>You have no own documents.</T>
+          <PlaceholderTile
+            tooltipTitle={"You have no own documents. Add your own document now!"}
+            onClick={handleAddOpen}
+          />
         )}
       </DashboardSection>
 
       <DashboardSection title={"Short Stories"}>
         {shortStories.map((tile) => (
           <DashboardTile
-            thumbnail={shortStoriesPreview}
             title={tile.title}
             author={tile.author}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
@@ -158,10 +162,11 @@ function Dashboard() {
       <DashboardSection title={"Fairy Tales"}>
         {fairyTales.map((tile) => (
           <DashboardTile
-            thumbnail={fairyTalesPreview}
             title={tile.title}
             author={tile.author}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
@@ -169,10 +174,11 @@ function Dashboard() {
       <DashboardSection title={"Newspaper Articles"}>
         {newspaperArticles.map((tile) => (
           <DashboardTile
-            thumbnail={newspaperArticlesPreview}
             title={tile.title}
             author={tile.author}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
@@ -180,14 +186,21 @@ function Dashboard() {
       <DashboardSection title={"Other documents"}>
         {otherDocuments.map((tile) => (
           <DashboardTile
-            thumbnail={otherDocumentsPreview}
             title={tile.title}
             author={tile.author}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
           />
         ))}
       </DashboardSection>
 
+      <UploadDocument
+        refresh={refresh}
+        publisherId={user ? user.user_id : 1}
+        handleAddClose={handleAddClose}
+        open={addOpen}
+      />
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
       <EditDocument
         refresh={refresh}

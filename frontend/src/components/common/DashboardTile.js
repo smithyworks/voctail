@@ -3,6 +3,12 @@ import { Paper, makeStyles, Grid, Typography, Menu, MenuItem } from "@material-u
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
 
+//example tile images
+import shortStoriesPreview from "../../assets/books.jpg";
+import fairyTalesPreview from "../../assets/fairytale.jpg";
+import newspaperArticlesPreview from "../../assets/newspaper.jpg";
+import otherDocumentsPreview from "../../assets/others.jpg";
+
 const useStyles = makeStyles({
   container: {
     padding: "10px",
@@ -55,7 +61,7 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo }) {
+function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo, category }) {
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
@@ -68,14 +74,38 @@ function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onE
     e.stopPropagation();
   }
 
+  let thumbnail;
+  switch (category) {
+    case "(Short) Story":
+      thumbnail = shortStoriesPreview;
+      break;
+    case "Fairy Tale":
+      thumbnail = fairyTalesPreview;
+      break;
+    case "Newspaper Article":
+      thumbnail = newspaperArticlesPreview;
+      break;
+    default:
+      thumbnail = otherDocumentsPreview;
+  }
+
   function _onDelete(e) {
-    if (typeof onDelete === "function") onDelete(e);
+    if (typeof onDelete === "function") {
+      onDelete(e);
+      setMenuOpen(false);
+    }
   }
   function _onEdit(e) {
-    if (typeof onEdit === "function") onEdit(e);
+    if (typeof onEdit === "function") {
+      onEdit(e);
+      setMenuOpen(false);
+    }
   }
   function _onGenerateQuiz(e) {
-    if (typeof onGenerateQuiz === "function") onGenerateQuiz(e);
+    if (typeof onGenerateQuiz === "function") {
+      onGenerateQuiz(e);
+      setMenuOpen(false);
+    }
   }
 
   return (
@@ -94,20 +124,22 @@ function DashboardTile({ title, author, level, thumbnail, onDelete, isOwned, onE
           <Typography className={classes.author}>written by {author}</Typography>
         </div>
 
-        {!!isOwned && (
-          <div
-            className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
-            onClick={openMenu}
-            ref={anchor}
-          >
-            <MoreVertIcon />
-          </div>
-        )}
+        <div
+          className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
+          onClick={openMenu}
+          ref={anchor}
+        >
+          <MoreVertIcon />
+        </div>
       </Paper>
       <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
-        <MenuItem onClick={_onEdit}>Edit</MenuItem>
-        <MenuItem onClick={_onDelete}>Delete</MenuItem>
-        <MenuItem onClick={_onGenerateQuiz}>Create Quiz from Document</MenuItem>
+        {!!isOwned && (
+          <div>
+            <MenuItem onClick={_onEdit}>Edit</MenuItem>
+            <MenuItem onClick={_onDelete}>Delete</MenuItem>
+          </div>
+        )}
+        <MenuItem onClick={_onGenerateQuiz}>Create Quiz</MenuItem>
       </Menu>
     </Grid>
   );
