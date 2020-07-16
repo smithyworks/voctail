@@ -128,7 +128,6 @@ function DocumentPage() {
                 style={{ width: "100%", height: "30vw" }}
                 src={document.embed_link}
                 frameborder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
               />
             </Grid>
