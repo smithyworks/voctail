@@ -146,6 +146,7 @@ function Actions(qstate, nextQ, is_last, showResult) {
       case "Done":
         return (
           <VTButton
+            danger
             key={key}
             variant="outlined"
             onClick={() => {
@@ -158,6 +159,7 @@ function Actions(qstate, nextQ, is_last, showResult) {
       case "Show":
         return (
           <VTButton
+            neutral
             key={key}
             variant="outlined"
             onClick={() => {
@@ -171,6 +173,7 @@ function Actions(qstate, nextQ, is_last, showResult) {
         //Next
         return (
           <VTButton
+            accept
             key={key}
             variant="outlined"
             onClick={() => {
