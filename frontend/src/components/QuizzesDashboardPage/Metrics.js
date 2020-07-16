@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../utils";
-import { Button, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
+import { Button, Dialog, DialogActions } from "@material-ui/core";
 import MetricView from "./MetricView";
+import VoctailDialogTitle from "../common/VoctailDialogTitle";
 
 function Metrics({ onClose, open, quiz }) {
   const handleClose = () => {
@@ -25,7 +26,7 @@ function Metrics({ onClose, open, quiz }) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="stats" fullWidth={true} maxWidth={"xl"}>
-        <DialogTitle id="stats">Quiz statistics for quiz {quiz.title}.</DialogTitle>
+        <VoctailDialogTitle id="stats">Quiz statistics for quiz {quiz.title}.</VoctailDialogTitle>
         <MetricView results={results} />
         <DialogActions>
           <Button onClick={handleClose} color="primary">

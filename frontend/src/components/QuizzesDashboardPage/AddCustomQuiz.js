@@ -1,22 +1,14 @@
 import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  Grid,
-  TextField,
-  Typography as T,
-} from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Grid, TextField } from "@material-ui/core";
 
 import { VTButton } from "../common";
 import QuizItemSection from "./QuizItemSection";
 import QuizItem from "./QuizItem";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import VoctailDialogTitle from "../common/VoctailDialogTitle";
 
 const useStyles = makeStyles({
   quizItem: {
@@ -67,15 +59,21 @@ function AddCustomQuiz({ onAdd, onClose, open }) {
     }
   };
 
+  //
+  //<div>
+  //  <T variant={"h6"}>To add a new quiz please fill out as many quiz items as you like.</T>
+  //</div>
+
+  //<div>
+  //  <T variant={"h6"}>Quiz Items</T>
+  //</div>
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz" fullWidth={true} maxWidth={"xl"}>
         <Paper className={classes.quizItem} elevation={0}>
           <Grid container direction="row">
             <div className={classes.innerContainer}>
-              <div>
-                <T variant={"h6"}>To add a new quiz please fill out as many quiz items as you like.</T>
-              </div>
+              <VoctailDialogTitle>To add a new quiz please fill out as many quiz items as you like.</VoctailDialogTitle>
               <DialogContent>
                 <TextField
                   autoFocus
@@ -90,7 +88,10 @@ function AddCustomQuiz({ onAdd, onClose, open }) {
 
               <QuizItem items={items} setItems={setItems} addItem={addItem} />
             </div>
-            <QuizItemSection items={items} del={deleteItem} styling={classes.innerContainer} />
+            <div className={classes.innerContainer}>
+              <VoctailDialogTitle>Quiz Items</VoctailDialogTitle>
+              <QuizItemSection items={items} del={deleteItem} />
+            </div>
           </Grid>
           <DialogContent>
             <DialogContentText align={"right"}>
