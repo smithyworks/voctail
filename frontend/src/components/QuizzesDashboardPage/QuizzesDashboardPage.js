@@ -13,6 +13,7 @@ import AddCustomQuiz from "./AddCustomQuiz";
 import RenameQuiz from "./RenameQuiz";
 import Metrics from "./Metrics";
 import WarningDialog from "../AdminPage/WarningDialog";
+import PlaceholderTile from "../common/PlaceholderTile";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
@@ -153,21 +154,25 @@ function QuizzesDashboard({ ...props }) {
       </QuizSection>
       <QuizSection title={"Random Quizzes"} onAdd={() => handleRandomOpen()} hasAddButton={true}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
-          {quizRandom.map((v) => (
-            <QuizTile
-              key={v.quiz_id}
-              name={v.title}
-              id={v.quiz_id}
-              onDelete={() => onDelete(v)}
-              onEdit={() => handleRenameOpen(v.quiz_id)}
-              onViewStatistic={() => handleViewStatOpen(v)}
-              isOwned={true}
-              linkTo={base + "/" + v.quiz_id}
-              lastSeen={v.last_seen}
-            >
-              {v}
-            </QuizTile>
-          ))}
+          {quizRandom.length > 0 ? (
+            quizRandom.map((v) => (
+              <QuizTile
+                key={v.quiz_id}
+                name={v.title}
+                id={v.quiz_id}
+                onDelete={() => onDelete(v)}
+                onEdit={() => handleRenameOpen(v.quiz_id)}
+                onViewStatistic={() => handleViewStatOpen(v)}
+                isOwned={true}
+                linkTo={base + "/" + v.quiz_id}
+                lastSeen={v.last_seen}
+              >
+                {v}
+              </QuizTile>
+            ))
+          ) : (
+            <PlaceholderTile onClick={() => handleRandomOpen()} tooltipTitle="Add a new Quiz" />
+          )}
         </Grid>
       </QuizSection>
       {quizDocuments.length > 0 ? (

@@ -1,4 +1,3 @@
-import { Typography as T } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -21,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-function QuizItemSection({ items, del, styling, disablePadding }) {
+function QuizItemSection({ items, del, disablePadding }) {
   const classes = useStyles();
   const max = (vl) => {
     let a = [0, 0];
@@ -33,48 +32,42 @@ function QuizItemSection({ items, del, styling, disablePadding }) {
     return vl[a[1]];
   };
   //<Paper className={classes.quizItem} elevation={0}>
+
   return (
-    <div className={styling}>
-      <div>
-        <T variant={"h6"}>Quiz Items</T>
-      </div>
-      <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
-        {items.length === 0 ? undefined : (
-          <Table size={"small"}>
-            <TableHead>
+    <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
+      {items.length === 0 ? undefined : (
+        <Table size={"small"}>
+          <TableHead>
+            <TableRow>
+              <TableCell align="right">Vocabulary</TableCell>
+              <TableCell align="right">Translation</TableCell>
+              {items.length > 0
+                ? max(items).suggestions.map((vv, i) => <TableCell align="right">{"Suggestion " + (i + 1)}</TableCell>)
+                : undefined}
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {items.map((v, i) => (
               <TableRow>
-                <TableCell align="right">Vocabulary</TableCell>
-                <TableCell align="right">Translation</TableCell>
-                {items.length > 0
-                  ? max(items).suggestions.map((vv, i) => (
-                      <TableCell align="right">{"Suggestion " + (i + 1)}</TableCell>
-                    ))
-                  : undefined}
-                <TableCell align="right">Actions</TableCell>
+                <TableCell align="right">{v.vocabulary}</TableCell>
+                <TableCell align="right">{v.translation}</TableCell>
+                {v.suggestions.map((vv) => (
+                  <TableCell align="right">{vv}</TableCell>
+                ))}
+                {[...Array(max(items).suggestions.length - v.suggestions.length)].map((v) => (
+                  <TableCell align="right"></TableCell>
+                ))}
+                <TableCell align="right">
+                  <VTButton danger onClick={() => del(i)}>
+                    delete
+                  </VTButton>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {items.map((v, i) => (
-                <TableRow>
-                  <TableCell align="right">{v.vocabulary}</TableCell>
-                  <TableCell align="right">{v.translation}</TableCell>
-                  {v.suggestions.map((vv) => (
-                    <TableCell align="right">{vv}</TableCell>
-                  ))}
-                  {[...Array(max(items).suggestions.length - v.suggestions.length)].map((v) => (
-                    <TableCell align="right"></TableCell>
-                  ))}
-                  <TableCell align="right">
-                    <VTButton danger onClick={() => del(i)}>
-                      delete
-                    </VTButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </div>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 }

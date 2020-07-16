@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, Grid, TextField } from "@material-ui/core";
 import { VTButton } from "../common";
 import Input from "@material-ui/core/Input";
 import { makeStyles } from "@material-ui/core/styles";
+import VoctailDialogTitle from "../common/VoctailDialogTitle";
 
 const useStyles = makeStyles({
   numberField: {
@@ -53,7 +54,7 @@ function AddRandomQuiz({ onAdd, onClose, open }) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz" className={classes.dialog}>
-        <DialogTitle id="add-custom-quiz">Please provide the title and length of your quiz.</DialogTitle>
+        <VoctailDialogTitle id="add-custom-quiz">Please provide the title and length of your quiz.</VoctailDialogTitle>
         <DialogContent>
           <Grid container justify="flex-start" alignItems="left" direction="column">
             <TextField
