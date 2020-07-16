@@ -197,7 +197,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
 
   useEffect(() => {
     addThisDocument();
-  }, [documentLoaded]);
+  }, [documentLoaded]); // eslint-disable-line
 
   return (
     <div>
