@@ -3,13 +3,11 @@ import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core"
 
 const useStyles = makeStyles({
   paper: {
-    padding: "30px 30px 8px 30px",
-    border: "1px solid lightgrey",
-    marginBottom: "20px",
+    paddingBottom: "3%",
   },
-  title: { fontWeight: "bold" },
+
   innerContainer: {
-    padding: "20px 20px 8px 20px",
+    padding: "3px 20px 8px 20px",
   },
 
   expansionIcon: {
@@ -24,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ClassroomSection({ title, children, Button }) {
+function ChapterSection({ title, children, Button }) {
   const classes = useStyles();
 
   return (
@@ -38,13 +36,9 @@ function ClassroomSection({ title, children, Button }) {
         <Grid item>{Button}</Grid>
       </Grid>
       <Divider />
-      <div className={classes.innerContainer}>
-        <Grid container className={classes.innerContainer}>
-          {children}
-        </Grid>
-      </div>
+      <div className={classes.innerContainer}>{children}</div>
     </Paper>
   );
 }
 
-export default ClassroomSection;
+export default ChapterSection;

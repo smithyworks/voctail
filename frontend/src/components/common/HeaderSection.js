@@ -25,13 +25,12 @@ const useStyles = makeStyles(() => ({
     //Font to do
     fontStyle: "italic",
     textAlign: "center",
-    marginTop: "1%",
   },
 
   container: {
     backgroundColor: "#D4E4E4",
-    paddingTop: "3%",
-    paddingBottom: "3%",
+    paddingTop: "1%",
+    paddingBottom: "1%",
     marginBottom: "5%",
   },
 }));
@@ -40,13 +39,13 @@ function HeaderSection(props) {
   const classes = useStyles();
   return (
     <Container className={classes.container} maxWidth="xl">
-      <Typography className={classes.headUp1} variant="h2">
+      <Typography className={classes.headUp1} variant="h5">
         {props.mainTitle}
       </Typography>
-      <Typography align="center" className={classes.headUp2} variant="h4">
+      <Typography align="center" className={classes.headUp2} variant="h6">
         {props.subtitle}
       </Typography>
-      <Typography className={classes.headUp3} align="center" variant="h5">
+      <Typography className={classes.headUp3} align="center">
         {props.description}
       </Typography>
     </Container>

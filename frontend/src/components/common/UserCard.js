@@ -66,18 +66,15 @@ const StyledBadgeDisconnected = withStyles((theme) => ({
 
 const useStyles = makeStyles(() => ({
   actionArea: {
-    borderRadius: 16,
     transition: "0.2s",
     "&:hover": {
-      transform: "scale(1.1)",
+      boxShadow: "0px 0px 5px  #D3D0D0",
     },
   },
   card: {
-    borderRadius: 12,
     minWidth: 256,
-    backgroundColor: "#D4E4E4",
+    backgroundColor: "white",
     textAlign: "center",
-    boxShadow: "1px 1px 6px #555",
   },
   avatar: {
     width: 60,
@@ -136,7 +133,9 @@ function UserCard(props) {
               </StyledBadgeDisconnected>
             </StyledBadgeConnected>
             <h3 className={styles.heading}>{props.name}</h3>
-            <span className={styles.subheader}>{props.email}</span>
+            <a className={styles.subheader} href={"mailto:" + props.email}>
+              {props.email}
+            </a>
           </CardContent>
         </LightTooltip>
       </Card>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, TextField } from "@material-ui/core";
 
 import { AppPage, toasts, VTButton } from ".";
 import ConfirmDialog from "./ConfirmDialog";
+import CreationDialog from "./CreationDialog";
 import DashboardSection from "./DashboardSection";
 import Header from "./HeaderSection";
 import UserCard from "./UserCard";
@@ -14,11 +15,14 @@ import pic from "../../assets/fairytale.jpg";
 import QuizSection from "./Quiz/QuizSection";
 import QuizTile from "./Quiz/QuizTile";
 import VTIconButton from "./Buttons/IconButton";
+import ClassroomSection from "./ClassroomSection";
+import ClassroomTile from "./ClassroomTile";
 import PlaceholderTile from "./PlaceholderTile";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [creationDialogOpen, setCreationDialogOpen] = useState(false);
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
 
   return (
@@ -94,6 +98,11 @@ function ShowcasePage() {
             OkDialog
           </VTButton>
         </Grid>
+        <Grid item style={{ padding: "10px" }}>
+          <VTButton accept onClick={() => setCreationDialogOpen(true)}>
+            CreationDialog
+          </VTButton>
+        </Grid>
 
         <ConfirmDialog
           open={confirmDialogOpen}
@@ -113,6 +122,15 @@ function ShowcasePage() {
           <Typography>Some text here.</Typography>
           <Typography>Some longer text down here..</Typography>
         </ConfirmDialog>
+        <CreationDialog
+          open={creationDialogOpen}
+          description="Description of what you're creating."
+          title="Title Here"
+          onClose={() => setCreationDialogOpen(false)}
+          onOk={() => toasts.toastSuccess("You clicked Ok!")}
+        >
+          <TextField required autoFocus margin="dense" id="name" label="A field to fill" type="text" fullWidth />
+        </CreationDialog>
       </Grid>
 
       <Typography variant="h5" style={{ marginTop: "20px" }}>
@@ -285,6 +303,46 @@ function ShowcasePage() {
         />
       </QuizSection>
 
+      <ClassroomSection
+        title="Classroom Section"
+        Button={() => {
+          return toasts.toastSuccess("You clicked on add");
+        }}
+      >
+        <ClassroomTile
+          name="Classroom 1"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={75}
+          linkTo="/quizzes/2"
+        />
+        <ClassroomTile
+          name="Classroom 2"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={75}
+          linkTo="/quizzes/2"
+        />
+        <ClassroomTile
+          name="Classroom 3"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={75}
+          linkTo="/quizzes/2"
+        />
+        <ClassroomTile
+          name="Classroom 4"
+          isOwned
+          onDelete={() => toasts.toastSuccess("Clicked delete.")}
+          onEdit={() => toasts.toastSuccess("Clicked edit.")}
+          progress={75}
+          linkTo="/quizzes/2"
+        />
+      </ClassroomSection>
+
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
         InviteStudentsDialog
       </Typography>
@@ -303,7 +361,7 @@ function ShowcasePage() {
           toasts.toastSuccess(JSON.stringify(ids));
           setInviteDialogOpen(false);
         }}
-      ></InviteStudentsDialog>
+      />
     </AppPage>
   );
 }
