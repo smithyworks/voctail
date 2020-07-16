@@ -138,8 +138,9 @@ function Dashboard() {
     <AppPage location="dashboard" id="dashboard-page">
       <DashboardSection title={"My Documents"} Button={<VTIconButton onClick={handleAddOpen} />}>
         {usersDocuments.length !== 0 ? (
-          usersDocuments.map((tile) => (
+          usersDocuments.map((tile, i) => (
             <DashboardTile
+              key={i}
               title={tile.title + getDocumentFit(tile.document_id)}
               author={tile.author}
               isOwned
@@ -159,8 +160,9 @@ function Dashboard() {
       </DashboardSection>
 
       <DashboardSection title={"Short Stories"}>
-        {shortStories.map((tile) => (
+        {shortStories.map((tile, i) => (
           <DashboardTile
+            key={i}
             title={tile.title + getDocumentFit(tile.document_id)}
             author={tile.author}
             onGenerateQuiz={() => createQuiz(tile.document_id)}
@@ -171,8 +173,9 @@ function Dashboard() {
       </DashboardSection>
 
       <DashboardSection title={"Fairy Tales"}>
-        {fairyTales.map((tile) => (
+        {fairyTales.map((tile, i) => (
           <DashboardTile
+            key={i}
             title={tile.title}
             author={tile.author}
             onGenerateQuiz={() => createQuiz(tile.document_id)}
@@ -183,8 +186,9 @@ function Dashboard() {
       </DashboardSection>
 
       <DashboardSection title={"Newspaper Articles"}>
-        {newspaperArticles.map((tile) => (
+        {newspaperArticles.map((tile, i) => (
           <DashboardTile
+            key={i}
             title={tile.title}
             author={tile.author}
             onGenerateQuiz={() => createQuiz(tile.document_id)}
@@ -195,8 +199,9 @@ function Dashboard() {
       </DashboardSection>
 
       <DashboardSection title={"Other documents"}>
-        {otherDocuments.map((tile) => (
+        {otherDocuments.map((tile, i) => (
           <DashboardTile
+            key={i}
             title={tile.title}
             author={tile.author}
             onGenerateQuiz={() => createQuiz(tile.document_id)}
