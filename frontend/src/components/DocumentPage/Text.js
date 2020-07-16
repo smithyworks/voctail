@@ -74,16 +74,14 @@ function Text({ document, lookupWordByWord }) {
 
       if (document.video && b.type === "caption") {
         return (
-          <Grid container wrap="nowrap">
+          <Grid container wrap="nowrap" key={bi}>
             <Grid item>
-              <T className={[classes.timestamp, document.video ? classes.sansBlock : classes.block].join(" ")} key={bi}>
+              <T className={[classes.timestamp, document.video ? classes.sansBlock : classes.block].join(" ")}>
                 {b.timestamp}
               </T>
             </Grid>
             <Grid item>
-              <T className={[classes.caption, document.video ? classes.sansBlock : classes.block].join(" ")} key={bi}>
-                {items}
-              </T>
+              <T className={[classes.caption, document.video ? classes.sansBlock : classes.block].join(" ")}>{items}</T>
             </Grid>
           </Grid>
         );

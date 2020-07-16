@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
@@ -16,15 +16,17 @@ import {
   MenuItem,
   Select,
   TextField,
+  Grid,
 } from "@material-ui/core";
 import DescriptionIcon from "@material-ui/icons/Description";
 import { makeStyles } from "@material-ui/core/styles";
+import { parseDocument } from "./parseDocument";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
   grid: { height: 100, width: "100%" },
   userItem: { width: "150px" },
-
+  input: { display: "none" },
   //gridlist with documents
   root: {
     display: "flex",
@@ -35,17 +37,21 @@ const useStyles = makeStyles(() => ({
   },
   gridList: { width: "100%", height: 800, justifyContent: "space-around" },
   icon: { color: "rgba(255,255,255,0.54)" },
+  fileName: {
+    padding: "0 10px",
+  },
+  fileNamePlaceholder: {
+    fontStyle: "italic",
+    color: "darkgrey",
+  },
 }));
 
 function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
   const titleInput = useRef("");
   const authorInput = useRef("");
   const descriptionInput = useRef("");
-  const blocksInput = useRef([]);
   const [publicDocument, setPublicDocument] = useState(true);
-  const contentInput = useRef("");
-  const blocks = [];
-  const [documentLoaded, setDocumentLoaded] = useState(false);
+  const [fileName, setFileName] = useState();
 
   //const imageInput = useRef(); todo use image
   const [category, setCategory] = useState("");
@@ -62,78 +68,21 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
 
   //read uploaded file and stringify it for the database (format in blocks, see more in the schema)
   function readFile() {
-    const uploadedFile = document.getElementById("upload-file").files[0];
+    return new Promise((resolve, reject) => {
+      const uploadedFile = document.getElementById("upload-file").files[0];
+      let reader = new FileReader();
+      reader.readAsText(uploadedFile);
 
-    let reader = new FileReader();
-    reader.readAsText(uploadedFile);
-
-    let currentType;
-    let currentContent;
-    reader.onloadend = function () {
-      const lines = reader.result.split(/\r?\n/);
-
-      lines.forEach((line, i) => {
-        // Encountered newline, current block set empty
-        if (line.trim() === "") {
-          // If not empty block, type will be set to something.
-          // Therefore, we push it to blocks
-          if (currentType) {
-            switch (currentType) {
-              case "title":
-                blocks.push({ type: currentType, content: currentContent });
-                break;
-              case "subtitle":
-                blocks.push({ type: currentType, content: currentContent });
-                break;
-              case "paragraph":
-                blocks.push({ type: currentType, content: currentContent });
-                break;
-              default:
-                throw new Error(`There is no case taking type "${currentType}" into account (line ${i + 1}').`);
-            }
-          }
-
-          // Reset block
-          currentType = null;
-          currentContent = null;
-
-          // return; // no need to check for other block types
+      reader.onloadend = () => {
+        try {
+          resolve(parseDocument(reader.result));
+        } catch (err) {
+          reject(err);
         }
-
-        // Test for marked up line
-        const matchData = line.match(/^(?<key>>\w+|#+) (?<content>.*$)/);
-        if (matchData) {
-          switch (matchData.groups.key) {
-            case "#":
-              currentType = "title";
-              break;
-            case "##":
-              currentType = "subtitle";
-              break;
-            default:
-              throw new Error(
-                `Encountered malformed line with markup key: "${matchData.groups.key}"\n  line ${i + 1}: "${line}"`
-              );
-          }
-
-          // Set current content, since this is the first line of this block, no need to add a space.
-          currentContent = matchData.groups.content.trim();
-        } else if (!currentType) {
-          // If currentType is unset, this means we are on the first line of a paragraph.
-          currentType = "paragraph";
-          currentContent = line.trim();
-        } else {
-          // If we reach here, we are adding a line to the current block.
-          // We want to make sure to add a space.
-          currentContent += " " + line.trim();
-        }
-      });
-
-      contentInput.current = JSON.stringify(blocks).replace(/\\/g, "\\\\");
-      blocksInput.current = blocks;
-      setDocumentLoaded(true);
-    };
+      };
+    });
   }
+
   //verify the metadata and the document for the upload to prevent false uploads
   function verify() {
     if (titleInput.current.length <= 1) {
@@ -163,14 +112,13 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
     titleInput.current = "";
     authorInput.current = "";
     descriptionInput.current = "";
-    contentInput.current = "";
-    setDocumentLoaded(false);
+    setFileName();
   }
 
   //add this document after reading the file with the file reader (use effects gets triggered by the documentLoaded which is activated in readFile()
-  async function addThisDocument() {
+  function addThisDocument(blocks) {
     //todo
-    if (documentLoaded) {
+    if (blocks) {
       api
         .addDocument(
           publisherId,
@@ -179,8 +127,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
           descriptionInput.current,
           category,
           publicDocument,
-          contentInput.current,
-          blocksInput.current
+          blocks
         )
         .then(() => {
           handleAddClose();
@@ -193,13 +140,9 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
           toasts.toastError("Error uploading the document!");
         });
     } else {
-      toasts.toastWarning("Are you sure?");
+      toasts.toastError("Something went wrong processing your file!");
     }
   }
-
-  useEffect(() => {
-    addThisDocument();
-  }, [documentLoaded]); // eslint-disable-line
 
   return (
     <div>
@@ -282,12 +225,26 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             deactivate the status.
           </DialogContentText>
 
-          <input accept="txt/*" className={classes.input} id="upload-file" multiple type="file" />
-          <label htmlFor="upload-text">
-            <VTButton secondary component="span" startIcon={<DescriptionIcon />}>
-              Upload .txt
-            </VTButton>
-          </label>
+          <input
+            accept="txt/*"
+            className={classes.input}
+            id="upload-file"
+            multiple
+            type="file"
+            onChange={(e) => setFileName(e.target.files[0].name)}
+          />
+          <Grid container alignItems="baseline">
+            <Grid item>
+              <label htmlFor="upload-file">
+                <VTButton secondary component="span" startIcon={<DescriptionIcon />}>
+                  Upload .txt
+                </VTButton>
+              </label>
+            </Grid>
+            <Grid item className={classes.fileName}>
+              {fileName ?? <span className={classes.fileNamePlaceholder}>No file selected</span>}
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <VTButton neutral onClick={handleAddClose}>
@@ -297,7 +254,13 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             accept
             onClick={() => {
               if (verify()) {
-                readFile();
+                readFile()
+                  .then((res) => {
+                    addThisDocument(res);
+                  })
+                  .catch((err) => {
+                    toasts.toastError("Something went wrong processing your file!");
+                  });
               }
             }}
           >

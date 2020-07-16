@@ -127,8 +127,8 @@ function DocumentPage() {
                 title={document_id + 1}
                 style={{ width: "100%", height: "30vw" }}
                 src={document.embed_link}
-                frameborder="0"
-                allowfullscreen
+                frameBorder="0"
+                allowFullScreen
               />
             </Grid>
             <Grid item lg={5} md={6} className={classes.captionContainer}>
@@ -149,9 +149,9 @@ function DocumentPage() {
             <iframe
               title={document_id}
               style={{ width: "100%", height: "57vw" }}
-              src="https://www.youtube.com/embed/fJ9rUzIMcZQ"
-              frameborder="0"
-              allowfullscreen
+              src={document.embed_link}
+              frameBorder="0"
+              allowFullScreen
             />
           </div>
 
