@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ClassroomSection({ title, children, Button }) {
+function SectionSection({ title, children, Button }) {
   const classes = useStyles();
 
   return (
@@ -39,13 +39,9 @@ function ClassroomSection({ title, children, Button }) {
         <Grid item>{Button}</Grid>
       </Grid>
       <Divider />
-      <div className={classes.innerContainer}>
-        <Grid container className={classes.innerContainer}>
-          {children}
-        </Grid>
-      </div>
+      <div className={classes.innerContainer}>{children}</div>
     </Paper>
   );
 }
 
-export default ClassroomSection;
+export default SectionSection;

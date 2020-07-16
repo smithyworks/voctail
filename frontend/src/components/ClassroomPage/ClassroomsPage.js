@@ -8,7 +8,6 @@ import {
   DialogContent,
   Grid,
   Typography,
-  Slide,
   Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -25,10 +24,7 @@ import { toasts } from "../common/AppPage/AppPage";
 import { Link } from "react-router-dom";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import ClassroomTile from "../common/ClassroomTile";
 
 const useStyles = makeStyles(() => ({
   text: {
@@ -161,7 +157,6 @@ function ClassroomItem({
         setClassroomId(tile.classroom_id);
         setClassroomTitle(tile.title);
         setClassroomTopic(tile.topic);
-        teacherData(tile.classroom_owner, setClassroomAuthor);
         setClassroomDescription(tile.description);
       }}
     >
@@ -196,13 +191,7 @@ function ClassroomOverviewPopUp({
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
   return (
-    <Dialog
-      onClose={onClose}
-      aria-labelledby="classroom-overview-popup"
-      open={open}
-      TransitionComponent={Transition}
-      keepMounted
-    >
+    <Dialog onClose={onClose} aria-labelledby="classroom-overview-popup" open={open} keepMounted>
       <DialogTitle id="classroom-overview-popup-title" onClose={onClose}>
         {classroomTitle}
       </DialogTitle>
@@ -353,7 +342,6 @@ function ClassroomCreateFormDialog({
             style={{ margin: "1%" }}
             onClick={() => {
               closeCreateForm();
-              return toasts.toastError("You cancelled");
             }}
           >
             Cancel
@@ -402,17 +390,7 @@ function createClassroom(user, title, topic, description, classroomDataFromDatab
       .catch((err) => console.log(err));
   };
   addThisClassroom();
-  toasts.toastSuccess("Classroom added to the database!");
-}
-
-function indexOfClassroom(classroomId, classrooms) {
-  let output = 0;
-  classrooms.forEach((classroom, index) => {
-    if (classroom.classroom_id === classroomId) {
-      output = index;
-    }
-  });
-  return output;
+  toasts.toastSuccess("Classroom created!");
 }
 
 function deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDataFromDatabase) {
@@ -427,17 +405,28 @@ function deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDat
       );
     })
     .catch((err) => console.log(err));
-  toasts.toastSuccess("Classroom deleted from the database!");
+  toasts.toastSuccess("Classroom deleted!");
 }
 
-function teacherData(user_id, setClassroomAuthorData) {
+function indexOfClassroom(classroomId, classrooms) {
+  let output = 0;
+  classrooms.forEach((classroom, index) => {
+    if (classroom.classroom_id === classroomId) {
+      output = index;
+    }
+  });
+  return output;
+}
+
+/*function teacherData(user_id) {
   api
     .user(user_id)
     .then((res) => {
-      setClassroomAuthorData(res.data);
+      setTeacherName(res.data.name);
     })
     .catch((err) => console.log(err));
-}
+  return teacherName;
+}*/
 
 function Classrooms() {
   const classes = useStyles();
@@ -478,9 +467,7 @@ function Classrooms() {
   }, []);
 
   return (
-    <AppPage location="classrooms/saved" id="classrooms-saved-page">
-      <Header mainTitle="Classrooms" description="Attend and manage your classrooms!" />
-
+    <AppPage location="classrooms" id="classrooms-saved-page">
       <ClassroomSection
         title="My Classrooms"
         description="You have here the classrooms you are registered to."
@@ -496,7 +483,6 @@ function Classrooms() {
           </Tooltip>
         }
       >
-        <Typography> You have {classroomDataFromDatabase.length} classes </Typography>
         <ClassroomCreateFormDialog
           openCreateForm={openCreateForm}
           closeCreateForm={() => setOpenCreateForm(false)}
@@ -512,29 +498,17 @@ function Classrooms() {
         />
         {classroomDataFromDatabase.map((tile) => (
           <React.Fragment key={tile.classroom_id}>
-            <ClassroomItem
-              classes={classes}
-              setPopUpOpen={setPopUpOpen}
-              setClassroomId={setClassroomId}
-              setClassroomTitle={setClassroomTitle}
-              setClassroomTopic={setClassroomTopic}
-              setClassroomAuthor={setClassroomAuthor}
-              setClassroomDescription={setClassroomDescription}
-              tile={tile}
-            />
-
-            <ClassroomOverviewPopUp
-              open={openPopUp}
-              onClose={() => {
-                setPopUpOpen(false);
-              }}
+            <ClassroomTile
+              isOwned
+              title={tile.title}
+              teacher={tile.classroom_owner}
+              topic={tile.topic}
+              linkTo={"/classrooms/view?classroom=" + tile.classroom_id}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
-              classroomId={classroomId}
-              classroomTitle={classroomTitle}
-              classroomTopic={classroomTopic}
-              classroomAuthor={classroomAuthor.name}
-              classroomDescription={classroomDescription}
+              onDelete={() => {
+                deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+              }}
             />
           </React.Fragment>
         ))}

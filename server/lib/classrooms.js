@@ -36,7 +36,7 @@ async function studentsHandler(req, res) {
     const { rows } = await query(
       "SELECT *" +
         "FROM users " +
-        "INNER JOIN classroom_members ON user_id = student_id " +
+        "INNER JOIN classroom_members ON user_id = member_id " +
         "WHERE classroom_id = $1 " +
         "ORDER BY name ASC",
       [req.query.classroom_id]
@@ -48,31 +48,67 @@ async function studentsHandler(req, res) {
   }
 }
 
-async function documentsHandler(req, res) {
+async function ownerHandler(req, res) {
   try {
     const { rows } = await query(
-      "SELECT documents.document_id, title, author " +
-        "FROM documents " +
-        "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id" +
-        " WHERE classroom_id = $1",
+      "SELECT *" +
+        "FROM users " +
+        "INNER JOIN classrooms ON user_id = classroom_owner " +
+        "WHERE classroom_id = $1 " +
+        "ORDER BY name ASC",
       [req.query.classroom_id]
     );
     res.status(200).json({ rows });
   } catch (err) {
     log(err);
-    res.status(500).send("There is a problem in the documentsHandler");
+    res.status(500).send("There is a problem in the ownerHandler");
+  }
+}
+
+async function teachersHandler(req, res) {
+  try {
+    const { rows } = await query(
+      "SELECT *" +
+        "FROM users " +
+        "INNER JOIN classroom_members ON user_id = member_id " +
+        "WHERE classroom_id = $1 AND teacher = true " +
+        "ORDER BY name ASC",
+      [req.query.classroom_id]
+    );
+    res.status(200).json({ rows });
+  } catch (err) {
+    log(err);
+    res.status(500).send("There is a problem in the teachersHandler");
   }
 }
 
 async function sectionsHandler(req, res) {
   try {
-    const { rows } = await query("SELECT section FROM classroom_documents WHERE classroom_id = $1 GROUP BY section", [
+    const {
+      rows,
+    } = await query("SELECT section AS title FROM classroom_documents WHERE classroom_id = $1 GROUP BY section", [
       req.query.classroom_id,
     ]);
     res.status(200).json({ rows });
   } catch (err) {
     log(err);
     res.status(500).send("Something wrong happened while fetching sections from the database.");
+  }
+}
+
+async function documentsHandler(req, res) {
+  try {
+    const { rows } = await query(
+      "SELECT documents.document_id, title, author, classroom_documents.section " +
+        "FROM documents " +
+        "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
+        "WHERE classroom_id = $1",
+      [req.query.classroom_id]
+    );
+    res.status(200).json({ rows });
+  } catch (err) {
+    log(err);
+    res.status(500).send("There is a problem in the documentsHandler");
   }
 }
 
@@ -158,6 +194,8 @@ module.exports = {
   documentsHandler,
   sectionsHandler,
   studentsHandler,
+  ownerHandler,
+  teachersHandler,
   usersHandler,
   createClassroom,
   deleteClassroom,

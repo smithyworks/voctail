@@ -136,6 +136,14 @@ export function getStudents(classroom_id) {
   return axios.get(`${base}/classrooms-students`, { params: { classroom_id: classroom_id } });
 }
 
+export function getOwner(classroom_id) {
+  return axios.get(`${base}/classrooms-owner`, { params: { classroom_id: classroom_id } });
+}
+
+export function getTeachers(classroom_id) {
+  return axios.get(`${base}/classrooms-teachers`, { params: { classroom_id: classroom_id } });
+}
+
 export function getDocuments(classroom_id) {
   return axios.get(`${base}/classrooms-documents`, { params: { classroom_id: classroom_id } });
 }

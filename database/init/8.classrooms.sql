@@ -11,9 +11,9 @@ INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic
 ALTER SEQUENCE classrooms_classroom_id_seq RESTART WITH 3;
 
 
-INSERT INTO classroom_members (classroom_id, student_id) VALUES
-    (1, 6), (1,7), (1, 8);
+INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES
+    (1, 6, true), (1, 7, false), (1, 8, false);
 
-INSERT INTO classroom_documents (classroom_id, document_id) VALUES
-    (1, 1), (1, 2), (1, 3);
+INSERT INTO classroom_documents (classroom_id, document_id, section) VALUES
+    (1, 1, 'Chapter 1'), (1, 2, 'Chapter 2'), (1, 3, 'Chapter 2');
 
