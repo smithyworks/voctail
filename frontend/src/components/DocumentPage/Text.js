@@ -65,7 +65,7 @@ function Text({ document, lookupWordByWord }) {
             </React.Fragment>
           );
         } else {
-          return <span>{t} </span>;
+          return <span key={ti}>{t} </span>;
         }
       });
 
