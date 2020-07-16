@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, CircularProgress } from "@material-ui/core";
+import { Grid, CircularProgress, Paper, makeStyles, Hidden, Container } from "@material-ui/core";
 
 import { AppPage, toasts } from "../common";
 import Text from "./Text.js";
@@ -8,7 +8,36 @@ import BlockContainer from "./BlockContainer";
 import AddTranslationDialog from "./AddTranslationDialog";
 import { api } from "../../utils";
 
+const useStyles = makeStyles({
+  container: {
+    width: "100%",
+    height: "100%",
+    overflow: "hidden",
+  },
+  videoContainer: {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#010101",
+  },
+  captionContainer: {
+    height: "100%",
+    overflow: "auto",
+    padding: "30px",
+    backgroundColor: "white",
+  },
+  paperContainer: {
+    display: "inline-block",
+    padding: "30px 60px",
+    backgroundColor: "white",
+    borderRadius: "0",
+    width: "100%",
+    marginBottom: "40px",
+    minHeight: "calc(100% - 90px)",
+  },
+});
+
 function DocumentPage() {
+  const classes = useStyles();
   const { document_id } = useParams();
 
   const [document, setDocument] = useState();
@@ -88,26 +117,91 @@ function DocumentPage() {
     );
   }
 
-  return (
-    <AppPage location="documents" id="document-markup-page">
-      <BlockContainer
-        lookupWord={lookupWord}
-        lookupTranslations={lookupTranslations}
-        onAddTranslation={onAddTranslationIntent}
-      >
-        <Text document={document} lookupWordByWord={lookupWordByWord} showHeader />
-      </BlockContainer>
+  if (document.video) {
+    return (
+      <AppPage location="documents" id="document-markup-page" noPadding noBreadcrumbs>
+        <Hidden smDown>
+          <Grid container className={classes.container}>
+            <Grid item xs className={classes.videoContainer}>
+              <iframe
+                title={document_id + 1}
+                style={{ width: "100%", height: "30vw" }}
+                src={document.embed_link}
+                frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              />
+            </Grid>
+            <Grid item lg={5} md={6} className={classes.captionContainer}>
+              <BlockContainer
+                lookupWord={lookupWord}
+                lookupTranslations={lookupTranslations}
+                onAddTranslation={onAddTranslationIntent}
+                sans
+              >
+                <Text document={document} lookupWordByWord={lookupWordByWord} showHeader />
+              </BlockContainer>
+            </Grid>
+          </Grid>
+        </Hidden>
 
-      <AddTranslationDialog
-        open={addTranslationDialogOpen}
-        word_id={wordIdRef.current}
-        lookupWord={lookupWord}
-        lookupTranslations={lookupTranslations}
-        onSubmit={onAddTranslation}
-        onClose={() => setAddTranslationDialogOpen(false)}
-      />
-    </AppPage>
-  );
+        <Hidden mdUp>
+          <div>
+            <iframe
+              title={document_id}
+              style={{ width: "100%", height: "57vw" }}
+              src="https://www.youtube.com/embed/fJ9rUzIMcZQ"
+              frameborder="0"
+              allowfullscreen
+            />
+          </div>
+
+          <Container maxWidth="md">
+            <BlockContainer
+              lookupWord={lookupWord}
+              lookupTranslations={lookupTranslations}
+              onAddTranslation={onAddTranslationIntent}
+              sans
+            >
+              <Text document={document} lookupWordByWord={lookupWordByWord} showHeader />
+            </BlockContainer>
+          </Container>
+        </Hidden>
+
+        <AddTranslationDialog
+          open={addTranslationDialogOpen}
+          word_id={wordIdRef.current}
+          lookupWord={lookupWord}
+          lookupTranslations={lookupTranslations}
+          onSubmit={onAddTranslation}
+          onClose={() => setAddTranslationDialogOpen(false)}
+        />
+      </AppPage>
+    );
+  } else
+    return (
+      <AppPage location="documents" id="document-markup-page" maxWidth="md">
+        <Paper className={classes.paperContainer}>
+          <BlockContainer
+            lookupWord={lookupWord}
+            lookupTranslations={lookupTranslations}
+            onAddTranslation={onAddTranslationIntent}
+            sans
+          >
+            <Text document={document} lookupWordByWord={lookupWordByWord} showHeader />
+          </BlockContainer>
+        </Paper>
+
+        <AddTranslationDialog
+          open={addTranslationDialogOpen}
+          word_id={wordIdRef.current}
+          lookupWord={lookupWord}
+          lookupTranslations={lookupTranslations}
+          onSubmit={onAddTranslation}
+          onClose={() => setAddTranslationDialogOpen(false)}
+        />
+      </AppPage>
+    );
 }
 
 export default DocumentPage;

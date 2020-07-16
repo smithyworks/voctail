@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Typography as T, Paper, Grid, IconButton, Menu, MenuItem } from "@material-ui/core";
+import { Typography as T, Grid, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { api } from "../../utils";
@@ -20,18 +20,20 @@ function clean(word) {
 }
 
 const useStyles = makeStyles({
-  narrowContainer: {
-    display: "inline-block",
-    width: "100%",
-    maxWidth: "860px",
-    padding: "30px 40px",
-    backgroundColor: "white",
-    borderRadius: "0",
-  },
   title: { fontSize: "34px", marginBottom: "10px", textAlign: "center", fontWeight: "bold" },
   subtitle: { fontSize: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold" },
   paragraph: { fontSize: "18px", marginBottom: "10px", textAlign: "left" },
+  caption: { fontSize: "18px", marginBottom: "10px", textAlign: "left" },
   block: { fontFamily: "crimson-text, serif" },
+  timestamp: {
+    fontSize: "18px",
+    textAlign: "left",
+    color: "darkgrey",
+    marginRight: "20px",
+  },
+  sansBlock: {
+    fontFamily: "fira-sans, sans",
+  },
   header: {
     width: "100%",
     fontStyle: "italic",
@@ -69,11 +71,27 @@ function Text({ document, lookupWordByWord }) {
         }
       });
 
-      return (
-        <T className={[classes[b.type], classes.block].join(" ")} key={bi}>
-          {items}
-        </T>
-      );
+      if (document.video && b.type === "caption") {
+        return (
+          <Grid container>
+            <Grid item>
+              <T className={[classes.timestamp, document.video ? classes.sansBlock : classes.block].join(" ")} key={bi}>
+                {b.timestamp}
+              </T>
+            </Grid>
+            <Grid item>
+              <T className={[classes.caption, document.video ? classes.sansBlock : classes.block].join(" ")} key={bi}>
+                {items}
+              </T>
+            </Grid>
+          </Grid>
+        );
+      } else
+        return (
+          <T className={[classes[b.type], document.video ? classes.sansBlock : classes.block].join(" ")} key={bi}>
+            {items}
+          </T>
+        );
     });
 
     setBlocks(newBlocks);
@@ -90,7 +108,7 @@ function Text({ document, lookupWordByWord }) {
   }
 
   return (
-    <Paper className={classes.narrowContainer}>
+    <>
       <div className={classes.header}>
         <Grid container justify="space-between" alignItems="center">
           <T>Published by: The Voctail Team</T>
@@ -104,7 +122,7 @@ function Text({ document, lookupWordByWord }) {
         </Menu>
       </div>
       {blocks}
-    </Paper>
+    </>
   );
 }
 
