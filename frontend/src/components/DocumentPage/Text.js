@@ -23,14 +23,15 @@ const useStyles = makeStyles({
   title: { fontSize: "34px", marginBottom: "10px", textAlign: "center", fontWeight: "bold" },
   subtitle: { fontSize: "20px", marginBottom: "10px", textAlign: "left", fontWeight: "bold" },
   paragraph: { fontSize: "18px", marginBottom: "10px", textAlign: "left" },
-  caption: { fontSize: "18px", marginBottom: "10px", textAlign: "left" },
-  block: { fontFamily: "crimson-text, serif" },
+  caption: { fontSize: "18px", marginBottom: "10px", textAlign: "left", lineHeight: "1.4em" },
   timestamp: {
+    lineHeight: "1.4em",
     fontSize: "18px",
     textAlign: "left",
     color: "darkgrey",
     marginRight: "20px",
   },
+  block: { fontFamily: "crimson-text, serif" },
   sansBlock: {
     fontFamily: "fira-sans, sans",
   },
@@ -73,7 +74,7 @@ function Text({ document, lookupWordByWord }) {
 
       if (document.video && b.type === "caption") {
         return (
-          <Grid container>
+          <Grid container wrap="nowrap">
             <Grid item>
               <T className={[classes.timestamp, document.video ? classes.sansBlock : classes.block].join(" ")} key={bi}>
                 {b.timestamp}
