@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
@@ -197,6 +197,10 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
     }
   }
 
+  useEffect(() => {
+    addThisDocument();
+  }, [documentLoaded]);
+
   return (
     <div>
       <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-new-document">
@@ -294,7 +298,6 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             onClick={() => {
               if (verify()) {
                 readFile();
-                addThisDocument();
               }
             }}
           >
