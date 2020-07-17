@@ -142,15 +142,20 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
           to={linkTo}
         >
           <div className={classes.infoContainer}>
-            <Typography className={classes.title} noWrap>
-              {title}
-            </Typography>
-            <Typography className={classes.author} noWrap>
-              written by {author}
-            </Typography>
+            <Grid container justify="space-between" alignItems="center">
+              <Grid item xs zeroMinWidth>
+                <Typography className={classes.title} noWrap>
+                  {title}
+                </Typography>
+                <Typography className={classes.author} noWrap>
+                  written by {author}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <span className={classes.voctailFitGlass}>{fits ? <LocalBarIcon /> : <LocalBarOutlinedIcon />}</span>
+              </Grid>
+            </Grid>
           </div>
-
-          <div className={classes.voctailFitGlass}>{fits ? <LocalBarIcon /> : <LocalBarOutlinedIcon />}</div>
 
           <div
             className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
