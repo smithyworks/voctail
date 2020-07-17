@@ -210,6 +210,9 @@ export function uploadProfilePicture(files) {
     },
   });
 }
+export function deleteProfilePicture() {
+  return axios.delete(`${base}/delete-profile-picture`);
+}
 
 // breadcrumbs
 

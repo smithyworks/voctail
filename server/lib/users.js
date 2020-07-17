@@ -1,7 +1,7 @@
 const { log } = require("./log.js");
 const { query } = require("./db.js");
 const bcrypt = require("bcrypt");
-const fileUpload = require("express-fileupload");
+const fs = require("fs");
 
 async function userHandler(req, res) {
   try {
@@ -115,7 +115,42 @@ async function uploadProfilePictureHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
 
+    const {
+      rows: [{ profile_pic_url }],
+    } = await query("SELECT profile_pic_url FROM users WHERE user_id = $1", [user_id]);
+    if (profile_pic_url) {
+      try {
+        fs.unlinkSync(profile_pic_url);
+      } catch (err) {
+        log(err);
+      }
+    }
+
     await query("UPDATE users SET profile_pic_url = $1 WHERE user_id = $2", [req.file.path, user_id]);
+
+    res.sendStatus(201);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function deleteProfilePictureHandler(req, res) {
+  try {
+    const { user_id } = req.authData.user;
+
+    const {
+      rows: [{ profile_pic_url }],
+    } = await query("SELECT profile_pic_url FROM users WHERE user_id = $1", [user_id]);
+    if (profile_pic_url) {
+      try {
+        fs.unlinkSync(profile_pic_url);
+      } catch (err) {
+        log(err);
+      }
+    }
+
+    await query("UPDATE users SET profile_pic_url = NULL WHERE user_id = $1", [user_id]);
 
     res.sendStatus(201);
   } catch (err) {
@@ -133,4 +168,5 @@ module.exports = {
   setPasswordHandler,
   userVocabularyHandler,
   uploadProfilePictureHandler,
+  deleteProfilePictureHandler,
 };
