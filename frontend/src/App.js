@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import {
@@ -20,6 +20,7 @@ import {
 import { toasts } from "./components/common";
 import { localStorage, api } from "./utils";
 import ShowcasePage from "./components/common/ShowcasePage";
+import { getColor } from "./components/common/Quiz/colorCycler";
 
 function ProtectedRoute({ ...props }) {
   if (localStorage.hasTokens()) return <Route {...props} />;
@@ -47,12 +48,13 @@ function App() {
 
   const loggedIn = localStorage.hasTokens();
   const [user, setUser] = useState(localStorage.getUser());
+  const backgroundColor = useRef(getColor());
   useEffect(() => {
     if (loggedIn)
       api
         .user()
         .then((res) => {
-          if (res) setUser(res.data);
+          if (res) setUser({ ...res.data, backgroundColor: backgroundColor.current });
         })
         .catch((err) => toasts.toastError("Error communicating with the server!"));
   }, [loggedIn, count]);

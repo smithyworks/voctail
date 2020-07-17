@@ -7,8 +7,8 @@ import colors from "../../../assets/colors.json";
 const useStyles = makeStyles({
   link: {
     textDecoration: "none",
-    padding: "0 20px",
-    fontSize: "16px",
+    padding: "5px 20px 0 20px",
+    fontSize: "18px",
     display: "flex",
     alignItems: "center",
     ...colors.topNav.button,
@@ -18,8 +18,8 @@ const useStyles = makeStyles({
   },
   activeLink: {
     textDecoration: "none",
-    padding: "0 20px",
-    fontSize: "16px",
+    padding: "5px 20px 0 20px",
+    fontSize: "18px",
     display: "flex",
     alignItems: "center",
     ...colors.topNav.activeButton,

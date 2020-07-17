@@ -1,16 +1,18 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { IconButton, MenuList, MenuItem, Paper, ClickAwayListener, Popper } from "@material-ui/core";
+import { MenuList, MenuItem, Paper, ClickAwayListener, Popper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import StarIcon from "@material-ui/icons/Star";
 
 import { localStorage, api } from "../../../utils";
 import { VTButton } from "../../common";
 import colors from "../../../assets/colors.json";
+import { UserContext } from "../../../App";
+import ProfilePicture from "../../ProfilePage/ProfilePicture";
 
 const useStyles = makeStyles({
+  container: { height: "60px", display: "flex", alignItems: "center" },
   menuPaper: { zIndex: "1000", borderTopLeftRadius: "0", borderTopRightRadius: 0, ...colors.userMenu.paper },
   menuItem: {
     ...colors.userMenu.button,
@@ -20,14 +22,14 @@ const useStyles = makeStyles({
   },
   endMasquerade: { margin: "0 10px" },
   profileButton: {
-    color: "white",
-    padding: "0",
-    height: "100%",
-    width: "50px",
-    borderRadius: 0,
+    height: "60px",
+    width: "60px",
     "&:hover": {
       backgroundColor: "rgba(0,0,0,0.3)",
     },
+    display: "inline-block",
+    padding: "5px",
+    cursor: "pointer",
   },
 });
 
@@ -36,6 +38,7 @@ function UserMenuButton({ masquerading, premium }) {
 
   const userButtonRef = useRef();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const user = useContext(UserContext);
 
   function endMasquerade() {
     api
@@ -74,20 +77,20 @@ function UserMenuButton({ masquerading, premium }) {
   ) : null;
 
   return (
-    <>
+    <div className={classes.container}>
       {goPremiumButton}
 
       {endMasqueradeButton}
 
-      <IconButton
+      <div
         className={classes.profileButton}
         ref={userButtonRef}
         aria-controls={userMenuOpen ? "menu-list-grow" : undefined}
         aria-haspopup="true"
         onClick={() => setUserMenuOpen(!userMenuOpen)}
       >
-        <AccountCircleIcon fontSize="large" />
-      </IconButton>
+        <ProfilePicture dimension="50px" user={user} fontSize="20px" />
+      </div>
 
       <Popper open={userMenuOpen} anchorEl={userButtonRef.current} placement="bottom-end" disablePortal>
         <Paper className={classes.menuPaper}>
@@ -106,7 +109,7 @@ function UserMenuButton({ masquerading, premium }) {
           </ClickAwayListener>
         </Paper>
       </Popper>
-    </>
+    </div>
   );
 }
 

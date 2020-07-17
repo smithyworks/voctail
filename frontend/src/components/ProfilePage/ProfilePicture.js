@@ -1,11 +1,11 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Typography, Menu, MenuItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { api } from "../../utils";
-import { UserContext, refresh } from "../../App";
+import { refresh } from "../../App";
 import { toasts } from "../common";
 import { getColor } from "../common/Quiz/colorCycler";
 
@@ -63,10 +63,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ProfilePicture({ dimension, name, editable }) {
+function ProfilePicture({ user, dimension, editable, fontSize }) {
   const classes = useStyles();
-  const user = useContext(UserContext);
-  const backgroundColor = useRef(getColor());
+
+  const backgroundColor = getColor(`users-${user.user_id}`);
 
   const anchor = useRef();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -94,7 +94,10 @@ function ProfilePicture({ dimension, name, editable }) {
         refresh();
         toasts.toastSuccess("Your profile picture has been deleted!");
       })
-      .catch((err) => toasts.toastError("Encountered an error while communicating with the server."));
+      .catch((err) => toasts.toastError("Encountered an error while communicating with the server."))
+      .finally(() => {
+        setMenuOpen(false);
+      });
   }
 
   const url = user?.profile_pic_url;
@@ -107,37 +110,41 @@ function ProfilePicture({ dimension, name, editable }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className={classes.picture} style={{ backgroundColor: backgroundColor.current }}>
-        <Typography variant="h1" className={classes.initials}>
+      <div className={classes.picture} style={{ backgroundColor }}>
+        <Typography variant="h1" className={classes.initials} style={{ fontSize }}>
           {initials}
         </Typography>
       </div>
       <div className={classes.picture} style={{ backgroundImage: `url(/${url})` }} />
 
-      <div
-        className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
-        onClick={() => setMenuOpen(true)}
-        ref={anchor}
-      >
-        <MoreVertIcon />
-      </div>
-      <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
-        <input style={{ display: "none" }} id="upload-file" type="file" onChange={_upload} />
-        <label htmlFor="upload-file">
-          <MenuItem dense>
-            <ListItemIcon className={classes.listItemIcon}>
-              <CloudUploadIcon />
-            </ListItemIcon>
-            <ListItemText>Upload</ListItemText>
-          </MenuItem>
-        </label>
-        <MenuItem disabled={!url} dense onClick={_delete}>
-          <ListItemIcon className={classes.listItemIcon}>
-            <DeleteIcon />
-          </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
-        </MenuItem>
-      </Menu>
+      {editable && (
+        <>
+          <div
+            className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
+            onClick={() => setMenuOpen(true)}
+            ref={anchor}
+          >
+            <MoreVertIcon />
+          </div>
+          <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
+            <input style={{ display: "none" }} id="upload-file" type="file" onChange={_upload} />
+            <label htmlFor="upload-file">
+              <MenuItem dense>
+                <ListItemIcon className={classes.listItemIcon}>
+                  <CloudUploadIcon />
+                </ListItemIcon>
+                <ListItemText>Upload</ListItemText>
+              </MenuItem>
+            </label>
+            <MenuItem disabled={!url} dense onClick={_delete}>
+              <ListItemIcon className={classes.listItemIcon}>
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText>Delete</ListItemText>
+            </MenuItem>
+          </Menu>
+        </>
+      )}
     </div>
   );
 }
