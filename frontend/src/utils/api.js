@@ -112,6 +112,18 @@ export function editDocument(document_id, title, author, description, category, 
   return axios.post(`${base}/edit-document`, { document_id, title, author, description, category, isPublic });
 }
 
+export function viewedDocumentNow(document_id) {
+  return axios.post(`${base}/viewed-document-now`, { document_id });
+}
+
+export function getLastSeen(user_id, document_id) {
+  return axios.post(`${base}/get-last-seen`, { user_id, document_id });
+}
+
+export function calcDocumentFit(document_id) {
+  return axios.get(`${base}/calc-document-fit`, { params: { document_id: document_id } });
+}
+
 // vocabulary
 
 export function updateVocabulary(entries) {

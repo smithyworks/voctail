@@ -75,7 +75,7 @@ async function documentDataHandler(req, res) {
     res.status(200).json({ documents, newspaperArticles, fairyTales, shortStories, others, usersDocuments });
   } catch (err) {
     log(err);
-    res.status(500).send("Something went wrong with the dummy documents.");
+    res.status(500).send("Something went wrong while fetching documents.");
   }
 }
 
@@ -209,6 +209,7 @@ async function editDocument(req, res) {
     res.status(500).send("Something went wrong.");
   }
 }
+
 async function usersHandler(req, res) {
   try {
     const { rows } = await query("SELECT * FROM users ORDER BY user_id ASC");
@@ -234,6 +235,76 @@ async function documentTitleHandler(req, res) {
   }
 }
 
+async function viewedDocumentNowHandler(req, res) {
+  try {
+    // todo insert in this
+    const { user_id } = req.authData.user;
+    const { document_id } = req.body;
+    await query(
+      "UPDATE users_documents SET last_seen = NOW() WHERE users_documents.document_id=$1 AND users_documents.user_id=$2",
+      [document_id, user_id]
+    );
+    log("Successfully updated that document " + document_id + " was just seen.");
+    res.status(200).send("Successfully updated that document " + document_id + " was just seen.");
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function getDocumentLastSeen(req, res) {
+  try {
+    const { user_id, document_id } = req.body;
+    const {
+      lastSeen,
+    } = await query(
+      "SELECT last_seen FROM users_documents WHERE users_documents.document_id=$1 AND users_documents.user_id=$2",
+      [document_id, user_id]
+    );
+    res.status(200).json({ lastSeen });
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function calcDocumentFit(req, res) {
+  try {
+    const document_id = req.query.document_id;
+    const { user_id } = req.authData.user;
+    //get all words from document
+    const { rows: document_words } = await query("SELECT word_id FROM documents_words WHERE document_id = $1", [
+      document_id,
+    ]);
+    const word_sum = document_words.length; // sum of all document words
+
+    //get all users words
+    const {
+      rows: unknown_user_words,
+    } = await query("SELECT word_id FROM users_words WHERE user_id = $1 AND known = false", [user_id]);
+
+    // log("users words", unknown_user_words);
+    //log("document words", document_words);
+    let unknownWords_inDocument = 0;
+    //check if unknown words are in document
+    document_words.map((word) =>
+      unknown_user_words.map((unknown_word) => {
+        if (word.word_id === unknown_word.word_id) unknownWords_inDocument++;
+      })
+    );
+
+    let fit;
+    if (unknownWords_inDocument === 0) fit = -1;
+    else fit = unknownWords_inDocument / word_sum;
+    //log("doc", document_id);
+    //log("fit", fit);
+    res.status(200).json({ fit });
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 module.exports = {
   documentHandler,
   usersHandler,
@@ -242,4 +313,7 @@ module.exports = {
   addDocument,
   editDocument,
   documentTitleHandler,
+  viewedDocumentNowHandler,
+  getDocumentLastSeen,
+  calcDocumentFit,
 };

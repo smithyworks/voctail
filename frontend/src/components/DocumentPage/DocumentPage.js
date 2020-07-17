@@ -73,8 +73,14 @@ function DocumentPage() {
         }
 
         setDocument(res.data);
+        console.log("ich habe gerade hier gerendert");
+        api
+          .viewedDocumentNow(document_id)
+          .then()
+          .catch((err) => console.log(err));
       })
       .catch((err) => {
+        console.log(err);
         toasts.toastError("Encountered an error communicating with the server!");
       });
   }, [document_id, reloadCount]); // eslint-disable-line

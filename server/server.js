@@ -42,6 +42,9 @@ server.post("/api/add-document", auth.tokenMiddleWare, documents.addDocument);
 server.post("/api/delete-document", auth.tokenMiddleWare, documents.deleteDocument);
 server.post("/api/edit-document", auth.tokenMiddleWare, documents.editDocument);
 server.get("/api/document-title", auth.tokenMiddleWare, documents.documentTitleHandler);
+server.post("/api/viewed-document-now", auth.tokenMiddleWare, documents.viewedDocumentNowHandler);
+server.get("/api/get-last-seen", auth.tokenMiddleWare, documents.getDocumentLastSeen);
+server.get("/api/calc-document-fit", auth.tokenMiddleWare, documents.calcDocumentFit);
 
 server.post("/api/update-vocabulary", auth.tokenMiddleWare, vocabulary.updateUserVocabHandler);
 server.post("/api/add-translation", auth.tokenMiddleWare, vocabulary.addTranslationHandler);
