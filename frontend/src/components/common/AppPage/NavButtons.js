@@ -9,6 +9,7 @@ const useStyles = makeStyles({
     textDecoration: "none",
     padding: "5px 20px 0 20px",
     fontSize: "18px",
+    fontWeight: "lighter",
     display: "flex",
     alignItems: "center",
     ...colors.topNav.button,
