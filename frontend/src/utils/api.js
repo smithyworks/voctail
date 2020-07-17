@@ -94,7 +94,7 @@ export function createCustomQuiz(title, questions) {
 export function fetchDocuments() {
   return axios.get(`${base}/handle-documents`);
 }
-export function addDocument(publisher, title, author, description, category, isPublic, content, blocks) {
+export function addDocument(publisher, title, author, description, category, isPublic, blocks) {
   return axios.post(`${base}/add-document`, {
     publisher,
     title,
@@ -102,7 +102,6 @@ export function addDocument(publisher, title, author, description, category, isP
     description,
     category,
     isPublic,
-    content,
     blocks,
   });
 }
@@ -111,6 +110,18 @@ export function deleteDocument(document_id) {
 }
 export function editDocument(document_id, title, author, description, category, isPublic) {
   return axios.post(`${base}/edit-document`, { document_id, title, author, description, category, isPublic });
+}
+
+export function viewedDocumentNow(document_id) {
+  return axios.post(`${base}/viewed-document-now`, { document_id });
+}
+
+export function getLastSeen(user_id, document_id) {
+  return axios.post(`${base}/get-last-seen`, { user_id, document_id });
+}
+
+export function calcDocumentFit(document_id) {
+  return axios.get(`${base}/calc-document-fit`, { params: { document_id: document_id } });
 }
 
 // vocabulary

@@ -42,7 +42,7 @@ export function Results({ onReport, onRetake, base }) {
       </div>
       <div className={classes.nav}>
         <Grid container justify="space-evenly" alignItems="center" direction="row">
-          <VTButton success color="primary" onClick={() => onRetake()}>
+          <VTButton secondary color="primary" onClick={() => onRetake()}>
             Retake Quiz
           </VTButton>
           <VTButton success color="primary" component={Link} to={base}>

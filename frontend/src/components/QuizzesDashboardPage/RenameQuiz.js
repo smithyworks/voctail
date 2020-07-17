@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, Grid, TextField } from "@material-ui/core";
 import { VTButton } from "../common";
+import VoctailDialogTitle from "../common/VoctailDialogTitle";
 
 function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
   const handleClose = () => {
@@ -32,7 +33,7 @@ function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz">
-        <DialogTitle id="add-custom-quiz">Please provide a new title for renaming.</DialogTitle>
+        <VoctailDialogTitle id="add-custom-quiz">Please provide a new title for renaming.</VoctailDialogTitle>
         <DialogContent>
           <Grid container justify="flex-start" alignItems="center" direction="column">
             <TextField

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, LinearProgress } from "@material-ui/core";
+import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, LinearProgress, Tooltip } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./colorCycler";
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
   name: {
     color: "white",
-    fontSize: "24px",
+    fontSize: "22px",
     fontWeight: "bolder",
   },
   menuIconContainer: {
@@ -134,47 +134,51 @@ function QuizTile({ name, id, isOwned, onDelete, onEdit, onViewStatistic, linkTo
 
   return (
     <Grid item xs={12} sm={6} md={3} lg={3} className={classes.container}>
-      <Paper
-        className={classes.paper}
-        style={{ backgroundColor: backgroundColor.current }}
-        elevation={hovered ? 5 : 2}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        component={Link}
-        to={linkTo}
-      >
-        <Typography className={classes.name}>{name}</Typography>
+      <Tooltip title={name} enterDelay={1000} enterNextDelay={1000}>
+        <Paper
+          className={classes.paper}
+          style={{ backgroundColor: backgroundColor.current }}
+          elevation={hovered ? 5 : 2}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          component={Link}
+          to={linkTo}
+        >
+          <Typography className={classes.name} noWrap>
+            {name}
+          </Typography>
 
-        <div className={classes.progressContainer}>
-          <LinearProgress
-            value={progress}
-            variant="determinate"
-            className={classes.progress}
-            classes={{ bar: classes.progressBar }}
-          />
-        </div>
-
-        <Grid container justify="space-between" className={classes.infoTextContainer}>
-          <Grid item>
-            <Typography className={classes.progressText}>{progress}%</Typography>
-          </Grid>
-          <Grid item>
-            <Typography align="right" className={classes.lastSeenText}>
-              {hoursElapsed.current}
-            </Typography>
-          </Grid>
-        </Grid>
-
-        {!!isOwned && (
-          <div
-            className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
-            onClick={openMenu}
-            ref={anchor}
-          >
-            <MoreVertIcon />
+          <div className={classes.progressContainer}>
+            <LinearProgress
+              value={progress}
+              variant="determinate"
+              className={classes.progress}
+              classes={{ bar: classes.progressBar }}
+            />
           </div>
-        )}
-      </Paper>
+
+          <Grid container justify="space-between" className={classes.infoTextContainer}>
+            <Grid item>
+              <Typography className={classes.progressText}>{progress}%</Typography>
+            </Grid>
+            <Grid item>
+              <Typography align="right" className={classes.lastSeenText}>
+                {hoursElapsed.current}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          {!!isOwned && (
+            <div
+              className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
+              onClick={openMenu}
+              ref={anchor}
+            >
+              <MoreVertIcon />
+            </div>
+          )}
+        </Paper>
+      </Tooltip>
 
       <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
         <MenuItem onClick={_onViewStatistic}>Statistics</MenuItem>

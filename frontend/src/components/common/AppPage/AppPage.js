@@ -29,8 +29,13 @@ const useStyles = makeStyles({
   pageContainer: {
     height: "100%",
   },
-  bodyContainer: { overflowX: "hidden", overflowY: "auto" },
+  bodyContainer: { overflowX: "hidden", overflowY: "auto", height: "100%" },
   body: {
+    height: "100%",
+  },
+  noPadding: {
+    padding: 0,
+    margin: 0,
     height: "100%",
   },
   alert: {
@@ -40,13 +45,13 @@ const useStyles = makeStyles({
     margin: "-12px 0 -12px 5px",
   },
   breadcrumbs: {
-    margin: "10px 0",
+    padding: "10px 0",
   },
 });
 
 // The AppPage is meant to be rendered directly into the id="root" element.
 
-function AppPage({ children, id, location, title }) {
+function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxWidth }) {
   const classes = useStyles();
   const user = useContext(UserContext);
 
@@ -99,8 +104,12 @@ function AppPage({ children, id, location, title }) {
       />
 
       <Grid item xs className={classes.bodyContainer}>
-        <Container id={id} className={classes.body}>
-          {breadcrumbs}
+        <Container
+          id={id}
+          className={noPadding ? classes.noPadding : classes.body}
+          maxWidth={!!noPadding ? false : maxWidth ?? "lg"}
+        >
+          {!noBreadcrumbs && breadcrumbs}
           {children}
         </Container>
       </Grid>

@@ -42,7 +42,6 @@ CREATE TABLE words (
   UNIQUE (word, language)
 );
 
-
 CREATE TABLE translations (
   translation_id  serial        PRIMARY KEY,
   word_id         integer       NOT NULL REFERENCES words
@@ -77,6 +76,8 @@ CREATE TABLE documents (
   author          text          NOT NULL,
   description     text,
   category        text,
+  video           boolean       NOT NULL DEFAULT FALSE,
+  embed_link      text,
   public          boolean       NOT NULL DEFAULT false,
   premium         boolean       NOT NULL DEFAULT false,
   blocks          jsonb
@@ -91,6 +92,15 @@ CREATE TABLE documents_words (
   frequency       integer       NOT NULL DEFAULT 1,
 
   PRIMARY KEY (document_id, word_id)
+);
+
+CREATE TABLE users_documents (
+  document_id     integer       NOT NULL REFERENCES documents
+                                ON DELETE CASCADE,
+  user_id         integer       NOT NULL REFERENCES users
+                                ON DELETE CASCADE,
+  last_seen       timestamptz,
+  metrics         jsonb
 );
 
 CREATE TABLE classrooms (
