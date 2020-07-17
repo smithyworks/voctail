@@ -18,8 +18,8 @@ const useStyles = makeStyles({
   description: {
     marginTop: "5%",
     marginBottom: "5%",
-    marginLeft: "20%",
-    marginRight: "20%",
+    marginLeft: "2%",
+    marginRight: "2%",
     fontStyle: "italic",
     textAlign: "center",
   },
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   buttons: { margin: "1%" },
 });
 
-function CreationDialog({ open, title, description, variant, disabled, onConfirm, onClose, children }) {
+function CreationDialog({ open, title, description, validationButtonName, disabled, onConfirm, onClose, children }) {
   const classes = useStyles();
 
   return (
@@ -45,7 +45,7 @@ function CreationDialog({ open, title, description, variant, disabled, onConfirm
           Cancel
         </VTButton>
         <VTButton accept onClick={onConfirm} disabled={disabled}>
-          Create
+          {validationButtonName ? validationButtonName : "Create"}
         </VTButton>
       </DialogActions>
     </Dialog>

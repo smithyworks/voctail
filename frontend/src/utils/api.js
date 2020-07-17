@@ -129,8 +129,19 @@ export function fetchClassrooms() {
   return axios.get(`${base}/classrooms`);
 }
 
+export function fetchClassroomsAsStudent(member_id) {
+  return axios.get(`${base}/classrooms-as-student`, { params: { member_id: member_id } });
+}
+
+export function fetchClassroomsAsTeacher(member_id) {
+  return axios.get(`${base}/classrooms-as-teacher`, { params: { member_id: member_id } });
+}
+
 export function getClassroom(classroom_id) {
   return axios.get(`${base}/classroom`, { params: { classroom_id: classroom_id } });
+}
+export function isTeacher(classroom_id, member_id) {
+  return axios.get(`${base}/classroom-is-teacher`, { params: { classroom_id: classroom_id, member_id: member_id } });
 }
 
 export function getStudents(classroom_id) {
@@ -161,16 +172,28 @@ export function deleteClassroom(classroom_id) {
   return axios.post(`${base}/delete-classroom`, { classroom_id });
 }
 
-export function addStudentToClassroom(classroom_id, student_id) {
-  return axios.post(`${base}/add-student-to-classroom`, { classroom_id, student_id });
+export function renameClassroom(classroom_id, new_title) {
+  return axios.post(`${base}/rename-classroom`, { classroom_id, new_title });
 }
 
-export function deleteStudentFromClassroom(classroom_id, student_id) {
-  return axios.post(`${base}/delete-student-from-classroom`, { classroom_id, student_id });
+export function addTeacherToClassroom(classroom_id, member_id) {
+  return axios.post(`${base}/add-teacher-to-classroom`, { classroom_id, member_id });
 }
 
-export function addDocumentToClassroom(classroom_id, document_id) {
-  return axios.post(`${base}/add-document-to-classroom`, { classroom_id, document_id });
+export function deleteTeacherFromClassroom(classroom_id, member_id) {
+  return axios.post(`${base}/delete-teacher-from-classroom`, { classroom_id, member_id });
+}
+
+export function addStudentToClassroom(classroom_id, member_id) {
+  return axios.post(`${base}/add-student-to-classroom`, { classroom_id, member_id });
+}
+
+export function deleteStudentFromClassroom(classroom_id, member_id) {
+  return axios.post(`${base}/delete-student-from-classroom`, { classroom_id, member_id });
+}
+
+export function addDocumentToClassroom(classroom_id, document_id, section) {
+  return axios.post(`${base}/add-document-to-classroom`, { classroom_id, document_id, section });
 }
 
 // user

@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
-import { Paper, makeStyles, Grid, Typography, Menu, MenuItem } from "@material-ui/core";
+import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, TextField } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./Quiz/colorCycler";
 import { api } from "../../utils";
-import { ConfirmDialog } from "../common";
+import { toasts } from "../common/AppPage/AppPage";
+import { ConfirmDialog, CreationDialog } from "../common";
 
 const useStyles = makeStyles({
   container: {
@@ -93,7 +94,7 @@ function ClassroomTile({
   topic,
   isOwned,
   onDelete,
-  onEdit,
+  onRename,
   linkTo,
   classroomId,
   classroomDataFromDatabase,
@@ -105,6 +106,17 @@ function ClassroomTile({
   const [hovered, setHovered] = useState(false);
   const [classroomAuthor, setClassroomAuthor] = useState("");
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+
+  const [newTitle, setNewTitle] = useState("");
+  const [errorNewTitle, setErrorNewTitle] = useState(false);
+
+  const handleChangeNewTitle = (event) => {
+    setNewTitle(event.target.value);
+    if (errorNewTitle || newTitle > 0) {
+      setErrorNewTitle(false);
+    }
+  };
 
   const anchor = useRef();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -114,9 +126,9 @@ function ClassroomTile({
     e.stopPropagation();
   }
 
-  function _onEdit(e) {
-    if (typeof onDelete === "function") {
-      onEdit(e);
+  function _onRename(e) {
+    if (typeof onRename === "function") {
+      onRename(e);
       setMenuOpen(false);
     }
   }
@@ -183,9 +195,56 @@ function ClassroomTile({
         </Grid>
       </ConfirmDialog>
 
+      <CreationDialog
+        open={renameDialogOpen}
+        title={"Renaming " + title + "..."}
+        description={"Provide a new title below"}
+        validationButtonName="Save"
+        onConfirm={() => {
+          if (newTitle.length < 1) {
+            toasts.toastError("Please give your classroom a title !");
+            setErrorNewTitle(true);
+            return;
+          }
+          onRename(newTitle);
+          setRenameDialogOpen(false);
+        }}
+        onClose={() => {
+          setRenameDialogOpen(false);
+        }}
+      >
+        <TextField
+          required
+          error={errorNewTitle}
+          className={classes.textField}
+          autoFocus
+          value={newTitle}
+          onChange={handleChangeNewTitle}
+          margin="dense"
+          id="name"
+          label="New Title"
+          type="text"
+          fullWidth
+        />
+      </CreationDialog>
+
       <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
-        <MenuItem onClick={_onEdit}>Rename</MenuItem>
-        <MenuItem onClick={() => setConfirmDialogOpen(true)}>Delete</MenuItem>
+        <MenuItem
+          onClick={() => {
+            setRenameDialogOpen(true);
+            setMenuOpen(false);
+          }}
+        >
+          Rename
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setConfirmDialogOpen(true);
+            setMenuOpen(false);
+          }}
+        >
+          Delete
+        </MenuItem>
       </Menu>
     </Grid>
   );

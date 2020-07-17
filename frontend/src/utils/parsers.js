@@ -1,3 +1,5 @@
+import { forEach } from "lodash";
+
 export function timeParser(time) {
   const week = ["Undefined", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   if (time == null) {
@@ -47,16 +49,25 @@ export function isConnected(lastSeen) {
   return new Date() - new Date(lastSeen) < 5 * 60 * 1000;
 }
 
-export function teacherParser(teachersList, teacher) {
-  if (teachersList.length < 2) {
-    return [teacher.name, " "];
-  } else {
-    if (teachersList.indexOf(teacher) < teachersList.length - 2) {
-      return [teacher.name, ", "];
+export function isTeacher(owner, teachersList, member) {
+  try {
+    console.log(owner[0]);
+  } finally {
+    console.log("bug here");
+  }
+  console.log(owner[0]);
+  console.log(member.user_id);
+  try {
+    if (owner[0].user_id === member.user_id) {
+      return "hi";
     }
-    if (teachersList.indexOf(teacher) === teachersList.length - 2) {
-      return [teacher.name, " & "];
-    }
-    return [teacher.name, " "];
+    teachersList.forEach((teacher) => {
+      if (teacher.user_id === member.user_id) {
+        return true;
+      }
+    });
+    return false;
+  } finally {
+    return;
   }
 }

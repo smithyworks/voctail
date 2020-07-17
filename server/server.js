@@ -67,7 +67,10 @@ server.post("/api/create-custom-quiz", auth.tokenMiddleWare, quizzes.createCusto
 server.get("/api/quiz-title", auth.tokenMiddleWare, quizzes.quizTitleHandler);
 
 server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomsHandler);
+server.get("/api/classrooms-as-student", auth.tokenMiddleWare, classrooms.classroomsAsStudentHandler);
+server.get("/api/classrooms-as-teacher", auth.tokenMiddleWare, classrooms.classroomsAsTeacherHandler);
 server.get("/api/classroom", auth.tokenMiddleWare, classrooms.classroomHandler);
+server.get("/api/classroom-is-teacher", auth.tokenMiddleWare, classrooms.isTeacher);
 server.get("/api/classrooms-students", auth.tokenMiddleWare, classrooms.studentsHandler);
 server.get("/api/classrooms-owner", auth.tokenMiddleWare, classrooms.ownerHandler);
 server.get("/api/classrooms-teachers", auth.tokenMiddleWare, classrooms.teachersHandler);
@@ -75,8 +78,11 @@ server.get("/api/classrooms-documents", auth.tokenMiddleWare, classrooms.documen
 server.get("/api/classrooms-sections", auth.tokenMiddleWare, classrooms.sectionsHandler);
 server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClassroom);
 server.post("/api/delete-classroom", auth.tokenMiddleWare, classrooms.deleteClassroom);
+server.post("/api/rename-classroom", auth.tokenMiddleWare, classrooms.renameClassroom);
+server.post("/api/add-teacher-to-classroom", auth.tokenMiddleWare, classrooms.addTeacherToClassroom);
+server.post("/api/delete-teacher-to-classroom", auth.tokenMiddleWare, classrooms.deleteTeacherFromClassroom);
 server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.addStudentToClassroom);
-server.post("/api/delete-student-to-classroom", auth.tokenMiddleWare, classrooms.deleteStudentToClassroom);
+server.post("/api/delete-student-to-classroom", auth.tokenMiddleWare, classrooms.deleteStudentFromClassroom);
 server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);
 
 // Handles any requests that don't match the ones above

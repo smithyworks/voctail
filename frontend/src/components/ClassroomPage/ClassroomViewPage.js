@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Divider } from "@material-ui/core";
 import AppPage from "../common/AppPage";
 
 import iconUser from "../../assets/icon_user.png";
@@ -8,40 +7,30 @@ import iconDoc from "../../assets/books.jpg";
 
 import Header from "../common/HeaderSection";
 import { ClassroomSection, SectionSection, ChapterSection, DashboardTile } from "../common";
-import InviteStudentsDialog from "../common/InviteStudentsDialog";
+import InviteMembersDialog from "../common/InviteMembersDialog";
 import UserCard from "../common/UserCard";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { api } from "../../utils";
-import { timeParser, urlParser, isConnected } from "../../utils/parsers";
+import { timeParser, urlParser, isConnected, isTeacher } from "../../utils/parsers";
 import { toasts } from "../common/AppPage/AppPage";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
-const useStyles = makeStyles(() => ({
-  headUpText: {
-    margin: "auto",
-    textAlign: "center",
-    fontStyle: "italic",
-  },
-
-  containerWithoutMargin: {
-    backgroundColor: "#D4E4E4",
-    paddingTop: "3%",
-    paddingBottom: "3%",
-  },
-
-  title: {
-    flexGrow: 1,
-  },
-
-  logo: {
-    height: "60px",
-  },
-
-  appBar: {
-    borderColor: "black",
-  },
-}));
+function addTeachers(classroomId, teacherId, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase) {
+  const addTeachersToThisClassroom = () => {
+    api.addTeacherToClassroom(classroomId, teacherId).catch((err) => console.log(err));
+  };
+  addTeachersToThisClassroom();
+  api
+    .user(teacherId)
+    .then((res) => {
+      if (res) {
+        setClassroomTeachersFromDatabase(classroomTeachersFromDatabase.concat([res.data]));
+        toasts.toastSuccess("Teacher added to the classroom.");
+      }
+    })
+    .catch((err) => console.log(err));
+}
 
 function addStudents(classroomId, studentId, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase) {
   const addStudentsToThisClassroom = () => {
@@ -53,23 +42,55 @@ function addStudents(classroomId, studentId, classroomStudentsFromDatabase, setC
     .then((res) => {
       if (res) {
         setClassroomStudentsFromDatabase(classroomStudentsFromDatabase.concat([res.data]));
+        toasts.toastSuccess("Student added to the classroom.");
       }
     })
     .catch((err) => console.log(err));
-  toasts.toastSuccess("Student added to the classroom!");
+}
+
+function addDocuments(
+  classroomId,
+  documentId,
+  section,
+  classroomDocumentsFromDatabase,
+  setClassroomDocumentsFromDatabase,
+  setClassroomsSectionsUpdate,
+  classroomsSectionsUpdate
+) {
+  const addDocumentsToThisClassroom = () => {
+    api.addDocumentToClassroom(classroomId, documentId, section).catch((err) => console.log(err));
+  };
+  addDocumentsToThisClassroom();
+  api
+    .document(documentId)
+    .then((res) => {
+      if (res) {
+        setClassroomDocumentsFromDatabase(classroomDocumentsFromDatabase.concat([res.data]));
+        toasts.toastSuccess("Document added to the classroom.");
+      }
+    })
+    .catch((err) => console.log(err));
+}
+
+function isOwner(user, classroomOwnerFromDatabase) {
+  if (classroomOwnerFromDatabase.length > 0) {
+    return user.user_id === classroomOwnerFromDatabase[0].user_id;
+  }
+  return false;
 }
 
 function ClassroomViewPage() {
-  //const classes = useStyles();
+  const [user, setUser] = useState([]);
   const [currentClassroomId, setCurrentClassroomId] = useState(null);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
+  const [classroomIsTeacher, setClassroomIsTeacher] = useState(false);
   const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
   const [classroomOwnerFromDatabase, setClassroomOwnerFromDatabase] = useState([]);
   const [classroomTeachersFromDatabase, setClassroomTeachersFromDatabase] = useState([]);
   const [classroomDocumentsFromDatabase, setClassroomDocumentsFromDatabase] = useState([]);
   const [classroomSectionsFromDatabase, setClassroomSectionsFromDatabase] = useState([]);
-
-  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
+  const [inviteTeachersDialogOpen, setInviteTeachersDialogOpen] = useState(false);
+  const [inviteStudentsDialogOpen, setInviteStudentsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -78,8 +99,22 @@ function ClassroomViewPage() {
     setAnchorEl(null);
   };
 
-  //const [allUsersFromDatabase, setAllUsersFromDatabase] = useState([]);
-  //const [allDocumentsFromDatabase, setAllDocumentsFromDatabase] = useState([]);
+  useEffect(() => {
+    api
+      .user()
+      .then((res) => {
+        if (res) setUser(res.data);
+        api
+          .isTeacher(urlParser(), res.data.user_id)
+          .then((res2) => {
+            if (res2) {
+              setClassroomIsTeacher(res2.data.rows[0].teacher);
+            }
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     setCurrentClassroomId(urlParser());
@@ -134,6 +169,7 @@ function ClassroomViewPage() {
       .getDocuments(urlParser())
       .then((res) => {
         if (res) {
+          console.log(res.data.rows);
           setClassroomDocumentsFromDatabase(res.data.rows);
         }
       })
@@ -162,20 +198,24 @@ function ClassroomViewPage() {
       <ClassroomSection
         title="Teachers"
         Button={
-          <IconButton aria-label="test" onClick={() => setInviteDialogOpen(true)}>
-            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-          </IconButton>
+          classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
+            <IconButton aria-label="test" onClick={() => setInviteTeachersDialogOpen(true)}>
+              <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
+            </IconButton>
+          ) : (
+            <span />
+          )
         }
       >
-        <InviteStudentsDialog
-          open={inviteDialogOpen}
-          onClose={() => setInviteDialogOpen(false)}
+        <InviteMembersDialog
+          memberType="Teachers"
+          open={inviteTeachersDialogOpen}
+          onClose={() => setInviteTeachersDialogOpen(false)}
           onInvite={(ids) => {
             ids.map((id) => {
-              addStudents(currentClassroomId, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
+              addTeachers(currentClassroomId, id, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase);
             });
-            toasts.toastSuccess("Students added to the database!");
-            setInviteDialogOpen(false);
+            setInviteTeachersDialogOpen(false);
           }}
         />
 
@@ -184,6 +224,7 @@ function ClassroomViewPage() {
             return (
               <Grid item style={{ padding: "10px" }}>
                 <UserCard
+                  teacher
                   name={member.name}
                   email={member.email}
                   avatar={iconUser}
@@ -199,20 +240,24 @@ function ClassroomViewPage() {
       <ClassroomSection
         title="Students"
         Button={
-          <IconButton aria-label="test" onClick={() => setInviteDialogOpen(true)}>
-            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-          </IconButton>
+          classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
+            <IconButton aria-label="test" onClick={() => setInviteStudentsDialogOpen(true)}>
+              <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
+            </IconButton>
+          ) : (
+            <span />
+          )
         }
       >
-        <InviteStudentsDialog
-          open={inviteDialogOpen}
-          onClose={() => setInviteDialogOpen(false)}
+        <InviteMembersDialog
+          memberType="Students"
+          open={inviteStudentsDialogOpen}
+          onClose={() => setInviteStudentsDialogOpen(false)}
           onInvite={(ids) => {
             ids.map((id) => {
               addStudents(currentClassroomId, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
             });
-            toasts.toastSuccess("Students added to the database!");
-            setInviteDialogOpen(false);
+            setInviteStudentsDialogOpen(false);
           }}
         />
 
@@ -236,9 +281,13 @@ function ClassroomViewPage() {
       <SectionSection
         title="Sections"
         Button={
-          <IconButton aria-label="test">
-            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-          </IconButton>
+          classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
+            <IconButton aria-label="test">
+              <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
+            </IconButton>
+          ) : (
+            <span />
+          )
         }
       >
         {classroomSectionsFromDatabase.map((section) => {
@@ -246,13 +295,29 @@ function ClassroomViewPage() {
             <ChapterSection
               title={section.title}
               Button={
-                <IconButton aria-label="test" onClick={handleClick}>
-                  <MoreVertIcon />
-                </IconButton>
+                classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
+                  <IconButton aria-label="test" onClick={handleClick}>
+                    <MoreVertIcon />
+                  </IconButton>
+                ) : (
+                  <span />
+                )
               }
             >
               <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem>Add Document</MenuItem>
+                <MenuItem
+                  onClick={() =>
+                    addDocuments(
+                      currentClassroomId,
+                      12,
+                      "Chapter 1",
+                      classroomDocumentsFromDatabase,
+                      setClassroomDocumentsFromDatabase
+                    )
+                  }
+                >
+                  Add Hans & Gretel
+                </MenuItem>
                 <MenuItem>Rename</MenuItem>
                 <MenuItem>Delete</MenuItem>
               </Menu>

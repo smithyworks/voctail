@@ -24,6 +24,7 @@ import { Link } from "react-router-dom";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import ClassroomTile from "../common/ClassroomTile";
+import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles(() => ({
   text: {
@@ -131,119 +132,6 @@ const formStyles = makeStyles(() => ({
   },
   buttons: { margin: "1%" },
 }));
-
-function ClassroomItem({
-  classes,
-  setPopUpOpen,
-  setClassroomId,
-  setClassroomTitle,
-  setClassroomTopic,
-  setClassroomAuthor,
-  setClassroomDescription,
-  tile,
-}) {
-  return (
-    <ButtonBase
-      focusRipple
-      className={classes.image}
-      focusVisibleClassName={classes.focusVisible}
-      style={{
-        width: "40%",
-        margin: "5%",
-      }}
-      onClick={() => {
-        setPopUpOpen(true);
-        setClassroomId(tile.classroom_id);
-        setClassroomTitle(tile.title);
-        setClassroomTopic(tile.topic);
-        setClassroomDescription(tile.description);
-      }}
-    >
-      <span
-        className={classes.imageSrc}
-        style={{
-          backgroundImage: `url(${logo_classroom})`,
-        }}
-      />
-      <span className={classes.imageBackdrop} />
-      <span className={classes.imageButton}>
-        <Typography component="span" variant="h4" color="inherit" className={classes.imageTitle}>
-          {tile.title}
-          <span className={classes.imageMarked} />
-        </Typography>
-      </span>
-    </ButtonBase>
-  );
-}
-
-function ClassroomOverviewPopUp({
-  open,
-  onClose,
-  classroomDataFromDatabase,
-  setClassroomDataFromDatabase,
-  classroomId,
-  classroomTitle,
-  classroomTopic,
-  classroomAuthor,
-  classroomDescription,
-}) {
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-
-  return (
-    <Dialog onClose={onClose} aria-labelledby="classroom-overview-popup" open={open} keepMounted>
-      <DialogTitle id="classroom-overview-popup-title" onClose={onClose}>
-        {classroomTitle}
-      </DialogTitle>
-      <DialogContent dividers>
-        <Typography gutterBottom>Topic: {classroomTopic}</Typography>
-        <Typography gutterBottom>Teacher: {classroomAuthor}</Typography>
-        <Typography gutterBottom>Description: {classroomDescription}</Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
-        </Button>
-        <Button
-          onClick={() => {
-            setConfirmDialogOpen(true);
-          }}
-          color="secondary"
-        >
-          Delete
-        </Button>
-        <Button component={Link} to={"/classrooms/view?classroom=" + classroomId} color="primary">
-          Open
-        </Button>
-      </DialogActions>
-      <ConfirmDialog
-        open={confirmDialogOpen}
-        title="Deleting a classroom..."
-        onConfirm={() => {
-          deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDataFromDatabase);
-          setConfirmDialogOpen(false);
-          onClose();
-        }}
-        onClose={() => {
-          setConfirmDialogOpen(false);
-        }}
-      >
-        <Grid container>
-          <Grid element>
-            <Typography> Are you sure you want to delete</Typography>
-          </Grid>
-          <Grid element>
-            <Typography style={{ color: "red", marginLeft: "5px", marginRight: "5px", fontWeight: "bold" }}>
-              {" " + classroomTitle}
-            </Typography>
-          </Grid>
-          <Grid element>
-            <Typography>?</Typography>
-          </Grid>
-        </Grid>
-      </ConfirmDialog>
-    </Dialog>
-  );
-}
 
 function ClassroomCreateFormDialog({
   user,
@@ -407,6 +295,24 @@ function deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDat
   toasts.toastSuccess("Classroom deleted!");
 }
 
+function renameClassroom(classroomId, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase) {
+  const indexOfRenamedClassroom = indexOfClassroom(classroomId, classroomDataFromDatabase);
+  let classroomRenamed = classroomDataFromDatabase[indexOfRenamedClassroom];
+  classroomRenamed.title = newTitle;
+  api
+    .renameClassroom(classroomId, newTitle)
+    .then((res) => {
+      setClassroomDataFromDatabase(
+        classroomDataFromDatabase
+          .slice(0, indexOfRenamedClassroom)
+          .concat([classroomRenamed])
+          .concat(classroomDataFromDatabase.slice(indexOfRenamedClassroom + 1))
+      );
+    })
+    .catch((err) => console.log(err));
+  toasts.toastSuccess("Classroom renamed!");
+}
+
 function indexOfClassroom(classroomId, classrooms) {
   let output = 0;
   classrooms.forEach((classroom, index) => {
@@ -417,39 +323,46 @@ function indexOfClassroom(classroomId, classrooms) {
   return output;
 }
 
-/*function teacherData(user_id) {
-  api
-    .user(user_id)
-    .then((res) => {
-      setTeacherName(res.data.name);
-    })
-    .catch((err) => console.log(err));
-  return teacherName;
-}*/
+const handleChange = (state, setState) => {
+  console.log(state);
+  setState(!state);
+};
 
 function Classrooms() {
-  const classes = useStyles();
   const [user, setUser] = useState([]);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
-  const [openPopUp, setPopUpOpen] = useState(false);
+  const [classroomAsStudentDataFromDatabase, setClassroomAsStudentDataFromDatabase] = useState([]);
+  const [classroomAsTeacherDataFromDatabase, setClassroomAsTeacherDataFromDatabase] = useState([]);
 
   //Hooks to a current classroom
-  const [classroomId, setClassroomId] = useState(null);
-  const [classroomTitle, setClassroomTitle] = useState(null);
-  const [classroomTopic, setClassroomTopic] = useState(null);
-  const [classroomAuthor, setClassroomAuthor] = useState([]);
-  const [classroomDescription, setClassroomDescription] = useState(null);
   const [openCreateForm, setOpenCreateForm] = useState(false);
   //Hooks to create a new classroom
   const [newTopic, setNewTopic] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
+  const [state, setState] = useState(false);
 
   useEffect(() => {
     api
       .user()
       .then((res) => {
         if (res) setUser(res.data);
+        api
+          .fetchClassroomsAsStudent(res.data.user_id)
+          .then((resForStudent) => {
+            if (resForStudent) {
+              setClassroomAsStudentDataFromDatabase(resForStudent.data.rows);
+            }
+          })
+          .catch((err) => console.log(err));
+        api
+          .fetchClassroomsAsTeacher(res.data.user_id)
+          .then((resForTeacher) => {
+            if (resForTeacher) {
+              setClassroomAsTeacherDataFromDatabase(resForTeacher.data.rows);
+            }
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   }, []);
@@ -468,7 +381,103 @@ function Classrooms() {
   return (
     <AppPage location="classrooms" id="classrooms-saved-page">
       <ClassroomSection
-        title="My Classrooms"
+        title="My Classrooms as a student"
+        description="Your classrooms as a student"
+        Button={
+          <Tooltip
+            title={user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"}
+          >
+            <span>
+              <IconButton disabled={!user.premium} aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
+                <AddBoxIcon fontSize="large" style={user.premium ? { color: "darkblue" } : { color: "grey" }} />
+              </IconButton>
+            </span>
+          </Tooltip>
+        }
+      >
+        <ClassroomCreateFormDialog
+          openCreateForm={openCreateForm}
+          closeCreateForm={() => setOpenCreateForm(false)}
+          user={user.user_id}
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newTopic={newTopic}
+          setNewTopic={setNewTopic}
+          newDescription={newDescription}
+          setNewDescription={setNewDescription}
+          classroomDataFromDatabase={classroomDataFromDatabase}
+          setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+        />
+        {classroomAsStudentDataFromDatabase.map((tile) => (
+          <React.Fragment key={tile.classroom_id}>
+            <ClassroomTile
+              isOwned
+              title={tile.title}
+              teacher={tile.classroom_owner}
+              topic={tile.topic}
+              linkTo={"/classrooms/view?classroom=" + tile.classroom_id}
+              classroomDataFromDatabase={classroomDataFromDatabase}
+              setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+              onDelete={() => {
+                deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+              }}
+              onRename={(newTitle) => {
+                renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
+              }}
+            />
+          </React.Fragment>
+        ))}
+      </ClassroomSection>
+      <ClassroomSection
+        title="My Classrooms as a teacher"
+        description="Your classrooms as a teacher"
+        Button={
+          <Tooltip
+            title={user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"}
+          >
+            <span>
+              <IconButton disabled={!user.premium} aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
+                <AddBoxIcon fontSize="large" style={user.premium ? { color: "darkblue" } : { color: "grey" }} />
+              </IconButton>
+            </span>
+          </Tooltip>
+        }
+      >
+        <ClassroomCreateFormDialog
+          openCreateForm={openCreateForm}
+          closeCreateForm={() => setOpenCreateForm(false)}
+          user={user.user_id}
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newTopic={newTopic}
+          setNewTopic={setNewTopic}
+          newDescription={newDescription}
+          setNewDescription={setNewDescription}
+          classroomDataFromDatabase={classroomDataFromDatabase}
+          setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+        />
+        {classroomAsTeacherDataFromDatabase.map((tile) => (
+          <React.Fragment key={tile.classroom_id}>
+            <ClassroomTile
+              isOwned
+              title={tile.title}
+              teacher={tile.classroom_owner}
+              topic={tile.topic}
+              linkTo={"/classrooms/view?classroom=" + tile.classroom_id}
+              classroomDataFromDatabase={classroomDataFromDatabase}
+              setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+              onDelete={() => {
+                deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+              }}
+              onRename={(newTitle) => {
+                renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
+              }}
+            />
+          </React.Fragment>
+        ))}
+      </ClassroomSection>
+      <ClassroomSection
+        title="Public classrooms"
         description="You have here the classrooms you are registered to."
         Button={
           <Tooltip
@@ -507,6 +516,9 @@ function Classrooms() {
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {
                 deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+              }}
+              onRename={(newTitle) => {
+                renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
               }}
             />
           </React.Fragment>
