@@ -1,7 +1,15 @@
 import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Grid, TextField } from "@material-ui/core";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Grid,
+  Typography as T,
+} from "@material-ui/core";
 
 import { VTButton } from "../common";
 import QuizItemSection from "./QuizItemSection";
@@ -9,6 +17,7 @@ import QuizItem from "./QuizItem";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import VoctailDialogTitle from "../common/VoctailDialogTitle";
+import ErrorDialogField from "./ErrorDialogField";
 
 const useStyles = makeStyles({
   quizItem: {
@@ -18,6 +27,9 @@ const useStyles = makeStyles({
     paddingTop: "20px",
     width: "50%",
     padding: "20px",
+  },
+  subtitle: {
+    fontSize: "20px",
   },
 });
 
@@ -32,6 +44,7 @@ function AddCustomQuiz({ onAdd, onClose, open }) {
 
   const title = useRef("");
   const [items, setItems] = useState([]);
+  const [error, setError] = useState(false);
 
   const addItem = (item) => {
     setItems((il) => [...il, item]);
@@ -46,18 +59,26 @@ function AddCustomQuiz({ onAdd, onClose, open }) {
   };
 
   const addQuiz = () => {
-    if (title.current.length > 0 && items.length > 0) {
+    if (verify() && items.length > 0) {
       api.createCustomQuiz(title.current, items).then((res) => {
-        toasts.toastSuccess("Custom quiz added with " + items.length + " questions!");
+        toasts.toastSuccess("Custom quiz " + title.current + " added with " + items.length + " questions!");
         handleClose();
         onAdd();
       });
-    } else {
-      toasts.toastError(
-        "You cannot add a quiz without title or quiz items. Please add title and at least one quiz item first."
-      );
     }
   };
+
+  function verify() {
+    if (title.current.length === 0) {
+      setError(true);
+      return false;
+    }
+    if (items.length === 0) {
+      toasts.toastWarning("Please provide at least one question item.");
+      return false;
+    }
+    return true;
+  }
 
   //
   //<div>
@@ -70,12 +91,18 @@ function AddCustomQuiz({ onAdd, onClose, open }) {
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz" fullWidth={true} maxWidth={"xl"}>
+        <VoctailDialogTitle>Add your custom quiz</VoctailDialogTitle>
         <Paper className={classes.quizItem} elevation={0}>
           <Grid container direction="row">
             <div className={classes.innerContainer}>
-              <VoctailDialogTitle>To add a new quiz please fill out as many quiz items as you like.</VoctailDialogTitle>
+              <div>
+                <T className={classes.subtitle}>To add a new quiz please fill out as many quiz items as you like.</T>
+              </div>
               <DialogContent>
-                <TextField
+                <ErrorDialogField
+                  error={error}
+                  setError={setError}
+                  warning={"Please provide a quiz title."}
                   autoFocus
                   margin="dense"
                   id="title"
@@ -89,7 +116,9 @@ function AddCustomQuiz({ onAdd, onClose, open }) {
               <QuizItem items={items} setItems={setItems} addItem={addItem} />
             </div>
             <div className={classes.innerContainer}>
-              <VoctailDialogTitle>Quiz Items</VoctailDialogTitle>
+              <div>
+                <T className={classes.subtitle}>Quiz Items</T>
+              </div>
               <QuizItemSection items={items} del={deleteItem} />
             </div>
           </Grid>
