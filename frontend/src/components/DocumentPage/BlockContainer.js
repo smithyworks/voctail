@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-function BlockContainer({ children, lookupWord, onAddTranslation, lookupTranslations }) {
+function BlockContainer({ children, lookupWord, onAddTranslation, lookupTranslations, sans }) {
   const classes = useStyles();
 
   function markUnknown(word_id) {
@@ -91,6 +91,7 @@ function BlockContainer({ children, lookupWord, onAddTranslation, lookupTranslat
         onMouseLeave={mouseOutPopper}
         onMarkKnown={markKnown}
         onAddTranslationIntent={onAddTranslation}
+        sans={sans}
       />
     </div>
   );

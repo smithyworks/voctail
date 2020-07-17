@@ -120,13 +120,23 @@ async function addDocument(req, res) {
   const language = "english";
 
   try {
-    const { publisher, title, author, description, category, isPublic, content, blocks } = req.body;
+    const { publisher, title, author, description, category, isPublic, blocks } = req.body;
 
+    console.log(blocks);
     const {
       rows: [{ document_id }],
     } = await query(
       "INSERT INTO documents (publisher_id, title, author, description, category, public, premium, blocks) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING document_id",
-      [publisher, title, author, description, category, isPublic, premium, content]
+      [
+        publisher,
+        title,
+        author,
+        description,
+        category,
+        isPublic,
+        premium,
+        JSON.stringify(blocks).replace(/\\/g, "\\\\"),
+      ]
     );
 
     const contentData = blocks.map((b) => b.content).join(" ");

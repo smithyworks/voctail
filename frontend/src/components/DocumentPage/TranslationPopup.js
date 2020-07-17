@@ -16,9 +16,25 @@ const useStyles = makeStyles({
     minWidth: "250px",
   },
   header: { fontWeight: "bold", fontSize: "20px", padding: "5px 10px 0 10px", fontFamily: "crimson-text, serif" },
+  sansHeader: { fontWeight: "bold", fontSize: "20px", padding: "5px 10px 0 10px", fontFamily: "fira-sans, sans" },
   body: { maxHeight: "200px" },
-  list: { padding: "0 10px 0 15px", margin: "0", maxHeight: "100%", overflow: "auto" },
-  listItem: { fontFamily: "crimson-text, serif", fontSize: "18px", listStyle: "inside" },
+  list: {
+    padding: "0 10px 0 15px",
+    margin: "0",
+    maxHeight: "100%",
+    overflow: "auto",
+    fontFamily: "crimson-text, serif",
+    fontSize: "18px",
+  },
+  sansList: {
+    padding: "0 10px 0 15px",
+    margin: "0",
+    maxHeight: "100%",
+    overflow: "auto",
+    fontFamily: "fira-sans, sans",
+    fontSize: "16px",
+  },
+  listItem: { fontFamily: "inherit", fontSize: "inherit", listStyle: "inside" },
   actions: {
     padding: "8px",
     textAlign: "right",
@@ -48,6 +64,7 @@ function TranslationPopup({
   lookupWord,
   lookupTranslations,
   onAddTranslationIntent,
+  sans,
 }) {
   const classes = useStyles();
 
@@ -84,12 +101,12 @@ function TranslationPopup({
     <Popper open={!!open && !!anchor} anchorEl={anchor} placement="bottom" disablePortal>
       <div onMouseEnter={onMouseEnter} onMouseLeave={leave}>
         <Paper className={classes.paper} component={Grid} container direction="column" wrap="nowrap">
-          <T variant="subtitle1" className={classes.header}>
+          <T variant="subtitle1" className={sans ? classes.sansHeader : classes.header}>
             {translationData.word}
           </T>
 
           <Grid item xs className={classes.body}>
-            <ul className={classes.list}>
+            <ul className={sans ? classes.sansList : classes.list}>
               {translationData.word_id === word_id ? translationData.components : null}
               <li className={classes.addWordListItem} onClick={_addTranslationIntent}>
                 <AddIcon fontSize="inherit" className={classes.addIcon} /> Add A Translation
