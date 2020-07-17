@@ -11,11 +11,11 @@ import { ClassroomSection, SectionSection, ChapterSection, DashboardTile } from 
 import InviteStudentsDialog from "../common/Dialogs/InviteStudentsDialog";
 import UserCard from "../common/UserCard";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import { api } from "../../utils";
 import { timeParser, urlParser, isConnected } from "../../utils/parsers";
 import { toasts } from "../common/AppPage/AppPage";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import VTIconFlexButton from "../common/Buttons/IconButton";
 
 const useStyles = makeStyles(() => ({
   headUpText: {
@@ -161,11 +161,7 @@ function ClassroomViewPage() {
 
       <ClassroomSection
         title="Teachers"
-        Button={
-          <IconButton aria-label="test" onClick={() => setInviteDialogOpen(true)}>
-            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-          </IconButton>
-        }
+        Button={<VTIconFlexButton toolTipLabel={"Add teacher"} onClick={() => setInviteDialogOpen(true)} />}
       >
         <InviteStudentsDialog
           open={inviteDialogOpen}
@@ -198,11 +194,7 @@ function ClassroomViewPage() {
 
       <ClassroomSection
         title="Students"
-        Button={
-          <IconButton aria-label="test" onClick={() => setInviteDialogOpen(true)}>
-            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-          </IconButton>
-        }
+        Button={<VTIconFlexButton toolTipLabel={"Add students"} onClick={() => setInviteDialogOpen(true)} />}
       >
         <InviteStudentsDialog
           open={inviteDialogOpen}
@@ -233,14 +225,7 @@ function ClassroomViewPage() {
         </Grid>
       </ClassroomSection>
 
-      <SectionSection
-        title="Sections"
-        Button={
-          <IconButton aria-label="test">
-            <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-          </IconButton>
-        }
-      >
+      <SectionSection title="Sections" Button={<VTIconFlexButton toolTipLabel={"Add section"} />}>
         {classroomSectionsFromDatabase.map((section) => {
           return (
             <ChapterSection

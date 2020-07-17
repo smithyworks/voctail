@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Grid, Paper, Typography as T, TextField, Button, Checkbox } from "@material-ui/core";
+import { Grid, Paper, Typography as T, TextField, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 
@@ -10,6 +10,7 @@ import { localStorage, api } from "../utils";
 import { refresh } from "../App.js";
 import AppPage from "./common/AppPage";
 import logo from "../assets/logo_green.png";
+import VTButton from "./common/Buttons/VTButton";
 
 const useStyles = makeStyles({
   page: {
@@ -182,16 +183,9 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
               onChange={(e) => (passwordRef.current = e.target.value)}
             ></TextField>
 
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              fullWidth
-              className={classes.inputs}
-              disableElevation
-            >
+            <VTButton neutral type="submit" variant="contained" fullWidth className={classes.inputs} disableElevation>
               {isSignupPage ? "Sign Up Now" : "Sign In"}
-            </Button>
+            </VTButton>
 
             <T variant="body2" className={classes.checkbox}>
               <Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />

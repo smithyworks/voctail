@@ -8,6 +8,7 @@ import {
 } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import timediff from "timediff";
+import colors from "../../assets/colors.json";
 
 const useStyles = makeStyles({
   greyed: { color: "#aaa" },
@@ -30,6 +31,12 @@ const useStyles = makeStyles({
   },
   match: {
     backgroundColor: "#55FF9f",
+  },
+  userprofile: {
+    ...colors.adminpage.masqueradeUserprofile,
+  },
+  warning: {
+    ...colors.adminpage.warning,
   },
 });
 
@@ -141,7 +148,7 @@ function UserRow({
         enterNextDelay={500}
         classes={{ tooltip: classes.tooltip }}
       >
-        <IconButton style={{ color: "darkblue", margin: "0 3px" }} onClick={_masquerade}>
+        <IconButton className={classes.userprofile} style={{ margin: "0 3px" }} onClick={_masquerade}>
           <SupervisedUserCircleIcon />
         </IconButton>
       </Tooltip>
@@ -152,7 +159,7 @@ function UserRow({
         enterNextDelay={500}
         classes={{ tooltip: classes.tooltip }}
       >
-        <IconButton style={{ color: "red", margin: "0 3px" }} onClick={_revoke}>
+        <IconButton className={classes.warning} style={{ margin: "0 3px" }} onClick={_revoke}>
           <BlockIcon />
         </IconButton>
       </Tooltip>
@@ -163,7 +170,7 @@ function UserRow({
         enterNextDelay={500}
         classes={{ tooltip: classes.tooltip }}
       >
-        <IconButton style={{ color: "red", margin: "0 3px" }} onClick={_delete}>
+        <IconButton className={classes.warning} style={{ margin: "0 3px" }} onClick={_delete}>
           <DeleteForeverIcon />
         </IconButton>
       </Tooltip>

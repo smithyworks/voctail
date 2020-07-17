@@ -7,6 +7,7 @@ import { AppPage, toasts, VTButton } from "../common";
 import { UserContext, refresh } from "../../App";
 import Benefit from "./Benefit";
 import { api } from "../../utils";
+import colors from "../../assets/colors.json";
 
 const useStyles = makeStyles({
   container: {
@@ -26,13 +27,12 @@ const useStyles = makeStyles({
     color: "white",
   },
   premiumOffer: {
-    border: "1px solid green",
+    ...colors.mainAccountPage.offer,
   },
   premiumOfferTitle: {
     padding: "30px 0",
-    backgroundColor: "green",
-    borderBotto: "1px solid green",
     color: "white",
+    ...colors.mainAccountPage.title,
   },
   benefitsContainer: {
     padding: "30px 20px",

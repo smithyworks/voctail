@@ -2,12 +2,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { DialogTitle } from "@material-ui/core";
 import clsx from "clsx";
+import voctailColors from "../../../assets/colors.json";
 
 const useStyles = makeStyles(() => ({
-  dialog: {
-    color: "#0B6374",
-    backgroundColor: "#D4E4E4",
-  },
+  dialog: { ...voctailColors.dialog },
 }));
 
 function VoctailDialogTitle({ className, children, ...props }) {

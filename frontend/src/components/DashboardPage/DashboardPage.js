@@ -7,7 +7,7 @@ import { DashboardSection } from "../common";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
 import PlaceholderTile from "../common/PlaceholderTile";
-import VTIconButton from "../common/Buttons/IconButton";
+import VTIconFlexButton from "../common/Buttons/IconButton";
 import CheckoutPremiumDialog from "../common/Dialogs/CheckoutPremiumDialog";
 
 //overview (browse through documents, see title, preview and some additional information)
@@ -179,7 +179,13 @@ function Dashboard() {
     <AppPage location="dashboard" id="dashboard-page">
       <DashboardSection
         title={"My Documents"}
-        Button={user && user.premium ? <VTIconButton onClick={handleAddOpen} /> : <VTIconButton disabled />}
+        Button={
+          user && user.premium ? (
+            <VTIconFlexButton toolTipLabel={"Add new document"} onClick={handleAddOpen} />
+          ) : (
+            <VTIconFlexButton disabled />
+          )
+        }
         expandable
       >
         {usersDocuments.length !== 0 ? (
