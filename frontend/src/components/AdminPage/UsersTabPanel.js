@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Typography as T, Grid } from "@material-ui/core";
+import { Typography as T, Grid, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
 import WarningDialog from "./WarningDialog.js";
@@ -98,7 +98,7 @@ function UsersTabPanel() {
   }
 
   return (
-    <>
+    <Paper style={{ padding: "20px", marginTop: "20px" }}>
       <Grid container justify="space-between" className={classes.pageHeader}>
         <T variant="h6" gutterBottom style={{ marginTop: "20px" }}></T>
         <SearchField
@@ -153,7 +153,7 @@ function UsersTabPanel() {
       />
 
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
-    </>
+    </Paper>
   );
 }
 

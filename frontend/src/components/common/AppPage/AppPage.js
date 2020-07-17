@@ -8,6 +8,7 @@ import { localStorage } from "../../../utils";
 import { UserContext } from "../../../App.js";
 import TopNav from "./TopNav.js";
 import Breadcrumbs from "../Breadcrumbs";
+import GoPremiumDialog from "../Dialogs/GoPremiumDialog";
 
 export const toasts = {
   _toast: (type, msg) => console.log(type, msg), // will be overwritten
@@ -23,6 +24,7 @@ export const toasts = {
   toastInfo: function (msg) {
     this._toast("info", msg);
   },
+  goPremium: () => {},
 };
 
 const useStyles = makeStyles({
@@ -60,6 +62,8 @@ function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxW
   else if (location === "admin") window.document.title = "VocTail | Admin";
   else window.document.title = "VocTail";
 
+  const [goPremiumOpen, setGoPremiumOpen] = useState(false);
+  toasts.goPremium = () => setGoPremiumOpen(true);
   const [snackbarOpen, setSnackbarOpen] = useState();
   const snackbarProps = useRef();
   toasts._toast = (severity, message) => {
@@ -116,6 +120,7 @@ function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxW
           {snackbarProps.current?.message}
         </Alert>
       </Snackbar>
+      <GoPremiumDialog open={goPremiumOpen} onClose={() => setGoPremiumOpen(false)} />
     </Grid>
   );
 }

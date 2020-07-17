@@ -15,6 +15,7 @@ import ChapterSection from "./ChapterSection";
 import PlaceholderTile from "./PlaceholderTile";
 import Breadcrumbs from "./Breadcrumbs";
 import UserTile from "./UserTile";
+import GoPremiumDialog from "./Dialogs/GoPremiumDialog";
 
 export {
   AppPage,
@@ -35,4 +36,5 @@ export {
   CheckoutPremiumDialog,
   Breadcrumbs,
   UserTile,
+  GoPremiumDialog,
 };
