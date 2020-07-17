@@ -31,6 +31,12 @@ function Dashboard() {
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const [select, setSelect] = useState("");
+
+  const handleSelect = (event) => {
+    setSelect(event.target.value);
+  };
+
   const handleAddOpen = () => {
     setAddOpen(true);
   };
@@ -214,18 +220,38 @@ function Dashboard() {
 
       <DashboardSection title={"Recommendations"}></DashboardSection>
 
-      <DashboardSection title={"Short Stories, Fairy Tales, Newspaper Articles and more for you"} expandable>
-        {documentDataFromDatabase.map((tile, i) => (
-          <DashboardTile
-            key={i}
-            title={tile.title}
-            author={tile.author}
-            fits={getFit(tile.document_id)}
-            onGenerateQuiz={() => createQuiz(tile.document_id)}
-            linkTo={"/documents/" + tile.document_id}
-            category={tile.category}
-          />
-        ))}
+      <DashboardSection
+        title={"Short Stories, Fairy Tales, Newspaper Articles and more for you"}
+        expandable
+        filter
+        select={select}
+        handleSelect={handleSelect}
+      >
+        {select === ""
+          ? documentDataFromDatabase.map((tile, i) => (
+              <DashboardTile
+                key={i}
+                title={tile.title}
+                author={tile.author}
+                fits={getFit(tile.document_id)}
+                onGenerateQuiz={() => createQuiz(tile.document_id)}
+                linkTo={"/documents/" + tile.document_id}
+                category={tile.category}
+              />
+            ))
+          : documentDataFromDatabase
+              .filter((doc) => doc.category === select)
+              .map((tile, i) => (
+                <DashboardTile
+                  key={i}
+                  title={tile.title}
+                  author={tile.author}
+                  fits={getFit(tile.document_id)}
+                  onGenerateQuiz={() => createQuiz(tile.document_id)}
+                  linkTo={"/documents/" + tile.document_id}
+                  category={tile.category}
+                />
+              ))}
       </DashboardSection>
 
       <DashboardSection title={"Short Stories"} expandable>

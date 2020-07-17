@@ -10,6 +10,7 @@ import shortStoriesPreview from "../../assets/books.jpg";
 import fairyTalesPreview from "../../assets/fairytale.jpg";
 import newspaperArticlesPreview from "../../assets/newspaper.jpg";
 import otherDocumentsPreview from "../../assets/others.jpg";
+import musicVideoPreview from "../../assets/music.jpg";
 
 const useStyles = makeStyles({
   container: {
@@ -92,6 +93,9 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
       break;
     case "Newspaper Article":
       thumbnail = newspaperArticlesPreview;
+      break;
+    case "music-video":
+      thumbnail = musicVideoPreview;
       break;
     default:
       thumbnail = otherDocumentsPreview;

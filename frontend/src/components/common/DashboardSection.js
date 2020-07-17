@@ -1,5 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
+import {
+  Paper,
+  makeStyles,
+  Typography,
+  Divider,
+  Grid,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+} from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
@@ -34,9 +44,12 @@ const useStyles = makeStyles({
     marginBottom: "-5px",
     marginRight: "5px",
   },
+  formControl: {
+    minWidth: 120,
+  },
 });
 
-function DashboardSection({ title, children, Button, expandable }) {
+function DashboardSection({ title, children, Button, expandable, filter, select, handleSelect }) {
   const classes = useStyles();
 
   const innerContainerRef = useRef();
@@ -62,6 +75,25 @@ function DashboardSection({ title, children, Button, expandable }) {
           </Typography>
         </Grid>
         <Grid item>{Button}</Grid>
+
+        <Grid item>
+          {filter && (
+            <FormControl className={classes.formControl}>
+              <InputLabel id="filter-categories">Select category</InputLabel>
+              <Select value={select} onChange={handleSelect}>
+                <MenuItem value={""}>
+                  {" "}
+                  <em>Show everything</em>{" "}
+                </MenuItem>
+                <MenuItem value={"(Short) Story"}>Short Stories</MenuItem>
+                <MenuItem value={"Fairy Tale"}>Fairy Tales</MenuItem>
+                <MenuItem value={"Newspaper Article"}>Newspaper Articles</MenuItem>
+                <MenuItem value={"music-video"}>Music Videos</MenuItem>
+                <MenuItem value={"Others"}>Others</MenuItem>
+              </Select>
+            </FormControl>
+          )}
+        </Grid>
       </Grid>
       <Divider />
 
@@ -79,7 +111,7 @@ function DashboardSection({ title, children, Button, expandable }) {
             ) : (
               <ExpandMoreIcon className={classes.expansionIcon} fontSize="inherit" />
             )}
-            Show All...
+            Show All
           </span>
         )}
       </Typography>
