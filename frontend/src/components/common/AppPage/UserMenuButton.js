@@ -1,5 +1,5 @@
 import React, { useRef, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import { MenuList, MenuItem, Paper, ClickAwayListener, Popper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -20,16 +20,36 @@ const useStyles = makeStyles({
       ...colors.userMenu.buttonHover,
     },
   },
+  menuItemActive: {
+    ...colors.topNav.buttonHover,
+    "&:hover": {
+      ...colors.userMenu.buttonHover,
+    },
+  },
   endMasquerade: { margin: "0 10px" },
   profileButton: {
     height: "60px",
     width: "60px",
-    "&:hover": {
-      backgroundColor: "rgba(0,0,0,0.3)",
-    },
     display: "inline-block",
     padding: "5px",
     cursor: "pointer",
+
+    ...colors.topNav.button,
+    "&:hover": {
+      ...colors.topNav.buttonHover,
+    },
+  },
+  profileButtonActive: {
+    height: "60px",
+    width: "60px",
+    display: "inline-block",
+    padding: "5px",
+    cursor: "pointer",
+
+    ...colors.topNav.activeButton,
+    "&:hover": {
+      ...colors.topNav.activeButtonHover,
+    },
   },
 });
 
@@ -39,6 +59,9 @@ function UserMenuButton({ masquerading, premium }) {
   const userButtonRef = useRef();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const user = useContext(UserContext);
+
+  const { path } = useRouteMatch();
+  const profileButtonActive = path === "/profile" || path === "/account";
 
   function endMasquerade() {
     api
@@ -83,7 +106,7 @@ function UserMenuButton({ masquerading, premium }) {
       {endMasqueradeButton}
 
       <div
-        className={classes.profileButton}
+        className={profileButtonActive ? classes.profileButtonActive : classes.profileButton}
         ref={userButtonRef}
         aria-controls={userMenuOpen ? "menu-list-grow" : undefined}
         aria-haspopup="true"
@@ -96,10 +119,18 @@ function UserMenuButton({ masquerading, premium }) {
         <Paper className={classes.menuPaper}>
           <ClickAwayListener onClickAway={() => setUserMenuOpen(false)}>
             <MenuList autoFocusItem={userMenuOpen} id="menu-list-grow">
-              <MenuItem component={Link} to="/account" className={classes.menuItem}>
+              <MenuItem
+                component={Link}
+                to="/account"
+                className={path === "/account" ? classes.menuItemActive : classes.menuItem}
+              >
                 Account
               </MenuItem>
-              <MenuItem component={Link} to="/profile" className={classes.menuItem}>
+              <MenuItem
+                component={Link}
+                to="/profile"
+                className={path === "/profile" ? classes.menuItemActive : classes.menuItem}
+              >
                 Profile
               </MenuItem>
               <MenuItem component={Link} to="/signout" className={classes.menuItem}>

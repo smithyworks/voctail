@@ -16,7 +16,7 @@ function Breadcrumbs() {
   const [breadcrumbs, setBreadcrumbs] = useState(null);
   useEffect(() => {
     if (path === "/documents/:document_id") {
-      api.breadCrumbs({ document: params.document_id }).then((res) => {
+      api.breadcrumbs({ document: params.document_id }).then((res) => {
         setBreadcrumbs(
           <Typography className={classes.breadcrumbs}>
             <Link to="/dashboard">Dashboard</Link> {">"} {res.data.document}
@@ -24,7 +24,7 @@ function Breadcrumbs() {
         );
       });
     } else if (path === "/quizzes/:id") {
-      api.breadCrumbs({ quiz: params.id }).then((res) => {
+      api.breadcrumbs({ quiz: params.id }).then((res) => {
         setBreadcrumbs(
           <Typography className={classes.breadcrumbs}>
             <Link to="/quizzes">Quizzes</Link> {">"} {res.data.quiz}

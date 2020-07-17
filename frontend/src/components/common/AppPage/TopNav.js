@@ -22,10 +22,10 @@ const useStyles = makeStyles({
   },
 });
 
-function TopNav({ location, loggedIn, isAdmin, masquerading, premium }) {
+function TopNav({ loggedIn, isAdmin, masquerading, premium }) {
   const classes = useStyles();
 
-  const navButtons = loggedIn ? <NavButtons location={location} isAdmin={isAdmin} /> : null;
+  const navButtons = loggedIn ? <NavButtons isAdmin={isAdmin} /> : null;
   const rightContent = loggedIn ? <UserMenuButton masquerading={masquerading} premium={premium} /> : <SigninButtons />;
 
   return (
