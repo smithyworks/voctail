@@ -88,7 +88,7 @@ function ProfilePage() {
         <ProfileSection title="Personal Information" disablePadding>
           <Grid container>
             <Grid item className={classes.pic}>
-              <ProfilePicture dimension={isSelf ? "250px" : "150px"} />
+              <ProfilePicture user={user} dimension={isSelf ? "250px" : "150px"} editable={!!isSelf} />
             </Grid>
             <Grid item xs className={classes.info}>
               <div className={classes.infoInnerContainer}>

@@ -1,9 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const multer = require("multer");
 
 const { log } = require("./lib/log.js");
-
 const { db, auth, users, admin, quizzes, documents, classrooms, vocabulary } = require("./lib");
 
 db.checkConnection((connected) => {
@@ -15,10 +15,13 @@ db.checkConnection((connected) => {
   }
 });
 
+const upload = multer({ dest: "uploads/" });
+
 const server = express();
 server.use(express.json());
 // Serve the static files from the React app
 server.use(express.static(path.join(__dirname + "/frontend_build")));
+server.use("/uploads", express.static("uploads"));
 
 server.get("/api/test", (req, res) => res.status(200).send("Server is online!"));
 
@@ -34,6 +37,13 @@ server.post("/api/set-name", auth.tokenMiddleWare, users.setNameHandler);
 server.post("/api/set-email", auth.tokenMiddleWare, users.setEmailHandler);
 server.post("/api/set-password", auth.tokenMiddleWare, users.setPasswordHandler);
 server.post("/api/user-vocabulary", auth.tokenMiddleWare, users.userVocabularyHandler);
+server.post(
+  "/api/upload-profile-picture",
+  auth.tokenMiddleWare,
+  upload.single("profile_pic"),
+  users.uploadProfilePictureHandler
+);
+server.delete("/api/delete-profile-picture", auth.tokenMiddleWare, users.deleteProfilePictureHandler);
 
 server.post("/api/document", auth.tokenMiddleWare, documents.documentHandler);
 server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
