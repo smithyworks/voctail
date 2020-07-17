@@ -14,6 +14,8 @@ import SectionSection from "./SectionSection";
 import ChapterSection from "./ChapterSection";
 import PlaceholderTile from "./PlaceholderTile";
 
+import UserTile from "./UserTile";
+
 export {
   AppPage,
   toasts,
@@ -31,4 +33,5 @@ export {
   ChapterSection,
   PlaceholderTile,
   CheckoutPremiumDialog,
+  UserTile,
 };

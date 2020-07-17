@@ -7,7 +7,7 @@ import iconUser from "../../assets/icon_user.png";
 import iconDoc from "../../assets/books.jpg";
 
 import Header from "../common/HeaderSection";
-import { ClassroomSection, SectionSection, ChapterSection, DashboardTile } from "../common";
+import { ClassroomSection, SectionSection, ChapterSection, DashboardTile, UserTile } from "../common";
 import InviteStudentsDialog from "../common/Dialogs/InviteStudentsDialog";
 import UserCard from "../common/UserCard";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
@@ -175,21 +175,16 @@ function ClassroomViewPage() {
           }}
         />
 
-        <Grid container>
-          {classroomOwnerFromDatabase.concat(classroomTeachersFromDatabase).map((member) => {
-            return (
-              <Grid item style={{ padding: "10px" }}>
-                <UserCard
-                  name={member.name}
-                  email={member.email}
-                  avatar={iconUser}
-                  tip={timeParser(member.last_seen)}
-                  connected={isConnected(member.last_seen)}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+        {classroomOwnerFromDatabase.concat(classroomTeachersFromDatabase).map((member, i) => {
+          return (
+            <UserTile
+              key={i}
+              user={member}
+              tooltipTitle={timeParser(member.last_seen)}
+              connected={isConnected(member.last_seen)}
+            />
+          );
+        })}
       </ClassroomSection>
 
       <ClassroomSection
@@ -208,21 +203,16 @@ function ClassroomViewPage() {
           }}
         />
 
-        <Grid container>
-          {classroomStudentsFromDatabase.map((member) => {
-            return (
-              <Grid item style={{ padding: "10px" }}>
-                <UserCard
-                  name={member.name}
-                  email={member.email}
-                  avatar={iconUser}
-                  tip={timeParser(member.last_seen)}
-                  connected={isConnected(member.last_seen)}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+        {classroomStudentsFromDatabase.map((member, i) => {
+          return (
+            <UserTile
+              key={i}
+              user={member}
+              tooltipTitle={timeParser(member.last_seen)}
+              connected={isConnected(member.last_seen)}
+            />
+          );
+        })}
       </ClassroomSection>
 
       <SectionSection title="Sections" Button={<VTIconFlexButton toolTipLabel={"Add section"} />}>
