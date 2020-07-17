@@ -27,6 +27,7 @@ function Dashboard() {
   const [addOpen, setAddOpen] = useState(false);
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const documents_fit = [];
 
   const [premiumOpen, setPremiumOpen] = useState(false);
 
@@ -125,8 +126,13 @@ function Dashboard() {
       .catch((err) => console.log(err));
   }, [countToRefresh]);
 
-  const documents_fit = [];
   useEffect(() => {
+    calcAllDocumentsFit();
+    console.log("cald all documents fit in use effect mit set data", documents_fit);
+    console.log("use effect length", documents_fit.lastIndexOf());
+  });
+
+  function calcAllDocumentsFit() {
     documentDataFromDatabase.map((doc) => {
       api
         .calcDocumentFit(doc.document_id)
@@ -135,9 +141,9 @@ function Dashboard() {
         })
         .catch((err) => console.log(err));
     });
-  });
+  }
 
-  /*function findMyIndex(arr, id) {
+  function findMyIndex(arr, id) {
     console.log("arr", arr);
     console.log("arr.length", arr.length);
 
@@ -148,14 +154,15 @@ function Dashboard() {
     }
     console.log("error doc was not found (index)");
     return -1;
-  } */
+  }
 
   function getFit(documentId) {
     console.log("doc id", documentId);
     console.log("documents_fit", documents_fit);
 
-    let index; // = findMyIndex(documents_fit, documentId);
-    index = documents_fit.findIndex((x) => x.document === documentId);
+    console.log("documents fit length", documents_fit.length);
+    let index = findMyIndex(documents_fit, documentId);
+    //index = documents_fit.findIndex((x) => x.document === documentId);
     console.log("index", index);
     if (index < 0) return false;
     let currentFit = documents_fit[index].fit;
