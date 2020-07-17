@@ -8,7 +8,7 @@ import iconDoc from "../../assets/books.jpg";
 
 import Header from "../common/HeaderSection";
 import { ClassroomSection, SectionSection, ChapterSection, DashboardTile } from "../common";
-import InviteStudentsDialog from "../common/InviteStudentsDialog";
+import InviteStudentsDialog from "../common/Dialogs/InviteStudentsDialog";
 import UserCard from "../common/UserCard";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";

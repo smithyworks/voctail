@@ -131,7 +131,7 @@ function AccountPage() {
               <Grid item className={classes.benefitsContainer}>
                 <Benefit included>Access All Documents</Benefit>
                 <Benefit included>Import Your Own Documents</Benefit>
-                <Benefit included>Generate Unlinited Quizzes</Benefit>
+                <Benefit included>Generate Unlimited Quizzes</Benefit>
                 <Benefit included>See All Your Progress Information</Benefit>
                 <Benefit included>Create Classrooms</Benefit>
                 <Benefit included>24/7 Dedicated Support</Benefit>

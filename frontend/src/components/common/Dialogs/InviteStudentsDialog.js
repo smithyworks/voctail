@@ -11,8 +11,8 @@ import {
   MenuList,
   ClickAwayListener,
 } from "@material-ui/core";
-import { api } from "../../utils";
-import { toasts } from "./AppPage/AppPage";
+import { api } from "../../../utils";
+import { toasts } from "../AppPage/AppPage";
 import { Check } from "@material-ui/icons";
 
 const useStyles = makeStyles({
