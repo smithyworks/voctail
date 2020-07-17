@@ -13,7 +13,7 @@ import VTIconButton from "../common/Buttons/IconButton";
 function Dashboard() {
   const [user, setUser] = useState();
 
-  //const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
+  const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
   const [newspaperArticles, setNewspaperArticles] = useState([]);
   const [shortStories, setShortStories] = useState([]);
   const [fairyTales, setFairyTales] = useState([]);
@@ -123,7 +123,7 @@ function Dashboard() {
       .fetchDocuments()
       .then((res) => {
         if (res) {
-          //setDocumentDataFromDatabase(res.data.documents);    //if needed: fetch all documents to the frontend
+          setDocumentDataFromDatabase(res.data.documents); //if needed: fetch all documents to the frontend
           setNewspaperArticles(res.data.newspaperArticles);
           setFairyTales(res.data.fairyTales);
           setShortStories(res.data.shortStories);
@@ -134,14 +134,65 @@ function Dashboard() {
       .catch((err) => console.log(err));
   }, [countToRefresh]);
 
+  useEffect(() => {
+    saveDocumentFit(documentDataFromDatabase);
+  });
+
+  const documents_fit = [];
+  function saveDocumentFit(documents) {
+    documents.map((doc) => {
+      api
+        .calcDocumentFit(doc.document_id)
+        .then((res) => {
+          documents_fit.push({ document: doc.document_id, fit: res.data.fit });
+        })
+        .catch((err) => console.log(err));
+    });
+  }
+
+  function findMyIndex(arr, id) {
+    console.log("arr", arr);
+    console.log("arr.length", arr.length);
+    for (let n = 0; n < arr.length; n++) {
+      console.log("array", arr[n]);
+      console.log("id", id);
+      if (arr[n].document === id) {
+        return n;
+      }
+    }
+    console.log("error doc was not found (index)");
+    return -1;
+  }
+  function getFit(documentId) {
+    console.log("doc id", documentId);
+    console.log("documents_fit", documents_fit);
+
+    let index; // = findMyIndex(documents_fit, documentId);
+    index = documents_fit.findIndex((x) => x.document === documentId);
+    console.log("index", index);
+    if (index < 0) return false;
+    let currentFit = documents_fit[index].fit;
+    console.log("current fit in doc", documentId);
+    console.log("fit is", currentFit);
+    if (currentFit < 0.1) {
+      console.log("my currentFit is less than 0.1");
+      return true;
+    }
+    return false;
+  }
+
   return (
     <AppPage location="dashboard" id="dashboard-page">
-      <DashboardSection title={"My Documents"} Button={<VTIconButton onClick={handleAddOpen} />}>
+      <DashboardSection
+        title={"My Documents"}
+        Button={user && user.premium ? <VTIconButton onClick={handleAddOpen} /> : <VTIconButton disabled />}
+        expandable
+      >
         {usersDocuments.length !== 0 ? (
           usersDocuments.map((tile, i) => (
             <DashboardTile
               key={i}
-              title={tile.title + getDocumentFit(tile.document_id)}
+              title={tile.title}
               author={tile.author}
               isOwned
               onEdit={() => handleEdit(tile)}
@@ -151,20 +202,39 @@ function Dashboard() {
               category={tile.category}
             />
           ))
-        ) : (
+        ) : user && user.premium ? (
           <PlaceholderTile
             tooltipTitle={"You have no own documents. Add your own document now!"}
             onClick={handleAddOpen}
           />
+        ) : (
+          <PlaceholderTile tooltipTitle={"Adding new documents is only available in Voctail Premium."} />
         )}
       </DashboardSection>
 
-      <DashboardSection title={"Short Stories"}>
+      <DashboardSection title={"Recommendations"}></DashboardSection>
+
+      <DashboardSection title={"Short Stories, Fairy Tales, Newspaper Articles and more for you"} expandable>
+        {documentDataFromDatabase.map((tile, i) => (
+          <DashboardTile
+            key={i}
+            title={tile.title}
+            author={tile.author}
+            fits={getFit(tile.document_id)}
+            onGenerateQuiz={() => createQuiz(tile.document_id)}
+            linkTo={"/documents/" + tile.document_id}
+            category={tile.category}
+          />
+        ))}
+      </DashboardSection>
+
+      <DashboardSection title={"Short Stories"} expandable>
         {shortStories.map((tile, i) => (
           <DashboardTile
             key={i}
-            title={tile.title + getDocumentFit(tile.document_id)}
+            title={tile.title}
             author={tile.author}
+            fits={getFit(tile.document_id)}
             onGenerateQuiz={() => createQuiz(tile.document_id)}
             linkTo={"/documents/" + tile.document_id}
             category={tile.category}

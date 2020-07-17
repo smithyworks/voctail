@@ -283,10 +283,11 @@ async function calcDocumentFit(req, res) {
       })
     );
 
-    //log("word sum mal 0.1", word_sum*0.1);
     let fit;
     if (unknownWords_inDocument === 0) fit = -1;
     else fit = unknownWords_inDocument / word_sum;
+    log("doc", document_id);
+    log("fit", fit);
     res.status(200).json({ fit });
   } catch (err) {
     log(err);

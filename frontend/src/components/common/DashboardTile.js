@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, Tooltip } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
+import LocalBarIcon from "@material-ui/icons/LocalBar";
+import LocalBarOutlinedIcon from "@material-ui/icons/LocalBarOutlined";
 
 //example tile images
 import shortStoriesPreview from "../../assets/books.jpg";
@@ -62,9 +64,12 @@ const useStyles = makeStyles({
     right: "-30px",
     transition: "right 400ms",
   },
+  voctailFitGlass: {
+    color: "white",
+  },
 });
 
-function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo, category }) {
+function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo, category, fits }) {
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
@@ -140,6 +145,8 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
               written by {author}
             </Typography>
           </div>
+
+          <div className={classes.voctailFitGlass}>{fits ? <LocalBarIcon /> : <LocalBarOutlinedIcon />}</div>
 
           <div
             className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
