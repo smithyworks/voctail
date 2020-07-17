@@ -12,7 +12,6 @@ import {
   QuizzesDashboardPage,
   QuizPage,
   ClassroomsPage,
-  ClassroomsCreatePage,
   ClassroomViewPage,
   AccountPage,
   ProfilePage,
@@ -70,8 +69,8 @@ function App() {
           <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
           <ProtectedRoute path="/documents/:document_id" component={DocumentPage} />
-          <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
-          <ProtectedRoute path="/classrooms/view" component={ClassroomViewPage} />
+          <ProtectedRoute path="/classrooms/:classroom_id/documents/:document_id" component={DocumentPage} />
+          <ProtectedRoute path="/classrooms/:classroom_id" component={ClassroomViewPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
           <ProtectedRoute path="/account" component={AccountPage} />
           <ProtectedRoute path="/profile" component={ProfilePage} />

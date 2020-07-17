@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AppPage from "../common/AppPage";
+import { useParams } from "react-router-dom";
 
-import iconUser from "../../assets/icon_user.png";
 import iconDoc from "../../assets/books.jpg";
 
 import Header from "../common/HeaderSection";
 import { ClassroomSection, SectionSection, ChapterSection, DashboardTile, UserTile } from "../common";
 import InviteStudentsDialog from "../common/Dialogs/InviteStudentsDialog";
-import UserCard from "../common/UserCard";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import { api } from "../../utils";
-import { timeParser, urlParser, isConnected } from "../../utils/parsers";
+import { timeParser, isConnected } from "../../utils/parsers";
 import { toasts } from "../common/AppPage/AppPage";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import VTIconFlexButton from "../common/Buttons/IconButton";
@@ -60,8 +59,9 @@ function addStudents(classroomId, studentId, classroomStudentsFromDatabase, setC
 }
 
 function ClassroomViewPage() {
+  const { classroom_id } = useParams();
+
   //const classes = useStyles();
-  const [currentClassroomId, setCurrentClassroomId] = useState(null);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
   const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
   const [classroomOwnerFromDatabase, setClassroomOwnerFromDatabase] = useState([]);
@@ -82,74 +82,58 @@ function ClassroomViewPage() {
   //const [allDocumentsFromDatabase, setAllDocumentsFromDatabase] = useState([]);
 
   useEffect(() => {
-    setCurrentClassroomId(urlParser());
-  }, []);
-
-  useEffect(() => {
-    api
-      .getClassroom(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomDataFromDatabase(res.data.rows[0]);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getStudents(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomStudentsFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getOwner(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomOwnerFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getTeachers(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomTeachersFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getDocuments(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomDocumentsFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getSections(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomSectionsFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    // There is no reason for you be making so many calls to the server
+    if (classroom_id) {
+      api
+        .getClassroom(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomDataFromDatabase(res.data.rows[0]);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getStudents(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomStudentsFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getOwner(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomOwnerFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getTeachers(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomTeachersFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getDocuments(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomDocumentsFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getSections(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomSectionsFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [classroom_id]);
 
   return (
     <AppPage location="classrooms" id="classrooms-page">
@@ -168,7 +152,7 @@ function ClassroomViewPage() {
           onClose={() => setInviteDialogOpen(false)}
           onInvite={(ids) => {
             ids.map((id) => {
-              addStudents(currentClassroomId, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
+              addStudents(classroom_id, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
             });
             toasts.toastSuccess("Students added to the database!");
             setInviteDialogOpen(false);
@@ -196,7 +180,7 @@ function ClassroomViewPage() {
           onClose={() => setInviteDialogOpen(false)}
           onInvite={(ids) => {
             ids.map((id) => {
-              addStudents(currentClassroomId, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
+              addStudents(classroom_id, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
             });
             toasts.toastSuccess("Students added to the database!");
             setInviteDialogOpen(false);
@@ -232,14 +216,15 @@ function ClassroomViewPage() {
                 <MenuItem>Delete</MenuItem>
               </Menu>
               <Grid container>
-                {classroomDocumentsFromDatabase.map((document) => {
+                {classroomDocumentsFromDatabase.map((document, i) => {
                   if (document.section === section.title) {
                     return (
                       <DashboardTile
+                        key={i}
                         thumbnail={iconDoc}
                         title={document.title}
                         author={document.author}
-                        onOpen={() => window.open("/documents/" + document.document_id, "_self")}
+                        linkTo={`/classrooms/${classroom_id}/documents/${document.document_id}`}
                       />
                     );
                   }

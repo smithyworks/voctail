@@ -503,7 +503,7 @@ function Classrooms() {
               title={tile.title}
               teacher={tile.classroom_owner}
               topic={tile.topic}
-              linkTo={"/classrooms/view?classroom=" + tile.classroom_id}
+              linkTo={"/classrooms/" + tile.classroom_id}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {

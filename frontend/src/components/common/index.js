@@ -13,7 +13,7 @@ import ClassroomSection from "./ClassroomSection";
 import SectionSection from "./SectionSection";
 import ChapterSection from "./ChapterSection";
 import PlaceholderTile from "./PlaceholderTile";
-
+import Breadcrumbs from "./Breadcrumbs";
 import UserTile from "./UserTile";
 
 export {
@@ -33,5 +33,6 @@ export {
   ChapterSection,
   PlaceholderTile,
   CheckoutPremiumDialog,
+  Breadcrumbs,
   UserTile,
 };

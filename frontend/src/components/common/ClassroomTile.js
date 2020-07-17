@@ -23,9 +23,10 @@ const useStyles = makeStyles({
   },
   name: {
     color: "white",
-    fontSize: "24px",
+    fontSize: "22px",
     fontWeight: "bolder",
-    paddingBottom: "20%",
+    height: "70px",
+    lineHeight: "1.3em",
   },
   menuIconContainer: {
     display: "inline-block",

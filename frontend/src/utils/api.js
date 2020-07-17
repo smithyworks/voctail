@@ -216,6 +216,10 @@ export function deleteProfilePicture() {
 
 // breadcrumbs
 
+export function breadcrumbs({ document_id, quiz_id, classroom_id }) {
+  return axios.post(`${base}/breadcrumbs`, { document_id, quiz_id, classroom_id });
+}
+
 export function documentTitle(document_id) {
   return axios.get(`${base}/document-title`, { params: { document_id } });
 }

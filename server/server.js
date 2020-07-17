@@ -92,6 +92,37 @@ server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.ad
 server.post("/api/delete-student-to-classroom", auth.tokenMiddleWare, classrooms.deleteStudentToClassroom);
 server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);
 
+server.post("/api/breadcrumbs", auth.tokenMiddleWare, async (req, res) => {
+  try {
+    const { document_id, quiz_id, classroom_id } = req.body;
+
+    let document, quiz, classroom;
+
+    if (document_id) {
+      const {
+        rows: [{ title }],
+      } = await db.query("SELECT title FROM documents WHERE document_id = $1", [document_id]);
+      document = title;
+    }
+    if (quiz_id) {
+      const {
+        rows: [{ title }],
+      } = await db.query("SELECT title FROM quizzes WHERE quiz_id = $1", [quiz_id]);
+      quiz = title;
+    }
+    if (classroom_id) {
+      const {
+        rows: [{ title }],
+      } = await db.query("SELECT title FROM classrooms WHERE classroom_id = $1", [classroom_id]);
+      classroom = title;
+    }
+
+    res.status(200).json({ document, quiz, classroom });
+  } catch (err) {
+    res.sendStatus(500);
+  }
+});
+
 // Handles any requests that don't match the ones above
 server.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
