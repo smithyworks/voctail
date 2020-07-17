@@ -8,7 +8,6 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -21,6 +20,7 @@ import {
 import DescriptionIcon from "@material-ui/icons/Description";
 import { makeStyles } from "@material-ui/core/styles";
 import { parseDocument } from "./parseDocument";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -147,7 +147,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
   return (
     <div>
       <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-new-document">
-        <DialogTitle id="add-new-document">Add document</DialogTitle>
+        <VoctailDialogTitle id="add-new-document">Add document</VoctailDialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -186,6 +186,8 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             onChange={(e) => (descriptionInput.current = e.target.value)}
             fullWidth
           />
+
+          <DialogContentText />
 
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="choose-category">

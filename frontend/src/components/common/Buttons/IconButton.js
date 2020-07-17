@@ -19,18 +19,6 @@ const LightTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-function VTIconButton({ ...props }) {
-  const classes = useStyles();
-
-  return (
-    <LightTooltip title="Add new document" placement="top">
-      <IconButton className={classes.button} variant="contained" {...props}>
-        <AddBoxIcon fontSize="large" />
-      </IconButton>
-    </LightTooltip>
-  );
-}
-
 export function VTIconFlexButton({ toolTipLabel, ...props }) {
   const classes = useStyles();
 
@@ -43,4 +31,4 @@ export function VTIconFlexButton({ toolTipLabel, ...props }) {
   );
 }
 
-export default VTIconButton;
+export default VTIconFlexButton;

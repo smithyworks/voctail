@@ -3,7 +3,7 @@ import { api } from "../../utils";
 import { toasts } from "../common/AppPage";
 import { Button, Dialog, DialogActions, DialogContent, Grid, TextField } from "@material-ui/core";
 import { VTButton } from "../common";
-import VoctailDialogTitle from "../common/VoctailDialogTitle";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
 function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
   const handleClose = () => {

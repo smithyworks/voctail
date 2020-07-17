@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../../utils";
 import { Button, Dialog, DialogActions } from "@material-ui/core";
 import MetricView from "./MetricView";
-import VoctailDialogTitle from "../common/VoctailDialogTitle";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
 function Metrics({ onClose, open, quiz }) {
   const handleClose = () => {

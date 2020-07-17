@@ -2,7 +2,7 @@ import React from "react";
 import { Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { VTButton } from ".";
+import { VTButton } from "../index";
 
 const useStyles = makeStyles({
   title: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   buttons: { margin: "1%" },
 });
 
-function CreationDialog({ open, title, description, variant, disabled, onConfirm, onClose, children }) {
+function CreationDialog({ open, title, description, disabled, onConfirm, onClose, children }) {
   const classes = useStyles();
 
   return (

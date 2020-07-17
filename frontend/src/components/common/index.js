@@ -1,8 +1,9 @@
 import AppPage, { toasts } from "./AppPage";
 import VTButton from "./Buttons/VTButton";
-import ConfirmDialog from "./ConfirmDialog";
-import CreationDialog from "./CreationDialog";
-import OkDialog from "./OkDialog";
+import ConfirmDialog from "./Dialogs/ConfirmDialog";
+import CreationDialog from "./Dialogs/CreationDialog";
+import OkDialog from "./Dialogs/OkDialog";
+import CheckoutPremiumDialog from "./Dialogs/CheckoutPremiumDialog";
 import DashboardSection from "./DashboardSection";
 import DashboardTile from "./DashboardTile";
 import QuizSection from "./Quiz/QuizSection";
@@ -29,4 +30,5 @@ export {
   SectionSection,
   ChapterSection,
   PlaceholderTile,
+  CheckoutPremiumDialog,
 };

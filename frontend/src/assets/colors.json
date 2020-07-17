@@ -1,6 +1,8 @@
 {
   "topNav": {
-    "bar": { "backgroundColor": "midnightblue" },
+    "bar": {
+      "backgroundColor": "lightseagreen"
+    },
 
     "button": {
       "backgroundColor": "rgba(0,0,0,0)",
@@ -11,17 +13,17 @@
       "color": "white"
     },
     "activeButton": {
-      "backgroundColor": "lightsteelblue",
-      "color": "black"
+      "backgroundColor": "#3a9893",
+      "color": "white"
     },
     "activeButtonHover": {
-      "backGroundColor": "lightsteelblue",
-      "color": "black"
+      "backGroundColor": "#3a9893",
+      "color": "white"
     }
   },
   "userMenu": {
     "paper": {
-      "background": "darkblue"
+      "background": "#3a9893"
     },
     "button": {
       "backgroundColor": "rgba(0,0,0,0)",
@@ -34,57 +36,57 @@
   },
   "button": {
     "neutral": {
-      "backgroundColor": "darkblue",
+      "backgroundColor": "#3a9893",
       "color": "white"
     },
     "neutralHover": {
-      "backgroundColor": "darkblue",
+      "backgroundColor": "#3a9893",
       "opacity": "0.7",
       "color": "white"
     },
     "accept": {
-      "backgroundColor": "green",
+      "backgroundColor": "#4fcc53",
       "color": "white"
     },
     "acceptHover": {
-      "backgroundColor": "green",
+      "backgroundColor": "#4fcc53",
       "opacity": "0.7",
       "color": "white"
     },
     "danger": {
-      "backgroundColor": "red",
+      "backgroundColor": "#d43131",
       "color": "white"
     },
     "dangerHover": {
-      "backgroundColor": "red",
+      "backgroundColor": "#cf332d",
       "opacity": "0.7",
       "color": "white"
     },
     "secondary": {
-      "color": "darkblue",
-      "borderColor": "darkblue"
+      "color": "#3a9893",
+      "borderColor": "#3a9893"
     },
     "secondaryHover": {
       "color": "white",
-      "backgroundColor": "darkblue",
-      "borderColor": "darkblue"
+      "backgroundColor": "#3a9893",
+      "borderColor": "#3a9893"
     }
   },
   "statusTile": {
     "color": [
-      "#696969",
-      "#bada55",
-      "#ff0000",
-      "#420420",
+      "#f58f8b",
+      "#e89522",
+      "#c7347b",
+      "#7b1744",
       "#133337",
-      "#003366",
-      "#ffa500",
-      "#ffd700",
-      "#0000ff",
-      "#faebd7",
+      "#20b2aa",
+      "#008080",
+      "#4fcc53",
+      "#848484",
+      "#f29377",
       "#333333",
-      "#0e2f44",
-      "#b6fcd5",
+      "#f0cb52",
+      "#98897e",
       "#cbbeb5"
     ]
   },
@@ -101,18 +103,18 @@
     "accept": {
       "color": "#000",
       "backgroundColor": "#FFF",
-      "borderColor": "#388e3c",
+      "borderColor": "#4fcc53",
       "&:hover": {
-        "borderColor": "#388e3c",
+        "borderColor": "#4fcc53",
         "opacity": 0.7
       }
     },
     "reject": {
       "color": "#000",
-      "backgroundColor": "#F00",
+      "backgroundColor": "#d43131",
       "borderColor": "#000",
       "&:hover": {
-        "backgroundColor": "#F00",
+        "backgroundColor": "#d43131",
         "opacity": 0.7
       }
     },
@@ -128,7 +130,42 @@
   },
   "documentViewer": {
     "unkownHighlight": {
-      "backgroundColor": "rgba(255,0,0,0.2)"
+      "backgroundColor": "#f58f8b"
+    }
+  },
+  "dialog": {
+    "backgroundColor": "lightseagreen",
+    "color": "white"
+  },
+  "adminpage": {
+    "masqueradeUserprofile": {
+      "color": "#3a9893"
+    },
+    "warning": {
+      "color": "#d43131"
+    }
+  },
+  "accountPage": {
+    "check": {
+      "color": "#4fcc53"
+    },
+    "cross": {
+      "color": "#d43131"
+    },
+    "includedText": {
+      "color": "#4fcc53"
+    },
+    "notIncludedText": {
+      "color": "#d43131"
+    }
+  },
+  "mainAccountPage": {
+    "title": {
+      "backgroundColor": "#4fcc53",
+      "borderBotto": "1px solid #4fcc53"
+    },
+    "offer": {
+      "border": "1px solid #4fcc53"
     }
   }
 }
