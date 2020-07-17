@@ -14,10 +14,6 @@ function Dashboard() {
   const [user, setUser] = useState();
 
   const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
-  const [newspaperArticles, setNewspaperArticles] = useState([]);
-  const [shortStories, setShortStories] = useState([]);
-  const [fairyTales, setFairyTales] = useState([]);
-  const [otherDocuments, setOtherDocuments] = useState([]);
   const [usersDocuments, setUsersDocuments] = useState([]);
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -101,17 +97,6 @@ function Dashboard() {
       }) //todo check it out
       .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
   }
-  const [docFit, setDocFit] = useState(5);
-
-  function getDocumentFit(documentId) {
-    // todo this makes no sense! better push it to [] of usestate
-    console.log("document id", documentId);
-    api.calcDocumentFit(documentId).then((res) => {
-      setDocFit(res.data.fit);
-      console.log("res.data", res.data.fit);
-    });
-    return docFit;
-  }
 
   //get current user
   useEffect(() => {
@@ -130,23 +115,15 @@ function Dashboard() {
       .then((res) => {
         if (res) {
           setDocumentDataFromDatabase(res.data.documents); //if needed: fetch all documents to the frontend
-          setNewspaperArticles(res.data.newspaperArticles);
-          setFairyTales(res.data.fairyTales);
-          setShortStories(res.data.shortStories);
-          setOtherDocuments(res.data.others);
           setUsersDocuments(res.data.usersDocuments);
         }
       })
       .catch((err) => console.log(err));
   }, [countToRefresh]);
 
-  useEffect(() => {
-    saveDocumentFit(documentDataFromDatabase);
-  });
-
   const documents_fit = [];
-  function saveDocumentFit(documents) {
-    documents.map((doc) => {
+  useEffect(() => {
+    documentDataFromDatabase.map((doc) => {
       api
         .calcDocumentFit(doc.document_id)
         .then((res) => {
@@ -154,21 +131,20 @@ function Dashboard() {
         })
         .catch((err) => console.log(err));
     });
-  }
+  });
 
-  function findMyIndex(arr, id) {
+  /*function findMyIndex(arr, id) {
     console.log("arr", arr);
     console.log("arr.length", arr.length);
     for (let n = 0; n < arr.length; n++) {
-      console.log("array", arr[n]);
-      console.log("id", id);
       if (arr[n].document === id) {
         return n;
       }
     }
     console.log("error doc was not found (index)");
     return -1;
-  }
+  } */
+
   function getFit(documentId) {
     console.log("doc id", documentId);
     console.log("documents_fit", documents_fit);
@@ -252,59 +228,6 @@ function Dashboard() {
                   category={tile.category}
                 />
               ))}
-      </DashboardSection>
-
-      <DashboardSection title={"Short Stories"} expandable>
-        {shortStories.map((tile, i) => (
-          <DashboardTile
-            key={i}
-            title={tile.title}
-            author={tile.author}
-            fits={getFit(tile.document_id)}
-            onGenerateQuiz={() => createQuiz(tile.document_id)}
-            linkTo={"/documents/" + tile.document_id}
-            category={tile.category}
-          />
-        ))}
-      </DashboardSection>
-
-      <DashboardSection title={"Fairy Tales"}>
-        {fairyTales.map((tile, i) => (
-          <DashboardTile
-            key={i}
-            title={tile.title}
-            author={tile.author}
-            onGenerateQuiz={() => createQuiz(tile.document_id)}
-            linkTo={"/documents/" + tile.document_id}
-            category={tile.category}
-          />
-        ))}
-      </DashboardSection>
-
-      <DashboardSection title={"Newspaper Articles"}>
-        {newspaperArticles.map((tile, i) => (
-          <DashboardTile
-            key={i}
-            title={tile.title}
-            author={tile.author}
-            onGenerateQuiz={() => createQuiz(tile.document_id)}
-            linkTo={"/documents/" + tile.document_id}
-            category={tile.category}
-          />
-        ))}
-      </DashboardSection>
-
-      <DashboardSection title={"Other documents"}>
-        {otherDocuments.map((tile, i) => (
-          <DashboardTile
-            key={i}
-            title={tile.title}
-            author={tile.author}
-            onGenerateQuiz={() => createQuiz(tile.document_id)}
-            linkTo={"/documents/" + tile.document_id}
-            category={tile.category}
-          />
-        ))}
       </DashboardSection>
 
       <UploadDocument
