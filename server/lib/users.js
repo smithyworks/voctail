@@ -1,6 +1,7 @@
 const { log } = require("./log.js");
 const { query } = require("./db.js");
 const bcrypt = require("bcrypt");
+const fileUpload = require("express-fileupload");
 
 async function userHandler(req, res) {
   try {
@@ -12,7 +13,9 @@ async function userHandler(req, res) {
 
     const {
       rows: [userRecord],
-    } = await query("SELECT user_id, name, email, admin, premium FROM users WHERE user_id = $1", [uid]);
+    } = await query("SELECT user_id, name, email, admin, premium, profile_pic_url FROM users WHERE user_id = $1", [
+      uid,
+    ]);
     res.status(200).json({ ...userRecord, masquerading: !!masquerading });
   } catch (err) {
     log(err);
@@ -108,6 +111,19 @@ async function userVocabularyHandler(req, res) {
   }
 }
 
+async function uploadProfilePictureHandler(req, res) {
+  try {
+    const { user_id } = req.authData.user;
+
+    await query("UPDATE users SET profile_pic_url = $1 WHERE user_id = $2", [req.file.path, user_id]);
+
+    res.sendStatus(201);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 module.exports = {
   userHandler,
   allUsersHandler,
@@ -116,4 +132,5 @@ module.exports = {
   setEmailHandler,
   setPasswordHandler,
   userVocabularyHandler,
+  uploadProfilePictureHandler,
 };

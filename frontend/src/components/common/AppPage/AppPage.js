@@ -63,7 +63,7 @@ function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxW
       api.documentTitle(params.document_id).then((res) => {
         setBreadcrumbs(
           <Typography className={classes.breadcrumbs}>
-            <Link to="/dashboard">Dashboard</Link> > {res.data}
+            <Link to="/dashboard">Dashboard</Link> {">"} {res.data}
           </Typography>
         );
       });
@@ -71,7 +71,7 @@ function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxW
       api.quizTitle(params.id).then((res) => {
         setBreadcrumbs(
           <Typography className={classes.breadcrumbs}>
-            <Link to="/quizzes">Quizzes</Link> > {res.data}
+            <Link to="/quizzes">Quizzes</Link> {">"} {res.data}
           </Typography>
         );
       });
