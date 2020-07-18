@@ -62,6 +62,15 @@
       "opacity": "0.7",
       "color": "white"
     },
+    "warning": {
+      "backgroundColor": "#FFA500",
+      "color": "white"
+    },
+    "warningHover": {
+      "backgroundColor": "#FFA500",
+      "opacity": "0.7",
+      "color": "white"
+    },
     "secondary": {
       "color": "#3a9893",
       "borderColor": "#3a9893"
