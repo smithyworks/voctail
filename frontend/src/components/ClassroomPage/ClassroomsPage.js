@@ -306,7 +306,8 @@ function Classrooms() {
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {
-                deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                console.log("hllo");
+                //deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
               }}
               onRename={(newTitle) => {
                 renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);

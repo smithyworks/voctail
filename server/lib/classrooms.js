@@ -133,8 +133,10 @@ async function documentsHandler(req, res) {
   try {
     if (req.query.document_id != 0) {
       console.log(req.query.document_id);
-      const { rows } = await query(
-        "SELECT documents.document_id, title, author, classroom_documents.section " +
+      const {
+        rows,
+      } = await query(
+        "SELECT documents.document_id, title, author, category, classroom_documents.section " +
           "FROM documents " +
           "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
           "WHERE classroom_id = $1 AND classroom_documents.document_id = $2 ORDER BY classroom_documents.section ASC",
@@ -142,8 +144,10 @@ async function documentsHandler(req, res) {
       );
       res.status(200).json({ rows });
     } else {
-      const { rows } = await query(
-        "SELECT documents.document_id, title, author, classroom_documents.section " +
+      const {
+        rows,
+      } = await query(
+        "SELECT documents.document_id, title, author, category, classroom_documents.section " +
           "FROM documents " +
           "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
           "WHERE classroom_id = $1 ORDER BY classroom_documents.section ASC",
@@ -264,6 +268,7 @@ async function deleteStudentFromClassroom(req, res) {
       classroom_id,
       member_id,
     ]);
+    res.status(200).send("Student correctly deleted.");
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -274,12 +279,20 @@ async function addDocumentToClassroom(req, res) {
   try {
     const { classroom_id, document_id, section } = req.body;
     const {
-      rows,
+      input,
     } = await query("INSERT INTO classroom_documents (classroom_id, document_id, section) VALUES ($1, $2, $3)", [
       classroom_id,
       document_id,
       section,
     ]);
+    const { rows } = await query(
+      "SELECT documents.document_id, title, author, category, classroom_documents.section " +
+        "FROM documents " +
+        "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
+        "WHERE classroom_id = $1 AND classroom_documents.document_id = $2 ORDER BY classroom_documents.section ASC",
+      [classroom_id, document_id]
+    );
+    res.status(201).json({ rows });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");

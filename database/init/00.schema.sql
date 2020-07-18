@@ -3,6 +3,7 @@ CREATE TABLE users (
   name            text          NOT NULL,
   email           text          NOT NULL UNIQUE,
   password        text          NOT NULL,
+  profile_pic_url text,
   premium         boolean       NOT NULL DEFAULT false,
   refresh_token   text,
   admin           boolean       NOT NULL DEFAULT false,

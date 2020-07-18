@@ -93,9 +93,9 @@ server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClas
 server.post("/api/delete-classroom", auth.tokenMiddleWare, classrooms.deleteClassroom);
 server.post("/api/rename-classroom", auth.tokenMiddleWare, classrooms.renameClassroom);
 server.post("/api/add-teacher-to-classroom", auth.tokenMiddleWare, classrooms.addTeacherToClassroom);
-server.post("/api/delete-teacher-to-classroom", auth.tokenMiddleWare, classrooms.deleteTeacherFromClassroom);
+server.post("/api/delete-teacher-from-classroom", auth.tokenMiddleWare, classrooms.deleteTeacherFromClassroom);
 server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.addStudentToClassroom);
-server.post("/api/delete-student-to-classroom", auth.tokenMiddleWare, classrooms.deleteStudentFromClassroom);
+server.post("/api/delete-student-from-classroom", auth.tokenMiddleWare, classrooms.deleteStudentFromClassroom);
 server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);
 
 server.post("/api/breadcrumbs", auth.tokenMiddleWare, async (req, res) => {
