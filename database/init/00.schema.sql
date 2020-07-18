@@ -50,6 +50,7 @@ CREATE TABLE translations (
   contributor_id  integer       REFERENCES users
                                 ON DELETE SET NULL,
   approved        boolean       NOT NULL DEFAULT true,
+  pending         boolean       NOT NULL DEFAULT false,
   translation     text          NOT NULL,
   language        text          NOT NULL,
 

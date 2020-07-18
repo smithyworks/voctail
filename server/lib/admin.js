@@ -96,7 +96,7 @@ async function endMasqueradeHandler(req, res) {
 async function contributedTranslationsHandler(req, res) {
   try {
     const { rows: translations } = await query(
-      "SELECT translations.*, words.word FROM translations LEFT JOIN words ON translations.word_id = words.word_id WHERE translations.approved = false"
+      "SELECT translations.*, words.word FROM translations LEFT JOIN words ON translations.word_id = words.word_id WHERE translations.contributor_id IS NOT NULL"
     );
     res.status(200).json(translations);
   } catch (err) {
@@ -110,6 +110,8 @@ async function updateTranslationHandler(req, res) {
     const { translation_id, approved } = req.body;
 
     await query("UPDATE translations SET approved = $1 WHERE translation_id = $2", [approved, translation_id]);
+
+    res.sendStatus(200);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");

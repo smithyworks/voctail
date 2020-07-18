@@ -20,7 +20,7 @@ async function userHandler(req, res) {
     if (admin) {
       const {
         rows: [{ count }],
-      } = await query("SELECT COUNT(*) FROM translations WHERE approved = false");
+      } = await query("SELECT COUNT(*) FROM translations WHERE pending = true");
       userRecord.pendingTranslations = count;
     }
 
