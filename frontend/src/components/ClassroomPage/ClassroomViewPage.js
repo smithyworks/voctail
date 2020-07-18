@@ -2,104 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import AppPage from "../common/AppPage";
 import { useParams } from "react-router-dom";
-import iconDoc from "../../assets/books.jpg";
 import Header from "../common/HeaderSection";
 import { ClassroomSection, SectionSection, ChapterSection, DashboardTile, UserTile } from "../common";
 import InviteMembersDialog from "../common/InviteMembersDialog";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import { api } from "../../utils";
 import { timeParser, isConnected } from "../../utils/parsers";
-import { toasts } from "../common/AppPage/AppPage";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import VTIconFlexButton from "../common/Buttons/IconButton";
-
-function indexOfStudent(studentId, students) {
-  let output = 0;
-  students.forEach((student, index) => {
-    if (student.user_id === studentId) {
-      output = index;
-    }
-  });
-  return output;
-}
-
-function addTeachers(classroomId, teacherId, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase) {
-  const addTeachersToThisClassroom = () => {
-    api.addTeacherToClassroom(classroomId, teacherId).catch((err) => console.log(err));
-  };
-  addTeachersToThisClassroom();
-  api
-    .user(teacherId)
-    .then((res) => {
-      if (res) {
-        setClassroomTeachersFromDatabase(classroomTeachersFromDatabase.concat([res.data]));
-        toasts.toastSuccess("Teacher added to the classroom.");
-      }
-    })
-    .catch((err) => console.log(err));
-}
-
-function addStudents(classroomId, studentId, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase) {
-  const addStudentsToThisClassroom = () => {
-    api.addStudentToClassroom(classroomId, studentId).catch((err) => console.log(err));
-  };
-  addStudentsToThisClassroom();
-  api
-    .user(studentId)
-    .then((res) => {
-      if (res) {
-        setClassroomStudentsFromDatabase(classroomStudentsFromDatabase.concat([res.data]));
-        toasts.toastSuccess("Student added to the classroom.");
-      }
-    })
-    .catch((err) => console.log(err));
-}
-
-function deleteStudent(classroomId, studentId, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase) {
-  const indexOfDeletedStudent = indexOfStudent(studentId, classroomStudentsFromDatabase);
-  api
-    .deleteStudentFromClassroom(classroomId, studentId)
-    .then((res) => {
-      setClassroomStudentsFromDatabase(
-        classroomStudentsFromDatabase
-          .slice(0, indexOfDeletedStudent)
-          .concat(classroomStudentsFromDatabase.slice(indexOfDeletedStudent + 1))
-      );
-    })
-    .catch((err) => console.log(err));
-  toasts.toastSuccess("Student deleted!");
-}
-
-function addDocuments(
-  classroomId,
-  documentId,
-  section,
-  classroomDocumentsFromDatabase,
-  setClassroomDocumentsFromDatabase
-) {
-  const addDocumentsToThisClassroom = () => {
-    api
-      .addDocumentToClassroom(classroomId, documentId, section)
-      .then((res) => {
-        if (res) {
-          setClassroomDocumentsFromDatabase(classroomDocumentsFromDatabase.concat([res.data.rows[0]]));
-          toasts.toastSuccess("Document added to the classroom.");
-        }
-      })
-      .catch((err) => console.log(err));
-  };
-  addDocumentsToThisClassroom();
-}
-
-function getSections(classroomDocumentsFromDatabase) {
-  let sections = [];
-  classroomDocumentsFromDatabase.forEach((document) => {
-    if (sections.indexOf(document.section) === -1) {
-      sections.push(document.section);
-    }
-  });
-  return sections;
-}
+import { addMembers, deleteMember, addDocuments, getSections } from "./ClassroomViewUtils";
 
 function ClassroomViewPage() {
   const { classroom_id } = useParams();
@@ -195,9 +106,7 @@ function ClassroomViewPage() {
           open={inviteTeachersDialogOpen}
           onClose={() => setInviteTeachersDialogOpen(false)}
           onInvite={(ids) => {
-            ids.map((id) => {
-              addTeachers(classroom_id, id, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase);
-            });
+            addMembers(classroom_id, ids, true, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase);
             setInviteTeachersDialogOpen(false);
           }}
         />
@@ -209,6 +118,7 @@ function ClassroomViewPage() {
               user={member}
               tooltipTitle={timeParser(member.last_seen)}
               connected={isConnected(member.last_seen)}
+              isMemberTeacher={true}
             />
           );
         })}
@@ -229,9 +139,7 @@ function ClassroomViewPage() {
           open={inviteStudentsDialogOpen}
           onClose={() => setInviteStudentsDialogOpen(false)}
           onInvite={(ids) => {
-            ids.map((id) => {
-              addStudents(classroom_id, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
-            });
+            addMembers(classroom_id, ids, false, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
             setInviteStudentsDialogOpen(false);
           }}
         />
@@ -244,7 +152,7 @@ function ClassroomViewPage() {
               tooltipTitle={timeParser(member.last_seen)}
               connected={isConnected(member.last_seen)}
               onDelete={() => {
-                deleteStudent(
+                deleteMember(
                   classroom_id,
                   member.user_id,
                   classroomStudentsFromDatabase,
@@ -256,19 +164,7 @@ function ClassroomViewPage() {
         })}
       </ClassroomSection>
 
-      <SectionSection
-        title="Sections"
-        Button={
-          classroomIsTeacher ? (
-            <VTIconFlexButton
-              toolTipLabel={"Add section"}
-              onClick={() => console.log(classroomDocumentsFromDatabase)}
-            />
-          ) : (
-            <span />
-          )
-        }
-      >
+      <SectionSection title="Sections">
         {getSections(classroomDocumentsFromDatabase).map((section, s) => {
           return (
             <ChapterSection

@@ -65,6 +65,9 @@ export function fetchQuizzesByCategory() {
 export function fetchQuizMetrics(quiz_id) {
   return axios.get(`${base}/quiz-metrics`, { params: { quiz_id: quiz_id } });
 }
+export function fetchQuizzesMetrics() {
+  return axios.get(`${base}/quizzes-metrics`);
+}
 export function deleteQuiz(quiz_id) {
   return axios.post(`${base}/delete-quiz`, { quiz_id });
 }
@@ -189,20 +192,12 @@ export function renameClassroom(classroom_id, new_title) {
   return axios.post(`${base}/rename-classroom`, { classroom_id, new_title });
 }
 
-export function addTeacherToClassroom(classroom_id, member_id) {
-  return axios.post(`${base}/add-teacher-to-classroom`, { classroom_id, member_id });
+export function addMembersToClassroom(classroom_id, member_ids, is_teacher) {
+  return axios.post(`${base}/add-members-to-classroom`, { classroom_id, member_ids, is_teacher });
 }
 
-export function deleteTeacherFromClassroom(classroom_id, member_id) {
-  return axios.post(`${base}/delete-teacher-from-classroom`, { classroom_id, member_id });
-}
-
-export function addStudentToClassroom(classroom_id, member_id) {
-  return axios.post(`${base}/add-student-to-classroom`, { classroom_id, member_id });
-}
-
-export function deleteStudentFromClassroom(classroom_id, member_id) {
-  return axios.post(`${base}/delete-student-from-classroom`, { classroom_id, member_id });
+export function deleteMemberFromClassroom(classroom_id, member_id) {
+  return axios.post(`${base}/delete-member-from-classroom`, { classroom_id, member_id });
 }
 
 export function addDocumentToClassroom(classroom_id, document_id, section) {

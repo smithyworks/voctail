@@ -1,5 +1,16 @@
 import React, { useState, useRef } from "react";
-import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, Badge, withStyles, Tooltip } from "@material-ui/core";
+import {
+  Paper,
+  makeStyles,
+  Grid,
+  Typography,
+  Menu,
+  MenuItem,
+  Badge,
+  withStyles,
+  Tooltip,
+  Hidden,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ProfilePicture from "../ProfilePage/ProfilePicture";
@@ -128,7 +139,7 @@ const useStyles = makeStyles({
   },
 });
 
-function UserTile({ user, tooltipTitle, connected, onDelete, linkTo }) {
+function UserTile({ user, tooltipTitle, connected, onDelete, isUserTeacher, isMemberTeacher }) {
   const classes = useStyles();
   const { name, email, user_id } = user;
 
@@ -214,7 +225,7 @@ function UserTile({ user, tooltipTitle, connected, onDelete, linkTo }) {
           </Grid>
           <Grid element>
             <Typography style={{ color: "red", marginLeft: "5px", marginRight: "5px", fontWeight: "bold" }}>
-              {"Student"}
+              {user.name}
             </Typography>
           </Grid>
           <Grid element>
@@ -230,14 +241,17 @@ function UserTile({ user, tooltipTitle, connected, onDelete, linkTo }) {
         <MenuItem component={Link} to={`/users/${user_id}`}>
           View Information
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setConfirmDialogOpen(true);
-            setMenuOpen(false);
-          }}
-        >
-          Delete
-        </MenuItem>
+        <Hidden lgDown={isMemberTeacher}>
+          <MenuItem
+            disabled={isUserTeacher}
+            onClick={() => {
+              setConfirmDialogOpen(true);
+              setMenuOpen(false);
+            }}
+          >
+            Delete
+          </MenuItem>
+        </Hidden>
       </Menu>
     </Grid>
   );

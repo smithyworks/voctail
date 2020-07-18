@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./colorCycler";
 import { api } from "../../../utils";
-import timediff from "timediff";
+import { timeElapsed } from "./QuizzesUtilities";
 
 const useStyles = makeStyles({
   container: {
@@ -111,26 +111,7 @@ function QuizTile({ name, id, isOwned, onDelete, onEdit, onViewStatistic, linkTo
     }
   }
 
-  const lastSeenTimeElapsed = (last) => {
-    let d = "";
-    if (!isNaN(Date.parse(last))) {
-      const { months, days, hours, minutes } = timediff(Date.parse(last), new Date(), "MDHm");
-      if (months > 0 || days > 0 || hours > 0 || minutes > 0) {
-        if (months > 0) {
-          d += `${hours} M`;
-        } else if (days > 0) {
-          d += `${hours} D`;
-        } else if (hours > 0) {
-          d += `${hours} h`;
-        } else if (minutes > 0) {
-          d += `${minutes} min`;
-        }
-      } else d = "just now";
-    } else d = "Untaken";
-
-    return d;
-  };
-  const hoursElapsed = useRef(lastSeenTimeElapsed(lastSeen));
+  const hoursElapsed = useRef(timeElapsed(lastSeen));
 
   return (
     <Grid item xs={12} sm={6} md={3} lg={3} className={classes.container}>

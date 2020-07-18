@@ -18,6 +18,7 @@ import VTIconButton from "./Buttons/IconButton";
 import ClassroomSection from "./ClassroomSection";
 import ClassroomTile from "./ClassroomTile";
 import PlaceholderTile from "./PlaceholderTile";
+import QuizMetricTile from "./Quiz/QuizMetricTile";
 
 function ShowcasePage() {
   const [okDialogOpen, setOkDialogOpen] = useState(false);
@@ -362,6 +363,13 @@ function ShowcasePage() {
           toasts.toastSuccess(JSON.stringify(ids));
           setInviteDialogOpen(false);
         }}
+      />
+
+      <QuizMetricTile
+        id={1}
+        name={"My Quiz"}
+        bestResult={{ date: Date.now(), progress: 30 }}
+        lastResult={{ date: Date.now(), progress: 10 }}
       />
     </AppPage>
   );

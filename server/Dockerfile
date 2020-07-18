@@ -24,6 +24,7 @@ RUN npm install
 # COPY src
 COPY ./lib ./lib
 COPY ./frontend_build ./frontend_build
+COPY ./uploads ./uploads
 COPY ./server.js ./server.js
 
 EXPOSE 80

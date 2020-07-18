@@ -19,9 +19,10 @@ const upload = multer({ dest: "uploads/" });
 
 const server = express();
 server.use(express.json());
-// Serve the static files from the React app
+
+// Serve the static files from uploads and from the React build folder
+server.use("/uploads", express.static(path.join(__dirname + "/uploads")));
 server.use(express.static(path.join(__dirname + "/frontend_build")));
-server.use("/uploads", express.static("uploads"));
 
 server.get("/api/test", (req, res) => res.status(200).send("Server is online!"));
 
@@ -71,6 +72,7 @@ server.get("/api/quiz", auth.tokenMiddleWare, quizzes.quizHandler);
 server.get("/api/quiz-by-document", auth.tokenMiddleWare, quizzes.quizByDocHandler);
 server.get("/api/quiz-category", auth.tokenMiddleWare, quizzes.quizCategoryHandler);
 server.get("/api/quiz-metrics", auth.tokenMiddleWare, quizzes.viewMetricsHandler);
+server.get("/api/quizzes-metrics", auth.tokenMiddleWare, quizzes.quizzesMetricsHandler);
 server.post("/api/delete-quiz", auth.tokenMiddleWare, quizzes.quizDeleteHandler);
 server.post("/api/create-quiz", auth.tokenMiddleWare, quizzes.createQuizHandler);
 server.post("/api/rename-quiz", auth.tokenMiddleWare, quizzes.renameQuizHandler);
@@ -93,10 +95,8 @@ server.get("/api/classrooms-sections", auth.tokenMiddleWare, classrooms.sections
 server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClassroom);
 server.post("/api/delete-classroom", auth.tokenMiddleWare, classrooms.deleteClassroom);
 server.post("/api/rename-classroom", auth.tokenMiddleWare, classrooms.renameClassroom);
-server.post("/api/add-teacher-to-classroom", auth.tokenMiddleWare, classrooms.addTeacherToClassroom);
-server.post("/api/delete-teacher-from-classroom", auth.tokenMiddleWare, classrooms.deleteTeacherFromClassroom);
-server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.addStudentToClassroom);
-server.post("/api/delete-student-from-classroom", auth.tokenMiddleWare, classrooms.deleteStudentFromClassroom);
+server.post("/api/add-members-to-classroom", auth.tokenMiddleWare, classrooms.addMembersToClassroom);
+server.post("/api/delete-member-from-classroom", auth.tokenMiddleWare, classrooms.deleteMemberFromClassroom);
 server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);
 
 server.post("/api/breadcrumbs", auth.tokenMiddleWare, async (req, res) => {
@@ -131,9 +131,9 @@ server.post("/api/breadcrumbs", auth.tokenMiddleWare, async (req, res) => {
 });
 
 // Handles any requests that don't match the ones above
-server.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
-});
+// server.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
+// });
 
 const port = process.env.VOCTAIL_SERVER_PORT || 8080;
 server.listen(port);
