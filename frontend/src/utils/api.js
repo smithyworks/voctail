@@ -97,12 +97,11 @@ export function createCustomQuiz(title, questions) {
 export function fetchDocuments() {
   return axios.get(`${base}/handle-documents`);
 }
-export function addDocument(publisher, title, author, description, category, isPublic, blocks) {
+export function addDocument(publisher, title, author, category, isPublic, blocks) {
   return axios.post(`${base}/add-document`, {
     publisher,
     title,
     author,
-    description,
     category,
     isPublic,
     blocks,
@@ -111,8 +110,8 @@ export function addDocument(publisher, title, author, description, category, isP
 export function deleteDocument(document_id) {
   return axios.post(`${base}/delete-document`, { document_id });
 }
-export function editDocument(document_id, title, author, description, category, isPublic) {
-  return axios.post(`${base}/edit-document`, { document_id, title, author, description, category, isPublic });
+export function editDocument(document_id, title, author, category, isPublic) {
+  return axios.post(`${base}/edit-document`, { document_id, title, author, category, isPublic });
 }
 
 export function viewedDocumentNow(document_id) {
@@ -188,8 +187,16 @@ export function deleteClassroom(classroom_id) {
   return axios.post(`${base}/delete-classroom`, { classroom_id });
 }
 
+export function deleteSection(classroom_id, section) {
+  return axios.post(`${base}/delete-section`, { classroom_id, section });
+}
+
 export function renameClassroom(classroom_id, new_title) {
   return axios.post(`${base}/rename-classroom`, { classroom_id, new_title });
+}
+
+export function renameSection(classroom_id, section, new_title) {
+  return axios.post(`${base}/rename-section`, { classroom_id, section, new_title });
 }
 
 export function addMembersToClassroom(classroom_id, member_ids, is_teacher) {

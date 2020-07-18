@@ -49,7 +49,6 @@ const useStyles = makeStyles(() => ({
 function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
   const titleInput = useRef("");
   const authorInput = useRef("");
-  const descriptionInput = useRef("");
   const [publicDocument, setPublicDocument] = useState(true);
   const [fileName, setFileName] = useState();
 
@@ -111,7 +110,6 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
     setCategory("");
     titleInput.current = "";
     authorInput.current = "";
-    descriptionInput.current = "";
     setFileName();
   }
 
@@ -120,15 +118,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
     //todo
     if (blocks) {
       api
-        .addDocument(
-          publisherId,
-          titleInput.current,
-          authorInput.current,
-          descriptionInput.current,
-          category,
-          publicDocument,
-          blocks
-        )
+        .addDocument(publisherId, titleInput.current, authorInput.current, category, publicDocument, blocks)
         .then(() => {
           handleAddClose();
           refresh();
@@ -175,18 +165,6 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             }}
             fullWidth
           />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="description"
-            label="Description"
-            multiline
-            rows={3}
-            type="description"
-            onChange={(e) => (descriptionInput.current = e.target.value)}
-            fullWidth
-          />
-
           <DialogContentText />
 
           <FormControl className={classes.formControl}>

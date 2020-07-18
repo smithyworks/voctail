@@ -171,6 +171,8 @@ function UserTile({ user, tooltipTitle, connected, onDelete, isUserTeacher, isMe
           elevation={hovered ? 5 : 2}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
+          component={Link}
+          to={`/users/${user_id}`}
         >
           <StyledBadgeConnected
             invisible={!connected}
