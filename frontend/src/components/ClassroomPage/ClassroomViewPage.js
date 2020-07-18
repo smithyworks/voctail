@@ -168,19 +168,7 @@ function ClassroomViewPage() {
         })}
       </ClassroomSection>
 
-      <SectionSection
-        title="Sections"
-        Button={
-          classroomIsTeacher ? (
-            <VTIconFlexButton
-              toolTipLabel={"Add section"}
-              onClick={() => console.log(classroomDocumentsFromDatabase)}
-            />
-          ) : (
-            <span />
-          )
-        }
-      >
+      <SectionSection title="Sections">
         {getSections(classroomDocumentsFromDatabase).map((section, s) => {
           return (
             <ChapterSection
