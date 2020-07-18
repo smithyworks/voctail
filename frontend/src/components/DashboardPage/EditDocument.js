@@ -8,7 +8,6 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -18,6 +17,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -94,7 +94,7 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
   return (
     <div>
       <Dialog open={open} onClose={onClose} aria-labelledby="edit-document">
-        <DialogTitle id="edit-document">Edit your document</DialogTitle>
+        <VoctailDialogTitle id="edit-document">Edit your document</VoctailDialogTitle>
         <DialogContent>
           <DialogContentText>You can change the additional information of your document.</DialogContentText>
           <TextField
@@ -130,17 +130,7 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
             fullWidth
           />
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                name="checkedH"
-                onChange={handleStatusChange}
-                checked={publicDocument}
-                inputProps={{ "aria-label": "primary checkbox" }}
-              />
-            }
-            label="Public Document"
-          />
+          <DialogContentText />
 
           <FormControl className={classes.formControl}>
             <InputLabel shrink id="choose-category">
@@ -162,6 +152,21 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
             </Select>
             <FormHelperText>Please choose a category for your document</FormHelperText>
           </FormControl>
+
+          <DialogContentText />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="checkedH"
+                onChange={handleStatusChange}
+                checked={publicDocument}
+                inputProps={{ "aria-label": "primary checkbox" }}
+                color="default"
+              />
+            }
+            label="Public Document"
+          />
         </DialogContent>
         <DialogActions>
           <VTButton neutral onClick={onClose}>

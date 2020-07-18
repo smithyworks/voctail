@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { Typography as T, Grid, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage/AppPage";
+import { UserContext } from "../../App";
 
 function clean(word) {
   try {
@@ -44,6 +45,8 @@ const useStyles = makeStyles({
 
 function Text({ document, lookupWordByWord }) {
   const classes = useStyles();
+
+  const user = useContext(UserContext);
 
   const [blocks, setBlocks] = useState();
   useEffect(() => {
@@ -100,10 +103,12 @@ function Text({ document, lookupWordByWord }) {
   const [menuOpen, setMenuOpen] = useState(false);
   function _onCreateQuiz() {
     setMenuOpen(false);
-    api
-      .createQuizFromDoc(document.document_id, 20)
-      .then((res) => toasts.toastSuccess("Successfully created a quiz for this document!"))
-      .catch((err) => toasts.toastError("Encountered a problem while creating your quiz!"));
+    if (user.premium)
+      api
+        .createQuizFromDoc(document.document_id, 20)
+        .then((res) => toasts.toastSuccess("Successfully created a quiz for this document!"))
+        .catch((err) => toasts.toastError("Encountered a problem while creating your quiz!"));
+    else toasts.goPremium();
   }
 
   return (

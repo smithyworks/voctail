@@ -20,9 +20,7 @@ function ProfileSection({ title, disablePadding, children }) {
     <Paper className={classes.section} elevation={0}>
       <Typography variant="h5">{title}</Typography>
       <Divider />
-      <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
-        {children}
-      </div>
+      <div className={classes.innerContainer}>{children}</div>
     </Paper>
   );
 }

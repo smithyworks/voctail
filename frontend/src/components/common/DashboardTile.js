@@ -4,6 +4,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 import LocalBarOutlinedIcon from "@material-ui/icons/LocalBarOutlined";
+import voctailColors from "../../assets/colors.json";
 
 //example tile images
 import shortStoriesPreview from "../../assets/books.jpg";
@@ -65,8 +66,11 @@ const useStyles = makeStyles({
     right: "-30px",
     transition: "right 400ms",
   },
-  voctailFitGlass: {
-    color: "white",
+  emptyGlass: {
+    ...voctailColors.dashboardTiles.emptyVoctailGlass,
+  },
+  filledGlass: {
+    ...voctailColors.dashboardTiles.filledVoctailGlass,
   },
 });
 
@@ -150,7 +154,13 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
             </Typography>
           </div>
 
-          <div className={classes.voctailFitGlass}>{fits ? <LocalBarIcon /> : <LocalBarOutlinedIcon />}</div>
+          <div>
+            {fits ? (
+              <LocalBarIcon className={classes.filledGlass} />
+            ) : (
+              <LocalBarOutlinedIcon className={classes.emptyGlass} />
+            )}
+          </div>
 
           <div
             className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}

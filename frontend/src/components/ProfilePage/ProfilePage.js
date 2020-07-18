@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Typography, Grid } from "@material-ui/core";
+import { Typography, Grid, TextField, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useParams } from "react-router-dom";
 
@@ -49,6 +49,9 @@ function ProfilePage() {
 
   const user = isSelf ? contextUser : externalUser;
 
+  const [vocabularyFilter, setVocabFilter] = useState();
+  const [showKnowns, setShowKnowns] = useState(true);
+
   function editName(v) {
     api
       .setName(v)
@@ -89,7 +92,7 @@ function ProfilePage() {
         <ProfileSection title="Personal Information" disablePadding>
           <Grid container>
             <Grid item className={classes.pic}>
-              <ProfilePicture dimension={isSelf ? "250px" : "150px"} />
+              <ProfilePicture user={user} dimension={isSelf ? "250px" : "150px"} editable={!!isSelf} />
             </Grid>
             <Grid item xs className={classes.info}>
               <div className={classes.infoInnerContainer}>
@@ -120,11 +123,28 @@ function ProfilePage() {
         )}
 
         <ProfileSection title="Metrics">
-          <Typography variant="h6" className={classes.subSectionTitle}>
-            Vocabulary
-          </Typography>
-          <VocabularyCloud userId={user.user_id} />
-
+          <Grid container justify="space-between">
+            <Grid item>
+              <Typography variant="h6" className={classes.subSectionTitle}>
+                Vocabulary
+              </Typography>
+            </Grid>
+            <Grid item style={{ display: "flex", alignItems: "baseline" }}>
+              <span>
+                <Checkbox style={{ marginBottom: 7 }} checked={showKnowns} onClick={() => setShowKnowns(!showKnowns)} />
+              </span>
+              <Typography display="inline" style={{ margin: "0 60px 0 0" }}>
+                Show known words
+              </Typography>
+              <TextField
+                margin="dense"
+                variant="outlined"
+                placeholder="Filter..."
+                onChange={(e) => setVocabFilter(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <VocabularyCloud userId={user.user_id} filter={vocabularyFilter} showKnowns={showKnowns} />
           <Typography variant="h6" className={classes.subSectionTitle}>
             Quizzes
           </Typography>

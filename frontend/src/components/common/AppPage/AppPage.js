@@ -1,13 +1,14 @@
-import React, { useContext, useState, useRef, useEffect } from "react";
-import { Grid, Container, Snackbar, IconButton, Typography } from "@material-ui/core";
+import React, { useContext, useState, useRef } from "react";
+import { Grid, Container, Snackbar, IconButton } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { localStorage, api } from "../../../utils";
+import { localStorage } from "../../../utils";
 import { UserContext } from "../../../App.js";
 import TopNav from "./TopNav.js";
-import { useRouteMatch, Link } from "react-router-dom";
+import Breadcrumbs from "../Breadcrumbs";
+import GoPremiumDialog from "../Dialogs/GoPremiumDialog";
 
 export const toasts = {
   _toast: (type, msg) => console.log(type, msg), // will be overwritten
@@ -23,6 +24,7 @@ export const toasts = {
   toastInfo: function (msg) {
     this._toast("info", msg);
   },
+  goPremium: () => {},
 };
 
 const useStyles = makeStyles({
@@ -44,9 +46,6 @@ const useStyles = makeStyles({
   snackbarCloseIcon: {
     margin: "-12px 0 -12px 5px",
   },
-  breadcrumbs: {
-    padding: "10px 0",
-  },
 });
 
 // The AppPage is meant to be rendered directly into the id="root" element.
@@ -54,29 +53,6 @@ const useStyles = makeStyles({
 function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxWidth }) {
   const classes = useStyles();
   const user = useContext(UserContext);
-
-  const { path, params } = useRouteMatch();
-  const [breadcrumbs, setBreadcrumbs] = useState();
-  useEffect(() => {
-    // console.log(path);
-    if (path === "/documents/:document_id") {
-      api.documentTitle(params.document_id).then((res) => {
-        setBreadcrumbs(
-          <Typography className={classes.breadcrumbs}>
-            <Link to="/dashboard">Dashboard</Link> > {res.data}
-          </Typography>
-        );
-      });
-    } else if (path === "/quizzes/:id") {
-      api.quizTitle(params.id).then((res) => {
-        setBreadcrumbs(
-          <Typography className={classes.breadcrumbs}>
-            <Link to="/quizzes">Quizzes</Link> > {res.data}
-          </Typography>
-        );
-      });
-    }
-  }, [path, params]); // eslint-disable-line
 
   if (title) window.document.title = title;
   else if (location === "dashboard") window.document.title = "VocTail | Dashboard";
@@ -86,6 +62,8 @@ function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxW
   else if (location === "admin") window.document.title = "VocTail | Admin";
   else window.document.title = "VocTail";
 
+  const [goPremiumOpen, setGoPremiumOpen] = useState(false);
+  toasts.goPremium = () => setGoPremiumOpen(true);
   const [snackbarOpen, setSnackbarOpen] = useState();
   const snackbarProps = useRef();
   toasts._toast = (severity, message) => {
@@ -109,7 +87,7 @@ function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxW
           className={noPadding ? classes.noPadding : classes.body}
           maxWidth={!!noPadding ? false : maxWidth ?? "lg"}
         >
-          {!noBreadcrumbs && breadcrumbs}
+          {!noBreadcrumbs && <Breadcrumbs />}
           {children}
         </Container>
       </Grid>
@@ -142,6 +120,7 @@ function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxW
           {snackbarProps.current?.message}
         </Alert>
       </Snackbar>
+      <GoPremiumDialog open={goPremiumOpen} onClose={() => setGoPremiumOpen(false)} />
     </Grid>
   );
 }

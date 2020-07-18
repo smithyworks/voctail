@@ -16,14 +16,15 @@ import AppPage from "../common/AppPage";
 import { api } from "../../utils";
 import logo_classroom from "../../assets/classroom_logo.png";
 import { ClassroomSection, ConfirmDialog } from "../common";
-import IconButton from "@material-ui/core/IconButton";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import VTButton from "../common/Buttons/VTButton";
 import { toasts } from "../common/AppPage/AppPage";
 import { Link } from "react-router-dom";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import ClassroomTile from "../common/ClassroomTile";
+import VTIconFlexButton from "../common/Buttons/IconButton";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import GoPremiumDialog from "../common/Dialogs/GoPremiumDialog";
 
 const useStyles = makeStyles(() => ({
   text: {
@@ -286,10 +287,7 @@ function ClassroomCreateFormDialog({
   return (
     <div>
       <Dialog open={openCreateForm} onClose={closeCreateForm} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" className={classes.header}>
-          {" "}
-          New Classroom{" "}
-        </DialogTitle>
+        <VoctailDialogTitle id="form-dialog-title"> New Classroom </VoctailDialogTitle>
         <DialogContent>
           <DialogContentText className={classes.description}>
             {" "}
@@ -444,6 +442,11 @@ function Classrooms() {
   const [newTopic, setNewTopic] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
+  const [goPremium, setGoPremium] = useState(false);
+
+  const handleGoPremiumClose = () => {
+    setGoPremium(false);
+  };
 
   useEffect(() => {
     api
@@ -471,15 +474,14 @@ function Classrooms() {
         title="My Classrooms"
         description="You have here the classrooms you are registered to."
         Button={
-          <Tooltip
-            title={user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"}
-          >
-            <span>
-              <IconButton disabled={!user.premium} aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
-                <AddBoxIcon fontSize="large" style={user.premium ? { color: "darkblue" } : { color: "grey" }} />
-              </IconButton>
-            </span>
-          </Tooltip>
+          <VTIconFlexButton
+            toolTipLabel={
+              user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"
+            }
+            onClick={user.premium ? () => setOpenCreateForm(true) : () => setGoPremium(true)}
+            voctailDisabled={!user.premium}
+            aria-label="new-classroom"
+          />
         }
       >
         <ClassroomCreateFormDialog
@@ -499,10 +501,11 @@ function Classrooms() {
           <React.Fragment key={tile.classroom_id}>
             <ClassroomTile
               isOwned
+              id={tile.classroom_id}
               title={tile.title}
               teacher={tile.classroom_owner}
               topic={tile.topic}
-              linkTo={"/classrooms/view?classroom=" + tile.classroom_id}
+              linkTo={"/classrooms/" + tile.classroom_id}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {
@@ -512,6 +515,8 @@ function Classrooms() {
           </React.Fragment>
         ))}
       </ClassroomSection>
+
+      <GoPremiumDialog open={goPremium} onClose={handleGoPremiumClose} />
     </AppPage>
   );
 }

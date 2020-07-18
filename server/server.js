@@ -1,9 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const multer = require("multer");
 
 const { log } = require("./lib/log.js");
-
 const { db, auth, users, admin, quizzes, documents, classrooms, vocabulary } = require("./lib");
 
 db.checkConnection((connected) => {
@@ -15,10 +15,13 @@ db.checkConnection((connected) => {
   }
 });
 
+const upload = multer({ dest: "uploads/" });
+
 const server = express();
 server.use(express.json());
 // Serve the static files from the React app
 server.use(express.static(path.join(__dirname + "/frontend_build")));
+server.use("/uploads", express.static("uploads"));
 
 server.get("/api/test", (req, res) => res.status(200).send("Server is online!"));
 
@@ -34,6 +37,13 @@ server.post("/api/set-name", auth.tokenMiddleWare, users.setNameHandler);
 server.post("/api/set-email", auth.tokenMiddleWare, users.setEmailHandler);
 server.post("/api/set-password", auth.tokenMiddleWare, users.setPasswordHandler);
 server.post("/api/user-vocabulary", auth.tokenMiddleWare, users.userVocabularyHandler);
+server.post(
+  "/api/upload-profile-picture",
+  auth.tokenMiddleWare,
+  upload.single("profile_pic"),
+  users.uploadProfilePictureHandler
+);
+server.delete("/api/delete-profile-picture", auth.tokenMiddleWare, users.deleteProfilePictureHandler);
 
 server.post("/api/document", auth.tokenMiddleWare, documents.documentHandler);
 server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
@@ -82,6 +92,37 @@ server.post("/api/delete-classroom", auth.tokenMiddleWare, classrooms.deleteClas
 server.post("/api/add-student-to-classroom", auth.tokenMiddleWare, classrooms.addStudentToClassroom);
 server.post("/api/delete-student-to-classroom", auth.tokenMiddleWare, classrooms.deleteStudentToClassroom);
 server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);
+
+server.post("/api/breadcrumbs", auth.tokenMiddleWare, async (req, res) => {
+  try {
+    const { document_id, quiz_id, classroom_id } = req.body;
+
+    let document, quiz, classroom;
+
+    if (document_id) {
+      const {
+        rows: [{ title }],
+      } = await db.query("SELECT title FROM documents WHERE document_id = $1", [document_id]);
+      document = title;
+    }
+    if (quiz_id) {
+      const {
+        rows: [{ title }],
+      } = await db.query("SELECT title FROM quizzes WHERE quiz_id = $1", [quiz_id]);
+      quiz = title;
+    }
+    if (classroom_id) {
+      const {
+        rows: [{ title }],
+      } = await db.query("SELECT title FROM classrooms WHERE classroom_id = $1", [classroom_id]);
+      classroom = title;
+    }
+
+    res.status(200).json({ document, quiz, classroom });
+  } catch (err) {
+    res.sendStatus(500);
+  }
+});
 
 // Handles any requests that don't match the ones above
 server.get("*", (req, res) => {

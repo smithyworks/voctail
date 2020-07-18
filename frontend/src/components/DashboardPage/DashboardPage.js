@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
 import DashboardTile from "../common/DashboardTile";
 import AppPage, { toasts } from "../common/AppPage";
-import { DashboardSection } from "../common";
+import { DashboardSection, GoPremiumDialog } from "../common";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
 import PlaceholderTile from "../common/PlaceholderTile";
-import VTIconButton from "../common/Buttons/IconButton";
+import VTIconFlexButton from "../common/Buttons/IconButton";
+import { UserContext } from "../../App";
 
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
-  const [user, setUser] = useState();
+  const user = useContext(UserContext);
 
   const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
   const [usersDocuments, setUsersDocuments] = useState([]);
@@ -26,13 +27,16 @@ function Dashboard() {
   const [addOpen, setAddOpen] = useState(false);
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const documents_fit = [];
 
-  const [select, setSelect] = useState("");
+  const [premiumOpen, setPremiumOpen] = useState(false);
 
-  const handleSelect = (event) => {
-    setSelect(event.target.value);
+  const handleCheckoutPremium = () => {
+    setPremiumOpen(true);
   };
-
+  const handleCheckoutPremiumClose = () => {
+    setPremiumOpen(false);
+  };
   const handleAddOpen = () => {
     setAddOpen(true);
   };
@@ -79,7 +83,7 @@ function Dashboard() {
         .then(() => {
           toasts.toastSuccess("The document was successfully deleted!");
           refresh();
-          //setPopUpOpen(false);
+          //setPopUpOpen(false); //todo
         })
         .catch((err) => {
           console.log(err);
@@ -89,24 +93,16 @@ function Dashboard() {
   }
 
   function createQuiz(documentId) {
-    api
-      .createQuizFromDoc(documentId, 20)
-      .then(() => {
-        toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
-        //setMenuOpen(false);
-      }) //todo check it out
-      .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
+    if (user.premium)
+      api
+        .createQuizFromDoc(documentId, 20)
+        .then(() => {
+          toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
+          //setMenuOpen(false);
+        }) //todo check it out
+        .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
+    else toasts.goPremium();
   }
-
-  //get current user
-  useEffect(() => {
-    api
-      .user()
-      .then((res) => {
-        if (res) setUser(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   //fetch documents (rerender when documents were added, deleted, edited
   useEffect(() => {
@@ -121,8 +117,13 @@ function Dashboard() {
       .catch((err) => console.log(err));
   }, [countToRefresh]);
 
-  const documents_fit = [];
   useEffect(() => {
+    calcAllDocumentsFit();
+    console.log("cald all documents fit in use effect mit set data", documents_fit);
+    console.log("use effect length", documents_fit.lastIndexOf());
+  });
+
+  function calcAllDocumentsFit() {
     documentDataFromDatabase.map((doc) => {
       api
         .calcDocumentFit(doc.document_id)
@@ -131,11 +132,12 @@ function Dashboard() {
         })
         .catch((err) => console.log(err));
     });
-  });
+  }
 
-  /*function findMyIndex(arr, id) {
+  function findMyIndex(arr, id) {
     console.log("arr", arr);
     console.log("arr.length", arr.length);
+
     for (let n = 0; n < arr.length; n++) {
       if (arr[n].document === id) {
         return n;
@@ -143,14 +145,15 @@ function Dashboard() {
     }
     console.log("error doc was not found (index)");
     return -1;
-  } */
+  }
 
   function getFit(documentId) {
     console.log("doc id", documentId);
     console.log("documents_fit", documents_fit);
 
-    let index; // = findMyIndex(documents_fit, documentId);
-    index = documents_fit.findIndex((x) => x.document === documentId);
+    console.log("documents fit length", documents_fit.length);
+    let index = findMyIndex(documents_fit, documentId);
+    //index = documents_fit.findIndex((x) => x.document === documentId);
     console.log("index", index);
     if (index < 0) return false;
     let currentFit = documents_fit[index].fit;
@@ -167,7 +170,17 @@ function Dashboard() {
     <AppPage location="dashboard" id="dashboard-page">
       <DashboardSection
         title={"My Documents"}
-        Button={user && user.premium ? <VTIconButton onClick={handleAddOpen} /> : <VTIconButton disabled />}
+        Button={
+          user && user.premium ? (
+            <VTIconFlexButton toolTipLabel={"Add new document"} onClick={handleAddOpen} />
+          ) : (
+            <VTIconFlexButton
+              voctailDisabled
+              toolTipLabel={"Adding new documents is not available for free users"}
+              onClick={handleCheckoutPremium}
+            />
+          )
+        }
         expandable
       >
         {usersDocuments.length !== 0 ? (
@@ -190,44 +203,93 @@ function Dashboard() {
             onClick={handleAddOpen}
           />
         ) : (
-          <PlaceholderTile tooltipTitle={"Adding new documents is only available in Voctail Premium."} />
+          <PlaceholderTile
+            tooltipTitle={"Adding new documents is only available in Voctail Premium."}
+            onClick={handleCheckoutPremium}
+          />
         )}
       </DashboardSection>
 
       <DashboardSection title={"Recommendations"}></DashboardSection>
 
-      <DashboardSection
-        title={"Short Stories, Fairy Tales, Newspaper Articles and more for you"}
-        expandable
-        filter
-        select={select}
-        handleSelect={handleSelect}
-      >
-        {select === ""
-          ? documentDataFromDatabase.map((tile, i) => (
-              <DashboardTile
-                key={i}
-                title={tile.title}
-                author={tile.author}
-                fits={getFit(tile.document_id)}
-                onGenerateQuiz={() => createQuiz(tile.document_id)}
-                linkTo={"/documents/" + tile.document_id}
-                category={tile.category}
-              />
-            ))
-          : documentDataFromDatabase
-              .filter((doc) => doc.category === select)
-              .map((tile, i) => (
-                <DashboardTile
-                  key={i}
-                  title={tile.title}
-                  author={tile.author}
-                  fits={getFit(tile.document_id)}
-                  onGenerateQuiz={() => createQuiz(tile.document_id)}
-                  linkTo={"/documents/" + tile.document_id}
-                  category={tile.category}
-                />
-              ))}
+      <DashboardSection title={"Music Videos"} expandable>
+        {documentDataFromDatabase
+          .filter((doc) => doc.category === "music-video")
+          .map((tile, i) => (
+            <DashboardTile
+              key={i}
+              title={tile.title}
+              author={tile.author}
+              fits={getFit(tile.document_id)}
+              onGenerateQuiz={() => createQuiz(tile.document_id)}
+              linkTo={"/documents/" + tile.document_id}
+              category={tile.category}
+            />
+          ))}
+      </DashboardSection>
+
+      <DashboardSection title={"Short Stories"} expandable>
+        {documentDataFromDatabase
+          .filter((doc) => doc.category === "(Short) Story")
+          .map((tile, i) => (
+            <DashboardTile
+              key={i}
+              title={tile.title}
+              author={tile.author}
+              fits={getFit(tile.document_id)}
+              onGenerateQuiz={() => createQuiz(tile.document_id)}
+              linkTo={"/documents/" + tile.document_id}
+              category={tile.category}
+            />
+          ))}
+      </DashboardSection>
+
+      <DashboardSection title={"Fairy Tales"} expandable>
+        {documentDataFromDatabase
+          .filter((doc) => doc.category === "Fairy Tale")
+          .map((tile, i) => (
+            <DashboardTile
+              key={i}
+              title={tile.title}
+              author={tile.author}
+              fits={true}
+              onGenerateQuiz={() => createQuiz(tile.document_id)}
+              linkTo={"/documents/" + tile.document_id}
+              category={tile.category}
+            />
+          ))}
+      </DashboardSection>
+
+      <DashboardSection title={"Newspaper Articles"} expandable>
+        {documentDataFromDatabase
+          .filter((doc) => doc.category === "Newspaper Article")
+          .map((tile, i) => (
+            <DashboardTile
+              key={i}
+              title={tile.title}
+              author={tile.author}
+              fits={getFit(tile.document_id)}
+              onGenerateQuiz={() => createQuiz(tile.document_id)}
+              linkTo={"/documents/" + tile.document_id}
+              category={tile.category}
+            />
+          ))}
+      </DashboardSection>
+
+      <DashboardSection title={"Others"} expandable>
+        {documentDataFromDatabase
+          .filter((doc) => doc.category === "Others")
+          .map((tile, i) => (
+            <DashboardTile
+              key={i}
+              title={tile.title}
+              author={tile.author}
+              fits={getFit(tile.document_id)}
+              onGenerateQuiz={() => createQuiz(tile.document_id)}
+              linkTo={"/documents/" + tile.document_id}
+              category={tile.category}
+            />
+          ))}
       </DashboardSection>
 
       <UploadDocument
@@ -237,6 +299,9 @@ function Dashboard() {
         open={addOpen}
       />
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
+
+      <GoPremiumDialog open={premiumOpen} onClose={handleCheckoutPremiumClose} />
+
       <EditDocument
         refresh={refresh}
         open={editDialogOpen}

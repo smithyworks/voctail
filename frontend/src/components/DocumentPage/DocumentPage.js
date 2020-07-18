@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, CircularProgress, Paper, makeStyles, Hidden, Container } from "@material-ui/core";
 
-import { AppPage, toasts } from "../common";
+import { AppPage, toasts, Breadcrumbs } from "../common";
 import Text from "./Text.js";
 import BlockContainer from "./BlockContainer";
 import AddTranslationDialog from "./AddTranslationDialog";
@@ -16,7 +16,8 @@ const useStyles = makeStyles({
   },
   videoContainer: {
     display: "flex",
-    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-between",
     backgroundColor: "#010101",
   },
   captionContainer: {
@@ -129,6 +130,9 @@ function DocumentPage() {
         <Hidden smDown>
           <Grid container className={classes.container}>
             <Grid item xs className={classes.videoContainer}>
+              <div style={{ height: 60, padding: "0 30px" }}>
+                <Breadcrumbs invert />
+              </div>
               <iframe
                 title={document_id + 1}
                 style={{ width: "100%", height: "30vw" }}
@@ -136,6 +140,7 @@ function DocumentPage() {
                 frameBorder="0"
                 allowFullScreen
               />
+              <div style={{ height: 60 }} />
             </Grid>
             <Grid item lg={5} md={6} className={classes.captionContainer}>
               <BlockContainer
@@ -151,6 +156,7 @@ function DocumentPage() {
         </Hidden>
 
         <Hidden mdUp>
+          <Breadcrumbs />
           <div>
             <iframe
               title={document_id}

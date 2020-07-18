@@ -67,7 +67,7 @@ const useStyles = makeStyles({
 
 function QuizTile({ name, id, isOwned, onDelete, onEdit, onViewStatistic, linkTo, lastSeen }) {
   const classes = useStyles();
-  const backgroundColor = useRef(getColor());
+  const backgroundColor = getColor(`quiz-${id}`);
 
   const [hovered, setHovered] = useState(false);
 
@@ -118,7 +118,7 @@ function QuizTile({ name, id, isOwned, onDelete, onEdit, onViewStatistic, linkTo
       <Tooltip title={name} enterDelay={1000} enterNextDelay={1000}>
         <Paper
           className={classes.paper}
-          style={{ backgroundColor: backgroundColor.current }}
+          style={{ backgroundColor }}
           elevation={hovered ? 5 : 2}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}

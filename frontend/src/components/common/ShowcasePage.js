@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Grid, Typography, TextField } from "@material-ui/core";
 
 import { AppPage, toasts, VTButton } from ".";
-import ConfirmDialog from "./ConfirmDialog";
-import CreationDialog from "./CreationDialog";
+import ConfirmDialog from "./Dialogs/ConfirmDialog";
+import CreationDialog from "./Dialogs/CreationDialog";
 import DashboardSection from "./DashboardSection";
 import Header from "./HeaderSection";
 import UserCard from "./UserCard";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import InviteStudentsDialog from "./InviteStudentsDialog";
+import InviteStudentsDialog from "./Dialogs/InviteStudentsDialog";
 import DashboardTile from "./DashboardTile";
 import pic from "../../assets/fairytale.jpg";
 import QuizSection from "./Quiz/QuizSection";

@@ -1,8 +1,8 @@
 import AppPage, { toasts } from "./AppPage";
 import VTButton from "./Buttons/VTButton";
-import ConfirmDialog from "./ConfirmDialog";
-import CreationDialog from "./CreationDialog";
-import OkDialog from "./OkDialog";
+import ConfirmDialog from "./Dialogs/ConfirmDialog";
+import CreationDialog from "./Dialogs/CreationDialog";
+import OkDialog from "./Dialogs/OkDialog";
 import DashboardSection from "./DashboardSection";
 import DashboardTile from "./DashboardTile";
 import QuizSection from "./Quiz/QuizSection";
@@ -12,6 +12,9 @@ import ClassroomSection from "./ClassroomSection";
 import SectionSection from "./SectionSection";
 import ChapterSection from "./ChapterSection";
 import PlaceholderTile from "./PlaceholderTile";
+import Breadcrumbs from "./Breadcrumbs";
+import UserTile from "./UserTile";
+import GoPremiumDialog from "./Dialogs/GoPremiumDialog";
 
 export {
   AppPage,
@@ -29,4 +32,7 @@ export {
   SectionSection,
   ChapterSection,
   PlaceholderTile,
+  Breadcrumbs,
+  UserTile,
+  GoPremiumDialog,
 };

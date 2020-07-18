@@ -204,8 +204,24 @@ export function setPassword(password) {
 export function vocabulary(user_id) {
   return axios.post(`${base}/user-vocabulary`, { user_id });
 }
+export function uploadProfilePicture(files) {
+  const formData = new FormData();
+  formData.append("profile_pic", files[0]);
+  return axios.post(`${base}/upload-profile-picture`, formData, {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  });
+}
+export function deleteProfilePicture() {
+  return axios.delete(`${base}/delete-profile-picture`);
+}
 
 // breadcrumbs
+
+export function breadcrumbs({ document_id, quiz_id, classroom_id }) {
+  return axios.post(`${base}/breadcrumbs`, { document_id, quiz_id, classroom_id });
+}
 
 export function documentTitle(document_id) {
   return axios.get(`${base}/document-title`, { params: { document_id } });
