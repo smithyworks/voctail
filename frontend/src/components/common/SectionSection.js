@@ -7,7 +7,7 @@ const useStyles = makeStyles({
     border: "1px solid lightgrey",
     marginBottom: "20px",
   },
-  title: { fontWeight: "bold" },
+  title: { fontWeight: "Lighter" },
   innerContainer: {
     padding: "20px 20px 8px 20px",
   },
