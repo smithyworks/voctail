@@ -3,7 +3,6 @@ import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
 import {
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -14,10 +13,11 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import VoctailCheckbox from "../common/VoctailCheckbox";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   userItem: { width: "150px" },
 }));
 
-function EditDocument({ refresh, open, onClose, documentId, title, author, description, isPublic, currentCategory }) {
+function EditDocument({ refresh, open, onClose, documentId, title, author, isPublic, currentCategory }) {
   const titleInput = useRef(null);
   const authorInput = useRef(null);
   const [publicDocument, setPublicDocument] = useState(false);
@@ -87,7 +87,7 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
         <VoctailDialogTitle id="edit-document">Edit your document</VoctailDialogTitle>
         <DialogContent>
           <DialogContentText>You can change the additional information of your document.</DialogContentText>
-          <TextField
+          <ErrorDialogField
             autoFocus
             margin="dense"
             id="title"
@@ -97,7 +97,7 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
             onChange={(e) => (titleInput.current = e.target.value)}
             fullWidth
           />
-          <TextField
+          <ErrorDialogField
             autoFocus
             margin="dense"
             id="author"
@@ -135,12 +135,11 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
 
           <FormControlLabel
             control={
-              <Checkbox
+              <VoctailCheckbox
                 name="checkedH"
                 onChange={handleStatusChange}
                 checked={publicDocument}
                 inputProps={{ "aria-label": "primary checkbox" }}
-                color="default"
               />
             }
             label="Public Document"
