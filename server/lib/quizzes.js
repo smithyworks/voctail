@@ -2,6 +2,7 @@ const { log } = require("./log.js");
 const { query } = require("./db.js");
 
 /*JSONB for quizzes.questions : {vocabulary,suggestions,translation}
+ * JSONB for users_quizzes.metrics: date: {wrong, taken, total, percentageTaken, percentageTotal, unknowns}
  * */
 
 function shuffle(list) {
@@ -285,6 +286,54 @@ async function viewMetricsHandler(req, res) {
   }
 }
 
+async function quizzesMetricsHandler(req, res) {
+  //wrong, taken, total, percentageTaken, percentageTotal, unknowns
+  try {
+    const { user_id } = req.authData.user;
+
+    //sorted by date desc - only taken quizzes appear -> metrics != null as well
+    const {
+      rows: quizList,
+    } = await query(
+      "SELECT  users_quizzes.metrics, quizzes.* FROM users_quizzes INNER JOIN quizzes ON users_quizzes.user_id=$1\
+        AND users_quizzes.quiz_id=quizzes.quiz_id WHERE users_quizzes.last_seen IS NOT NULL \
+        ORDER BY users_quizzes.last_seen DESC",
+      [user_id]
+    );
+
+    // for each quiz:
+    // - filter for completed taken=total
+    // - sort by date
+    // - determine best
+    // -> return last,best
+    let quizResults = [];
+    let bestResult = undefined;
+    let lastResult = undefined;
+    quizList.forEach((q) => {
+      bestResult = undefined;
+      lastResult = undefined;
+      for (const [k, v] of Object.entries(q.metrics)) {
+        if (v.taken === v.total) {
+          if (!lastResult || lastResult.date < k) {
+            lastResult = { date: parseInt(k), ...v };
+          }
+          if (!bestResult || bestResult.wrong > v.wrong) {
+            bestResult = { date: parseInt(k), ...v };
+          }
+        }
+      }
+      if (lastResult && bestResult) {
+        quizResults.push({ lastResult, bestResult, ...q });
+      }
+    });
+
+    res.status(200).json(quizResults);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 // potentially think about a more sophisticated approach to determining suitable translations eg rank metric
 async function createQuizHandler(req, res) {
   try {
@@ -413,6 +462,7 @@ module.exports = {
   quizHandler,
   quizByDocHandler,
   quizCategoryHandler,
+  quizzesMetricsHandler,
   quizDeleteHandler,
   createQuizHandler,
   renameQuizHandler,

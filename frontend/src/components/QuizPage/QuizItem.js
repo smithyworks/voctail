@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { shuffle } from "../common/QuizzesUtilities";
+import { shuffle } from "../common/Quiz/QuizzesUtilities";
 import VTButton from "../common/Buttons/VTButton";
 import ChoiceButton from "./ChoiceButton";
 

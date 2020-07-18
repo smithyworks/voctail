@@ -60,6 +60,7 @@ server.get("/api/quiz", auth.tokenMiddleWare, quizzes.quizHandler);
 server.get("/api/quiz-by-document", auth.tokenMiddleWare, quizzes.quizByDocHandler);
 server.get("/api/quiz-category", auth.tokenMiddleWare, quizzes.quizCategoryHandler);
 server.get("/api/quiz-metrics", auth.tokenMiddleWare, quizzes.viewMetricsHandler);
+server.get("/api/quizzes-metrics", auth.tokenMiddleWare, quizzes.quizzesMetricsHandler);
 server.post("/api/delete-quiz", auth.tokenMiddleWare, quizzes.quizDeleteHandler);
 server.post("/api/create-quiz", auth.tokenMiddleWare, quizzes.createQuizHandler);
 server.post("/api/rename-quiz", auth.tokenMiddleWare, quizzes.renameQuizHandler);

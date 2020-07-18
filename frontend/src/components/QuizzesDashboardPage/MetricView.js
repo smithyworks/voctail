@@ -25,7 +25,7 @@ function MetricView({ questions, results, disablePadding }) {
   const formatDate = (date) => {
     return dateFormat(Date.parse(date), "dd/mm/yyyy");
   };
-  console.log(results);
+
   const resultsList = Object.keys(results).map((k) => ({ date: formatDate(k), ...results[k] }));
 
   const formatQ = (questions) => {
@@ -79,8 +79,8 @@ function MetricView({ questions, results, disablePadding }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {resultsList.map((v) => (
-                <TableRow>
+              {resultsList.map((v, i) => (
+                <TableRow key={i}>
                   <TableCell align="right">{v.date}</TableCell>
                   <TableCell align="right">{v.wrong}</TableCell>
                   <TableCell align="right">{v.taken}</TableCell>
