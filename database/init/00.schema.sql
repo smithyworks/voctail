@@ -49,6 +49,7 @@ CREATE TABLE translations (
                                 ON DELETE CASCADE,
   contributor_id  integer       REFERENCES users
                                 ON DELETE SET NULL,
+  approved        boolean       NOT NULL DEFAULT true,
   translation     text          NOT NULL,
   language        text          NOT NULL,
 

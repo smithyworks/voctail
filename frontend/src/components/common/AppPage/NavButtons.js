@@ -3,6 +3,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import colors from "../../../assets/colors.json";
+import { Badge } from "@material-ui/core";
 
 const useStyles = makeStyles({
   link: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-function NavButtons({ location, isAdmin }) {
+function NavButtons({ location, isAdmin, pendingTranslations }) {
   const classes = useStyles();
 
   const { path } = useRouteMatch();
@@ -45,10 +46,19 @@ function NavButtons({ location, isAdmin }) {
       : classes.link;
   const adminLinkClass = path === "/admin" ? classes.activeLink : classes.link;
 
+  console.log(pendingTranslations);
   const adminLink = isAdmin ? (
-    <Link to="/admin" className={adminLinkClass}>
-      Admin
-    </Link>
+    pendingTranslations ? (
+      <Link to="/admin" className={adminLinkClass}>
+        <Badge badgeContent={pendingTranslations} color="primary">
+          Admin
+        </Badge>
+      </Link>
+    ) : (
+      <Link to="/admin" className={adminLinkClass}>
+        Admin
+      </Link>
+    )
   ) : null;
 
   return (

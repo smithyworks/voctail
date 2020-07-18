@@ -79,6 +79,7 @@ function AppPage({ children, id, location, title, noPadding, noBreadcrumbs, maxW
         isAdmin={!!user?.admin}
         masquerading={!!user?.masquerading}
         premium={!!user?.premium}
+        pendingTranslations={user?.pendingTranslations}
       />
 
       <Grid item xs className={classes.bodyContainer}>

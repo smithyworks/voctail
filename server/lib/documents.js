@@ -21,7 +21,7 @@ async function documentHandler(req, res) {
       "SELECT documents_words.word_id, translations.translation_id, translations.translation \
          FROM documents_words \
            LEFT JOIN translations ON documents_words.word_id = translations.word_id \
-         WHERE documents_words.document_id = $1;",
+         WHERE documents_words.document_id = $1 AND translations.approved = true;",
       [document_id]
     );
     document.translations = translations;

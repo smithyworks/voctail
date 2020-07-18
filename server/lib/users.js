@@ -5,7 +5,7 @@ const fs = require("fs");
 
 async function userHandler(req, res) {
   try {
-    const { user_id: current_user_id, masquerading } = req.authData.user;
+    const { user_id: current_user_id, masquerading, admin } = req.authData.user;
     const { user_id } = req.body;
 
     let uid = current_user_id;
@@ -16,6 +16,14 @@ async function userHandler(req, res) {
     } = await query("SELECT user_id, name, email, admin, premium, profile_pic_url FROM users WHERE user_id = $1", [
       uid,
     ]);
+
+    if (admin) {
+      const {
+        rows: [{ count }],
+      } = await query("SELECT COUNT(*) FROM translations WHERE approved = false");
+      userRecord.pendingTranslations = count;
+    }
+
     res.status(200).json({ ...userRecord, masquerading: !!masquerading });
   } catch (err) {
     log(err);
