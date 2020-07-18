@@ -49,33 +49,11 @@ async function documentDataHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
     const { rows: documents } = await query("SELECT * FROM documents ORDER BY title ASC");
-    const {
-      rows: newspaperArticles,
-    } = await query(
-      "SELECT * FROM documents WHERE category = 'Newspaper Article' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
-      [user_id]
-    );
-    const {
-      rows: fairyTales,
-    } = await query(
-      "SELECT * FROM documents WHERE category = 'Fairy Tale' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
-      [user_id]
-    );
-    const {
-      rows: shortStories,
-    } = await query(
-      "SELECT * FROM documents WHERE category = '(Short) Story' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
-      [user_id]
-    );
-    const {
-      rows: others,
-    } = await query(
-      "SELECT * FROM documents WHERE category = 'Others' AND (public=true OR publisher_id = $1) ORDER BY title ASC",
-      [user_id]
-    );
-    const {
-      rows: usersDocuments,
-    } = await query("SELECT * FROM documents WHERE publisher_id = $1 ORDER BY document_id ASC", [user_id]);
+    const newspaperArticles = documents.filter(({ public, category }) => public || category === "Newspaper Article");
+    const fairyTales = documents.filter(({ public, category }) => public || category === "Fairy Tale");
+    const shortStories = documents.filter(({ public, category }) => public || category === "(Short) Story");
+    const others = documents.filter(({ public, category }) => public || category === "Others");
+    const usersDocuments = documents.filter((publisher_id) => publisher_id === user_id);
 
     res.status(200).json({ documents, newspaperArticles, fairyTales, shortStories, others, usersDocuments });
   } catch (err) {
@@ -283,35 +261,33 @@ async function getDocumentLastSeen(req, res) {
 
 async function calcDocumentFit(req, res) {
   try {
-    const document_id = req.query.document_id;
     const { user_id } = req.authData.user;
-    //get all words from document
-    const { rows: document_words } = await query("SELECT word_id FROM documents_words WHERE document_id = $1", [
-      document_id,
-    ]);
-    const word_sum = document_words.length; // sum of all document words
 
-    //get all users words
+    // get all public document ids
+    const { rows: documents } = await query("SELECT document_id FROM documents WHERE public = true ORDER BY title ASC");
+
+    // get all users words
     const {
       rows: unknown_user_words,
     } = await query("SELECT word_id FROM users_words WHERE user_id = $1 AND known = false", [user_id]);
+    const unkown_ids = unknown_user_words.map((w) => w.word_id);
 
-    // log("users words", unknown_user_words);
-    //log("document words", document_words);
-    let unknownWords_inDocument = 0;
-    //check if unknown words are in document
-    document_words.map((word) =>
-      unknown_user_words.map((unknown_word) => {
-        if (word.word_id === unknown_word.word_id) unknownWords_inDocument++;
-      })
-    );
+    const fit_lookup = {};
+    for (let i = 0; i < documents.length; i++) {
+      const { document_id } = documents[i];
+      const {
+        rows: [{ count: word_count }],
+      } = await query("SELECT COUNT(*) FROM documents_words WHERE document_id = $1", [document_id]);
+      const {
+        rows: [{ count: unknown_count }],
+      } = await query("SELECT COUNT(*) FROM documents_words WHERE document_id = $1 AND word_id = ANY($2)", [
+        document_id,
+        unkown_ids,
+      ]);
+      fit_lookup[document_id] = unknown_count / word_count;
+    }
 
-    let fit;
-    if (unknownWords_inDocument === 0) fit = -1;
-    else fit = unknownWords_inDocument / word_sum;
-    //log("doc", document_id);
-    //log("fit", fit);
-    res.status(200).json({ fit });
+    res.status(200).json(fit_lookup);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
