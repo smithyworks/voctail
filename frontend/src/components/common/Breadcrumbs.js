@@ -7,18 +7,21 @@ const useStyles = makeStyles({
   breadcrumbs: {
     padding: "10px 0",
   },
+  invert: {
+    color: "lightgrey",
+  },
 });
 
-function Breadcrumbs() {
+function Breadcrumbs({ invert }) {
   const classes = useStyles();
 
   const { path, params } = useRouteMatch();
   const [breadcrumbs, setBreadcrumbs] = useState(null);
   useEffect(() => {
     if (path === "/documents/:document_id") {
-      api.breadcrumbs({ document: params.document_id }).then((res) => {
+      api.breadcrumbs({ document_id: params.document_id }).then((res) => {
         setBreadcrumbs(
-          <Typography className={classes.breadcrumbs}>
+          <Typography className={classes.breadcrumbs} style={{ color: invert ? "white" : "inherit" }}>
             <Link to="/dashboard">Dashboard</Link> {">"} {res.data.document}
           </Typography>
         );
