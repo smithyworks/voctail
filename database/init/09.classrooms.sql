@@ -1,7 +1,7 @@
 INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic, open) VALUES
 (1, 1, 'British Literature 101', 'Introduction to british literature.', 'Literature', true),
 (2, 2, 'History 204', 'Introduction to American history.', 'History', true),
-(3, 3, 'Math 601', 'The point at which you stop believing in numbers.', 'Math', true),
+(3, 3, 'Math 1201', 'The point at which you stop believing in numbers.', 'Math', true),
 (4, 4, 'Basket Weaving 403', 'Advanced basket weaving techniques', 'History', true),
 (5, 5, 'English 305', 'English in the workplace.', 'English', true),
 (6, 1, 'English 204', 'Introduction to English dialects.', 'English', true),
@@ -17,8 +17,40 @@ INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES
     (4, 4, true), (5, 5, true), (6, 1, true),
     (7, 2, true), (8, 3, true), (9, 4, true),
     (10, 5, true),
-    (1, 6, true), (1, 7, false), (1, 8, false);
+    (1, 13, true), (1, 23, false), (1, 8, false),
+    (2, 24, true), (2, 24, false), (2, 13, false),
+    (2, 25, true), (2, 25, false), (2, 14, false),
+    (2, 26, true), (2, 26, false), (2, 15, false),
+    (3, 37, true), (3, 7, false), (3, 16, false),
+    (3, 38, true), (3, 30, false), (3, 17, false),
+    (4, 49, true), (4, 31, false), (4, 18, false),
+    (4, 20, true), (4, 5, false), (4, 19, false),
+    (5, 25, true), (5, 33, false), (5, 20, false),
+    (5, 22, true), (5, 34, false), (5, 21, false),
+    (5, 23, true), (6, 35, false), (6, 22, false),
+    (6, 24, true), (6, 36, false), (6, 53, false),
+    (6, 25, true), (6, 37, false), (6, 54, false),
+    (6, 26, true), (6, 38, false), (6, 66, false),
+    (7, 27, true), (7, 7, false), (7, 56, false),
+    (8, 28, true), (8, 39, false), (8, 54, false),
+    (8, 29, true), (8, 31, false), (8, 55, false),
+    (8, 30, true), (8, 10, false), (8, 56, false),
+    (9, 39, true), (9, 11, false), (9, 57, false),
+    (9, 32, true), (9, 12, false), (9, 55, false),
+    (1, 33, true), (1, 13, false), (1, 8, false);
 
 INSERT INTO classroom_documents (classroom_id, document_id, section) VALUES
-    (1, 1, 'Chapter 1'), (1, 2, 'Chapter 2'), (1, 3, 'Chapter 2');
-
+    (1, 1, 'Chapter 1'), (1, 7, 'Chapter 2'), (1, 3, 'Chapter 2'),
+    (2, 7, 'Chapter 1'), (2, 4, 'Chapter 2'), (2, 3, 'Chapter 2'),
+    (3, 3, 'Chapter 1'), (3, 2, 'Chapter 2'), (3, 3, 'Chapter 2'),
+    (4, 4, 'Chapter 1'), (4, 10, 'Chapter 2'), (4, 3, 'Chapter 2'),
+    (5, 5, 'Chapter 1'), (5, 11, 'Chapter 2'), (5, 3, 'Chapter 2'),
+    (6, 6, 'Chapter 1'), (6, 12, 'Chapter 2'), (6, 3, 'Chapter 2'),
+    (7, 7, 'Chapter 1'), (7, 1, 'Chapter 2'), (7, 3, 'Chapter 2'),
+    (8, 8, 'Chapter 1'), (8, 13, 'Chapter 2'), (8, 3, 'Chapter 2'),
+    (9, 9, 'Chapter 1'), (9, 14, 'Chapter 2'), (9, 3, 'Chapter 2'),
+    (10, 10, 'Chapter 1'), (10, 15, 'Chapter 2'), (10, 3, 'Chapter 2'),
+    (1, 10, 'Chapter 1'), (1, 2, 'Chapter 2'), (1, 3, 'Chapter 2'),
+    (2, 12, 'Chapter 1'), (2, 1, 'Chapter 2'), (1, 3, 'Chapter 2'),
+    (3, 13, 'Chapter 1'), (3, 9, 'Chapter 2'), (3, 3, 'Chapter 2'),
+    (4, 9, 'Chapter 1'), (4, 3, 'Chapter 2'), (7, 3, 'Chapter 2');

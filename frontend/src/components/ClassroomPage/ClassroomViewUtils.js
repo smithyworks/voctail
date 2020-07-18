@@ -14,13 +14,13 @@ export function indexOfMember(memberId, members) {
 
 export function addMembers(
   classroomId,
-  studentIds,
+  memberIds,
   areTeacher,
   classroomMembersFromDatabase,
   setClassroomMembersFromDatabase
 ) {
   api
-    .addMembersToClassroom(classroomId, studentIds, areTeacher)
+    .addMembersToClassroom(classroomId, memberIds, areTeacher)
     .then((res) => {
       if (res) {
         setClassroomMembersFromDatabase(classroomMembersFromDatabase.concat(res.data.membersAdded));
