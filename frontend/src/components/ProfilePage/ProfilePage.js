@@ -53,8 +53,6 @@ function ProfilePage() {
   const [vocabularyFilter, setVocabFilter] = useState();
   const [showKnowns, setShowKnowns] = useState(true);
 
-  const [documentFilter, setDocumentFilter] = useState();
-
   function editName(v) {
     api
       .setName(v)
@@ -143,16 +141,8 @@ function ProfilePage() {
 
         <ProfileSection title="Documents History">
           <Grid container justify="space-between">
-            <Grid item style={{ display: "flex", alignItems: "baseline" }}>
-              <TextField
-                margin="dense"
-                variant="outlined"
-                placeholder="Filter..."
-                onChange={(e) => setDocumentFilter(e.target.value)}
-              />
-            </Grid>
+            <DocumentMetrics />
           </Grid>
-          <DocumentMetrics />
         </ProfileSection>
       </div>
     </AppPage>

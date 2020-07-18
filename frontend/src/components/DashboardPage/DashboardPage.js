@@ -27,7 +27,6 @@ function Dashboard() {
   const [addOpen, setAddOpen] = useState(false);
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const documents_fit = [];
 
   const [premiumOpen, setPremiumOpen] = useState(false);
 

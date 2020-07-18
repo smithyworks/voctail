@@ -137,9 +137,27 @@ async function main() {
       description = description ? description : "\\N";
 
       // document_id, publisher_id, title, author, description, public, premium, blocks
-      console.log(
-        `${document_id++}\t\\N\t${title}\t${author}\t${description}\t${category}\tt\t${premium}\t${blocksJson}`
-      );
+      let publisher = "\\N";
+      // have some publishers
+      for (let i = 10; i < 35; i++) {
+        if (document_id > 10) {
+          if (document_id < 15) publisher = 2;
+          else {
+            if (document_id < 20) publisher = 3;
+            else {
+              if (document_id < 25) publisher = 4;
+              else {
+                if (document_id < 30) publisher = 5;
+                else publisher = 6;
+              }
+            }
+          }
+        }
+      }
+      if (document_id)
+        console.log(
+          `${document_id++}\t${publisher}\t${title}\t${author}\t${description}\t${category}\tt\t${premium}\t${blocksJson}`
+        );
     });
     console.log("\\.");
     console.log(
