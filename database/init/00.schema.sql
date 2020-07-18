@@ -100,8 +100,7 @@ CREATE TABLE users_documents (
                                 ON DELETE CASCADE,
   user_id         integer       NOT NULL REFERENCES users
                                 ON DELETE CASCADE,
-  last_seen       timestamptz,
-  metrics         jsonb
+  last_seen       timestamptz
 );
 
 CREATE TABLE classrooms (

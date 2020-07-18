@@ -159,6 +159,17 @@ async function deleteProfilePictureHandler(req, res) {
   }
 }
 
+async function getUser(req, res) {
+  try {
+    const user_id = req.query.id;
+    const { rows } = await query("SELECT users.name FROM users WHERE users.user_id = $1", [user_id]);
+    res.status(200).json(rows);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 module.exports = {
   userHandler,
   allUsersHandler,
@@ -169,4 +180,5 @@ module.exports = {
   userVocabularyHandler,
   uploadProfilePictureHandler,
   deleteProfilePictureHandler,
+  getUser,
 };

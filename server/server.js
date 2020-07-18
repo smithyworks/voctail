@@ -19,9 +19,10 @@ const upload = multer({ dest: "uploads/" });
 
 const server = express();
 server.use(express.json());
-// Serve the static files from the React app
+
+// Serve the static files from uploads and from the React build folder
+server.use("/uploads", express.static(path.join(__dirname + "/uploads")));
 server.use(express.static(path.join(__dirname + "/frontend_build")));
-server.use("/uploads", express.static("uploads"));
 
 server.get("/api/test", (req, res) => res.status(200).send("Server is online!"));
 
@@ -44,6 +45,7 @@ server.post(
   users.uploadProfilePictureHandler
 );
 server.delete("/api/delete-profile-picture", auth.tokenMiddleWare, users.deleteProfilePictureHandler);
+server.get("/api/get-user", auth.tokenMiddleWare, users.getUser);
 
 server.post("/api/document", auth.tokenMiddleWare, documents.documentHandler);
 server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);

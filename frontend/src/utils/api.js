@@ -97,12 +97,11 @@ export function createCustomQuiz(title, questions) {
 export function fetchDocuments() {
   return axios.get(`${base}/handle-documents`);
 }
-export function addDocument(publisher, title, author, description, category, isPublic, blocks) {
+export function addDocument(publisher, title, author, category, isPublic, blocks) {
   return axios.post(`${base}/add-document`, {
     publisher,
     title,
     author,
-    description,
     category,
     isPublic,
     blocks,
@@ -111,8 +110,8 @@ export function addDocument(publisher, title, author, description, category, isP
 export function deleteDocument(document_id) {
   return axios.post(`${base}/delete-document`, { document_id });
 }
-export function editDocument(document_id, title, author, description, category, isPublic) {
-  return axios.post(`${base}/edit-document`, { document_id, title, author, description, category, isPublic });
+export function editDocument(document_id, title, author, category, isPublic) {
+  return axios.post(`${base}/edit-document`, { document_id, title, author, category, isPublic });
 }
 
 export function viewedDocumentNow(document_id) {
@@ -120,7 +119,7 @@ export function viewedDocumentNow(document_id) {
 }
 
 export function getLastSeen(user_id, document_id) {
-  return axios.post(`${base}/get-last-seen`, { user_id, document_id });
+  return axios.get(`${base}/get-last-seen`, { params: { user: user_id, document: document_id } });
 }
 
 export function calcDocumentFit(document_id) {
@@ -240,6 +239,10 @@ export function uploadProfilePicture(files) {
 }
 export function deleteProfilePicture() {
   return axios.delete(`${base}/delete-profile-picture`);
+}
+
+export function getUser(user_id) {
+  return axios.get(`${base}/get-user`, { params: { id: user_id } });
 }
 
 // breadcrumbs
