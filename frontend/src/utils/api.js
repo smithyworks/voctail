@@ -187,8 +187,16 @@ export function deleteClassroom(classroom_id) {
   return axios.post(`${base}/delete-classroom`, { classroom_id });
 }
 
+export function deleteSection(classroom_id, section) {
+  return axios.post(`${base}/delete-section`, { classroom_id, section });
+}
+
 export function renameClassroom(classroom_id, new_title) {
   return axios.post(`${base}/rename-classroom`, { classroom_id, new_title });
+}
+
+export function renameSection(classroom_id, section, new_title) {
+  return axios.post(`${base}/rename-section`, { classroom_id, section, new_title });
 }
 
 export function addMembersToClassroom(classroom_id, member_ids, is_teacher) {

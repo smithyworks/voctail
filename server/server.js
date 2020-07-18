@@ -94,7 +94,9 @@ server.get("/api/classrooms-documents", auth.tokenMiddleWare, classrooms.documen
 server.get("/api/classrooms-sections", auth.tokenMiddleWare, classrooms.sectionsHandler);
 server.post("/api/create-classroom", auth.tokenMiddleWare, classrooms.createClassroom);
 server.post("/api/delete-classroom", auth.tokenMiddleWare, classrooms.deleteClassroom);
+server.post("/api/delete-section", auth.tokenMiddleWare, classrooms.deleteSection);
 server.post("/api/rename-classroom", auth.tokenMiddleWare, classrooms.renameClassroom);
+server.post("/api/rename-section", auth.tokenMiddleWare, classrooms.renameSection);
 server.post("/api/add-members-to-classroom", auth.tokenMiddleWare, classrooms.addMembersToClassroom);
 server.post("/api/delete-member-from-classroom", auth.tokenMiddleWare, classrooms.deleteMemberFromClassroom);
 server.post("/api/add-document-to-classroom", auth.tokenMiddleWare, classrooms.addDocumentToClassroom);

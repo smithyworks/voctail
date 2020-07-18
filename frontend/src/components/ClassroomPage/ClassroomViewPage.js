@@ -5,12 +5,10 @@ import { useParams } from "react-router-dom";
 import Header from "../common/HeaderSection";
 import { ClassroomSection, SectionSection, ChapterSection, DashboardTile, UserTile } from "../common";
 import InviteMembersDialog from "../common/InviteMembersDialog";
-import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import { api } from "../../utils";
 import { timeParser, isConnected } from "../../utils/parsers";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import VTIconFlexButton from "../common/Buttons/IconButton";
-import { addMembers, deleteMember, addDocuments, getSections } from "./ClassroomViewUtils";
+import { addMembers, deleteMember, getSections, renameSection, deleteSection } from "./ClassroomViewUtils";
 
 function ClassroomViewPage() {
   const { classroom_id } = useParams();
@@ -21,14 +19,6 @@ function ClassroomViewPage() {
   const [classroomDocumentsFromDatabase, setClassroomDocumentsFromDatabase] = useState([]);
   const [inviteTeachersDialogOpen, setInviteTeachersDialogOpen] = useState(false);
   const [inviteStudentsDialogOpen, setInviteStudentsDialogOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   useEffect(() => {
     api
@@ -170,29 +160,19 @@ function ClassroomViewPage() {
             <ChapterSection
               key={s}
               title={section}
-              Button={
-                <IconButton aria-label="test" onClick={handleClick}>
-                  <MoreVertIcon />
-                </IconButton>
-              }
+              renameSection={(newTitle) => {
+                renameSection(
+                  classroom_id,
+                  section,
+                  newTitle,
+                  classroomDocumentsFromDatabase,
+                  setClassroomDocumentsFromDatabase
+                );
+              }}
+              deleteSection={() => {
+                deleteSection(classroom_id, section, classroomDocumentsFromDatabase, setClassroomDocumentsFromDatabase);
+              }}
             >
-              <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem
-                  onClick={() =>
-                    addDocuments(
-                      classroom_id,
-                      12,
-                      "Chapter 1",
-                      classroomDocumentsFromDatabase,
-                      setClassroomDocumentsFromDatabase
-                    )
-                  }
-                >
-                  Add Hans & Gretel
-                </MenuItem>
-                <MenuItem>Rename</MenuItem>
-                <MenuItem>Delete</MenuItem>
-              </Menu>
               <Grid container>
                 {classroomDocumentsFromDatabase.map((document, i) => {
                   if (document.section === section) {
