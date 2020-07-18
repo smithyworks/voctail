@@ -104,6 +104,17 @@ function Dashboard() {
     else toasts.goPremium();
   }
 
+  const [fitLookup, setFitLookup] = useState();
+  function calcAllDocumentsFit() {
+    if (documentDataFromDatabase)
+      api
+        .calcDocumentFit()
+        .then((res) => {
+          setFitLookup(res.data);
+        })
+        .catch((err) => console.log(err));
+  }
+
   //fetch documents (rerender when documents were added, deleted, edited
   useEffect(() => {
     api
@@ -112,59 +123,25 @@ function Dashboard() {
         if (res) {
           setDocumentDataFromDatabase(res.data.documents); //if needed: fetch all documents to the frontend
           setUsersDocuments(res.data.usersDocuments);
+          calcAllDocumentsFit();
         }
       })
       .catch((err) => console.log(err));
   }, [countToRefresh]);
 
-  useEffect(() => {
-    calcAllDocumentsFit();
-    console.log("cald all documents fit in use effect mit set data", documents_fit);
-    console.log("use effect length", documents_fit.lastIndexOf());
-  });
-
-  function calcAllDocumentsFit() {
-    documentDataFromDatabase.forEach((doc) => {
-      api
-        .calcDocumentFit(doc.document_id)
-        .then((res) => {
-          documents_fit.push({ document: doc.document_id, fit: res.data.fit });
-        })
-        .catch((err) => console.log(err));
-    });
+  function getFit(document_id) {
+    if (!fitLookup) return false;
+    const fit = fitLookup[document_id];
+    return fit >= 0 && fit < 0.1;
   }
 
-  function findMyIndex(arr, id) {
-    console.log("arr", arr);
-    console.log("arr.length", arr.length);
-
-    for (let n = 0; n < arr.length; n++) {
-      if (arr[n].document === id) {
-        return n;
-      }
-    }
-    console.log("error doc was not found (index)");
-    return -1;
-  }
-
-  function getFit(documentId) {
-    console.log("doc id", documentId);
-    console.log("documents_fit", documents_fit);
-
-    console.log("documents fit length", documents_fit.length);
-    let index = findMyIndex(documents_fit, documentId);
-    //index = documents_fit.findIndex((x) => x.document === documentId);
-    console.log("index", index);
-    if (index < 0) return false;
-    let currentFit = documents_fit[index].fit;
-    console.log("current fit in doc", documentId);
-    console.log("fit is", currentFit);
-    if (currentFit < 0.1) {
-      console.log("my currentFit is less than 0.1");
-      return true;
-    }
-    return false;
-  }
+  const recommendations = documentDataFromDatabase
+    ? fitLookup
+      ? documentDataFromDatabase
+          .sort((a, b) => (fitLookup[a.document_id] < fitLookup[b.document_id] ? -1 : 1))
+          .slice(0, 10)
+      : documentDataFromDatabase.slice(0, 10)
+    : null;
 
   return (
     <AppPage location="dashboard" id="dashboard-page">
@@ -210,7 +187,19 @@ function Dashboard() {
         )}
       </DashboardSection>
 
-      <DashboardSection title={"Recommendations"}></DashboardSection>
+      <DashboardSection title={"Recommendations"} expandable>
+        {recommendations.map(({ document_id, author, title, category }, i) => (
+          <DashboardTile
+            key={i}
+            title={title}
+            author={author}
+            fits={getFit(document_id)}
+            onGenerateQuiz={() => createQuiz(document_id)}
+            linkTo={"/documents/" + document_id}
+            category={category}
+          />
+        ))}
+      </DashboardSection>
 
       <DashboardSection title={"Music Videos"} expandable>
         {documentDataFromDatabase
