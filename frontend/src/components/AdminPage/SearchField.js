@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
-import { TextField, InputAdornment, IconButton } from "@material-ui/core";
+import { InputAdornment, IconButton } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles } from "@material-ui/styles";
 import _ from "lodash";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   iconButton: { height: "35px", width: "35px", marginLeft: "-5px" },
@@ -21,7 +22,7 @@ function SearchField({ onSearch }) {
   }, 700);
 
   return (
-    <TextField
+    <ErrorDialogField
       onChange={(e) => {
         searchString.current = e.target.value;
         _search();

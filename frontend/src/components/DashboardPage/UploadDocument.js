@@ -3,7 +3,6 @@ import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
 import {
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -14,13 +13,14 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
   Grid,
 } from "@material-ui/core";
 import DescriptionIcon from "@material-ui/icons/Description";
 import { makeStyles } from "@material-ui/core/styles";
 import { parseDocument } from "./parseDocument";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import VoctailCheckbox from "../common/VoctailCheckbox";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -139,7 +139,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
       <Dialog open={open} onClose={handleAddClose} aria-labelledby="add-new-document">
         <VoctailDialogTitle id="add-new-document">Add document</VoctailDialogTitle>
         <DialogContent>
-          <TextField
+          <ErrorDialogField
             autoFocus
             margin="dense"
             id="title"
@@ -152,7 +152,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             }}
             fullWidth
           />
-          <TextField
+          <ErrorDialogField
             autoFocus
             margin="dense"
             id="author"
@@ -191,12 +191,11 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
 
           <FormControlLabel
             control={
-              <Checkbox
+              <VoctailCheckbox
                 name="checkedH"
                 onChange={handleStatusChange}
                 checked={publicDocument}
                 inputProps={{ "aria-label": "primary checkbox" }}
-                color="default"
               />
             }
             label="Public Document"

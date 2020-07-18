@@ -5,8 +5,8 @@ import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
 import { toasts } from "../common/AppPage/AppPage";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import TextField from "@material-ui/core/TextField";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const formStyles = makeStyles(() => ({
   header: {
@@ -97,7 +97,7 @@ function ClassroomCreateFormDialog({
             {" "}
             Please fill the details to create your classroom.{" "}
           </DialogContentText>
-          <TextField
+          <ErrorDialogField
             required
             error={errorTitle}
             className={classes.textField}
@@ -110,7 +110,7 @@ function ClassroomCreateFormDialog({
             type="text"
             fullWidth
           />
-          <TextField
+          <ErrorDialogField
             required
             error={errorTopic}
             className={classes.textField}
@@ -123,7 +123,7 @@ function ClassroomCreateFormDialog({
             type="text"
             fullWidth
           />
-          <TextField
+          <ErrorDialogField
             className={classes.textField}
             autoFocus
             value={newDescription}

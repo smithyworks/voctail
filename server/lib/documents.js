@@ -49,13 +49,10 @@ async function documentDataHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
     const { rows: documents } = await query("SELECT * FROM documents ORDER BY title ASC");
-    const newspaperArticles = documents.filter(({ public, category }) => public || category === "Newspaper Article");
-    const fairyTales = documents.filter(({ public, category }) => public || category === "Fairy Tale");
-    const shortStories = documents.filter(({ public, category }) => public || category === "(Short) Story");
-    const others = documents.filter(({ public, category }) => public || category === "Others");
-    const usersDocuments = documents.filter((publisher_id) => publisher_id === user_id);
 
-    res.status(200).json({ documents, newspaperArticles, fairyTales, shortStories, others, usersDocuments });
+    const usersDocuments = documents.filter((doc) => doc.publisher_id === user_id);
+
+    res.status(200).json({ documents, usersDocuments });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong while fetching documents.");
