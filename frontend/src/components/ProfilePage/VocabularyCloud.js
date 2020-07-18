@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-function VocabularyCloud({ userId, filter, showKnowns }) {
+function VocabularyCloud({ userId, filter, showKnowns, showActions }) {
   const classes = useStyles();
 
   const [count, setCount] = useState(0);
@@ -115,6 +115,7 @@ function VocabularyCloud({ userId, filter, showKnowns }) {
         onClose={() => setPopperState()}
         onMarkKnown={markKnown}
         onMarkUnknown={markUnknown}
+        showActions={showActions}
       />
     </div>
   );
