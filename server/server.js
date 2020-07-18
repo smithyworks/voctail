@@ -19,9 +19,10 @@ const upload = multer({ dest: "uploads/" });
 
 const server = express();
 server.use(express.json());
-// Serve the static files from the React app
+
+// Serve the static files from uploads and from the React build folder
+server.use("/uploads", express.static(path.join(__dirname + "/uploads")));
 server.use(express.static(path.join(__dirname + "/frontend_build")));
-server.use("/uploads", express.static("uploads"));
 
 server.get("/api/test", (req, res) => res.status(200).send("Server is online!"));
 
@@ -131,9 +132,9 @@ server.post("/api/breadcrumbs", auth.tokenMiddleWare, async (req, res) => {
 });
 
 // Handles any requests that don't match the ones above
-server.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
-});
+// server.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
+// });
 
 const port = process.env.VOCTAIL_SERVER_PORT || 8080;
 server.listen(port);
