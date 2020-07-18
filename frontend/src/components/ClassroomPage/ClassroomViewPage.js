@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Divider } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import AppPage from "../common/AppPage";
-
-import iconUser from "../../assets/icon_user.png";
+import { useParams } from "react-router-dom";
 import iconDoc from "../../assets/books.jpg";
-
 import Header from "../common/HeaderSection";
-import { ClassroomSection, SectionSection, ChapterSection, DashboardTile } from "../common";
+import { ClassroomSection, SectionSection, ChapterSection, DashboardTile, UserTile } from "../common";
 import InviteMembersDialog from "../common/InviteMembersDialog";
-import UserCard from "../common/UserCard";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import { api } from "../../utils";
 import { timeParser, urlParser, isConnected, isTeacher } from "../../utils/parsers";
 import { toasts } from "../common/AppPage/AppPage";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import VTIconFlexButton from "../common/Buttons/IconButton";
 
 function addTeachers(classroomId, teacherId, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase) {
   const addTeachersToThisClassroom = () => {
@@ -82,20 +79,14 @@ function getSections(classroomDocumentsFromDatabase) {
   return sections;
 }
 
-function isOwner(user, classroomOwnerFromDatabase) {
-  if (classroomOwnerFromDatabase.length > 0) {
-    return user.user_id === classroomOwnerFromDatabase[0].user_id;
-  }
-  return false;
-}
-
 function ClassroomViewPage() {
+  const { classroom_id } = useParams();
+
+  //const classes = useStyles();
   const [user, setUser] = useState([]);
-  const [currentClassroomId, setCurrentClassroomId] = useState(null);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
   const [classroomIsTeacher, setClassroomIsTeacher] = useState(false);
   const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
-  const [classroomOwnerFromDatabase, setClassroomOwnerFromDatabase] = useState([]);
   const [classroomTeachersFromDatabase, setClassroomTeachersFromDatabase] = useState([]);
   const [classroomDocumentsFromDatabase, setClassroomDocumentsFromDatabase] = useState([]);
   const [classroomSectionsFromDatabase, setClassroomSectionsFromDatabase] = useState([]);
@@ -116,7 +107,7 @@ function ClassroomViewPage() {
       .then((res) => {
         if (res) setUser(res.data);
         api
-          .isTeacher(urlParser(), res.data.user_id)
+          .isTeacher(classroom_id, res.data.user_id)
           .then((res2) => {
             if (res2) {
               setClassroomIsTeacher(res2.data.rows[0].teacher);
@@ -128,74 +119,49 @@ function ClassroomViewPage() {
   }, []);
 
   useEffect(() => {
-    setCurrentClassroomId(urlParser());
-  }, []);
-
-  useEffect(() => {
-    api
-      .getClassroom(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomDataFromDatabase(res.data.rows[0]);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getStudents(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomStudentsFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getOwner(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomOwnerFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getTeachers(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomTeachersFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getDocuments(urlParser(), 12)
-      .then((res) => {
-        if (res) {
-          setClassroomDocumentsFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    api
-      .getSections(urlParser())
-      .then((res) => {
-        if (res) {
-          setClassroomSectionsFromDatabase(res.data.rows);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (classroom_id) {
+      api
+        .getClassroom(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomDataFromDatabase(res.data.rows[0]);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getStudents(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomStudentsFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getTeachers(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomTeachersFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getDocuments(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomDocumentsFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+      api
+        .getSections(classroom_id)
+        .then((res) => {
+          if (res) {
+            setClassroomSectionsFromDatabase(res.data.rows);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [classroom_id]);
 
   return (
     <AppPage location="classrooms" id="classrooms-page">
@@ -208,10 +174,8 @@ function ClassroomViewPage() {
       <ClassroomSection
         title="Teachers"
         Button={
-          classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
-            <IconButton aria-label="test" onClick={() => setInviteTeachersDialogOpen(true)}>
-              <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-            </IconButton>
+          classroomIsTeacher ? (
+            <VTIconFlexButton toolTipLabel={"Add teacher"} onClick={() => setInviteTeachersDialogOpen(true)} />
           ) : (
             <span />
           )
@@ -223,37 +187,29 @@ function ClassroomViewPage() {
           onClose={() => setInviteTeachersDialogOpen(false)}
           onInvite={(ids) => {
             ids.map((id) => {
-              addTeachers(currentClassroomId, id, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase);
+              addTeachers(classroom_id, id, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase);
             });
             setInviteTeachersDialogOpen(false);
           }}
         />
 
-        <Grid container>
-          {classroomOwnerFromDatabase.concat(classroomTeachersFromDatabase).map((member) => {
-            return (
-              <Grid item style={{ padding: "10px" }}>
-                <UserCard
-                  teacher
-                  name={member.name}
-                  email={member.email}
-                  avatar={iconUser}
-                  tip={timeParser(member.last_seen)}
-                  connected={isConnected(member.last_seen)}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+        {classroomTeachersFromDatabase.map((member, i) => {
+          return (
+            <UserTile
+              key={i}
+              user={member}
+              tooltipTitle={timeParser(member.last_seen)}
+              connected={isConnected(member.last_seen)}
+            />
+          );
+        })}
       </ClassroomSection>
 
       <ClassroomSection
         title="Students"
         Button={
-          classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
-            <IconButton aria-label="test" onClick={() => setInviteStudentsDialogOpen(true)}>
-              <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-            </IconButton>
+          classroomIsTeacher ? (
+            <VTIconFlexButton toolTipLabel={"Add students"} onClick={() => setInviteStudentsDialogOpen(true)} />
           ) : (
             <span />
           )
@@ -265,60 +221,43 @@ function ClassroomViewPage() {
           onClose={() => setInviteStudentsDialogOpen(false)}
           onInvite={(ids) => {
             ids.map((id) => {
-              addStudents(currentClassroomId, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
+              addStudents(classroom_id, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
             });
             setInviteStudentsDialogOpen(false);
           }}
         />
 
-        <Grid container>
-          {classroomStudentsFromDatabase.map((member) => {
-            return (
-              <Grid item style={{ padding: "10px" }}>
-                <UserCard
-                  name={member.name}
-                  email={member.email}
-                  avatar={iconUser}
-                  tip={timeParser(member.last_seen)}
-                  connected={isConnected(member.last_seen)}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+        {classroomStudentsFromDatabase.map((member, i) => {
+          return (
+            <UserTile
+              key={i}
+              user={member}
+              tooltipTitle={timeParser(member.last_seen)}
+              connected={isConnected(member.last_seen)}
+            />
+          );
+        })}
       </ClassroomSection>
 
       <SectionSection
         title="Sections"
-        Button={
-          classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
-            <IconButton aria-label="test" onClick={() => getSections(classroomDocumentsFromDatabase)}>
-              <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
-            </IconButton>
-          ) : (
-            <span />
-          )
-        }
+        Button={classroomIsTeacher ? <VTIconFlexButton toolTipLabel={"Add section"} /> : <span />}
       >
-        {getSections(classroomDocumentsFromDatabase).map((section) => {
+        {classroomDocumentsFromDatabase.map((section) => {
           return (
             <ChapterSection
-              title={section}
+              title={section.title}
               Button={
-                classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
-                  <IconButton aria-label="test" onClick={handleClick}>
-                    <MoreVertIcon />
-                  </IconButton>
-                ) : (
-                  <span />
-                )
+                <IconButton aria-label="test" onClick={handleClick}>
+                  <MoreVertIcon />
+                </IconButton>
               }
             >
               <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                 <MenuItem
                   onClick={() =>
                     addDocuments(
-                      currentClassroomId,
+                      classroom_id,
                       12,
                       "Chapter 1",
                       classroomDocumentsFromDatabase,
@@ -332,14 +271,15 @@ function ClassroomViewPage() {
                 <MenuItem>Delete</MenuItem>
               </Menu>
               <Grid container>
-                {classroomDocumentsFromDatabase.map((document) => {
-                  if (document.section === section) {
+                {classroomDocumentsFromDatabase.map((document, i) => {
+                  if (document.section === section.title) {
                     return (
                       <DashboardTile
+                        key={i}
                         thumbnail={iconDoc}
                         title={document.title}
                         author={document.author}
-                        onOpen={() => window.open("/documents/" + document.document_id, "_self")}
+                        linkTo={`/classrooms/${classroom_id}/documents/${document.document_id}`}
                       />
                     );
                   }

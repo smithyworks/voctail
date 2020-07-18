@@ -5,7 +5,7 @@ import { Button, Dialog, DialogActions, DialogContent, Grid, TextField } from "@
 import { VTButton } from "../common";
 import Input from "@material-ui/core/Input";
 import { makeStyles } from "@material-ui/core/styles";
-import VoctailDialogTitle from "../common/VoctailDialogTitle";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
 const useStyles = makeStyles({
   numberField: {

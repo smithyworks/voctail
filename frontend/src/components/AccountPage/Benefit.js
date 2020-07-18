@@ -3,28 +3,18 @@ import { makeStyles } from "@material-ui/styles";
 import { Grid, Typography } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import CrossIcon from "@material-ui/icons/Close";
+import colors from "../../assets/colors.json";
 
 const useStyles = makeStyles({
   container: {
     padding: "5px",
-  },
-  check: {
-    color: "green",
-  },
-  cross: {
-    color: "red",
-  },
-  includedText: {
-    color: "green",
-  },
-  notIncludedText: {
-    color: "red",
   },
   iconContainer: {
     display: "flex",
     alignItems: "center",
     paddingRight: "10px",
   },
+  ...colors.accountPage,
 });
 
 function Benefit({ children, included }) {

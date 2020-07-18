@@ -7,6 +7,7 @@ import { AppPage, toasts, VTButton } from "../common";
 import { UserContext, refresh } from "../../App";
 import Benefit from "./Benefit";
 import { api } from "../../utils";
+import colors from "../../assets/colors.json";
 
 const useStyles = makeStyles({
   container: {
@@ -26,13 +27,12 @@ const useStyles = makeStyles({
     color: "white",
   },
   premiumOffer: {
-    border: "1px solid green",
+    ...colors.mainAccountPage.offer,
   },
   premiumOfferTitle: {
     padding: "30px 0",
-    backgroundColor: "green",
-    borderBotto: "1px solid green",
     color: "white",
+    ...colors.mainAccountPage.title,
   },
   benefitsContainer: {
     padding: "30px 20px",
@@ -131,7 +131,7 @@ function AccountPage() {
               <Grid item className={classes.benefitsContainer}>
                 <Benefit included>Access All Documents</Benefit>
                 <Benefit included>Import Your Own Documents</Benefit>
-                <Benefit included>Generate Unlinited Quizzes</Benefit>
+                <Benefit included>Generate Unlimited Quizzes</Benefit>
                 <Benefit included>See All Your Progress Information</Benefit>
                 <Benefit included>Create Classrooms</Benefit>
                 <Benefit included>24/7 Dedicated Support</Benefit>

@@ -1,11 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, TextField } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./Quiz/colorCycler";
 import { api } from "../../utils";
-import { toasts } from "../common/AppPage/AppPage";
-import { ConfirmDialog, CreationDialog } from "../common";
+import { toasts } from "./AppPage/AppPage";
+import ConfirmDialog from "./Dialogs/ConfirmDialog";
+import CreationDialog from "./Dialogs/CreationDialog";
+import { UserContext } from "../../App";
 
 const useStyles = makeStyles({
   container: {
@@ -24,9 +26,10 @@ const useStyles = makeStyles({
   },
   name: {
     color: "white",
-    fontSize: "24px",
+    fontSize: "22px",
     fontWeight: "bolder",
-    paddingBottom: "20%",
+    height: "70px",
+    lineHeight: "1.3em",
   },
   menuIconContainer: {
     display: "inline-block",
@@ -67,7 +70,10 @@ const useStyles = makeStyles({
   teacher: { fontWeight: "lighter", fontStyle: "italic" },
 });
 
-function teacherData(user_id, classroomAuthor, setClassroomAuthor) {
+function teacherData(user, user_id, classroomAuthor, setClassroomAuthor) {
+  if (user.user_id === user_id) {
+    return "you";
+  }
   api
     .user(user_id)
     .then((res) => {
@@ -77,31 +83,10 @@ function teacherData(user_id, classroomAuthor, setClassroomAuthor) {
   return classroomAuthor;
 }
 
-function indexOfClassroom(classroomId, classrooms) {
-  let output = 0;
-  classrooms.forEach((classroom, index) => {
-    if (classroom.classroom_id === classroomId) {
-      output = index;
-    }
-  });
-  return output;
-}
-
-function ClassroomTile({
-  title,
-  id,
-  teacher,
-  topic,
-  isOwned,
-  onDelete,
-  onRename,
-  linkTo,
-  classroomId,
-  classroomDataFromDatabase,
-  setClassroomDataFromDatabase,
-}) {
+function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename, linkTo }) {
+  const user = useContext(UserContext);
   const classes = useStyles();
-  const backgroundColor = useRef(getColor());
+  const backgroundColor = getColor(`classroom-${id}`);
 
   const [hovered, setHovered] = useState(false);
   const [classroomAuthor, setClassroomAuthor] = useState("");
@@ -137,7 +122,7 @@ function ClassroomTile({
     <Grid item xs={12} sm={6} md={3} lg={3} className={classes.container}>
       <Paper
         className={classes.paper}
-        style={{ backgroundColor: backgroundColor.current }}
+        style={{ backgroundColor }}
         elevation={hovered ? 5 : 2}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -153,7 +138,7 @@ function ClassroomTile({
           </Grid>
           <Grid item>
             <Typography className={classes.teacher}>
-              {"Open by " + teacherData(teacher, classroomAuthor, setClassroomAuthor)}
+              {"Open by " + teacherData(user, teacher, classroomAuthor, setClassroomAuthor)}
             </Typography>
           </Grid>
         </Grid>

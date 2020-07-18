@@ -8,16 +8,18 @@ const useStyles = makeStyles({
   neutral: { ...colors.button.neutral, "&:hover": { ...colors.button.neutralHover } },
   accept: { ...colors.button.accept, "&:hover": { ...colors.button.acceptHover } },
   danger: { ...colors.button.danger, "&:hover": { ...colors.button.dangerHover } },
+  warning: { ...colors.button.warning, "&:hover": { ...colors.button.warningHover } },
   secondary: { ...colors.button.secondary, "&:hover": { ...colors.button.secondaryHover } },
 });
 
-function VTButton({ neutral, accept, danger, secondary, className, variant: variantOverride, ...props }) {
+function VTButton({ neutral, accept, danger, secondary, warning, className, variant: variantOverride, ...props }) {
   const classes = useStyles();
 
   let cName = classes.neutral,
     variant = "contained";
   if (accept) cName = classes.accept;
   else if (danger) cName = classes.danger;
+  else if (warning) cName = classes.warning;
   else if (secondary) {
     cName = classes.secondary;
     variant = "outlined";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import CreationDialog from "./CreationDialog";
+import CreationDialog from "./Dialogs/CreationDialog";
 import {
   makeStyles,
   TextField,

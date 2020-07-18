@@ -1,68 +1,151 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { Typography, Grid } from "@material-ui/core";
-import UploadIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Close";
+import { Typography, Menu, MenuItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { api } from "../../utils";
+import { refresh } from "../../App";
+import { toasts } from "../common";
+import { getColor } from "../common/Quiz/colorCycler";
 
 const useStyles = makeStyles({
   container: {
     display: "inline-block",
-    textAlign: "center",
     position: "relative",
-    "& .actions": {
-      display: "none",
-    },
-    "&:hover .actions": {
-      display: "inline-block",
-    },
-  },
-  picture: {
-    width: "100%",
-    height: "100%",
-    borderRadius: "50%",
     overflow: "hidden",
   },
-  placeholderContainer: {
-    height: "100%",
-    backgroundColor: "grey",
-  },
-  placeholder: {
-    color: "white",
-  },
-  actions: {
+  picture: {
     position: "absolute",
     top: 0,
-    right: 0,
-    height: "35px",
-    color: "white",
-    backgroundColor: "black",
+    left: 0,
+    width: "100%",
+    height: "100%",
+    borderRadius: "25%",
+    overflow: "hidden",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
   },
-  actionIcon: {
-    padding: "5px",
+  initials: {
+    paddingTop: "5%",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    fontSize: "70px",
+  },
+
+  menuIconContainer: {
+    display: "inline-block",
+    position: "absolute",
+    top: "0",
+    padding: "5px 2px 1px 2px",
+    color: "white",
+    backgroundColor: "rgba(0,0,0,0.4)",
     cursor: "pointer",
-    "&:hover": { backgroundColor: "darkgrey" },
+    borderBottomLeftRadius: 4,
+    "&:hover": {
+      backgroundColor: "black",
+    },
+  },
+  menuIconIn: {
+    right: "0",
+    transition: "right 300ms",
+  },
+  menuIconOut: {
+    right: "-30px",
+    transition: "right 400ms",
+  },
+  listItemIcon: {
+    minWidth: 40,
   },
 });
 
-function ProfilePicture({ url, dimension }) {
+function ProfilePicture({ user, dimension, editable, fontSize }) {
   const classes = useStyles();
 
-  const placeholder = url ? null : (
-    <Grid container alignItems="center" justify="center" className={classes.placeholderContainer}>
-      <Typography align="center" className={classes.placeholder} variant="subtitle1">
-        No pic.. <br />
-        :(
-      </Typography>
-    </Grid>
-  );
+  const backgroundColor = getColor(`users-${user.user_id}`);
+
+  const anchor = useRef();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  function _upload(e) {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      console.log(files);
+      api
+        .uploadProfilePicture(files)
+        .then((res) => {
+          refresh();
+          toasts.toastSuccess("Your profile picture has been uploaded!");
+        })
+        .catch((err) => toasts.toastError("Encountered an error while communicating with the server."))
+        .finally(() => setMenuOpen(false));
+    }
+  }
+
+  function _delete() {
+    api
+      .deleteProfilePicture()
+      .then((res) => {
+        refresh();
+        toasts.toastSuccess("Your profile picture has been deleted!");
+      })
+      .catch((err) => toasts.toastError("Encountered an error while communicating with the server."))
+      .finally(() => {
+        setMenuOpen(false);
+      });
+  }
+
+  const url = user?.profile_pic_url;
+  const initials = user.name?.split(" ").map((n) => n[0].toUpperCase());
 
   return (
-    <div className={classes.container} style={{ height: dimension ?? "100px", width: dimension ?? "100px" }}>
-      <div className={classes.actions + " actions"}>
-        <UploadIcon className={classes.actionIcon} fontSize="large" />
-        <DeleteIcon className={classes.actionIcon} fontSize="large" />
+    <div
+      className={classes.container}
+      style={{ height: dimension ?? "100px", width: dimension ?? "100px" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className={classes.picture} style={{ backgroundColor }}>
+        <Typography variant="h1" className={classes.initials} style={{ fontSize }}>
+          {initials}
+        </Typography>
       </div>
-      <div className={classes.picture}>{placeholder}</div>
+      <div className={classes.picture} style={{ backgroundImage: `url(/${url})` }} />
+
+      {editable && (
+        <>
+          <div
+            className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
+            onClick={() => setMenuOpen(true)}
+            ref={anchor}
+          >
+            <MoreVertIcon />
+          </div>
+          <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
+            <input style={{ display: "none" }} id="upload-file" type="file" onChange={_upload} />
+            <label htmlFor="upload-file">
+              <MenuItem dense>
+                <ListItemIcon className={classes.listItemIcon}>
+                  <CloudUploadIcon />
+                </ListItemIcon>
+                <ListItemText>Upload</ListItemText>
+              </MenuItem>
+            </label>
+            <MenuItem disabled={!url} dense onClick={_delete}>
+              <ListItemIcon className={classes.listItemIcon}>
+                <DeleteIcon />
+              </ListItemIcon>
+              <ListItemText>Delete</ListItemText>
+            </MenuItem>
+          </Menu>
+        </>
+      )}
     </div>
   );
 }

@@ -16,15 +16,14 @@ import AppPage from "../common/AppPage";
 import { api } from "../../utils";
 import logo_classroom from "../../assets/classroom_logo.png";
 import { ClassroomSection, ConfirmDialog } from "../common";
-import IconButton from "@material-ui/core/IconButton";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import VTButton from "../common/Buttons/VTButton";
 import { toasts } from "../common/AppPage/AppPage";
 import { Link } from "react-router-dom";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import TextField from "@material-ui/core/TextField";
 import ClassroomTile from "../common/ClassroomTile";
-import Switch from "@material-ui/core/Switch";
+import VTIconFlexButton from "../common/Buttons/IconButton";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
 const useStyles = makeStyles(() => ({
   text: {
@@ -145,6 +144,8 @@ function ClassroomCreateFormDialog({
   setNewDescription,
   classroomDataFromDatabase,
   setClassroomDataFromDatabase,
+  classroomAsTeacherDataFromDatabase,
+  setClassroomAsTeacherDataFromDatabase,
 }) {
   const classes = formStyles();
   const [errorTitle, setErrorTitle] = useState(false);
@@ -174,10 +175,7 @@ function ClassroomCreateFormDialog({
   return (
     <div>
       <Dialog open={openCreateForm} onClose={closeCreateForm} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title" className={classes.header}>
-          {" "}
-          New Classroom{" "}
-        </DialogTitle>
+        <VoctailDialogTitle id="form-dialog-title"> New Classroom </VoctailDialogTitle>
         <DialogContent>
           <DialogContentText className={classes.description}>
             {" "}
@@ -253,7 +251,9 @@ function ClassroomCreateFormDialog({
                 newTopic,
                 newDescription,
                 classroomDataFromDatabase,
-                setClassroomDataFromDatabase
+                setClassroomDataFromDatabase,
+                classroomAsTeacherDataFromDatabase,
+                setClassroomAsTeacherDataFromDatabase
               );
               clearForm();
               closeCreateForm();
@@ -267,12 +267,24 @@ function ClassroomCreateFormDialog({
   );
 }
 
-function createClassroom(user, title, topic, description, classroomDataFromDatabase, setClassroomDataFromDatabase) {
+function createClassroom(
+  user,
+  title,
+  topic,
+  description,
+  classroomDataFromDatabase,
+  setClassroomDataFromDatabase,
+  classroomAsTeacherDataFromDatabase,
+  setClassroomAsTeacherDataFromDatabase
+) {
   const addThisClassroom = () => {
     api
       .createClassroom(user, title, topic, description, true)
       .then((res) => {
         setClassroomDataFromDatabase(res.data.rows.concat(classroomDataFromDatabase));
+        console.log(classroomDataFromDatabase);
+        setClassroomAsTeacherDataFromDatabase(res.data.rows.concat(classroomAsTeacherDataFromDatabase));
+        console.log(classroomAsTeacherDataFromDatabase);
       })
       .catch((err) => console.log(err));
   };
@@ -380,34 +392,7 @@ function Classrooms() {
 
   return (
     <AppPage location="classrooms" id="classrooms-saved-page">
-      <ClassroomSection
-        title="My Classrooms as a student"
-        description="Your classrooms as a student"
-        Button={
-          <Tooltip
-            title={user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"}
-          >
-            <span>
-              <IconButton disabled={!user.premium} aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
-                <AddBoxIcon fontSize="large" style={user.premium ? { color: "darkblue" } : { color: "grey" }} />
-              </IconButton>
-            </span>
-          </Tooltip>
-        }
-      >
-        <ClassroomCreateFormDialog
-          openCreateForm={openCreateForm}
-          closeCreateForm={() => setOpenCreateForm(false)}
-          user={user.user_id}
-          newTitle={newTitle}
-          setNewTitle={setNewTitle}
-          newTopic={newTopic}
-          setNewTopic={setNewTopic}
-          newDescription={newDescription}
-          setNewDescription={setNewDescription}
-          classroomDataFromDatabase={classroomDataFromDatabase}
-          setClassroomDataFromDatabase={setClassroomDataFromDatabase}
-        />
+      <ClassroomSection title="My Classrooms as a student" description="Your classrooms as a student">
         {classroomAsStudentDataFromDatabase.map((tile) => (
           <React.Fragment key={tile.classroom_id}>
             <ClassroomTile
@@ -415,7 +400,7 @@ function Classrooms() {
               title={tile.title}
               teacher={tile.classroom_owner}
               topic={tile.topic}
-              linkTo={"/classrooms/view?classroom=" + tile.classroom_id}
+              linkTo={"/classrooms/" + tile.classroom_id}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {
@@ -432,15 +417,14 @@ function Classrooms() {
         title="My Classrooms as a teacher"
         description="Your classrooms as a teacher"
         Button={
-          <Tooltip
-            title={user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"}
-          >
-            <span>
-              <IconButton disabled={!user.premium} aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
-                <AddBoxIcon fontSize="large" style={user.premium ? { color: "darkblue" } : { color: "grey" }} />
-              </IconButton>
-            </span>
-          </Tooltip>
+          <VTIconFlexButton
+            toolTipLabel={
+              user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"
+            }
+            onClick={() => setOpenCreateForm(true)}
+            disabled={!user.premium}
+            aria-label="new-classroom"
+          />
         }
       >
         <ClassroomCreateFormDialog
@@ -455,6 +439,8 @@ function Classrooms() {
           setNewDescription={setNewDescription}
           classroomDataFromDatabase={classroomDataFromDatabase}
           setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+          classroomAsTeacherDataFromDatabase={classroomAsTeacherDataFromDatabase}
+          setClassroomAsTeacherDataFromDatabase={setClassroomAsTeacherDataFromDatabase}
         />
         {classroomAsTeacherDataFromDatabase.map((tile) => (
           <React.Fragment key={tile.classroom_id}>
@@ -463,7 +449,7 @@ function Classrooms() {
               title={tile.title}
               teacher={tile.classroom_owner}
               topic={tile.topic}
-              linkTo={"/classrooms/view?classroom=" + tile.classroom_id}
+              linkTo={"/classrooms/" + tile.classroom_id}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {
@@ -480,15 +466,14 @@ function Classrooms() {
         title="Public classrooms"
         description="You have here the classrooms you are registered to."
         Button={
-          <Tooltip
-            title={user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"}
-          >
-            <span>
-              <IconButton disabled={!user.premium} aria-label="new-classroom" onClick={() => setOpenCreateForm(true)}>
-                <AddBoxIcon fontSize="large" style={user.premium ? { color: "darkblue" } : { color: "grey" }} />
-              </IconButton>
-            </span>
-          </Tooltip>
+          <VTIconFlexButton
+            toolTipLabel={
+              user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"
+            }
+            onClick={() => setOpenCreateForm(true)}
+            disabled={!user.premium}
+            aria-label="new-classroom"
+          />
         }
       >
         <ClassroomCreateFormDialog
@@ -503,15 +488,18 @@ function Classrooms() {
           setNewDescription={setNewDescription}
           classroomDataFromDatabase={classroomDataFromDatabase}
           setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+          classroomAsTeacherDataFromDatabase={classroomAsTeacherDataFromDatabase}
+          setClassroomAsTeacherDataFromDatabase={setClassroomAsTeacherDataFromDatabase}
         />
         {classroomDataFromDatabase.map((tile) => (
           <React.Fragment key={tile.classroom_id}>
             <ClassroomTile
               isOwned
+              id={tile.classroom_id}
               title={tile.title}
               teacher={tile.classroom_owner}
               topic={tile.topic}
-              linkTo={"/classrooms/view?classroom=" + tile.classroom_id}
+              linkTo={"/classrooms/" + tile.classroom_id}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import {
@@ -12,7 +12,6 @@ import {
   QuizzesDashboardPage,
   QuizPage,
   ClassroomsPage,
-  ClassroomsCreatePage,
   ClassroomViewPage,
   AccountPage,
   ProfilePage,
@@ -20,6 +19,7 @@ import {
 import { toasts } from "./components/common";
 import { localStorage, api } from "./utils";
 import ShowcasePage from "./components/common/ShowcasePage";
+import { getColor } from "./components/common/Quiz/colorCycler";
 
 function ProtectedRoute({ ...props }) {
   if (localStorage.hasTokens()) return <Route {...props} />;
@@ -47,12 +47,13 @@ function App() {
 
   const loggedIn = localStorage.hasTokens();
   const [user, setUser] = useState(localStorage.getUser());
+  const backgroundColor = useRef(getColor());
   useEffect(() => {
     if (loggedIn)
       api
         .user()
         .then((res) => {
-          if (res) setUser(res.data);
+          if (res) setUser({ ...res.data, backgroundColor: backgroundColor.current });
         })
         .catch((err) => toasts.toastError("Error communicating with the server!"));
   }, [loggedIn, count]);
@@ -68,8 +69,8 @@ function App() {
           <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
           <ProtectedRoute path="/documents/:document_id" component={DocumentPage} />
-          <ProtectedRoute path="/classrooms/create" component={ClassroomsCreatePage} />
-          <ProtectedRoute path="/classrooms/view" component={ClassroomViewPage} />
+          <ProtectedRoute path="/classrooms/:classroom_id/documents/:document_id" component={DocumentPage} />
+          <ProtectedRoute path="/classrooms/:classroom_id" component={ClassroomViewPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsPage} />
           <ProtectedRoute path="/account" component={AccountPage} />
           <ProtectedRoute path="/profile" component={ProfilePage} />

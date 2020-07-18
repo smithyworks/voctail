@@ -176,6 +176,12 @@ async function createClassroom(req, res) {
       "SELECT * FROM classrooms WHERE classroom_id = (SELECT MAX(classroom_id) AS LastClass FROM classrooms WHERE title = $1 AND topic = $2)",
       [title, topic]
     );
+    const {
+      initialTeacher,
+    } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, true)", [
+      rows[0].classroom_id,
+      teacher,
+    ]);
     res.status(201).json({ rows });
   } catch (err) {
     log(err);
