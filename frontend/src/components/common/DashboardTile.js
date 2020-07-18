@@ -156,19 +156,16 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
                 </Typography>
               </Grid>
               <Grid item>
-                <span className={classes.voctailFitGlass}>{fits ? <LocalBarIcon /> : <LocalBarOutlinedIcon />}</span>
+                <span>
+                  {fits ? (
+                    <LocalBarIcon className={classes.filledGlass} />
+                  ) : (
+                    <LocalBarOutlinedIcon className={classes.emptyGlass} />
+                  )}
+                </span>
               </Grid>
             </Grid>
           </div>
-
-          <div>
-            {fits ? (
-              <LocalBarIcon className={classes.filledGlass} />
-            ) : (
-              <LocalBarOutlinedIcon className={classes.emptyGlass} />
-            )}
-          </div>
-
           <div
             className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
             onClick={openMenu}

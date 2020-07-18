@@ -81,7 +81,7 @@ function AccountPage() {
   return (
     <AppPage>
       <div className={classes.container}>
-        <Typography variant="h5" gutterBottom className={classes.header}>
+        <Typography align="center" variant="h5" gutterBottom className={classes.header}>
           Welcome, {user.name ?? "user"}! You are a {user.premium ? "Premium" : "free"} VocTail user!
         </Typography>
 
