@@ -43,7 +43,7 @@ function Header({ children, onClick }) {
   );
 }
 
-function DocumentRow({ id, title, author, last_seen, header, publisher }) {
+function DocumentRow({ id, title, author, header, publisher }) {
   const classes = useStyles();
   const user = useContext(UserContext);
 
@@ -71,15 +71,12 @@ function DocumentRow({ id, title, author, last_seen, header, publisher }) {
     let d = <Grey>never</Grey>;
 
     if (lastSeen) {
-      console.log("last seen", lastSeen);
-      const { days, hours, minutes } = timediff(new Date(last_seen), new Date(), "DHm");
+      const { days, hours, minutes } = timediff(new Date(lastSeen), new Date(), "DHm");
       d = "";
-      console.log("min", minutes);
-      console.log("days, hours, min", days, hours);
       if (days > 0 || hours > 0 || minutes > 0) {
-        if (days > 0) d += `${hours}d `;
-        if (hours > 0) d += `${hours}h `;
-        if (minutes > 0) d += `${minutes}min `;
+        if (days > 0) d += `${hours} d `;
+        if (hours > 0) d += `${hours} h `;
+        if (minutes > 0) d += `${minutes} min `;
         d += "ago";
       } else d = "just now";
     }
@@ -98,29 +95,6 @@ function DocumentRow({ id, title, author, last_seen, header, publisher }) {
 
       publisher_val = pub;
     } else publisher_val = "Voctail";
-
-    /*if (searchPattern) {
-            const titleMatch = title.match(searchPattern);
-            if (titleMatch && titleMatch[0]) {
-                const splitter = titleMatch[0];
-                const nameTokens = name.split(splitter);
-                title_val = [];
-                nameTokens.forEach((t, i) => {
-                    title_val.push(t);
-                    if (i < nameTokens.length - 1) name_val.push(<Match key={i}>{splitter}</Match>);
-                });
-            }
-
-            const emailMatch = email.match(searchPattern);
-            if (emailMatch && emailMatch[0]) {
-                const splitter = emailMatch[0];
-                const emailTokens = email.split(splitter);
-                email_val = [];
-                emailTokens.forEach((t, i) => {
-                    email_val.push(t);
-                    if (i < emailTokens.length - 1) email_val.push(<Match key={i}>{splitter}</Match>);
-                });
-            }*/
   }
 
   return (
