@@ -3,6 +3,7 @@ import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, Badge, withStyles,
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ProfilePicture from "../ProfilePage/ProfilePicture";
+import ConfirmDialog from "./Dialogs/ConfirmDialog";
 
 const StyledBadgeConnected = withStyles((theme) => ({
   badge: {
@@ -127,18 +128,28 @@ const useStyles = makeStyles({
   },
 });
 
-function UserTile({ user, tooltipTitle, connected, linkTo }) {
+function UserTile({ user, tooltipTitle, connected, onDelete, linkTo }) {
   const classes = useStyles();
   const { name, email, user_id } = user;
 
   const [hovered, setHovered] = useState(false);
 
   const anchor = useRef();
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   function openMenu(e) {
     setMenuOpen(true);
     e.preventDefault();
     e.stopPropagation();
+  }
+
+  function _onDelete(e) {
+    if (typeof onDelete === "function") {
+      onDelete(e);
+      setMenuOpen(false);
+    } else {
+      console.log(typeof onDelete);
+    }
   }
 
   return (
@@ -186,12 +197,46 @@ function UserTile({ user, tooltipTitle, connected, linkTo }) {
         </Paper>
       </Tooltip>
 
+      <ConfirmDialog
+        open={confirmDialogOpen}
+        title="Deleting a student..."
+        onConfirm={() => {
+          _onDelete();
+          setConfirmDialogOpen(false);
+        }}
+        onClose={() => {
+          setConfirmDialogOpen(false);
+        }}
+      >
+        <Grid container>
+          <Grid element>
+            <Typography> Are you sure you want to delete</Typography>
+          </Grid>
+          <Grid element>
+            <Typography style={{ color: "red", marginLeft: "5px", marginRight: "5px", fontWeight: "bold" }}>
+              {"Student"}
+            </Typography>
+          </Grid>
+          <Grid element>
+            <Typography>?</Typography>
+          </Grid>
+        </Grid>
+      </ConfirmDialog>
+
       <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
         <MenuItem component="a" href={`mailto:${email}`}>
           Send Email
         </MenuItem>
         <MenuItem component={Link} to={`/users/${user_id}`}>
           View Information
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setConfirmDialogOpen(true);
+            setMenuOpen(false);
+          }}
+        >
+          Delete
         </MenuItem>
       </Menu>
     </Grid>

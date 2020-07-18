@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import OkDialog from "./OkDialog";
+import CreationDialog from "./Dialogs/CreationDialog";
 import {
   makeStyles,
   TextField,
@@ -11,14 +11,14 @@ import {
   MenuList,
   ClickAwayListener,
 } from "@material-ui/core";
-import { api } from "../../../utils";
-import { toasts } from "../AppPage/AppPage";
+import { api } from "../../utils";
+import { toasts } from "./AppPage/AppPage";
 import { Check } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   container: {
     minHeight: "0",
-    minWidth: "500px",
+    minWidth: "300px",
     overflow: "visible",
   },
   searchResults: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
   },
 });
 
-function StudentItem({ email, name, selected, onClick }) {
+function MemberItem({ email, name, selected, onClick }) {
   const classes = useStyles();
 
   return (
@@ -67,7 +67,7 @@ function StudentItem({ email, name, selected, onClick }) {
   );
 }
 
-function InviteStudentsDialog({ open, onInvite, onClose }) {
+function InviteMembersDialog({ open, onInvite, onClose, memberType }) {
   const classes = useStyles();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -106,7 +106,7 @@ function InviteStudentsDialog({ open, onInvite, onClose }) {
 
       const items = filteredUsers.map((u, i) => {
         return (
-          <StudentItem {...u} onClick={() => selectStudent(u.user_id)} selected={selectedIDs.has(u.user_id)} key={i} />
+          <MemberItem {...u} onClick={() => selectStudent(u.user_id)} selected={selectedIDs.has(u.user_id)} key={i} />
         );
       });
 
@@ -116,14 +116,14 @@ function InviteStudentsDialog({ open, onInvite, onClose }) {
     }
   }, [users, searchTerm, selectedIDs]); // eslint-disable-line
 
-  const [studentChips, setStudentChips] = useState();
+  const [memberChips, setmemberChips] = useState();
   useEffect(() => {
     const chips = [...selectedIDs].map((id) => {
       const u = users.find((u) => u.user_id === id);
       return <Chip variant="outlined" onDelete={() => removeStudent(id)} label={`${u.email} ${u.name}`} />;
     });
 
-    setStudentChips(chips);
+    setmemberChips(chips);
   }, [selectedIDs, users]); // eslint-disable-line
 
   function _invite() {
@@ -138,9 +138,16 @@ function InviteStudentsDialog({ open, onInvite, onClose }) {
 
   return (
     <>
-      <OkDialog title="Invite students!" open={!!open} onClose={_onClose} onOk={_invite} noScroll>
+      <CreationDialog
+        title={"Invite " + memberType + "..."}
+        description={"Search for " + memberType}
+        validationButtonName="Add"
+        open={!!open}
+        onClose={_onClose}
+        onConfirm={_invite}
+        noScroll
+      >
         <Grid className={classes.container}>
-          <Typography>Search for Students</Typography>
           <div className={classes.inputContainer}>
             <TextField
               variant="outlined"
@@ -159,13 +166,13 @@ function InviteStudentsDialog({ open, onInvite, onClose }) {
           </div>
 
           <div className={classes.chipsContainer}>
-            <Typography>Selected Students</Typography>
-            {studentChips}
+            <Typography>{"Selected " + memberType}</Typography>
+            {memberChips}
           </div>
         </Grid>
-      </OkDialog>
+      </CreationDialog>
     </>
   );
 }
 
-export default InviteStudentsDialog;
+export default InviteMembersDialog;

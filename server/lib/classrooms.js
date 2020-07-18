@@ -11,6 +11,36 @@ async function classroomsHandler(req, res) {
   }
 }
 
+async function classroomsAsStudentHandler(req, res) {
+  try {
+    const {
+      rows,
+    } = await query(
+      "SELECT * FROM classroom_members INNER JOIN classrooms ON classrooms.classroom_id=classroom_members.classroom_id WHERE member_id = $1 AND teacher = false ORDER BY classrooms.classroom_id DESC",
+      [req.query.member_id]
+    );
+    res.status(200).json({ rows });
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong with the classrooms handler.");
+  }
+}
+
+async function classroomsAsTeacherHandler(req, res) {
+  try {
+    const {
+      rows,
+    } = await query(
+      "SELECT * FROM classroom_members INNER JOIN classrooms ON classrooms.classroom_id=classroom_members.classroom_id WHERE member_id = $1 AND teacher = true ORDER BY classrooms.classroom_id DESC",
+      [req.query.member_id]
+    );
+    res.status(200).json({ rows });
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong with the classrooms handler.");
+  }
+}
+
 async function classroomHandler(req, res) {
   try {
     const { rows } = await query("SELECT * FROM classrooms WHERE classroom_id = $1", [req.query.classroom_id]);
@@ -21,13 +51,16 @@ async function classroomHandler(req, res) {
   }
 }
 
-async function usersHandler(req, res) {
+async function isTeacher(req, res) {
   try {
-    const { rows } = await query("SELECT * FROM users ORDER BY user_id ASC");
-    res.status(200).json(rows);
+    const { rows } = await query(
+      "SELECT teacher FROM classroom_members " + "WHERE classroom_id = $1 AND member_id = $2",
+      [req.query.classroom_id, req.query.member_id]
+    );
+    res.status(200).json({ rows });
   } catch (err) {
     log(err);
-    res.status(500).send("Something went wrong.");
+    res.status(500).send("Something went wrong with the isTeacher request.");
   }
 }
 
@@ -37,7 +70,7 @@ async function studentsHandler(req, res) {
       "SELECT *" +
         "FROM users " +
         "INNER JOIN classroom_members ON user_id = member_id " +
-        "WHERE classroom_id = $1 " +
+        "WHERE classroom_id = $1 AND teacher = false " +
         "ORDER BY name ASC",
       [req.query.classroom_id]
     );
@@ -98,14 +131,30 @@ async function sectionsHandler(req, res) {
 
 async function documentsHandler(req, res) {
   try {
-    const { rows } = await query(
-      "SELECT documents.document_id, title, author, classroom_documents.section " +
-        "FROM documents " +
-        "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
-        "WHERE classroom_id = $1",
-      [req.query.classroom_id]
-    );
-    res.status(200).json({ rows });
+    if (req.query.document_id != 0) {
+      console.log(req.query.document_id);
+      const {
+        rows,
+      } = await query(
+        "SELECT documents.document_id, title, author, category, classroom_documents.section " +
+          "FROM documents " +
+          "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
+          "WHERE classroom_id = $1 AND classroom_documents.document_id = $2 ORDER BY classroom_documents.section ASC",
+        [req.query.classroom_id, req.query.document_id]
+      );
+      res.status(200).json({ rows });
+    } else {
+      const {
+        rows,
+      } = await query(
+        "SELECT documents.document_id, title, author, category, classroom_documents.section " +
+          "FROM documents " +
+          "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
+          "WHERE classroom_id = $1 ORDER BY classroom_documents.section ASC",
+        [req.query.classroom_id]
+      );
+      res.status(200).json({ rows });
+    }
   } catch (err) {
     log(err);
     res.status(500).send("There is a problem in the documentsHandler");
@@ -131,6 +180,12 @@ async function createClassroom(req, res) {
       "SELECT * FROM classrooms WHERE classroom_id = (SELECT MAX(classroom_id) AS LastClass FROM classrooms WHERE title = $1 AND topic = $2)",
       [title, topic]
     );
+    const {
+      initialTeacher,
+    } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, true)", [
+      rows[0].classroom_id,
+      teacher,
+    ]);
     res.status(201).json({ rows });
   } catch (err) {
     log(err);
@@ -149,12 +204,56 @@ async function deleteClassroom(req, res) {
   }
 }
 
+async function renameClassroom(req, res) {
+  try {
+    const { classroom_id, new_title } = req.body;
+    const { output } = await query("UPDATE classrooms SET title = $2 WHERE classroom_id = $1", [
+      classroom_id,
+      new_title,
+    ]);
+    res.status(200).send("Classroom correctly renamed.");
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function addTeacherToClassroom(req, res) {
+  try {
+    const { classroom_id, member_id } = req.body;
+    const {
+      rows,
+    } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, true)", [
+      classroom_id,
+      member_id,
+    ]);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function deleteTeacherFromClassroom(req, res) {
+  try {
+    const { classroom_id, member_id } = req.body;
+    const { rows } = await query("DELETE FROM classroom_members WHERE classroom_id = $1 AND member_id = $2", [
+      classroom_id,
+      member_id,
+    ]);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 async function addStudentToClassroom(req, res) {
   try {
-    const { classroom_id, student_id } = req.body;
-    const { rows } = await query("INSERT INTO classroom_members (classroom_id, student_id) VALUES ($1,$2)", [
+    const { classroom_id, member_id } = req.body;
+    const {
+      rows,
+    } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, false)", [
       classroom_id,
-      student_id,
+      member_id,
     ]);
   } catch (err) {
     log(err);
@@ -164,11 +263,12 @@ async function addStudentToClassroom(req, res) {
 
 async function deleteStudentFromClassroom(req, res) {
   try {
-    const { classroom_id, student_id } = req.body;
-    const { rows } = await query("DELETE FROM classroom_members WHERE classroom_id = $1 AND student_id = $2", [
+    const { classroom_id, member_id } = req.body;
+    const { rows } = await query("DELETE FROM classroom_members WHERE classroom_id = $1 AND member_id = $2", [
       classroom_id,
-      student_id,
+      member_id,
     ]);
+    res.status(200).send("Student correctly deleted.");
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -177,11 +277,22 @@ async function deleteStudentFromClassroom(req, res) {
 
 async function addDocumentToClassroom(req, res) {
   try {
-    const { classroom_id, document_id } = req.body;
-    const { rows } = await query("INSERT INTO classroom_documents (classroom_id, document_id) VALUES ($1, $2)", [
+    const { classroom_id, document_id, section } = req.body;
+    const {
+      input,
+    } = await query("INSERT INTO classroom_documents (classroom_id, document_id, section) VALUES ($1, $2, $3)", [
       classroom_id,
       document_id,
+      section,
     ]);
+    const { rows } = await query(
+      "SELECT documents.document_id, title, author, category, classroom_documents.section " +
+        "FROM documents " +
+        "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
+        "WHERE classroom_id = $1 AND classroom_documents.document_id = $2 ORDER BY classroom_documents.section ASC",
+      [classroom_id, document_id]
+    );
+    res.status(201).json({ rows });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -191,15 +302,20 @@ async function addDocumentToClassroom(req, res) {
 module.exports = {
   classroomHandler,
   classroomsHandler,
+  classroomsAsStudentHandler,
+  classroomsAsTeacherHandler,
+  isTeacher,
   documentsHandler,
   sectionsHandler,
   studentsHandler,
   ownerHandler,
   teachersHandler,
-  usersHandler,
   createClassroom,
   deleteClassroom,
+  renameClassroom,
+  addTeacherToClassroom,
+  deleteTeacherFromClassroom,
   addStudentToClassroom,
-  deleteStudentToClassroom: deleteStudentFromClassroom,
+  deleteStudentFromClassroom,
   addDocumentToClassroom,
 };

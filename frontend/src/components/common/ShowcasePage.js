@@ -9,7 +9,7 @@ import Header from "./HeaderSection";
 import UserCard from "./UserCard";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import InviteStudentsDialog from "./Dialogs/InviteStudentsDialog";
+import InviteMembersDialog from "./InviteMembersDialog";
 import DashboardTile from "./DashboardTile";
 import pic from "../../assets/fairytale.jpg";
 import QuizSection from "./Quiz/QuizSection";
@@ -345,7 +345,7 @@ function ShowcasePage() {
       </ClassroomSection>
 
       <Typography variant="h5" style={{ marginTop: "20px" }} gutterBottom>
-        InviteStudentsDialog
+        InviteMembersDialog
       </Typography>
       <VTButton
         neutral
@@ -355,7 +355,8 @@ function ShowcasePage() {
       >
         Invite students
       </VTButton>
-      <InviteStudentsDialog
+      <InviteMembersDialog
+        memberType="Student"
         open={inviteDialogOpen}
         onClose={() => setInviteDialogOpen(false)}
         onInvite={(ids) => {
