@@ -204,6 +204,20 @@ async function deleteClassroom(req, res) {
   }
 }
 
+async function deleteSection(req, res) {
+  try {
+    const { classroom_id, section } = req.body;
+    const { output } = await query("DELETE FROM classroom_documents WHERE classroom_id = $1 AND section = $2", [
+      classroom_id,
+      section,
+    ]);
+    res.status(200).send("Section correctly deleted.");
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 async function renameClassroom(req, res) {
   try {
     const { classroom_id, new_title } = req.body;
@@ -220,15 +234,15 @@ async function renameClassroom(req, res) {
 
 async function renameSection(req, res) {
   try {
-    const { classroom_id, new_title } = req.body;
+    const { classroom_id, section, new_title } = req.body;
     const {
       output,
-    } = await query("UPDATE classroom_document SET section = $2 WHERE classroom_id = $1 AND section = $3", [
+    } = await query("UPDATE classroom_documents SET section = $2 WHERE classroom_id = $1 AND section = $3", [
       classroom_id,
       new_title,
-      "Chapter 1",
+      section,
     ]);
-    res.status(200).send("Section correctly renamed.");
+    res.status(200).send("Section successfully renamed.");
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -317,6 +331,7 @@ module.exports = {
   teachersHandler,
   createClassroom,
   deleteClassroom,
+  deleteSection,
   renameClassroom,
   renameSection,
   addMembersToClassroom,

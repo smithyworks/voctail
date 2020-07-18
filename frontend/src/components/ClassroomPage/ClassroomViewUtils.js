@@ -78,13 +78,15 @@ export function getSections(classroomDocumentsFromDatabase) {
 
 export function renameSection(
   classroomId,
+  section,
   newTitle,
   classroomDocumentsFromDatabase,
   setClassroomDocumentsFromDatabase
 ) {
   api
-    .renameClassroom(classroomId, newTitle)
+    .renameSection(classroomId, section, newTitle)
     /*.then((res) => {
+      /*
       setClassroomDataFromDatabase(
         classroomDataFromDatabase
           .slice(0, indexOfRenamedClassroom)
@@ -94,4 +96,18 @@ export function renameSection(
     })*/
     .catch((err) => console.log(err));
   toasts.toastSuccess("Section renamed!");
+}
+
+export function deleteSection(classroomId, section, classroomDataFromDatabase, setClassroomDataFromDatabase) {
+  api
+    .deleteSection(classroomId, section)
+    /*.then((res) => {
+      setClassroomDataFromDatabase(
+        classroomDataFromDatabase
+          .slice(0, indexOfDeletedClassroom)
+          .concat(classroomDataFromDatabase.slice(indexOfDeletedClassroom + 1))
+      );
+    })*/
+    .catch((err) => console.log(err));
+  toasts.toastSuccess("Section deleted!");
 }

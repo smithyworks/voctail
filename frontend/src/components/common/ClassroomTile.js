@@ -92,7 +92,6 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
   const [classroomAuthor, setClassroomAuthor] = useState("");
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-
   const [newTitle, setNewTitle] = useState("");
   const [errorNewTitle, setErrorNewTitle] = useState(false);
 
