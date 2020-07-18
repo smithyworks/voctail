@@ -178,19 +178,13 @@ function ClassroomViewPage() {
             >
               <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                 <MenuItem
-                  onClick={() =>
-                    addDocuments(
-                      classroom_id,
-                      12,
-                      "Chapter 1",
-                      classroomDocumentsFromDatabase,
-                      setClassroomDocumentsFromDatabase
-                    )
-                  }
+                  onClick={() => {
+                    console.log("hello");
+                    setAnchorEl(false);
+                  }}
                 >
-                  Add Hans & Gretel
+                  Rename
                 </MenuItem>
-                <MenuItem>Rename</MenuItem>
                 <MenuItem>Delete</MenuItem>
               </Menu>
               <Grid container>

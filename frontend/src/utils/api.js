@@ -192,6 +192,10 @@ export function renameClassroom(classroom_id, new_title) {
   return axios.post(`${base}/rename-classroom`, { classroom_id, new_title });
 }
 
+export function renameSection(classroom_id, new_title) {
+  return axios.post(`${base}/rename-section`, { classroom_id, new_title });
+}
+
 export function addMembersToClassroom(classroom_id, member_ids, is_teacher) {
   return axios.post(`${base}/add-members-to-classroom`, { classroom_id, member_ids, is_teacher });
 }

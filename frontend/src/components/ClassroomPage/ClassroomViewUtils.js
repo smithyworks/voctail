@@ -75,3 +75,23 @@ export function getSections(classroomDocumentsFromDatabase) {
   });
   return sections;
 }
+
+export function renameSection(
+  classroomId,
+  newTitle,
+  classroomDocumentsFromDatabase,
+  setClassroomDocumentsFromDatabase
+) {
+  api
+    .renameClassroom(classroomId, newTitle)
+    /*.then((res) => {
+      setClassroomDataFromDatabase(
+        classroomDataFromDatabase
+          .slice(0, indexOfRenamedClassroom)
+          .concat([classroomRenamed])
+          .concat(classroomDataFromDatabase.slice(indexOfRenamedClassroom + 1))
+      );
+    })*/
+    .catch((err) => console.log(err));
+  toasts.toastSuccess("Section renamed!");
+}

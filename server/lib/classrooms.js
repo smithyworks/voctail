@@ -218,6 +218,23 @@ async function renameClassroom(req, res) {
   }
 }
 
+async function renameSection(req, res) {
+  try {
+    const { classroom_id, new_title } = req.body;
+    const {
+      output,
+    } = await query("UPDATE classroom_document SET section = $2 WHERE classroom_id = $1 AND section = $3", [
+      classroom_id,
+      new_title,
+      "Chapter 1",
+    ]);
+    res.status(200).send("Section correctly renamed.");
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 async function addMembersToClassroom(req, res) {
   const membersAdded = [];
   try {
@@ -301,6 +318,7 @@ module.exports = {
   createClassroom,
   deleteClassroom,
   renameClassroom,
+  renameSection,
   addMembersToClassroom,
   deleteMemberFromClassroom,
   addDocumentToClassroom,
