@@ -3,12 +3,11 @@ import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
 import DashboardTile from "../common/DashboardTile";
 import AppPage, { toasts } from "../common/AppPage";
-import { DashboardSection } from "../common";
+import { DashboardSection, GoPremiumDialog } from "../common";
 import WarningDialog from "../AdminPage/WarningDialog";
 import EditDocument from "./EditDocument";
 import PlaceholderTile from "../common/PlaceholderTile";
 import VTIconFlexButton from "../common/Buttons/IconButton";
-import CheckoutPremiumDialog from "../common/Dialogs/CheckoutPremiumDialog";
 import { UserContext } from "../../App";
 
 //overview (browse through documents, see title, preview and some additional information)
@@ -34,7 +33,6 @@ function Dashboard() {
 
   const handleCheckoutPremium = () => {
     setPremiumOpen(true);
-    console.log("premium", premiumOpen);
   };
   const handleCheckoutPremiumClose = () => {
     setPremiumOpen(false);
@@ -176,7 +174,11 @@ function Dashboard() {
           user && user.premium ? (
             <VTIconFlexButton toolTipLabel={"Add new document"} onClick={handleAddOpen} />
           ) : (
-            <VTIconFlexButton disabled />
+            <VTIconFlexButton
+              voctailDisabled
+              toolTipLabel={"Adding new documents is not available for free users"}
+              onClick={handleCheckoutPremium}
+            />
           )
         }
         expandable
@@ -250,7 +252,7 @@ function Dashboard() {
               key={i}
               title={tile.title}
               author={tile.author}
-              fits={getFit(tile.document_id)}
+              fits={true}
               onGenerateQuiz={() => createQuiz(tile.document_id)}
               linkTo={"/documents/" + tile.document_id}
               category={tile.category}
@@ -298,12 +300,8 @@ function Dashboard() {
       />
       <WarningDialog open={dialogOpen} info={dialogInfo.current} />
 
-      <CheckoutPremiumDialog
-        title={"You are not allowed to add your own document."}
-        feature={"Adding new documents"}
-        open={premiumOpen}
-        onClose={handleCheckoutPremiumClose}
-      />
+      <GoPremiumDialog open={premiumOpen} onClose={handleCheckoutPremiumClose} />
+
       <EditDocument
         refresh={refresh}
         open={editDialogOpen}

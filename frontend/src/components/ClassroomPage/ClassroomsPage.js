@@ -24,6 +24,7 @@ import TextField from "@material-ui/core/TextField";
 import ClassroomTile from "../common/ClassroomTile";
 import VTIconFlexButton from "../common/Buttons/IconButton";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import GoPremiumDialog from "../common/Dialogs/GoPremiumDialog";
 
 const formStyles = makeStyles(() => ({
   header: {
@@ -255,6 +256,11 @@ function Classrooms() {
   const [newTopic, setNewTopic] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
+  const [goPremium, setGoPremium] = useState(false);
+
+  const handleGoPremiumClose = () => {
+    setGoPremium(false);
+  };
 
   useEffect(() => {
     api
@@ -373,8 +379,8 @@ function Classrooms() {
             toolTipLabel={
               user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"
             }
-            onClick={() => setOpenCreateForm(true)}
-            disabled={!user.premium}
+            onClick={user.premium ? () => setOpenCreateForm(true) : () => setGoPremium(true)}
+            voctailDisabled={!user.premium}
             aria-label="new-classroom"
           />
         }
@@ -415,6 +421,8 @@ function Classrooms() {
           </React.Fragment>
         ))}
       </ClassroomSection>
+
+      <GoPremiumDialog open={goPremium} onClose={handleGoPremiumClose} />
     </AppPage>
   );
 }
