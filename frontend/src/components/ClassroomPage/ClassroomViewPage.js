@@ -10,7 +10,7 @@ import { api } from "../../utils";
 import { timeParser, isConnected } from "../../utils/parsers";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import VTIconFlexButton from "../common/Buttons/IconButton";
-import { addTeachers, addStudents, deleteStudent, addDocuments, getSections } from "./ClassroomViewUtils";
+import { addMembers, deleteMember, addDocuments, getSections } from "./ClassroomViewUtils";
 
 function ClassroomViewPage() {
   const { classroom_id } = useParams();
@@ -106,9 +106,7 @@ function ClassroomViewPage() {
           open={inviteTeachersDialogOpen}
           onClose={() => setInviteTeachersDialogOpen(false)}
           onInvite={(ids) => {
-            ids.map((id) => {
-              addTeachers(classroom_id, id, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase);
-            });
+            addMembers(classroom_id, ids, true, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase);
             setInviteTeachersDialogOpen(false);
           }}
         />
@@ -141,9 +139,7 @@ function ClassroomViewPage() {
           open={inviteStudentsDialogOpen}
           onClose={() => setInviteStudentsDialogOpen(false)}
           onInvite={(ids) => {
-            ids.map((id) => {
-              addStudents(classroom_id, id, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
-            });
+            addMembers(classroom_id, ids, false, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase);
             setInviteStudentsDialogOpen(false);
           }}
         />
@@ -156,7 +152,7 @@ function ClassroomViewPage() {
               tooltipTitle={timeParser(member.last_seen)}
               connected={isConnected(member.last_seen)}
               onDelete={() => {
-                deleteStudent(
+                deleteMember(
                   classroom_id,
                   member.user_id,
                   classroomStudentsFromDatabase,
