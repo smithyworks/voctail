@@ -6,7 +6,6 @@ import { TextField } from "@material-ui/core";
 function ErrorDialogField({ numeric, error, setError, onChange, label, warning, ...props }) {
   // if(error || inputRef.current > 0)
   const _onChange = (e) => {
-    console.log("ErrorDialogField", error);
     onChange(e);
     if (error) {
       setError(false);
