@@ -95,41 +95,6 @@ function DocumentRow({ id, title, author, header, publisher }) {
 
       publisher_val = pub;
     } else publisher_val = "Voctail";
-
-    /* const filterDocuments = useCallback(
-     (searchString) => {
-       if (searchString && searchString.length > 0) {
-         const pattern = new RegExp(searchString);
-         return documents?.filter((u) => {
-           return u.title.match(pattern, "i") || u.author.match(pattern, "i");
-         });
-       } else return usersList;
-     },
-     [usersList]
- ); */
-
-    /*if (searchPattern) {
-            const titleMatch = title.match(searchPattern);
-            if (titleMatch && titleMatch[0]) {
-                const splitter = titleMatch[0];
-                const nameTokens = name.split(splitter);
-                title_val = [];
-                nameTokens.forEach((t, i) => {
-                    title_val.push(t);
-                    if (i < nameTokens.length - 1) name_val.push(<Match key={i}>{splitter}</Match>);
-                });
-            }
-
-            const emailMatch = email.match(searchPattern);
-            if (emailMatch && emailMatch[0]) {
-                const splitter = emailMatch[0];
-                const emailTokens = email.split(splitter);
-                email_val = [];
-                emailTokens.forEach((t, i) => {
-                    email_val.push(t);
-                    if (i < emailTokens.length - 1) email_val.push(<Match key={i}>{splitter}</Match>);
-                });
-            }*/
   }
 
   return (

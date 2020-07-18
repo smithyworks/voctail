@@ -1,36 +1,9 @@
 import { Paper, Table, TableBody, TableHead } from "@material-ui/core";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DocumentRow from "./DocumentRow";
 import { api } from "../../utils";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles({
-  greyed: { color: "#aaa" },
-  documentsRow: {
-    "&:hover": {
-      backgroundColor: "#efefef",
-    },
-  },
-  header: {
-    fontWeight: "bold",
-    padding: "10px 0",
-    display: "inline-block",
-  },
-  cell: {
-    padding: "0 10px",
-  },
-  tooltip: {
-    position: "relative",
-    top: "-10px",
-  },
-  match: {
-    backgroundColor: "#55FF9f",
-  },
-});
 
 function DocumentMetrics() {
-  const classes = useStyles();
-
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
