@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, TableHead, TableBody, TableRow, TableContainer, Paper } from "@material-ui/core";
+import { Table, TableHead, TableBody, TableRow, TableContainer, CircularProgress, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Pagination } from "@material-ui/lab";
 
@@ -22,29 +22,40 @@ function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete, searchSt
   const pageCount = listLength > PAGE_LENGTH ? Math.ceil(listLength / PAGE_LENGTH) : 1;
 
   const [page, setPage] = useState(1);
-  useEffect(() => setPage(1), [users]);
   const start = (page - 1) * PAGE_LENGTH < listLength ? (page - 1) * PAGE_LENGTH : listLength;
   const end = listLength < start + PAGE_LENGTH ? listLength : start + PAGE_LENGTH;
 
-  const pattern = searchString ? new RegExp(searchString, "i") : null;
-  const userRows = [];
-  for (let i = start; i < end; i++) {
-    const u = users[i];
-    userRows.push(
-      u ? (
-        <UserRow
-          key={u.user_id}
-          {...u}
-          onMasquerade={onMasquerade}
-          onRevoke={onRevoke}
-          onDelete={onDelete}
-          searchPattern={pattern}
-        />
-      ) : (
-        <TableRow />
-      )
+  const [userRows, setUserRows] = useState();
+  useEffect(() => {
+    const pattern = searchString ? new RegExp(searchString, "i") : null;
+    const rows = [];
+    for (let i = start; i < end; i++) {
+      const u = users[i];
+      rows.push(
+        u ? (
+          <UserRow
+            key={u.user_id}
+            {...u}
+            onMasquerade={onMasquerade}
+            onRevoke={onRevoke}
+            onDelete={onDelete}
+            searchPattern={pattern}
+          />
+        ) : (
+          <TableRow />
+        )
+      );
+    }
+    setUserRows(rows);
+    setPage(1);
+  }, [users]); // eslint-disable-line
+
+  if (!userRows)
+    return (
+      <Grid container style={{ height: 600 }} justify="center" alignItems="center">
+        <CircularProgress />
+      </Grid>
     );
-  }
 
   return (
     <TableContainer>
@@ -59,7 +70,7 @@ function UsersPaginatedTable({ users, onMasquerade, onRevoke, onDelete, searchSt
         onChange={(_, p) => setPage(p)}
         className={classes.pagination}
       />
-      <Table size="small" component={Paper} elevation={0}>
+      <Table size="small">
         <TableHead>
           <UserRow header onSortPremium={onSortPremium} />
         </TableHead>

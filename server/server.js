@@ -21,7 +21,7 @@ const server = express();
 server.use(express.json());
 
 // Serve the static files from uploads and from the React build folder
-server.use("/uploads", express.static(path.join(__dirname + "/uploads")));
+server.get("/uploads/*", express.static(path.join(__dirname + "/uploads")));
 server.use(express.static(path.join(__dirname + "/frontend_build")));
 
 server.get("/api/test", (req, res) => res.status(200).send("Server is online!"));
@@ -66,6 +66,8 @@ server.post("/api/admin/delete-user", auth.tokenMiddleWare, admin.deleteUser);
 server.post("/api/admin/revoke-token", auth.tokenMiddleWare, admin.revokeTokenHandler);
 server.post("/api/admin/masquerade", auth.tokenMiddleWare, admin.masqueradeHandler);
 server.get("/api/admin/end-masquerade", auth.tokenMiddleWare, admin.endMasqueradeHandler);
+server.post("/api/admin/contributed-translations", auth.tokenMiddleWare, admin.contributedTranslationsHandler);
+server.post("/api/admin/update-translation", auth.tokenMiddleWare, admin.updateTranslationHandler);
 
 server.get("/api/quizzes", auth.tokenMiddleWare, quizzes.quizzesHandler);
 server.get("/api/quiz", auth.tokenMiddleWare, quizzes.quizHandler);

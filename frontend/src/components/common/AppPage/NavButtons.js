@@ -46,7 +46,6 @@ function NavButtons({ location, isAdmin, pendingTranslations }) {
       : classes.link;
   const adminLinkClass = path === "/admin" ? classes.activeLink : classes.link;
 
-  console.log(pendingTranslations);
   const adminLink = isAdmin ? (
     pendingTranslations ? (
       <Link to="/admin" className={adminLinkClass}>
