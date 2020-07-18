@@ -218,57 +218,45 @@ async function renameClassroom(req, res) {
   }
 }
 
-async function addTeacherToClassroom(req, res) {
+async function addMembersToClassroom(req, res) {
+  const membersAdded = [];
   try {
-    const { classroom_id, member_id } = req.body;
-    const {
-      rows,
-    } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, true)", [
-      classroom_id,
-      member_id,
-    ]);
+    const { classroom_id, member_ids, is_teacher } = req.body;
+    for (let member_id of member_ids) {
+      //Check if the member is not already registered
+      const {
+        rows: isMember,
+      } = await query("SELECT member_id FROM classroom_members WHERE classroom_id = $1 AND member_id = $2", [
+        classroom_id,
+        member_id,
+      ]);
+      if (isMember.length == 0) {
+        const {
+          input,
+        } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, $3)", [
+          classroom_id,
+          member_id,
+          is_teacher,
+        ]);
+        const { rows: newMember } = await query("SELECT * FROM users WHERE user_id = $1", [member_id]);
+        membersAdded.push(newMember[0]);
+      }
+    }
+    res.status(201).json({ membersAdded });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
   }
 }
 
-async function deleteTeacherFromClassroom(req, res) {
+async function deleteMemberFromClassroom(req, res) {
   try {
     const { classroom_id, member_id } = req.body;
     const { rows } = await query("DELETE FROM classroom_members WHERE classroom_id = $1 AND member_id = $2", [
       classroom_id,
       member_id,
     ]);
-  } catch (err) {
-    log(err);
-    res.status(500).send("Something went wrong.");
-  }
-}
-
-async function addStudentToClassroom(req, res) {
-  try {
-    const { classroom_id, member_id } = req.body;
-    const {
-      rows,
-    } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, false)", [
-      classroom_id,
-      member_id,
-    ]);
-  } catch (err) {
-    log(err);
-    res.status(500).send("Something went wrong.");
-  }
-}
-
-async function deleteStudentFromClassroom(req, res) {
-  try {
-    const { classroom_id, member_id } = req.body;
-    const { rows } = await query("DELETE FROM classroom_members WHERE classroom_id = $1 AND member_id = $2", [
-      classroom_id,
-      member_id,
-    ]);
-    res.status(200).send("Student correctly deleted.");
+    res.status(200).send("Member correctly deleted.");
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
@@ -313,9 +301,7 @@ module.exports = {
   createClassroom,
   deleteClassroom,
   renameClassroom,
-  addTeacherToClassroom,
-  deleteTeacherFromClassroom,
-  addStudentToClassroom,
-  deleteStudentFromClassroom,
+  addMembersToClassroom,
+  deleteMemberFromClassroom,
   addDocumentToClassroom,
 };

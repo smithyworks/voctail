@@ -2,61 +2,47 @@ import React from "react";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage/AppPage";
 
-export function indexOfStudent(studentId, students) {
+export function indexOfMember(memberId, members) {
   let output = 0;
-  students.forEach((student, index) => {
-    if (student.user_id === studentId) {
+  members.forEach((member, index) => {
+    if (member.user_id === memberId) {
       output = index;
     }
   });
   return output;
 }
 
-export function addTeachers(classroomId, teacherId, classroomTeachersFromDatabase, setClassroomTeachersFromDatabase) {
-  const addTeachersToThisClassroom = () => {
-    api.addTeacherToClassroom(classroomId, teacherId).catch((err) => console.log(err));
-  };
-  addTeachersToThisClassroom();
+export function addMembers(
+  classroomId,
+  studentIds,
+  areTeacher,
+  classroomMembersFromDatabase,
+  setClassroomMembersFromDatabase
+) {
   api
-    .user(teacherId)
+    .addMembersToClassroom(classroomId, studentIds, areTeacher)
     .then((res) => {
       if (res) {
-        setClassroomTeachersFromDatabase(classroomTeachersFromDatabase.concat([res.data]));
-        toasts.toastSuccess("Teacher added to the classroom.");
+        setClassroomMembersFromDatabase(classroomMembersFromDatabase.concat(res.data.membersAdded));
       }
     })
     .catch((err) => console.log(err));
+  toasts.toastSuccess((areTeacher ? "Teachers" : "Students") + " added to the classroom.");
 }
 
-export function addStudents(classroomId, studentId, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase) {
-  const addStudentsToThisClassroom = () => {
-    api.addStudentToClassroom(classroomId, studentId).catch((err) => console.log(err));
-  };
-  addStudentsToThisClassroom();
+export function deleteMember(classroomId, memberId, classroomMembersFromDatabase, setClassroomMembersFromDatabase) {
+  const indexOfDeletedMember = indexOfMember(memberId, classroomMembersFromDatabase);
   api
-    .user(studentId)
+    .deleteMemberFromClassroom(classroomId, memberId)
     .then((res) => {
-      if (res) {
-        setClassroomStudentsFromDatabase(classroomStudentsFromDatabase.concat([res.data]));
-        toasts.toastSuccess("Student added to the classroom.");
-      }
-    })
-    .catch((err) => console.log(err));
-}
-
-export function deleteStudent(classroomId, studentId, classroomStudentsFromDatabase, setClassroomStudentsFromDatabase) {
-  const indexOfDeletedStudent = indexOfStudent(studentId, classroomStudentsFromDatabase);
-  api
-    .deleteStudentFromClassroom(classroomId, studentId)
-    .then((res) => {
-      setClassroomStudentsFromDatabase(
-        classroomStudentsFromDatabase
-          .slice(0, indexOfDeletedStudent)
-          .concat(classroomStudentsFromDatabase.slice(indexOfDeletedStudent + 1))
+      setClassroomMembersFromDatabase(
+        classroomMembersFromDatabase
+          .slice(0, indexOfDeletedMember)
+          .concat(classroomMembersFromDatabase.slice(indexOfDeletedMember + 1))
       );
     })
     .catch((err) => console.log(err));
-  toasts.toastSuccess("Student deleted!");
+  toasts.toastSuccess("Member deleted!");
 }
 
 export function addDocuments(
