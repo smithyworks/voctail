@@ -28,14 +28,12 @@ const useStyles = makeStyles(() => ({
 function EditDocument({ refresh, open, onClose, documentId, title, author, description, isPublic, currentCategory }) {
   const titleInput = useRef(null);
   const authorInput = useRef(null);
-  const descriptionInput = useRef(null);
   const [publicDocument, setPublicDocument] = useState(false);
   const [category, setCategory] = useState(null);
 
   const classes = useStyles();
   titleInput.current = title;
   authorInput.current = author;
-  descriptionInput.current = description;
   useEffect(() => {
     setPublicDocument(isPublic);
     setCategory(currentCategory);
@@ -66,19 +64,11 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
     setCategory("");
     titleInput.current = "";
     authorInput.current = "";
-    descriptionInput.current = "";
   }
 
   const editThisDocument = () => {
     api
-      .editDocument(
-        documentId,
-        titleInput.current,
-        authorInput.current,
-        descriptionInput.current,
-        category,
-        publicDocument
-      )
+      .editDocument(documentId, titleInput.current, authorInput.current, category, publicDocument)
       .then(() => {
         onClose();
         refresh();
@@ -115,18 +105,6 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, descr
             type="author"
             defaultValue={authorInput.current}
             onChange={(e) => (authorInput.current = e.target.value)}
-            fullWidth
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="description"
-            label="Description"
-            multiline
-            rows={3}
-            type="description"
-            defaultValue={descriptionInput.current}
-            onChange={(e) => (descriptionInput.current = e.target.value)}
             fullWidth
           />
 

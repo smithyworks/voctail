@@ -111,8 +111,8 @@ export function addDocument(publisher, title, author, description, category, isP
 export function deleteDocument(document_id) {
   return axios.post(`${base}/delete-document`, { document_id });
 }
-export function editDocument(document_id, title, author, description, category, isPublic) {
-  return axios.post(`${base}/edit-document`, { document_id, title, author, description, category, isPublic });
+export function editDocument(document_id, title, author, category, isPublic) {
+  return axios.post(`${base}/edit-document`, { document_id, title, author, category, isPublic });
 }
 
 export function viewedDocumentNow(document_id) {
