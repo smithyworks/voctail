@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Typography, Grid, TextField, Checkbox } from "@material-ui/core";
+import { Typography, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useParams } from "react-router-dom";
 
@@ -12,6 +12,8 @@ import { UserContext, refresh } from "../../App";
 import { api } from "../../utils";
 import DocumentMetrics from "./DocumentMetrics";
 import QuizMetrics from "./QuizMetrics";
+import VoctailCheckbox from "../common/VoctailCheckbox";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   container: {
@@ -114,12 +116,16 @@ function ProfilePage() {
             </Grid>
             <Grid item style={{ display: "flex", alignItems: "baseline" }}>
               <span>
-                <Checkbox style={{ marginBottom: 7 }} checked={showKnowns} onClick={() => setShowKnowns(!showKnowns)} />
+                <VoctailCheckbox
+                  style={{ marginBottom: 7 }}
+                  checked={showKnowns}
+                  onClick={() => setShowKnowns(!showKnowns)}
+                />
               </span>
               <Typography display="inline" style={{ margin: "0 60px 0 0" }}>
                 Show known words
               </Typography>
-              <TextField
+              <ErrorDialogField
                 margin="dense"
                 variant="outlined"
                 placeholder="Filter..."

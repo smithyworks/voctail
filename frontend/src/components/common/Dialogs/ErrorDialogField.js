@@ -21,7 +21,7 @@ function ErrorDialogField({ numeric, error, setError, onChange, label, warning, 
   return numeric ? (
     <Input error={error} onChange={_onChange} placeholder={label} {...props} />
   ) : (
-    <TextField error={error} onChange={_onChange} label={label} {...props} />
+    <TextField color="secondary" error={error} onChange={_onChange} label={label} {...props} />
   );
 }
 
