@@ -8,7 +8,12 @@ async function documentHandler(req, res) {
 
     const {
       rows: [document],
-    } = await query("SELECT * FROM documents WHERE document_id = $1", [document_id]);
+    } = await query(
+      "SELECT documents.*, users.name AS publisher FROM documents \
+         LEFT JOIN users ON documents.publisher_id = users.user_id \
+       WHERE document_id = $1",
+      [document_id]
+    );
 
     const {
       rows: translations,

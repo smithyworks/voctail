@@ -107,24 +107,6 @@ function ProfilePage() {
           </Grid>
         </ProfileSection>
 
-        {isSelf && (
-          <ProfileSection title="Payment Details">
-            <EditableItem title="Card Number" value="**** **** **** **12" disabled />
-            <EditableItem title="Code" value="***" disabled />
-            <div />
-            <EditableItem title="Full Name" value="John Doe" disabled />
-            <div />
-            <EditableItem title="Address Line 1" value="VocTail GmbH" isEmail disabled />
-            <EditableItem title="Address Line 2" value="Rotkreuzplatz Str." disabled />
-            <EditableItem title="Street and House Number" value="1" disabled />
-            <EditableItem title="City" value="Munich" disabled />
-            <EditableItem title="Country" value="Germany" disabled />
-
-            <div />
-            <EditableItem title="Telephone" value="+49 123 4567890" disabled />
-          </ProfileSection>
-        )}
-
         <ProfileSection title="Metrics">
           <Grid container justify="space-between">
             <Grid item>

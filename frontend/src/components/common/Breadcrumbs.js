@@ -27,7 +27,7 @@ function Breadcrumbs({ invert }) {
         );
       });
     } else if (path === "/quizzes/:id") {
-      api.breadcrumbs({ quiz: params.id }).then((res) => {
+      api.breadcrumbs({ quiz_id: params.id }).then((res) => {
         setBreadcrumbs(
           <Typography className={classes.breadcrumbs}>
             <Link to="/quizzes">Quizzes</Link> {">"} {res.data.quiz}

@@ -131,9 +131,9 @@ server.post("/api/breadcrumbs", auth.tokenMiddleWare, async (req, res) => {
 });
 
 // Handles any requests that don't match the ones above
-// server.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
-// });
+server.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/frontend_build", "index.html"));
+});
 
 const port = process.env.VOCTAIL_SERVER_PORT || 8080;
 server.listen(port);

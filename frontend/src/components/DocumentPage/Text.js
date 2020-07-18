@@ -47,6 +47,7 @@ function Text({ document, lookupWordByWord }) {
   const classes = useStyles();
 
   const user = useContext(UserContext);
+  console.log(document);
 
   const [blocks, setBlocks] = useState();
   useEffect(() => {
@@ -115,7 +116,10 @@ function Text({ document, lookupWordByWord }) {
     <>
       <div className={classes.header}>
         <Grid container justify="space-between" alignItems="center">
-          <T>Published by: The Voctail Team</T>
+          <div style={{ textAlign: "left" }}>
+            <T>Author: {document.author}</T>
+            <T>Publisher: {document.publisher || "The Voctail Team"}</T>
+          </div>
 
           <IconButton ref={menuAnchor} onClick={() => setMenuOpen(!menuOpen)}>
             <MoreVertIcon />
