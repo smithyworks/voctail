@@ -53,9 +53,7 @@ function addDocuments(
   documentId,
   section,
   classroomDocumentsFromDatabase,
-  setClassroomDocumentsFromDatabase,
-  setClassroomsSectionsUpdate,
-  classroomsSectionsUpdate
+  setClassroomDocumentsFromDatabase
 ) {
   const addDocumentsToThisClassroom = () => {
     api.addDocumentToClassroom(classroomId, documentId, section).catch((err) => console.log(err));
@@ -70,6 +68,18 @@ function addDocuments(
       }
     })
     .catch((err) => console.log(err));
+}
+
+function getSections(classroomDocumentsFromDatabase) {
+  console.log(classroomDocumentsFromDatabase);
+  let sections = [];
+  classroomDocumentsFromDatabase.forEach((document) => {
+    if (sections.indexOf(document.section) === -1) {
+      sections.push(document.section);
+    }
+  });
+  console.log(sections);
+  return sections;
 }
 
 function isOwner(user, classroomOwnerFromDatabase) {
@@ -92,6 +102,7 @@ function ClassroomViewPage() {
   const [inviteTeachersDialogOpen, setInviteTeachersDialogOpen] = useState(false);
   const [inviteStudentsDialogOpen, setInviteStudentsDialogOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -166,10 +177,9 @@ function ClassroomViewPage() {
 
   useEffect(() => {
     api
-      .getDocuments(urlParser())
+      .getDocuments(urlParser(), 12)
       .then((res) => {
         if (res) {
-          console.log(res.data.rows);
           setClassroomDocumentsFromDatabase(res.data.rows);
         }
       })
@@ -282,7 +292,7 @@ function ClassroomViewPage() {
         title="Sections"
         Button={
           classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
-            <IconButton aria-label="test">
+            <IconButton aria-label="test" onClick={() => getSections(classroomDocumentsFromDatabase)}>
               <AddBoxIcon fontSize="large" style={{ color: "darkblue" }} />
             </IconButton>
           ) : (
@@ -290,10 +300,10 @@ function ClassroomViewPage() {
           )
         }
       >
-        {classroomSectionsFromDatabase.map((section) => {
+        {getSections(classroomDocumentsFromDatabase).map((section) => {
           return (
             <ChapterSection
-              title={section.title}
+              title={section}
               Button={
                 classroomIsTeacher || isOwner(user, classroomOwnerFromDatabase) || user.admin === true ? (
                   <IconButton aria-label="test" onClick={handleClick}>
@@ -323,7 +333,7 @@ function ClassroomViewPage() {
               </Menu>
               <Grid container>
                 {classroomDocumentsFromDatabase.map((document) => {
-                  if (document.section === section.title) {
+                  if (document.section === section) {
                     return (
                       <DashboardTile
                         thumbnail={iconDoc}

@@ -167,8 +167,10 @@ export function getTeachers(classroom_id) {
   return axios.get(`${base}/classrooms-teachers`, { params: { classroom_id: classroom_id } });
 }
 
-export function getDocuments(classroom_id) {
-  return axios.get(`${base}/classrooms-documents`, { params: { classroom_id: classroom_id } });
+export function getDocuments(classroom_id, document_id) {
+  return axios.get(`${base}/classrooms-documents`, {
+    params: { classroom_id: classroom_id, document_id: document_id },
+  });
 }
 
 export function getSections(classroom_id) {

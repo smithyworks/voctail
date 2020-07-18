@@ -131,14 +131,26 @@ async function sectionsHandler(req, res) {
 
 async function documentsHandler(req, res) {
   try {
-    const { rows } = await query(
-      "SELECT documents.document_id, title, author, classroom_documents.section " +
-        "FROM documents " +
-        "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
-        "WHERE classroom_id = $1 ORDER BY classroom_documents.section ASC",
-      [req.query.classroom_id]
-    );
-    res.status(200).json({ rows });
+    if (req.query.document_id != 0) {
+      console.log(req.query.document_id);
+      const { rows } = await query(
+        "SELECT documents.document_id, title, author, classroom_documents.section " +
+          "FROM documents " +
+          "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
+          "WHERE classroom_id = $1 AND classroom_documents.document_id = $2 ORDER BY classroom_documents.section ASC",
+        [req.query.classroom_id, req.query.document_id]
+      );
+      res.status(200).json({ rows });
+    } else {
+      const { rows } = await query(
+        "SELECT documents.document_id, title, author, classroom_documents.section " +
+          "FROM documents " +
+          "INNER JOIN classroom_documents ON documents.document_id = classroom_documents.document_id " +
+          "WHERE classroom_id = $1 ORDER BY classroom_documents.section ASC",
+        [req.query.classroom_id]
+      );
+      res.status(200).json({ rows });
+    }
   } catch (err) {
     log(err);
     res.status(500).send("There is a problem in the documentsHandler");
