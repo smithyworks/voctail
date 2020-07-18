@@ -5,9 +5,10 @@ const useStyles = makeStyles({
   paper: {
     padding: "30px 30px 8px 30px",
     border: "1px solid lightgrey",
+    marginTop: "20px",
     marginBottom: "20px",
   },
-  title: { fontWeight: "bold" },
+  title: { fontWeight: "lighter" },
   innerContainer: {
     padding: "20px 20px 8px 20px",
   },
