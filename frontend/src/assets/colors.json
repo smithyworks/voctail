@@ -188,5 +188,13 @@
     "filledVoctailGlass": {
       "color": "lightseagreen"
     }
+  },
+  "classroomHeader": {
+    "container": {
+      "backgroundColor": "lightseagreen"
+    },
+    "headUp": {
+      "color": "white"
+    }
   }
 }
