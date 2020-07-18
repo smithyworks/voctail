@@ -43,7 +43,7 @@ function Header({ children, onClick }) {
   );
 }
 
-function DocumentRow({ id, title, author, last_seen, header, publisher }) {
+function DocumentRow({ id, title, author, header, publisher }) {
   const classes = useStyles();
   const user = useContext(UserContext);
 
@@ -71,15 +71,12 @@ function DocumentRow({ id, title, author, last_seen, header, publisher }) {
     let d = <Grey>never</Grey>;
 
     if (lastSeen) {
-      console.log("last seen", lastSeen);
-      const { days, hours, minutes } = timediff(new Date(last_seen), new Date(), "DHm");
+      const { days, hours, minutes } = timediff(new Date(lastSeen), new Date(), "DHm");
       d = "";
-      console.log("min", minutes);
-      console.log("days, hours, min", days, hours);
       if (days > 0 || hours > 0 || minutes > 0) {
-        if (days > 0) d += `${hours}d `;
-        if (hours > 0) d += `${hours}h `;
-        if (minutes > 0) d += `${minutes}min `;
+        if (days > 0) d += `${hours} d `;
+        if (hours > 0) d += `${hours} h `;
+        if (minutes > 0) d += `${minutes} min `;
         d += "ago";
       } else d = "just now";
     }
@@ -98,6 +95,18 @@ function DocumentRow({ id, title, author, last_seen, header, publisher }) {
 
       publisher_val = pub;
     } else publisher_val = "Voctail";
+
+    /* const filterDocuments = useCallback(
+     (searchString) => {
+       if (searchString && searchString.length > 0) {
+         const pattern = new RegExp(searchString);
+         return documents?.filter((u) => {
+           return u.title.match(pattern, "i") || u.author.match(pattern, "i");
+         });
+       } else return usersList;
+     },
+     [usersList]
+ ); */
 
     /*if (searchPattern) {
             const titleMatch = title.match(searchPattern);
