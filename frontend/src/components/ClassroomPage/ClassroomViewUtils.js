@@ -14,13 +14,13 @@ export function indexOfMember(memberId, members) {
 
 export function addMembers(
   classroomId,
-  studentIds,
+  memberIds,
   areTeacher,
   classroomMembersFromDatabase,
   setClassroomMembersFromDatabase
 ) {
   api
-    .addMembersToClassroom(classroomId, studentIds, areTeacher)
+    .addMembersToClassroom(classroomId, memberIds, areTeacher)
     .then((res) => {
       if (res) {
         setClassroomMembersFromDatabase(classroomMembersFromDatabase.concat(res.data.membersAdded));
@@ -74,4 +74,40 @@ export function getSections(classroomDocumentsFromDatabase) {
     }
   });
   return sections;
+}
+
+export function renameSection(
+  classroomId,
+  section,
+  newTitle,
+  classroomDocumentsFromDatabase,
+  setClassroomDocumentsFromDatabase
+) {
+  api
+    .renameSection(classroomId, section, newTitle)
+    /*.then((res) => {
+      /*
+      setClassroomDataFromDatabase(
+        classroomDataFromDatabase
+          .slice(0, indexOfRenamedClassroom)
+          .concat([classroomRenamed])
+          .concat(classroomDataFromDatabase.slice(indexOfRenamedClassroom + 1))
+      );
+    })*/
+    .catch((err) => console.log(err));
+  toasts.toastSuccess("Section renamed!");
+}
+
+export function deleteSection(classroomId, section, classroomDataFromDatabase, setClassroomDataFromDatabase) {
+  api
+    .deleteSection(classroomId, section)
+    /*.then((res) => {
+      setClassroomDataFromDatabase(
+        classroomDataFromDatabase
+          .slice(0, indexOfDeletedClassroom)
+          .concat(classroomDataFromDatabase.slice(indexOfDeletedClassroom + 1))
+      );
+    })*/
+    .catch((err) => console.log(err));
+  toasts.toastSuccess("Section deleted!");
 }
