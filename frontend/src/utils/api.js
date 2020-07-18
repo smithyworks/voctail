@@ -97,12 +97,11 @@ export function createCustomQuiz(title, questions) {
 export function fetchDocuments() {
   return axios.get(`${base}/handle-documents`);
 }
-export function addDocument(publisher, title, author, description, category, isPublic, blocks) {
+export function addDocument(publisher, title, author, category, isPublic, blocks) {
   return axios.post(`${base}/add-document`, {
     publisher,
     title,
     author,
-    description,
     category,
     isPublic,
     blocks,

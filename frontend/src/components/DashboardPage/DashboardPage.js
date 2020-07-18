@@ -124,7 +124,7 @@ function Dashboard() {
   });
 
   function calcAllDocumentsFit() {
-    documentDataFromDatabase.map((doc) => {
+    documentDataFromDatabase.forEach((doc) => {
       api
         .calcDocumentFit(doc.document_id)
         .then((res) => {
