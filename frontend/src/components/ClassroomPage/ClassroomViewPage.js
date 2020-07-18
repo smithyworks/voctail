@@ -8,7 +8,7 @@ import { ClassroomSection, SectionSection, ChapterSection, DashboardTile, UserTi
 import InviteMembersDialog from "../common/InviteMembersDialog";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import { api } from "../../utils";
-import { timeParser, urlParser, isConnected, isTeacher } from "../../utils/parsers";
+import { timeParser, isConnected } from "../../utils/parsers";
 import { toasts } from "../common/AppPage/AppPage";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import VTIconFlexButton from "../common/Buttons/IconButton";
@@ -81,9 +81,6 @@ function getSections(classroomDocumentsFromDatabase) {
 
 function ClassroomViewPage() {
   const { classroom_id } = useParams();
-
-  //const classes = useStyles();
-  const [user, setUser] = useState([]);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
   const [classroomIsTeacher, setClassroomIsTeacher] = useState(false);
   const [classroomStudentsFromDatabase, setClassroomStudentsFromDatabase] = useState([]);
@@ -105,7 +102,6 @@ function ClassroomViewPage() {
     api
       .user()
       .then((res) => {
-        if (res) setUser(res.data);
         api
           .isTeacher(classroom_id, res.data.user_id)
           .then((res2) => {

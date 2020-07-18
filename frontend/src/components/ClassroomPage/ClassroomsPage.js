@@ -25,96 +25,6 @@ import ClassroomTile from "../common/ClassroomTile";
 import VTIconFlexButton from "../common/Buttons/IconButton";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
-const useStyles = makeStyles(() => ({
-  text: {
-    paddingTop: "5%",
-    paddingBottom: "5%",
-    margin: "auto",
-    textAlign: "center",
-    textShadow: "1px 1px",
-  },
-  container: { height: "100%", width: "100%" },
-  grid: { height: "100%", width: "100%" },
-  userItem: { width: "150px" },
-  button: {
-    margin: "5%",
-    fontSize: "16px",
-    display: "flex",
-    alignItems: "center",
-    borderWidth: "3px",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
-  },
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
-  },
-  gridList: {
-    width: 500,
-    height: 450,
-  },
-  image: {
-    position: "relative",
-    height: 200,
-    "&:hover, &$focusVisible": {
-      zIndex: 1,
-      "& $imageBackdrop": {
-        opacity: 0.15,
-      },
-      "& $imageMarked": {
-        opacity: 0,
-      },
-      "& $imageTitle": {
-        border: "4px solid currentColor",
-      },
-    },
-  },
-  focusVisible: {},
-  imageButton: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-  },
-  imageSrc: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundSize: "cover",
-    backgroundPosition: "center 40%",
-  },
-  imageBackdrop: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: "black",
-    opacity: 0.4,
-  },
-  imageTitle: {
-    position: "relative",
-  },
-  imageMarked: {
-    height: 3,
-    width: 18,
-    backgroundColor: "white",
-    position: "absolute",
-    bottom: -2,
-    left: "calc(50% - 9px)",
-  },
-}));
-
 const formStyles = makeStyles(() => ({
   header: {
     color: "#0B6374",
@@ -282,9 +192,7 @@ function createClassroom(
       .createClassroom(user, title, topic, description, true)
       .then((res) => {
         setClassroomDataFromDatabase(res.data.rows.concat(classroomDataFromDatabase));
-        console.log(classroomDataFromDatabase);
         setClassroomAsTeacherDataFromDatabase(res.data.rows.concat(classroomAsTeacherDataFromDatabase));
-        console.log(classroomAsTeacherDataFromDatabase);
       })
       .catch((err) => console.log(err));
   };
@@ -335,11 +243,6 @@ function indexOfClassroom(classroomId, classrooms) {
   return output;
 }
 
-const handleChange = (state, setState) => {
-  console.log(state);
-  setState(!state);
-};
-
 function Classrooms() {
   const [user, setUser] = useState([]);
   const [classroomDataFromDatabase, setClassroomDataFromDatabase] = useState([]);
@@ -352,7 +255,6 @@ function Classrooms() {
   const [newTopic, setNewTopic] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
-  const [state, setState] = useState(false);
 
   useEffect(() => {
     api
