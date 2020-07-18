@@ -45,6 +45,7 @@ server.post(
   users.uploadProfilePictureHandler
 );
 server.delete("/api/delete-profile-picture", auth.tokenMiddleWare, users.deleteProfilePictureHandler);
+server.get("/api/get-user", auth.tokenMiddleWare, users.getUser);
 
 server.post("/api/document", auth.tokenMiddleWare, documents.documentHandler);
 server.get("/api/documents", auth.tokenMiddleWare, admin.usersHandler);
