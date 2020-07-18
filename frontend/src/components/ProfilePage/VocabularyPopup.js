@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography as T, Paper, Popper, Grid } from "@material-ui/core";
+import { Typography as T, Paper, Popper, Grid, ClickAwayListener } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CheckIcon from "@material-ui/icons/Check";
 import CrossIcon from "@material-ui/icons/Clear";
@@ -58,7 +58,7 @@ const useStyles = makeStyles({
   },
 });
 
-function TranslationPopup({ open, anchor, onMarkKnown, onMarkUnknown, entry }) {
+function TranslationPopup({ open, anchor, onMarkKnown, onMarkUnknown, onClose, entry, showActions }) {
   const classes = useStyles();
 
   function _markKnown() {
@@ -70,57 +70,67 @@ function TranslationPopup({ open, anchor, onMarkKnown, onMarkUnknown, entry }) {
 
   return (
     <Popper open={!!open && !!anchor} anchorEl={anchor} placement="bottom" disablePortal>
-      <Paper className={classes.paper} component={Grid} container direction="column" wrap="nowrap">
-        <T variant="subtitle1" className={classes.header}>
-          {entry?.word}
-        </T>
+      <ClickAwayListener onClickAway={onClose}>
+        <Paper className={classes.paper} component={Grid} container direction="column" wrap="nowrap">
+          <T variant="subtitle1" className={classes.header}>
+            {entry?.word}
+          </T>
 
-        <Grid container className={classes.info}>
-          <Grid item xs className={classes.infoTitle}>
-            <T align="right">known</T>
+          <Grid container className={classes.info}>
+            <Grid item xs className={classes.infoTitle}>
+              <T align="right">known</T>
+            </Grid>
+            <Grid item xs className={classes.infoValue}>
+              <T>
+                {entry?.known ? (
+                  <CheckIcon fontSize="small" style={{ marginBottom: -4 }} />
+                ) : (
+                  <CrossIcon fontSize="small" style={{ marginBottom: -4 }} />
+                )}
+              </T>
+            </Grid>
           </Grid>
-          <Grid item xs className={classes.infoValue}>
-            <T>{entry?.known ? <CheckIcon fontSize="small" /> : <CrossIcon fontSize="small" />}</T>
+          <Grid container className={classes.info}>
+            <Grid item xs className={classes.infoTitle}>
+              <T align="right">certainty</T>
+            </Grid>
+            <Grid item xs className={classes.infoValue}>
+              <T>{entry?.certainty}</T>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container className={classes.info}>
-          <Grid item xs className={classes.infoTitle}>
-            <T align="right">certainty</T>
+          <Grid container className={classes.info}>
+            <Grid item xs className={classes.infoTitle}>
+              <T align="right">encounters</T>
+            </Grid>
+            <Grid item xs className={classes.infoValue}>
+              <T>{entry?.encounters}</T>
+            </Grid>
           </Grid>
-          <Grid item xs className={classes.infoValue}>
-            <T>{entry?.certainty}</T>
+          <Grid container className={classes.info}>
+            <Grid item xs className={classes.infoTitle}>
+              <T align="right">last seen</T>
+            </Grid>
+            <Grid item xs className={classes.infoValue}>
+              <T>{timeElapsed(entry?.last_seen)}</T>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid container className={classes.info}>
-          <Grid item xs className={classes.infoTitle}>
-            <T align="right">encounters</T>
-          </Grid>
-          <Grid item xs className={classes.infoValue}>
-            <T>{entry?.encounters}</T>
-          </Grid>
-        </Grid>
-        <Grid container className={classes.info}>
-          <Grid item xs className={classes.infoTitle}>
-            <T align="right">last seen</T>
-          </Grid>
-          <Grid item xs className={classes.infoValue}>
-            <T>{timeElapsed(entry?.last_seen)}</T>
-          </Grid>
-        </Grid>
 
-        <div className={classes.actions}>
-          <VTButton
-            variant="contained"
-            size="small"
-            startIcon={entry?.known ? <CrossIcon /> : <CheckIcon />}
-            className={classes.knownButton}
-            onClick={entry?.known ? _markUnknown : _markKnown}
-            warning
-          >
-            {entry?.known ? "Mark Unkown" : "Mark Known"}
-          </VTButton>
-        </div>
-      </Paper>
+          {!!showActions && (
+            <div className={classes.actions}>
+              <VTButton
+                variant="contained"
+                size="small"
+                startIcon={entry?.known ? <CrossIcon /> : <CheckIcon />}
+                className={classes.knownButton}
+                onClick={entry?.known ? _markUnknown : _markKnown}
+                warning
+              >
+                {entry?.known ? "Mark Unkown" : "Mark Known"}
+              </VTButton>
+            </div>
+          )}
+        </Paper>
+      </ClickAwayListener>
     </Popper>
   );
 }

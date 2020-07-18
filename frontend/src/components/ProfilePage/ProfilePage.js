@@ -129,7 +129,12 @@ function ProfilePage() {
               />
             </Grid>
           </Grid>
-          <VocabularyCloud userId={user.user_id} filter={vocabularyFilter} showKnowns={showKnowns} />
+          <VocabularyCloud
+            userId={user.user_id}
+            filter={vocabularyFilter}
+            showKnowns={showKnowns}
+            showActions={isSelf}
+          />
           <Typography variant="h6" className={classes.subSectionTitle}>
             Quizzes
           </Typography>
