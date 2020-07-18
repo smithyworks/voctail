@@ -79,6 +79,10 @@
       "color": "white",
       "backgroundColor": "#3a9893",
       "borderColor": "#3a9893"
+    },
+    "disabledButton": {
+      "color": "red",
+      "borderColor": "red"
     }
   },
   "statusTile": {
