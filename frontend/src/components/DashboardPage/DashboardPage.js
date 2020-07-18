@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { api } from "../../utils";
 import UploadDocument from "./UploadDocument";
 import DashboardTile from "../common/DashboardTile";
@@ -9,10 +9,11 @@ import EditDocument from "./EditDocument";
 import PlaceholderTile from "../common/PlaceholderTile";
 import VTIconFlexButton from "../common/Buttons/IconButton";
 import CheckoutPremiumDialog from "../common/Dialogs/CheckoutPremiumDialog";
+import { UserContext } from "../../App";
 
 //overview (browse through documents, see title, preview and some additional information)
 function Dashboard() {
-  const [user, setUser] = useState();
+  const user = useContext(UserContext);
 
   const [documentDataFromDatabase, setDocumentDataFromDatabase] = useState([]); // all document data fetched from the database
   const [usersDocuments, setUsersDocuments] = useState([]);
@@ -94,24 +95,16 @@ function Dashboard() {
   }
 
   function createQuiz(documentId) {
-    api
-      .createQuizFromDoc(documentId, 20)
-      .then(() => {
-        toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
-        //setMenuOpen(false);
-      }) //todo check it out
-      .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
+    if (user.premium)
+      api
+        .createQuizFromDoc(documentId, 20)
+        .then(() => {
+          toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
+          //setMenuOpen(false);
+        }) //todo check it out
+        .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
+    else toasts.goPremium();
   }
-
-  //get current user
-  useEffect(() => {
-    api
-      .user()
-      .then((res) => {
-        if (res) setUser(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   //fetch documents (rerender when documents were added, deleted, edited
   useEffect(() => {
