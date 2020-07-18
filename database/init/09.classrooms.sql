@@ -13,6 +13,10 @@ INSERT INTO classrooms (classroom_id, classroom_owner, title, description, topic
 ALTER SEQUENCE classrooms_classroom_id_seq RESTART WITH 11;
 
 INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES
+    (1, 1, true), (2, 2, true), (3, 3, true),
+    (4, 4, true), (5, 5, true), (6, 1, true),
+    (7, 2, true), (8, 3, true), (9, 4, true),
+    (10, 5, true),
     (1, 6, true), (1, 7, false), (1, 8, false);
 
 INSERT INTO classroom_documents (classroom_id, document_id, section) VALUES
