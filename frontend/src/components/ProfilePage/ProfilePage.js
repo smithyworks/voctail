@@ -10,6 +10,7 @@ import EditableItem from "./EditableItem";
 import VocabularyCloud from "./VocabularyCloud";
 import { UserContext, refresh } from "../../App";
 import { api } from "../../utils";
+import DocumentMetrics from "./DocumentMetrics";
 
 const useStyles = makeStyles({
   container: {
@@ -50,6 +51,8 @@ function ProfilePage() {
 
   const [vocabularyFilter, setVocabFilter] = useState();
   const [showKnowns, setShowKnowns] = useState(true);
+
+  const [documentFilter, setDocumentFilter] = useState();
 
   function editName(v) {
     api
@@ -144,6 +147,20 @@ function ProfilePage() {
             </Grid>
           </Grid>
           <VocabularyCloud userId={user.user_id} filter={vocabularyFilter} showKnowns={showKnowns} />
+        </ProfileSection>
+
+        <ProfileSection title="Documents History">
+          <Grid container justify="space-between">
+            <Grid item style={{ display: "flex", alignItems: "baseline" }}>
+              <TextField
+                margin="dense"
+                variant="outlined"
+                placeholder="Filter..."
+                onChange={(e) => setDocumentFilter(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <DocumentMetrics />
         </ProfileSection>
       </div>
     </AppPage>

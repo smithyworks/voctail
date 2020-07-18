@@ -122,7 +122,6 @@ async function addDocument(req, res) {
   try {
     const { publisher, title, author, description, category, isPublic, blocks } = req.body;
 
-    console.log(blocks);
     const {
       rows: [{ document_id }],
     } = await query(
@@ -138,6 +137,8 @@ async function addDocument(req, res) {
         JSON.stringify(blocks).replace(/\\/g, "\\\\"),
       ]
     );
+
+    await insertViewedData(document_id);
 
     const contentData = blocks.map((b) => b.content).join(" ");
     const words = contentData
@@ -235,16 +236,22 @@ async function documentTitleHandler(req, res) {
   }
 }
 
+async function insertViewedData(document_id) {
+  const { rows } = await query("SELECT COUNT (users.user_id) FROM users");
+  let numberOfUsers = rows[0].count;
+  for (let i = 1; i <= numberOfUsers; i++) {
+    await query("INSERT INTO users_documents (document_id, user_id) VALUES ($1,$2)", [document_id, i]);
+  }
+}
+
 async function viewedDocumentNowHandler(req, res) {
   try {
-    // todo insert in this
     const { user_id } = req.authData.user;
     const { document_id } = req.body;
     await query(
       "UPDATE users_documents SET last_seen = NOW() WHERE users_documents.document_id=$1 AND users_documents.user_id=$2",
       [document_id, user_id]
     );
-    log("Successfully updated that document " + document_id + " was just seen.");
     res.status(200).send("Successfully updated that document " + document_id + " was just seen.");
   } catch (err) {
     log(err);
@@ -254,14 +261,15 @@ async function viewedDocumentNowHandler(req, res) {
 
 async function getDocumentLastSeen(req, res) {
   try {
-    const { user_id, document_id } = req.body;
+    const user_id = req.query.user;
+    const document_id = req.query.document;
     const {
-      lastSeen,
+      rows,
     } = await query(
       "SELECT last_seen FROM users_documents WHERE users_documents.document_id=$1 AND users_documents.user_id=$2",
       [document_id, user_id]
     );
-    res.status(200).json({ lastSeen });
+    res.status(200).json(rows);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");

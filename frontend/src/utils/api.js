@@ -117,7 +117,7 @@ export function viewedDocumentNow(document_id) {
 }
 
 export function getLastSeen(user_id, document_id) {
-  return axios.post(`${base}/get-last-seen`, { user_id, document_id });
+  return axios.get(`${base}/get-last-seen`, { params: { user: user_id, document: document_id } });
 }
 
 export function calcDocumentFit(document_id) {
@@ -237,6 +237,10 @@ export function uploadProfilePicture(files) {
 }
 export function deleteProfilePicture() {
   return axios.delete(`${base}/delete-profile-picture`);
+}
+
+export function getUser(user_id) {
+  return axios.get(`${base}/get-user`, { params: { id: user_id } });
 }
 
 // breadcrumbs
