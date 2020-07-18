@@ -38,7 +38,7 @@ function QuizItemLayout({ vocabulary, choices, actions }) {
     <div className={classes.container}>
       <div className={classes.vocabularyContainer}>
         <div className={classes.vocabularyBox}>
-          <T variant={"h4"} className={classes.vocabulary}>
+          <T variant={"h4"} align={"center"} className={classes.vocabulary}>
             {vocabulary}
           </T>
         </div>

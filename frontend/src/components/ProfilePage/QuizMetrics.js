@@ -50,6 +50,7 @@ function QuizMetrics({ ...props }) {
             onViewStatistic={() => handleViewStatOpen(v)}
             lastResult={v.lastResult}
             bestResult={v.bestResult}
+            questions={v.questions}
           />
         ))}
       </Grid>

@@ -2,7 +2,7 @@ import { DialogActions, DialogContent, DialogTitle, Grid } from "@material-ui/co
 import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { VTButton } from "../common";
-import ErrorDialogField from "./ErrorDialogField";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 function Suggestion({ sugg, index, error, setError }) {
   return (

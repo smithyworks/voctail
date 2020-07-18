@@ -12,10 +12,21 @@ export function shuffle(list) {
   return list;
 }
 
-export function timeElapsed(last) {
+export function timeElapsed(date) {
   let d = "";
-  if (!isNaN(last)) {
-    const { months, days, hours, minutes } = timediff(new Date(last), new Date(), "MDHm");
+
+  let date_ = date;
+  // deal with date parsable strings
+  if (typeof date === "string") {
+    date_ = new Date(Date.parse(date));
+  }
+  //deal with number values
+  if (typeof date === "number") {
+    date_ = new Date(date);
+  }
+
+  if (date_ instanceof Date) {
+    const { months, days, hours, minutes } = timediff(date_, new Date(), "MDHm");
     if (months > 0 || days > 0 || hours > 0 || minutes > 0) {
       if (months > 0) {
         d += `${hours} M`;

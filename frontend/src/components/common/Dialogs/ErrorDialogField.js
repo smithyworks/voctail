@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { toasts } from "../common/AppPage";
+import { toasts } from "../AppPage";
 import Input from "@material-ui/core/Input";
 import { TextField } from "@material-ui/core";
 

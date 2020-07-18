@@ -255,7 +255,7 @@ async function updateMetricsQuizHandler(req, res) {
 
     let { bestRun, metrics } = await fetchMetrics(user_id, quiz_id);
 
-    metrics[Date.now()] = results;
+    metrics[new Date(Date.now())] = results;
     bestRun = results.percentageTotal > bestRun ? results.percentageTotal : bestRun;
 
     await query(
@@ -315,10 +315,10 @@ async function quizzesMetricsHandler(req, res) {
       for (const [k, v] of Object.entries(q.metrics)) {
         if (v.taken === v.total) {
           if (!lastResult || lastResult.date < k) {
-            lastResult = { date: parseInt(k), ...v };
+            lastResult = { date: k, ...v };
           }
           if (!bestResult || bestResult.wrong > v.wrong) {
-            bestResult = { date: parseInt(k), ...v };
+            bestResult = { date: k, ...v };
           }
         }
       }

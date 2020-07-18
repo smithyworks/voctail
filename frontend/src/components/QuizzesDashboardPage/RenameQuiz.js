@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage";
-import { Button, Dialog, DialogActions, DialogContent, Grid } from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, Grid } from "@material-ui/core";
 import { VTButton } from "../common";
-import VoctailDialogTitle from "../common/VoctailDialogTitle";
-import ErrorDialogField from "./ErrorDialogField";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
   const handleClose = () => {
@@ -60,9 +60,9 @@ function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <VTButton secondary onClick={handleClose} color="primary">
             Cancel
-          </Button>
+          </VTButton>
           <VTButton
             success
             onClick={() => {

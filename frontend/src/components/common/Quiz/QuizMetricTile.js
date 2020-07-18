@@ -1,14 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Paper, makeStyles, Grid, Typography, Tooltip, Menu, MenuItem } from "@material-ui/core";
+import React, { useState, useRef } from "react";
+import { Paper, makeStyles, Grid, Typography, Tooltip } from "@material-ui/core";
 import { getColor } from "./colorCycler";
-import { api } from "../../../utils";
-import timediff from "timediff";
-import { Link } from "react-router-dom";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { timeElapsed } from "./QuizzesUtilities";
-import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
@@ -27,7 +21,7 @@ const useStyles = makeStyles({
     overflow: "hidden",
     color: "white",
     textDecoration: "none",
-    padding: "20px 20px 10px 20px",
+    padding: "10px 10px 10px 10px",
   },
   name: {
     color: "white",
@@ -66,7 +60,7 @@ const useStyles = makeStyles({
   tableText: { color: "white", fontWeight: "lighter", fontStyle: "italic" },
 });
 
-function QuizMetricTile({ name, onViewStatistic, lastResult, bestResult }) {
+function QuizMetricTile({ name, onViewStatistic, lastResult, bestResult, questions }) {
   const classes = useStyles();
   const backgroundColor = useRef(getColor());
 
@@ -88,33 +82,10 @@ function QuizMetricTile({ name, onViewStatistic, lastResult, bestResult }) {
   const bestElapsed = useRef(timeElapsed(bestResult.date));
 
   /*
-  *             <Grid container justify="space-between" className={classes.infoTextContainer}>
-              <Grid item>
-                <Typography className={classes.progressText}>Best</Typography>
-              </Grid>
-              <Grid item>
-                <Typography className={classes.progressText}>{bestResult.percentageTotal}%</Typography>
-              </Grid>
-              <Grid item>
-                <Typography align="right" className={classes.tableText}>
-                  {bestElapsed.current}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid container justify="space-between" className={classes.infoTextContainer}>
-              <Grid item>
-                <Typography className={classes.progressText}>Last</Typography>
-              </Grid>
-              <Grid item>
-                <Typography className={classes.progressText}>{lastResult.percentageTotal}%</Typography>
-              </Grid>
-              <Grid item>
-                <Typography align="right" className={classes.tableText}>
-                  {lastSeenElapsed.current}
-                </Typography>
-              </Grid>
-            </Grid>
-            * */
+                  {lastResult.unknowns.join(", ").length > 15
+                    ? lastResult.unknowns.join(", ").slice(0, 15) + "..."
+                    : lastResult.unknowns.join(", ")}
+  */
   return (
     <Grid item xs={12} sm={6} md={3} lg={3} className={classes.container}>
       <Tooltip title={name} enterDelay={1000} enterNextDelay={1000}>
@@ -136,49 +107,53 @@ function QuizMetricTile({ name, onViewStatistic, lastResult, bestResult }) {
               <TableBody>
                 <TableRow>
                   <TCell align="left">
-                    <Typography align="left" className={classes.tableText}>
+                    <Typography align="left" className={classes.tableText} noWrap>
                       Best
                     </Typography>
                   </TCell>
                   <TCell align="right">
-                    <Typography className={classes.progressText}>{bestResult.percentageTotal}%</Typography>
+                    <Typography className={classes.progressText} noWrap>
+                      {bestResult.percentageTotal}%
+                    </Typography>
                   </TCell>
                   <TCell align="right">
-                    <Typography align="right" className={classes.tableText}>
+                    <Typography align="right" className={classes.tableText} noWrap>
                       {bestElapsed.current}
                     </Typography>
                   </TCell>
                 </TableRow>
                 <TableRow>
                   <TCell align="left">
-                    <Typography align="left" className={classes.tableText}>
+                    <Typography align="left" className={classes.tableText} noWrap>
                       Last
                     </Typography>
                   </TCell>
                   <TCell align="right">
-                    <Typography className={classes.progressText}>{lastResult.percentageTotal}%</Typography>
+                    <Typography className={classes.progressText} noWrap>
+                      {lastResult.percentageTotal}%
+                    </Typography>
                   </TCell>
                   <TCell align="right">
-                    <Typography align="right" className={classes.tableText}>
+                    <Typography align="right" className={classes.tableText} noWrap>
                       {lastSeenElapsed.current}
+                    </Typography>
+                  </TCell>
+                </TableRow>
+                <TableRow>
+                  <TCell align="left">
+                    <Typography align="left" className={classes.tableText} noWrap>
+                      Unknown
+                    </Typography>
+                  </TCell>
+                  <TCell align="right"></TCell>
+                  <TCell align="right">
+                    <Typography align="right" className={classes.tableText} noWrap>
+                      {"(" + lastResult.unknowns.length + " / " + questions.length + ")"}
                     </Typography>
                   </TCell>
                 </TableRow>
               </TableBody>
             </Table>
-
-            <Grid container justify="space-between" className={classes.infoTextContainer}>
-              <Grid item>
-                <Typography className={classes.tableText}>Unknown</Typography>
-              </Grid>
-              <Grid item>
-                <Typography align="right" className={classes.tableText}>
-                  {lastResult.unknowns.join(", ").length > 15
-                    ? lastResult.unknowns.join(", ").slice(0, 15) + "..."
-                    : lastResult.unknowns.join(", ")}
-                </Typography>
-              </Grid>
-            </Grid>
           </Grid>
         </Paper>
       </Tooltip>

@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage";
-import { Button, Dialog, DialogActions, DialogContent, Grid } from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, Grid } from "@material-ui/core";
 import { VTButton } from "../common";
 import { makeStyles } from "@material-ui/core/styles";
-import VoctailDialogTitle from "../common/VoctailDialogTitle";
-import ErrorDialogField from "./ErrorDialogField";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   numberField: {
@@ -106,9 +106,9 @@ function AddRandomQuiz({ onAdd, onClose, open }) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <VTButton secondary onClick={handleClose} color="primary">
             Cancel
-          </Button>
+          </VTButton>
           <VTButton
             success
             onClick={() => {

@@ -1,23 +1,15 @@
 import React, { useRef, useState } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  Grid,
-  Typography as T,
-} from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, DialogContentText, Grid, Typography as T } from "@material-ui/core";
 
 import { VTButton } from "../common";
 import QuizItemSection from "./QuizItemSection";
 import QuizItem from "./QuizItem";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import VoctailDialogTitle from "../common/VoctailDialogTitle";
-import ErrorDialogField from "./ErrorDialogField";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   quizItem: {
@@ -128,9 +120,9 @@ function AddCustomQuiz({ onAdd, onClose, open }) {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <VTButton secondary onClick={handleClose} color="primary">
               Cancel
-            </Button>
+            </VTButton>
             <VTButton
               success
               onClick={() => {
