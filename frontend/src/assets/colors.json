@@ -180,5 +180,13 @@
     "offer": {
       "border": "1px solid #4fcc53"
     }
+  },
+  "dashboardTiles": {
+    "emptyVoctailGlass": {
+      "color": "white"
+    },
+    "filledVoctailGlass": {
+      "color": "lightseagreen"
+    }
   }
 }

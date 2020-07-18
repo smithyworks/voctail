@@ -252,7 +252,7 @@ function Dashboard() {
               key={i}
               title={tile.title}
               author={tile.author}
-              fits={getFit(tile.document_id)}
+              fits={true}
               onGenerateQuiz={() => createQuiz(tile.document_id)}
               linkTo={"/documents/" + tile.document_id}
               category={tile.category}
