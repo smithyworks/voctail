@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Grid } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,6 +14,7 @@ import RenameQuiz from "./RenameQuiz";
 import Metrics from "./Metrics";
 import WarningDialog from "../AdminPage/WarningDialog";
 import PlaceholderTile from "../common/PlaceholderTile";
+import { UserContext } from "../../App";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
@@ -22,6 +23,7 @@ const useStyles = makeStyles({
 function QuizzesDashboard({ ...props }) {
   const classes = useStyles();
   const base = "quizzes";
+  const user = useContext(UserContext);
 
   const [reloadCount, setReloadCount] = useState(0);
   const refresh = () => setReloadCount(reloadCount + 1);
@@ -42,7 +44,11 @@ function QuizzesDashboard({ ...props }) {
 
   const [openRandom, setOpenRandom] = useState(false);
   const handleRandomOpen = () => {
-    setOpenRandom(true);
+    if (user.premium) {
+      setOpenRandom(true);
+    } else {
+      toasts.goPremium();
+    }
   };
   const handleRandomClose = () => {
     setOpenRandom(false);
@@ -133,25 +139,27 @@ function QuizzesDashboard({ ...props }) {
           ))}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Custom Quizzes"} onAdd={() => handleCustomOpen()} hasAddButton={true}>
-        <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
-          {quizCustom.map((v) => (
-            <QuizTile
-              key={v.quiz_id}
-              name={v.title}
-              id={v.quiz_id}
-              onDelete={() => onDelete(v)}
-              onEdit={() => handleRenameOpen(v.quiz_id)}
-              onViewStatistic={() => handleViewStatOpen(v)}
-              isOwned={true}
-              linkTo={base + "/" + v.quiz_id}
-              lastSeen={v.last_seen}
-            >
-              {v}
-            </QuizTile>
-          ))}
-        </Grid>
-      </QuizSection>
+      {quizDocuments.length > 0 ? (
+        <QuizSection title={"Document Quizzes"}>
+          <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
+            {quizDocuments.map((v) => (
+              <QuizTile
+                key={v.quiz_id}
+                name={v.title}
+                id={v.quiz_id}
+                onDelete={() => onDelete(v)}
+                onEdit={() => handleRenameOpen(v.quiz_id)}
+                onViewStatistic={() => handleViewStatOpen(v)}
+                isOwned={true}
+                linkTo={base + "/" + v.quiz_id}
+                lastSeen={v.last_seen}
+              >
+                {v}
+              </QuizTile>
+            ))}
+          </Grid>
+        </QuizSection>
+      ) : undefined}
       <QuizSection title={"Random Quizzes"} onAdd={() => handleRandomOpen()} hasAddButton={true}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizRandom.length > 0 ? (
@@ -175,28 +183,25 @@ function QuizzesDashboard({ ...props }) {
           )}
         </Grid>
       </QuizSection>
-      {quizDocuments.length > 0 ? (
-        <QuizSection title={"Document Quizzes"}>
-          <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
-            {quizDocuments.map((v) => (
-              <QuizTile
-                key={v.quiz_id}
-                name={v.title}
-                id={v.quiz_id}
-                onDelete={() => onDelete(v)}
-                onEdit={() => handleRenameOpen(v.quiz_id)}
-                onViewStatistic={() => handleViewStatOpen(v)}
-                isOwned={true}
-                linkTo={base + "/" + v.quiz_id}
-                lastSeen={v.last_seen}
-              >
-                {v}
-              </QuizTile>
-            ))}
-          </Grid>
-        </QuizSection>
-      ) : undefined}
-
+      <QuizSection title={"Custom Quizzes"} onAdd={() => handleCustomOpen()} hasAddButton={true}>
+        <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
+          {quizCustom.map((v) => (
+            <QuizTile
+              key={v.quiz_id}
+              name={v.title}
+              id={v.quiz_id}
+              onDelete={() => onDelete(v)}
+              onEdit={() => handleRenameOpen(v.quiz_id)}
+              onViewStatistic={() => handleViewStatOpen(v)}
+              isOwned={true}
+              linkTo={base + "/" + v.quiz_id}
+              lastSeen={v.last_seen}
+            >
+              {v}
+            </QuizTile>
+          ))}
+        </Grid>
+      </QuizSection>
       <AddCustomQuiz onAdd={refresh} onClose={handleCustomClose} open={openCustom} />
       <AddRandomQuiz onAdd={refresh} onClose={handleRandomClose} open={openRandom} />
       <RenameQuiz onAdd={refresh} onClose={handleRenameClose} open={openRename} quiz_id={idRename} />

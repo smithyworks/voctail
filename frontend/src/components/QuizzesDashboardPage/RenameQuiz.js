@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage";
-import { Button, Dialog, DialogActions, DialogContent, Grid, TextField } from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, Grid } from "@material-ui/core";
 import { VTButton } from "../common";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
   const handleClose = () => {
@@ -12,13 +13,14 @@ function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
   };
 
   const title = useRef("");
+  const [errorTitle, setErrorTitle] = useState(false);
 
   const resetFields = () => {
     title.current = "";
   };
 
   const renameQuiz = () => {
-    if (title.current.length > 0) {
+    if (verify()) {
       api.renameQuiz(quiz_id, title.current).then((r) => {
         if (r) {
           toasts.toastSuccess("Quiz renamed.");
@@ -26,17 +28,27 @@ function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
       });
       onAdd();
       handleClose();
-    } else {
-      toasts.toastError("Please insert a title first.");
     }
   };
+
+  function verify() {
+    if (title.current.length === 0) {
+      setErrorTitle(true);
+      return false;
+    }
+    return true;
+  }
+
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="add-custom-quiz">
         <VoctailDialogTitle id="add-custom-quiz">Please provide a new title for renaming.</VoctailDialogTitle>
         <DialogContent>
           <Grid container justify="flex-start" alignItems="center" direction="column">
-            <TextField
+            <ErrorDialogField
+              error={errorTitle}
+              setError={setErrorTitle}
+              warning={"Please provide a title."}
               autoFocus
               margin="dense"
               id="title"
@@ -48,9 +60,9 @@ function RenameQuiz({ onAdd, onClose, open, quiz_id }) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <VTButton secondary onClick={handleClose} color="primary">
             Cancel
-          </Button>
+          </VTButton>
           <VTButton
             success
             onClick={() => {

@@ -6,8 +6,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import dateFormat from "dateformat";
 import Divider from "@material-ui/core/Divider";
+import { timeElapsed } from "../common/Quiz/QuizzesUtilities";
 
 const useStyles = makeStyles({
   quizItem: {
@@ -22,11 +22,7 @@ const useStyles = makeStyles({
 function MetricView({ questions, results, disablePadding }) {
   const classes = useStyles();
 
-  const formatDate = (date) => {
-    return dateFormat(Date.parse(date), "dd/mm/yyyy");
-  };
-  console.log(results);
-  const resultsList = Object.keys(results).map((k) => ({ date: formatDate(k), ...results[k] }));
+  const resultsList = Object.keys(results).map((k) => ({ date: timeElapsed(k), ...results[k] }));
 
   const formatQ = (questions) => {
     const lb = 80;
@@ -67,9 +63,18 @@ function MetricView({ questions, results, disablePadding }) {
       ) : (
         <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
           <Table>
+            <colgroup>
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "58%" }} />
+            </colgroup>
             <TableHead>
               <TableRow>
-                <TableCell align="right">Date</TableCell>
+                <TableCell align="right">Time</TableCell>
                 <TableCell align="right">Wrong</TableCell>
                 <TableCell align="right">Taken</TableCell>
                 <TableCell align="right">Total</TableCell>
@@ -79,8 +84,8 @@ function MetricView({ questions, results, disablePadding }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {resultsList.map((v) => (
-                <TableRow>
+              {resultsList.map((v, i) => (
+                <TableRow key={i}>
                   <TableCell align="right">{v.date}</TableCell>
                   <TableCell align="right">{v.wrong}</TableCell>
                   <TableCell align="right">{v.taken}</TableCell>

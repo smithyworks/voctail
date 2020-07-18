@@ -10,6 +10,7 @@ import EditableItem from "./EditableItem";
 import VocabularyCloud from "./VocabularyCloud";
 import { UserContext, refresh } from "../../App";
 import { api } from "../../utils";
+import QuizMetrics from "./QuizMetrics";
 
 const useStyles = makeStyles({
   container: {
@@ -144,6 +145,10 @@ function ProfilePage() {
             </Grid>
           </Grid>
           <VocabularyCloud userId={user.user_id} filter={vocabularyFilter} showKnowns={showKnowns} />
+          <Typography variant="h6" className={classes.subSectionTitle}>
+            Quizzes
+          </Typography>
+          <QuizMetrics />
         </ProfileSection>
       </div>
     </AppPage>

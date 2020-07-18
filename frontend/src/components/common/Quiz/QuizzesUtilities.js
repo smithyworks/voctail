@@ -1,4 +1,5 @@
 import { useState } from "react";
+import timediff from "timediff";
 
 export function shuffle(list) {
   let i, j, tmp;
@@ -9,6 +10,37 @@ export function shuffle(list) {
     list[j] = tmp;
   }
   return list;
+}
+
+export function timeElapsed(date) {
+  let d = "";
+
+  let date_ = date;
+  // deal with date parsable strings
+  if (typeof date === "string") {
+    date_ = new Date(Date.parse(date));
+  }
+  //deal with number values
+  if (typeof date === "number") {
+    date_ = new Date(date);
+  }
+
+  if (date_ instanceof Date) {
+    const { months, days, hours, minutes } = timediff(date_, new Date(), "MDHm");
+    if (months > 0 || days > 0 || hours > 0 || minutes > 0) {
+      if (months > 0) {
+        d += `${hours} M`;
+      } else if (days > 0) {
+        d += `${hours} D`;
+      } else if (hours > 0) {
+        d += `${hours} h`;
+      } else if (minutes > 0) {
+        d += `${minutes} min`;
+      }
+    } else d = "just now";
+  } else d = "Untaken";
+
+  return d;
 }
 
 //consecutive elements are assured to not repeat within colors.length
@@ -23,8 +55,6 @@ export function usePalette(colors) {
 
   //console.log(colorPalette);
   return (id) => {
-    //console.log(id, colInd, colTrack);
-    console.log(id, colTrack, colTrack[id], colInd);
     if (colTrack[id] === undefined) {
       console.log("inside");
       increment();

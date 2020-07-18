@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { shuffle } from "../common/QuizzesUtilities";
+import { shuffle } from "../common/Quiz/QuizzesUtilities";
 import VTButton from "../common/Buttons/VTButton";
 import ChoiceButton from "./ChoiceButton";
 
@@ -38,7 +38,7 @@ function QuizItemLayout({ vocabulary, choices, actions }) {
     <div className={classes.container}>
       <div className={classes.vocabularyContainer}>
         <div className={classes.vocabularyBox}>
-          <T variant={"h4"} className={classes.vocabulary}>
+          <T variant={"h4"} align={"center"} className={classes.vocabulary}>
             {vocabulary}
           </T>
         </div>
