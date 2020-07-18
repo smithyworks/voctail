@@ -218,6 +218,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
                 onChange={handleStatusChange}
                 checked={publicDocument}
                 inputProps={{ "aria-label": "primary checkbox" }}
+                color="default"
               />
             }
             label="Public Document"

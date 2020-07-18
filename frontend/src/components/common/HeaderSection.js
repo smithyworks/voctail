@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
 import { Typography } from "@material-ui/core";
-
+import colors from "../../assets/colors.json";
 const useStyles = makeStyles(() => ({
   headUpText: {
     margin: "auto",
@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
   headUp1: {
     //Font to do
     textAlign: "center",
-    color: "#0B6374",
+    ...colors.classroomHeader.headUp,
   },
 
   headUp2: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
   },
 
   container: {
-    backgroundColor: "#D4E4E4",
+    ...colors.classroomHeader.container,
     paddingTop: "1%",
     paddingBottom: "1%",
     marginBottom: "5%",

@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles({
   button: { ...colors.button.secondary },
+  disabledButton: { ...colors.button.disabled },
 });
 
 const LightTooltip = withStyles((theme) => ({
@@ -19,14 +20,20 @@ const LightTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-export function VTIconFlexButton({ toolTipLabel, ...props }) {
+export function VTIconFlexButton({ toolTipLabel, voctailDisabled, ...props }) {
   const classes = useStyles();
 
   return (
     <LightTooltip title={toolTipLabel} placement="top">
-      <IconButton className={classes.button} variant="contained" {...props}>
-        <AddBoxIcon fontSize="large" />
-      </IconButton>
+      {voctailDisabled ? (
+        <IconButton className={classes.disabledButton} variant="contained" {...props}>
+          <AddBoxIcon fontSize="large" />
+        </IconButton>
+      ) : (
+        <IconButton className={classes.button} variant="contained" {...props}>
+          <AddBoxIcon fontSize="large" />
+        </IconButton>
+      )}
     </LightTooltip>
   );
 }

@@ -79,6 +79,10 @@
       "color": "white",
       "backgroundColor": "#3a9893",
       "borderColor": "#3a9893"
+    },
+    "disabledButton": {
+      "color": "red",
+      "borderColor": "red"
     }
   },
   "statusTile": {
@@ -175,6 +179,22 @@
     },
     "offer": {
       "border": "1px solid #4fcc53"
+    }
+  },
+  "dashboardTiles": {
+    "emptyVoctailGlass": {
+      "color": "white"
+    },
+    "filledVoctailGlass": {
+      "color": "lightseagreen"
+    }
+  },
+  "classroomHeader": {
+    "container": {
+      "backgroundColor": "lightseagreen"
+    },
+    "headUp": {
+      "color": "white"
     }
   }
 }
