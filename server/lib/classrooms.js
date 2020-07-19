@@ -1,6 +1,38 @@
 const { log } = require("./log.js");
 const { query } = require("./db.js");
 
+async function deleteChapterHandler(req, res) {
+  try {
+    const { classroom_id, name } = req.body;
+    await query("UPDATE classroom_documents SET section = NULL WHERE section = $1 AND classroom_id = $2", [
+      name,
+      classroom_id,
+    ]);
+    await query("DELETE FROM classroom_documents WHERE document_id IS NULL AND section IS NULL AND classroom_id = $1", [
+      classroom_id,
+    ]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
+async function renameChapterHandler(req, res) {
+  try {
+    const { classroom_id, name, newName } = req.body;
+    await query("UPDATE classroom_documents SET section = $1 WHERE section = $2 AND classroom_id = $3", [
+      newName,
+      name,
+      classroom_id,
+    ]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
 async function removeDocumentHandler(req, res) {
   try {
     const { classroom_id, document_id } = req.body;
@@ -464,4 +496,6 @@ module.exports = {
   addChapterHandler,
   removeMemberHandler,
   removeDocumentHandler,
+  deleteChapterHandler,
+  renameChapterHandler,
 };

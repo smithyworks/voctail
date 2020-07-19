@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { api } from "../../utils";
 import { AppPage, ClassroomSection, UserTile, PlaceholderTile } from "../common";
@@ -14,6 +14,7 @@ function ClassroomPage() {
   const { params } = useRouteMatch();
 
   const [classroom, setClassroom] = useState();
+  const oldName = useRef();
 
   const [count, setCount] = useState(0);
   const reload = () => setCount(count + 1);
@@ -25,6 +26,7 @@ function ClassroomPage() {
   const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
   const [addTeacherDialogOpen, setAddTeacherDialogOpen] = useState(false);
   const [addChapterDialogOpen, setAddChapterDialogOpen] = useState(false);
+  const [renameChapterDialogOpen, setRenameChapterDialogOpen] = useState(false);
 
   function addTeachers(ids) {
     setAddTeacherDialogOpen(false);
@@ -46,6 +48,13 @@ function ClassroomPage() {
   function removeDocument(id) {
     api.removeDocumentFromClassroom(classroom.classroom_id, id).then(reload);
   }
+  function deleteChapter(name) {
+    api.removeChapterFromClassoom(classroom.classroom_id, name).then(reload);
+  }
+  function renameChapter(name) {
+    setRenameChapterDialogOpen(false);
+    api.renameChapterFromClassoom(classroom.classroom_id, oldName.current, name).then(reload);
+  }
 
   if (!classroom) return <AppPage />;
 
@@ -54,7 +63,7 @@ function ClassroomPage() {
   return (
     <AppPage>
       <div>
-        <ClassroomSection title="Teachers" hasAddButton onAdd={() => setAddTeacherDialogOpen(true)}>
+        <ClassroomSection title="Teachers" hasAddButton={isTeacher} onAdd={() => setAddTeacherDialogOpen(true)}>
           {classroom.teachers.map((u, i) => (
             <UserTile
               key={i}
@@ -73,7 +82,7 @@ function ClassroomPage() {
           onInvite={addTeachers}
         />
 
-        <ClassroomSection title="Students" hasAddButton onAdd={() => setAddStudentDialogOpen(true)}>
+        <ClassroomSection title="Students" hasAddButton={isTeacher} onAdd={() => setAddStudentDialogOpen(true)}>
           {classroom.students && classroom.students.length > 0 ? (
             classroom.students.map((u, i) => (
               <UserTile
@@ -96,17 +105,37 @@ function ClassroomPage() {
           onInvite={addStudents}
         />
 
-        <ClassroomSection title="Documents" hasAddButton onAdd={() => setAddChapterDialogOpen(true)}>
-          {classroom.chapters && classroom.chapters.length > 0 ? (
-            classroom.chapters.map((c, i) => (
+        <ClassroomSection title="Documents" hasAddButton={isTeacher} onAdd={() => setAddChapterDialogOpen(true)}>
+          {classroom.chapters
+            .filter((c) => !c)
+            .map((c, i) => (
               <Chapter
                 documents={classroom.documents}
                 name={c}
                 classroom_id={classroom.classroom_id}
                 isTeacher={isTeacher}
                 onRemove={removeDocument}
+                onDelete={deleteChapter}
               />
-            ))
+            ))}
+
+          {classroom.chapters && classroom.chapters.length > 0 ? (
+            classroom.chapters
+              .filter((c) => !!c)
+              .map((c, i) => (
+                <Chapter
+                  documents={classroom.documents}
+                  name={c}
+                  classroom_id={classroom.classroom_id}
+                  isTeacher={isTeacher}
+                  onRemove={removeDocument}
+                  onDelete={deleteChapter}
+                  onRename={(name) => {
+                    oldName.current = name;
+                    setRenameChapterDialogOpen(true);
+                  }}
+                />
+              ))
           ) : (
             <div style={{ height: 150 }} />
           )}
@@ -116,6 +145,12 @@ function ClassroomPage() {
           open={addChapterDialogOpen}
           onClose={() => setAddChapterDialogOpen(false)}
           onSubmit={addChapter}
+        />
+        <ChapterDialog
+          title="Add a Chapter"
+          open={renameChapterDialogOpen}
+          onClose={() => setRenameChapterDialogOpen(false)}
+          onSubmit={renameChapter}
         />
       </div>
     </AppPage>
