@@ -10,6 +10,7 @@ import { UserContext } from "../../App";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { VTButton } from "../common/index";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import WarningDialog from "../AdminPage/WarningDialog";
 
 const useStyles = makeStyles({
   container: {
@@ -148,8 +149,26 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
         )}
       </Paper>
 
-      <ConfirmDialog
+      <WarningDialog
         open={confirmDialogOpen}
+        info={{
+          title: "You are about to delete a document forever!",
+          body: `Are you sure you want to delete the classroom "${title}" created by ${teacherData(
+            user,
+            teacher,
+            classroomAuthor,
+            setClassroomAuthor
+          )}?`,
+          confirmText: title,
+          onClose: () => {
+            onDelete();
+            setConfirmDialogOpen(false);
+          },
+        }}
+      />
+
+      <ConfirmDialog
+        open={false}
         title="Deleting a classroom..."
         onConfirm={() => {
           onDelete();

@@ -267,12 +267,6 @@ function Classrooms() {
               linkTo={"/classrooms/" + tile.classroom_id}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
-              onDelete={() => {
-                deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
-              }}
-              onRename={(newTitle) => {
-                renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
-              }}
             />
           </React.Fragment>
         ))}
