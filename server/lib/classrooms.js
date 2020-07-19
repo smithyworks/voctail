@@ -1,6 +1,65 @@
 const { log } = require("./log.js");
 const { query } = require("./db.js");
 
+async function deleteChapterHandler(req, res) {
+  try {
+    const { classroom_id, name } = req.body;
+    await query("UPDATE classroom_documents SET section = NULL WHERE section = $1 AND classroom_id = $2", [
+      name,
+      classroom_id,
+    ]);
+    await query("DELETE FROM classroom_documents WHERE document_id IS NULL AND section IS NULL AND classroom_id = $1", [
+      classroom_id,
+    ]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
+async function renameChapterHandler(req, res) {
+  try {
+    const { classroom_id, name, newName } = req.body;
+    await query("UPDATE classroom_documents SET section = $1 WHERE section = $2 AND classroom_id = $3", [
+      newName,
+      name,
+      classroom_id,
+    ]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
+async function removeDocumentHandler(req, res) {
+  try {
+    const { classroom_id, document_id } = req.body;
+    await query("DELETE FROM classroom_documents WHERE document_id = $1 AND classroom_id = $2", [
+      document_id,
+      classroom_id,
+    ]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
+async function addChapterHandler(req, res) {
+  try {
+    const { classroom_id, name } = req.body;
+
+    await query("INSERT INTO classroom_documents (classroom_id, section) VALUES ($1, $2)", [classroom_id, name]);
+
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong with the classrooms handler.");
+  }
+}
+
 async function classroomsHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
@@ -37,6 +96,48 @@ async function classroomsHandler(req, res) {
   }
 }
 
+async function addMembersHandler(req, res) {
+  try {
+    const { classroom_id, teacher_ids, student_ids } = req.body;
+
+    if (teacher_ids) {
+      for (let i = 0; i < teacher_ids.length; i++) {
+        const id = teacher_ids[i];
+        await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, true)", [
+          classroom_id,
+          id,
+        ]);
+      }
+    }
+
+    if (student_ids) {
+      for (let i = 0; i < student_ids.length; i++) {
+        const id = student_ids[i];
+        await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, false)", [
+          classroom_id,
+          id,
+        ]);
+      }
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
+async function removeMemberHandler(req, res) {
+  try {
+    const { classroom_id, member_id } = req.body;
+    await query("DELETE FROM classroom_members WHERE member_id = $1 AND classroom_id = $2", [member_id, classroom_id]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
 async function classroomsAsStudentHandler(req, res) {
   try {
     const {
@@ -69,8 +170,46 @@ async function classroomsAsTeacherHandler(req, res) {
 
 async function classroomHandler(req, res) {
   try {
-    const { rows } = await query("SELECT * FROM classrooms WHERE classroom_id = $1", [req.query.classroom_id]);
-    res.status(200).json({ rows });
+    const { classroom_id } = req.body;
+
+    const {
+      rows: [classroom],
+    } = await query("SELECT * FROM classrooms WHERE classroom_id = $1", [classroom_id]);
+
+    const {
+      rows: students,
+    } = await query(
+      "SELECT users.* FROM classroom_members LEFT JOIN users ON classroom_members.member_id = users.user_id WHERE classroom_members.classroom_id = $1 AND classroom_members.teacher = false",
+      [classroom_id]
+    );
+    classroom.students = students;
+
+    const {
+      rows: teachers,
+    } = await query(
+      "SELECT users.* FROM classroom_members LEFT JOIN users ON classroom_members.member_id = users.user_id WHERE classroom_members.classroom_id = $1 AND classroom_members.teacher = true",
+      [classroom_id]
+    );
+    classroom.teachers = teachers;
+
+    const {
+      rows: [owner],
+    } = await query("SELECT * from users WHERE user_id = $1", [classroom.classroom_owner]);
+    classroom.owner = owner;
+
+    if (!teachers.find((t) => t.user_id === owner.user_id)) teachers.push(owner);
+
+    const {
+      rows: documents,
+    } = await query(
+      "SELECT classroom_documents.section AS chapter, documents.* FROM classroom_documents LEFT JOIN documents ON documents.document_id = classroom_documents.document_id WHERE classroom_documents.classroom_id = $1",
+      [classroom_id]
+    );
+
+    classroom.documents = documents;
+    classroom.chapters = [...new Set(documents.map((d) => d.chapter))];
+
+    res.status(200).json(classroom);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong with the classroom handler.");
@@ -337,6 +476,7 @@ async function addDocumentToClassroom(req, res) {
 module.exports = {
   classroomHandler,
   classroomsHandler,
+  addMembersHandler,
   classroomsAsStudentHandler,
   classroomsAsTeacherHandler,
   isTeacher,
@@ -353,4 +493,9 @@ module.exports = {
   addMembersToClassroom,
   deleteMemberFromClassroom,
   addDocumentToClassroom,
+  addChapterHandler,
+  removeMemberHandler,
+  removeDocumentHandler,
+  deleteChapterHandler,
+  renameChapterHandler,
 };

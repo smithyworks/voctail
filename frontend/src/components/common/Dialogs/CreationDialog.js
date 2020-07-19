@@ -5,6 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { VTButton } from "../index";
 
 const useStyles = makeStyles({
+  dialog: {
+    overflow: "visible",
+  },
   title: {
     display: "flex",
     alignItems: "center",
@@ -29,25 +32,40 @@ const useStyles = makeStyles({
   buttons: { margin: "1%" },
 });
 
-function CreationDialog({ open, title, description, validationButtonName, disabled, onConfirm, onClose, children }) {
+function CreationDialog({
+  open,
+  title,
+  validationButtonName,
+  disabled,
+  onConfirm,
+  onClose,
+  children,
+  style,
+  noScroll,
+}) {
   const classes = useStyles();
 
   return (
-    <Dialog open={open} onClose={onClose} className={classes.dialog}>
-      <DialogTitle id="form-dialog-title" className={classes.header}>
-        {" "}
-        {title}
-      </DialogTitle>
-      <DialogContentText className={classes.description}> {description} </DialogContentText>
-      <DialogContent>{children}</DialogContent>
-      <DialogActions>
-        <VTButton secondary onClick={onClose}>
-          Cancel
-        </VTButton>
-        <VTButton accept onClick={onConfirm} disabled={disabled}>
-          {validationButtonName ? validationButtonName : "Create"}
-        </VTButton>
-      </DialogActions>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      style={{ overflow: noScroll ? "visible" : "auto" }}
+      PaperProps={{ style: { overflow: noScroll ? "visible" : "auto" } }}
+    >
+      <div style={{ overflow: noScroll ? "visible" : "auto", ...style }}>
+        <DialogTitle id="form-dialog-title" className={classes.header}>
+          {title}
+        </DialogTitle>
+        <DialogContent style={{ overflow: noScroll ? "visible" : "auto" }}>{children}</DialogContent>
+        <DialogActions>
+          <VTButton secondary onClick={onClose}>
+            Cancel
+          </VTButton>
+          <VTButton accept onClick={onConfirm} disabled={disabled}>
+            {validationButtonName ? validationButtonName : "Create"}
+          </VTButton>
+        </DialogActions>
+      </div>
     </Dialog>
   );
 }

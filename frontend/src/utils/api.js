@@ -153,7 +153,32 @@ export function addTranslation(word_id, translation) {
 export function fetchClassrooms() {
   return axios.get(`${base}/classrooms`);
 }
+export function fetchClassroom(classroom_id) {
+  return axios.post(`${base}/classroom`, { classroom_id });
+}
+export function addStudentsToClassroom(classroom_id, student_ids) {
+  return axios.post(`${base}/add-classroom-members`, { classroom_id, student_ids });
+}
+export function addTeachersToClassroom(classroom_id, teacher_ids) {
+  return axios.post(`${base}/add-classroom-members`, { classroom_id, teacher_ids });
+}
+export function removeClassroomMember(classroom_id, member_id) {
+  return axios.post(`${base}/remove-classroom-member`, { classroom_id, member_id });
+}
+export function addChapterToClassroom(classroom_id, name) {
+  return axios.post(`${base}/add-classroom-chapter`, { classroom_id, name });
+}
+export function removeDocumentFromClassroom(classroom_id, document_id) {
+  return axios.post(`${base}/remove-classroom-document`, { classroom_id, document_id });
+}
+export function removeChapterFromClassoom(classroom_id, name) {
+  return axios.post(`${base}/delete-classroom-chapter`, { classroom_id, name });
+}
+export function renameChapterFromClassoom(classroom_id, name, newName) {
+  return axios.post(`${base}/rename-classroom-chapter`, { classroom_id, name, newName });
+}
 
+// old
 export function fetchClassroomsAsStudent(member_id) {
   return axios.get(`${base}/classrooms-as-student`, { params: { member_id: member_id } });
 }

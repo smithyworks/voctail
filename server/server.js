@@ -85,9 +85,16 @@ server.post("/api/create-custom-quiz", auth.tokenMiddleWare, quizzes.createCusto
 server.get("/api/quiz-title", auth.tokenMiddleWare, quizzes.quizTitleHandler);
 
 server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomsHandler);
+server.post("/api/classroom", auth.tokenMiddleWare, classrooms.classroomHandler);
+server.post("/api/add-classroom-members", auth.tokenMiddleWare, classrooms.addMembersHandler);
+server.post("/api/remove-classroom-member", auth.tokenMiddleWare, classrooms.removeMemberHandler);
+server.post("/api/add-classroom-chapter", auth.tokenMiddleWare, classrooms.addChapterHandler);
+server.post("/api/remove-classroom-document", auth.tokenMiddleWare, classrooms.removeDocumentHandler);
+server.post("/api/delete-classroom-chapter", auth.tokenMiddleWare, classrooms.deleteChapterHandler);
+server.post("/api/rename-classroom-chapter", auth.tokenMiddleWare, classrooms.renameChapterHandler);
+// old
 server.get("/api/classrooms-as-student", auth.tokenMiddleWare, classrooms.classroomsAsStudentHandler);
 server.get("/api/classrooms-as-teacher", auth.tokenMiddleWare, classrooms.classroomsAsTeacherHandler);
-server.get("/api/classroom", auth.tokenMiddleWare, classrooms.classroomHandler);
 server.get("/api/classroom-is-teacher", auth.tokenMiddleWare, classrooms.isTeacher);
 server.get("/api/classrooms-students", auth.tokenMiddleWare, classrooms.studentsHandler);
 server.get("/api/classrooms-owner", auth.tokenMiddleWare, classrooms.ownerHandler);

@@ -10,7 +10,6 @@ import {
   DocumentPage,
   QuizzesDashboardPage,
   QuizPage,
-  ClassroomViewPage,
   AccountPage,
   ProfilePage,
 } from "./components";
@@ -18,10 +17,10 @@ import { toasts } from "./components/common";
 import { localStorage, api } from "./utils";
 import ShowcasePage from "./components/common/ShowcasePage";
 import { getColor } from "./components/common/Quiz/colorCycler";
-import { ClassroomsDashboardPage } from "./components/NewClassroomsDashboardPage";
+import { ClassroomsDashboardPage, ClassroomPage } from "./components/NewClassroomsDashboardPage";
 
 function ProtectedRoute({ redirectTo, path, ...props }) {
-  if (localStorage.hasTokens()) return <Route path {...props} />;
+  if (localStorage.hasTokens()) return <Route path={path} {...props} />;
   else
     return (
       <Route path={path}>
@@ -73,7 +72,7 @@ function App() {
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
           <ProtectedRoute path="/documents/:document_id" component={DocumentPage} />
           <ProtectedRoute path="/classrooms/:classroom_id/documents/:document_id" component={DocumentPage} />
-          <ProtectedRoute path="/classrooms/:classroom_id" component={ClassroomViewPage} />
+          <ProtectedRoute path="/classrooms/:classroom_id" component={ClassroomPage} />
           <ProtectedRoute path="/classrooms" component={ClassroomsDashboardPage} />
           <ProtectedRoute path="/account" component={AccountPage} />
           <ProtectedRoute path="/profile" component={ProfilePage} />

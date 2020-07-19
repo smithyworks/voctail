@@ -139,7 +139,7 @@ const useStyles = makeStyles({
   },
 });
 
-function UserTile({ user, tooltipTitle, connected, onDelete, isUserTeacher, isMemberTeacher }) {
+function UserTile({ user, tooltipTitle, connected, isUserTeacher, isMemberTeacher, onDelete }) {
   const classes = useStyles();
   const { name, email, user_id } = user;
 
@@ -243,17 +243,16 @@ function UserTile({ user, tooltipTitle, connected, onDelete, isUserTeacher, isMe
         <MenuItem component={Link} to={`/users/${user_id}`}>
           View Information
         </MenuItem>
-        <Hidden lgDown={isMemberTeacher}>
+        {onDelete && (
           <MenuItem
-            disabled={isUserTeacher}
             onClick={() => {
-              setConfirmDialogOpen(true);
               setMenuOpen(false);
+              onDelete(user.user_id);
             }}
           >
             Delete
           </MenuItem>
-        </Hidden>
+        )}
       </Menu>
     </Grid>
   );
