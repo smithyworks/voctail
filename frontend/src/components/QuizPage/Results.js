@@ -31,6 +31,7 @@ const useStyles = makeStyles({
   },
   text: {
     fontSize: "22px",
+    fontWeight: "lighter",
   },
   noResult: {
     position: "absolute",

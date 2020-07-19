@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   choicesContainer: { height: "30%", width: "100%" },
   actionsContainer: { height: "20%", width: "100%", padding: "0% 35% 0% 35%" },
 
-  vocabulary: { color: "black" },
+  vocabulary: { color: "#333" },
 });
 
 function QuizItemLayout({ vocabulary, choices, actions }) {
