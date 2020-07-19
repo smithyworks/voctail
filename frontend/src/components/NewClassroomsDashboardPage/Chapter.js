@@ -4,9 +4,8 @@ import { DashboardTile } from "../common";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 function Chapter({ name, documents, classroom_id, isTeacher, onRemove, onDelete, onRename, onAdd }) {
-  console.log(name, documents, classroom_id);
   const anchor = useRef();
-  const [menuOpen, setMenuOpen] = useState();
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <Grid item xs={12}>
       {name && (

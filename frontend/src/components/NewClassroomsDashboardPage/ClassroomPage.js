@@ -22,7 +22,6 @@ function ClassroomPage() {
   useEffect(() => {
     api.fetchClassroom(params.classroom_id).then((res) => setClassroom(res.data));
   }, [count]);
-  console.log(classroom);
 
   const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
   const [addTeacherDialogOpen, setAddTeacherDialogOpen] = useState(false);
@@ -130,6 +129,7 @@ function ClassroomPage() {
               .filter((c) => !!c)
               .map((c, i) => (
                 <Chapter
+                  key={i}
                   documents={classroom.documents}
                   name={c}
                   classroom_id={classroom.classroom_id}

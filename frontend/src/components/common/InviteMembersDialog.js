@@ -76,7 +76,6 @@ function InviteMembersDialog({ open, onInvite, onClose, title }) {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [focused, setFocused] = useState(false);
-  console.log(focused);
 
   const [users, setUsers] = useState();
   useEffect(() => {

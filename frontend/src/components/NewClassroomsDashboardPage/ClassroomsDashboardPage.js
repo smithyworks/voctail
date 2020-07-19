@@ -14,7 +14,6 @@ function ClassroomsDashboardPage() {
   const reload = () => setCount(count + 1);
   useEffect(() => {
     api.fetchClassrooms().then((res) => {
-      console.log(res.data);
       setClassrooms(res.data);
     });
   }, [count]);
@@ -57,7 +56,6 @@ function ClassroomsDashboardPage() {
                   topic={c.topic}
                   linkTo={"/classrooms/" + c.classroom_id}
                   onDelete={() => {
-                    console.log("delete");
                     api.deleteClassroom(c.classroom_id).then((res) => reload());
                   }}
                   onRename={(newTitle) => {
@@ -106,7 +104,6 @@ function ClassroomsDashboardPage() {
                   }
                 }}
                 onDelete={() => {
-                  console.log("delete");
                   api.deleteClassroom(c.classroom_id).then((res) => reload());
                 }}
                 onRename={(newTitle) => {

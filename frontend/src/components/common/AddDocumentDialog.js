@@ -76,7 +76,6 @@ function AddDocumentDialog({ open, onAdd, onClose, title }) {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [focused, setFocused] = useState(false);
-  console.log(focused);
 
   const [documents, setDocuments] = useState();
   useEffect(() => {

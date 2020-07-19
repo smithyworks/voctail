@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
@@ -7,8 +7,6 @@ import { UserContext, refresh } from "../../App";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
-import { useParams } from "react-router-dom";
-import { user } from "../../utils/api";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -17,7 +15,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function JoinDialog({ title, open, onClose, link, classroom_id }) {
-  const classes = useStyles();
   const contextUser = useContext(UserContext);
 
   const user_id = contextUser.user_id;
