@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 import LocalBarOutlinedIcon from "@material-ui/icons/LocalBarOutlined";
 import voctailColors from "../../assets/colors.json";
+import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
 
 //tile images
 import shortStoriesPreview from "../../assets/books.jpg";
@@ -17,6 +19,10 @@ const useStyles = makeStyles({
   container: {
     padding: "10px",
     height: "190px",
+  },
+  icon: {
+    padding: "10px",
+    top: "10px",
   },
   paper: {
     width: "100%",
@@ -74,7 +80,7 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo, category, fits }) {
+function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo, category, fits, video }) {
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
@@ -145,6 +151,16 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
           component={Link}
           to={linkTo}
         >
+          <Grid item xs className={classes.icon}>
+            <span>
+              {video ? (
+                <PlayCircleFilledIcon className={classes.emptyGlass} />
+              ) : (
+                <MenuBookIcon className={classes.emptyGlass} />
+              )}
+            </span>
+          </Grid>
+
           <div className={classes.infoContainer}>
             <Grid container justify="space-between" alignItems="center">
               <Grid item xs zeroMinWidth>
