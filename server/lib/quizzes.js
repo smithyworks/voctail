@@ -300,12 +300,12 @@ async function quizzesMetricsHandler(req, res) {
   try {
     const { user_id } = req.query;
 
-    //sorted by date desc - only taken quizzes appear -> metrics != null as well
+    //sorted by date desc - only taken quizzes appear -> metrics != null
     const {
       rows: quizList,
     } = await query(
       "SELECT  users_quizzes.metrics, quizzes.* FROM users_quizzes INNER JOIN quizzes ON users_quizzes.user_id=$1\
-        AND users_quizzes.quiz_id=quizzes.quiz_id WHERE users_quizzes.last_seen IS NOT NULL \
+        AND users_quizzes.quiz_id=quizzes.quiz_id WHERE users_quizzes.metrics IS NOT NULL\
         ORDER BY users_quizzes.last_seen DESC",
       [user_id]
     );
@@ -331,11 +331,12 @@ async function quizzesMetricsHandler(req, res) {
           }
         }
       }
+
       if (lastResult && bestResult) {
         quizResults.push({ lastResult, bestResult, ...q });
       }
     });
-
+    log(quizResults);
     res.status(200).json(quizResults);
   } catch (err) {
     log(err);
