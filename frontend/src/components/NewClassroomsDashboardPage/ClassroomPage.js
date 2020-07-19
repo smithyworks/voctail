@@ -6,6 +6,7 @@ import { timeParser, isConnected } from "../../utils/parsers";
 import InviteMembersDialog from "../common/InviteMembersDialog";
 import ChapterDialog from "./ChapterDialog";
 import Chapter from "./Chapter";
+import { toasts } from "../common/AppPage/AppPage";
 
 function ClassroomPage() {
   const { params } = useRouteMatch();
@@ -34,6 +35,11 @@ function ClassroomPage() {
   function addChapter(name) {
     setAddChapterDialogOpen(false);
     api.addChapterToClassroom(classroom.classroom_id, name).then(reload);
+  }
+  function removeMember(id) {
+    if (classroom.owner.user !== id) {
+      api.removeClassroomMember(classroom.classroom_id, id).then(reload);
+    } else toasts.toastError("Cannot remove the classroom owner!");
   }
 
   if (!classroom) return <AppPage />;

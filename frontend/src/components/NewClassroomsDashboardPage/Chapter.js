@@ -13,7 +13,7 @@ function Chapter({ name, documents, classroom_id }) {
       )}
       <Grid container>
         {documents
-          .filter((d) => d.chapter === name)
+          .filter((d) => d.chapter === name && d.document_id)
           .map((d, i) => (
             <DashboardTile
               key={i}

@@ -81,6 +81,17 @@ async function addMembersHandler(req, res) {
   }
 }
 
+async function removeMemberHandler(req, res) {
+  try {
+    const { classroom_id, member_id } = req.body;
+    await query("DELETE FROM classroom_members WHERE member_id = $1 AND classroom_id = $2", [member_id, classroom_id]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
 async function classroomsAsStudentHandler(req, res) {
   try {
     const {
@@ -437,4 +448,5 @@ module.exports = {
   deleteMemberFromClassroom,
   addDocumentToClassroom,
   addChapterHandler,
+  removeMemberHandler,
 };

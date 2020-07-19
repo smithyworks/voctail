@@ -158,6 +158,9 @@ export function addStudentsToClassroom(classroom_id, student_ids) {
 export function addTeachersToClassroom(classroom_id, teacher_ids) {
   return axios.post(`${base}/add-classroom-members`, { classroom_id, teacher_ids });
 }
+export function removeClassroomMember(classroom_id, member_id) {
+  return axios.post(`${base}/remove-classroom-member`, { classroom_id, member_id });
+}
 export function addChapterToClassroom(classroom_id, name) {
   return axios.post(`${base}/add-classroom-chapter`, { classroom_id, name });
 }
