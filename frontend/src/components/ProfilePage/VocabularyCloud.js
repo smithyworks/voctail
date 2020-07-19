@@ -4,19 +4,18 @@ import { Chip, makeStyles } from "@material-ui/core";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage/AppPage";
 import VocabularyPopup from "./VocabularyPopup";
+import colors from "../../assets/colors.json";
 
 const useStyles = makeStyles({
   known: {
     cursor: "pointer",
     margin: "5px",
-    borderColor: "green",
-    backgroundColor: "rgb(0,128,0,0.2)",
+    ...colors.vocabularyCloud.known,
   },
   unknown: {
     cursor: "pointer",
     margin: "5px",
-    borderColor: "red",
-    backgroundColor: "rgb(255,0,0,0.3)",
+    ...colors.vocabularyCloud.unknown,
   },
 });
 

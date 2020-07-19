@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { TableRow, TableCell } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import timediff from "timediff";
 import { api } from "../../utils";
-import { UserContext } from "../../App";
 
 const useStyles = makeStyles({
   greyed: { color: "#aaa" },
@@ -43,9 +42,8 @@ function Header({ children, onClick }) {
   );
 }
 
-function DocumentRow({ id, title, author, header, publisher }) {
+function DocumentRow({ id, title, author, header, publisher, user }) {
   const classes = useStyles();
-  const user = useContext(UserContext);
 
   let title_val, author_val, duration_val, publisher_val;
 
@@ -54,7 +52,7 @@ function DocumentRow({ id, title, author, header, publisher }) {
 
   function getLastSeen(documentId) {
     api
-      .getLastSeen(user.user_id, documentId)
+      .getLastSeen(user.userId, documentId)
       .then((res) => {
         if (res) setLastSeen(res.data[0].last_seen);
       })

@@ -1,9 +1,9 @@
 import { Paper, Table, TableBody, TableHead } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import DocumentRow from "./DocumentRow";
 import { api } from "../../utils";
 
-function DocumentMetrics() {
+function DocumentMetrics(userId) {
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
@@ -24,7 +24,13 @@ function DocumentMetrics() {
       </TableHead>
       <TableBody>
         {documents.map((doc) => (
-          <DocumentRow id={doc.document_id} title={doc.title} author={doc.author} publisher={doc.publisher_id} />
+          <DocumentRow
+            id={doc.document_id}
+            title={doc.title}
+            author={doc.author}
+            publisher={doc.publisher_id}
+            user={userId ? userId : undefined}
+          />
         ))}
       </TableBody>
     </Table>

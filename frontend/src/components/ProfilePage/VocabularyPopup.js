@@ -123,7 +123,7 @@ function TranslationPopup({ open, anchor, onMarkKnown, onMarkUnknown, onClose, e
                 startIcon={entry?.known ? <CrossIcon /> : <CheckIcon />}
                 className={classes.knownButton}
                 onClick={entry?.known ? _markUnknown : _markKnown}
-                warning
+                accept
               >
                 {entry?.known ? "Mark Unkown" : "Mark Known"}
               </VTButton>

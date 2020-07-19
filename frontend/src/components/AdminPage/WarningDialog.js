@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   title: {
     display: "flex",
     alignItems: "center",
-    "& *": { color: "red" },
+    "& *": { color: "#d43131" },
   },
   icon: { marginRight: "5px", fontSize: "30px" },
   confirmTitle: {

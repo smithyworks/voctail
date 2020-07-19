@@ -82,7 +82,6 @@ function Dashboard() {
         .then(() => {
           toasts.toastSuccess("The document was successfully deleted!");
           refresh();
-          //setPopUpOpen(false); //todo
         })
         .catch((err) => {
           console.log(err);
@@ -98,7 +97,7 @@ function Dashboard() {
         .then(() => {
           toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
           //setMenuOpen(false);
-        }) //todo check it out
+        })
         .catch(() => toasts.toastError("Encountered a problem while creating your quiz!"));
     else toasts.goPremium();
   }
@@ -131,7 +130,7 @@ function Dashboard() {
   function getFit(document_id) {
     if (!fitLookup) return false;
     const fit = fitLookup[document_id];
-    return fit >= 0 && fit < 0.1;
+    return fit >= 0 && fit < 0.02;
   }
 
   const recommendations = documentDataFromDatabase
@@ -165,6 +164,7 @@ function Dashboard() {
               key={i}
               title={tile.title}
               author={tile.author}
+              fits={getFit(tile.document_id)}
               isOwned
               onEdit={() => handleEdit(tile)}
               onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
@@ -242,7 +242,7 @@ function Dashboard() {
               key={i}
               title={tile.title}
               author={tile.author}
-              fits={true}
+              fits={getFit(tile.document_id)}
               onGenerateQuiz={() => createQuiz(tile.document_id)}
               linkTo={"/documents/" + tile.document_id}
               category={tile.category}
