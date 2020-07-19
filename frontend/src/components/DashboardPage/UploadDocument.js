@@ -226,11 +226,11 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <VTButton neutral onClick={handleAddClose}>
+          <VTButton secondary onClick={handleAddClose}>
             Cancel
           </VTButton>
           <VTButton
-            accept
+            neutral
             onClick={() => {
               if (verify()) {
                 readFile()

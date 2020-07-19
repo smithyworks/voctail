@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { TextField, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 import { OkDialog } from "../common";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 function AddTranslationDialog({ open, word_id, lookupWord, lookupTranslations, onSubmit, onClose }) {
   const { word } = lookupWord(word_id) ?? {};
@@ -21,9 +22,8 @@ function AddTranslationDialog({ open, word_id, lookupWord, lookupTranslations, o
   return (
     <OkDialog open={open} onClose={_close} title="Add a Translation" okText="Submit!" disabled={!valid} onOk={_submit}>
       <Typography>Contribute a translation for '{word}':</Typography>
-      <TextField variant="outlined" margin="dense" onChange={(e) => setValue(e.target.value)} />
+      <ErrorDialogField variant="outlined" margin="dense" onChange={(e) => setValue(e.target.value)} />
     </OkDialog>
   );
 }
-
 export default AddTranslationDialog;
