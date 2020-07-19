@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CreationDialog } from "../common";
-import { TextField, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 function ChapterDialog({ title, open, onClose, onSubmit }) {
   const [value, setValue] = useState();
@@ -14,7 +15,7 @@ function ChapterDialog({ title, open, onClose, onSubmit }) {
       disabled={!value || value.trim() === ""}
     >
       <Typography style={{ paddingTop: "10px" }}>Create a new chapter</Typography>
-      <TextField
+      <ErrorDialogField
         placeholder="Chaper name..."
         margin="dense"
         variant="outlined"

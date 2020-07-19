@@ -1,8 +1,10 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { VTButton } from "../index";
+import VoctailDialogTitle from "./VoctailDialogTitle";
+import voctailColors from "../../../assets/colors.json";
 
 const useStyles = makeStyles({
   dialog: {
@@ -15,8 +17,7 @@ const useStyles = makeStyles({
   },
   icon: { marginRight: "5px", fontSize: "30px" },
   header: {
-    color: "#0B6374",
-    backgroundColor: "#D4E4E4",
+    dialog: { ...voctailColors.dialog },
   },
   description: {
     marginTop: "5%",
@@ -53,15 +54,15 @@ function CreationDialog({
       PaperProps={{ style: { overflow: noScroll ? "visible" : "auto" } }}
     >
       <div style={{ overflow: noScroll ? "visible" : "auto", ...style }}>
-        <DialogTitle id="form-dialog-title" className={classes.header}>
+        <VoctailDialogTitle id="form-dialog-title" className={classes.header.dialog}>
           {title}
-        </DialogTitle>
+        </VoctailDialogTitle>
         <DialogContent style={{ overflow: noScroll ? "visible" : "auto" }}>{children}</DialogContent>
         <DialogActions>
           <VTButton secondary onClick={onClose}>
             Cancel
           </VTButton>
-          <VTButton accept onClick={onConfirm} disabled={disabled}>
+          <VTButton neutral onClick={onConfirm} disabled={disabled}>
             {validationButtonName ? validationButtonName : "Create"}
           </VTButton>
         </DialogActions>
