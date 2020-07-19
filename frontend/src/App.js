@@ -20,7 +20,7 @@ import { getColor } from "./components/common/Quiz/colorCycler";
 import { ClassroomsDashboardPage, ClassroomPage } from "./components/NewClassroomsDashboardPage";
 
 function ProtectedRoute({ redirectTo, path, ...props }) {
-  if (localStorage.hasTokens()) return <Route path {...props} />;
+  if (localStorage.hasTokens()) return <Route path={path} {...props} />;
   else
     return (
       <Route path={path}>

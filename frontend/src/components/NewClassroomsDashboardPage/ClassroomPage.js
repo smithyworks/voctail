@@ -10,18 +10,30 @@ function ClassroomPage() {
 
   const [classroom, setClassroom] = useState();
 
+  const [count, setCount] = useState(0);
+  const reload = () => setCount(count + 1);
   useEffect(() => {
     api.fetchClassroom(params.classroom_id).then((res) => setClassroom(res.data));
-  }, []);
+  }, [count]);
 
-  const [addStudentDialogOpen, setAddStudentDialogOpen] = useState();
+  const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
+  const [addTeacherDialogOpen, setAddTeacherDialogOpen] = useState(false);
+
+  function addTeachers(ids) {
+    setAddTeacherDialogOpen(false);
+    api.addTeachersToClassroom(classroom.classroom_id, ids).then(reload);
+  }
+  function addStudents(ids) {
+    setAddStudentDialogOpen(false);
+    api.addStudentsToClassroom(classroom.classroom_id, ids).then(reload);
+  }
 
   if (!classroom) return <AppPage />;
 
   return (
     <AppPage>
       <div>
-        <ClassroomSection title="Teachers">
+        <ClassroomSection title="Teachers" hasAddButton onAdd={() => setAddTeacherDialogOpen(true)}>
           {classroom.teachers.map((u, i) => (
             <UserTile
               key={i}
@@ -32,8 +44,14 @@ function ClassroomPage() {
             />
           ))}
         </ClassroomSection>
+        <InviteMembersDialog
+          open={addTeacherDialogOpen}
+          onClose={() => setAddTeacherDialogOpen(false)}
+          title="Add Teachers"
+          onInvite={addTeachers}
+        />
 
-        <ClassroomSection title="Teachers" hasAddButton onAdd={() => setAddStudentDialogOpen(true)}>
+        <ClassroomSection title="Students" hasAddButton onAdd={() => setAddStudentDialogOpen(true)}>
           {classroom.students && classroom.students.length > 0 ? (
             classroom.students.map((u, i) => (
               <UserTile
@@ -48,7 +66,12 @@ function ClassroomPage() {
             <PlaceholderTile tooltipTitle="Add students!" onClick={() => setAddStudentDialogOpen(true)} />
           )}
         </ClassroomSection>
-        <InviteMembersDialog open={addStudentDialogOpen} onClose={() => setAddStudentDialogOpen(false)} />
+        <InviteMembersDialog
+          open={addStudentDialogOpen}
+          onClose={() => setAddStudentDialogOpen(false)}
+          title="Add Students"
+          onInvite={addStudents}
+        />
       </div>
     </AppPage>
   );

@@ -152,7 +152,14 @@ export function fetchClassrooms() {
 export function fetchClassroom(classroom_id) {
   return axios.post(`${base}/classroom`, { classroom_id });
 }
+export function addStudentsToClassroom(classroom_id, student_ids) {
+  return axios.post(`${base}/add-classroom-members`, { classroom_id, student_ids });
+}
+export function addTeachersToClassroom(classroom_id, teacher_ids) {
+  return axios.post(`${base}/add-classroom-members`, { classroom_id, teacher_ids });
+}
 
+// old
 export function fetchClassroomsAsStudent(member_id) {
   return axios.get(`${base}/classrooms-as-student`, { params: { member_id: member_id } });
 }

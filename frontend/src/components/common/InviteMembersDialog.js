@@ -71,7 +71,7 @@ function MemberItem({ email, name, selected, onClick }) {
   );
 }
 
-function InviteMembersDialog({ open, onInvite, onClose, memberType }) {
+function InviteMembersDialog({ open, onInvite, onClose, title }) {
   const classes = useStyles();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -124,9 +124,9 @@ function InviteMembersDialog({ open, onInvite, onClose, memberType }) {
 
   const [memberChips, setmemberChips] = useState();
   useEffect(() => {
-    const chips = [...selectedIDs].map((id) => {
+    const chips = [...selectedIDs].map((id, i) => {
       const u = users.find((u) => u.user_id === id);
-      return <Chip variant="outlined" onDelete={() => removeStudent(id)} label={`${u.email} ${u.name}`} />;
+      return <Chip key={i} variant="outlined" onDelete={() => removeStudent(id)} label={`${u.email} ${u.name}`} />;
     });
 
     setmemberChips(chips);
@@ -145,8 +145,7 @@ function InviteMembersDialog({ open, onInvite, onClose, memberType }) {
   return (
     <>
       <CreationDialog
-        title={"Invite " + memberType + "..."}
-        description={"Search for " + memberType}
+        title={title}
         validationButtonName="Add"
         open={!!open}
         onClose={_onClose}
@@ -175,7 +174,7 @@ function InviteMembersDialog({ open, onInvite, onClose, memberType }) {
           </div>
 
           <div className={classes.chipsContainer}>
-            <Typography>{"Selected " + memberType}</Typography>
+            <Typography>Selected</Typography>
             {memberChips}
           </div>
         </Grid>

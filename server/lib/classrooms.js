@@ -37,6 +37,37 @@ async function classroomsHandler(req, res) {
   }
 }
 
+async function addMembersHandler(req, res) {
+  try {
+    const { classroom_id, teacher_ids, student_ids } = req.body;
+
+    if (teacher_ids) {
+      for (let i = 0; i < teacher_ids.length; i++) {
+        const id = teacher_ids[i];
+        await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, true)", [
+          classroom_id,
+          id,
+        ]);
+      }
+    }
+
+    if (student_ids) {
+      for (let i = 0; i < student_ids.length; i++) {
+        const id = student_ids[i];
+        await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, false)", [
+          classroom_id,
+          id,
+        ]);
+      }
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
 async function classroomsAsStudentHandler(req, res) {
   try {
     const {
@@ -365,6 +396,7 @@ async function addDocumentToClassroom(req, res) {
 module.exports = {
   classroomHandler,
   classroomsHandler,
+  addMembersHandler,
   classroomsAsStudentHandler,
   classroomsAsTeacherHandler,
   isTeacher,
