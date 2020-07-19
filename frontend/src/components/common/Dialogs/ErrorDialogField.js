@@ -12,6 +12,14 @@ const VoctailTextField = withStyles({
     "& .MuiInput-underline:after": {
       borderBottomColor: "lightseagreen",
     },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "teal",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "lightseagreen",
+      },
+    },
   },
 })(TextField);
 

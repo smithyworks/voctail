@@ -137,7 +137,7 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
           </Grid>
           <Grid item>
             <Typography className={classes.teacher}>
-              {"Open by " + teacherData(user, teacher, classroomAuthor, setClassroomAuthor)}
+              {"Created by " + teacherData(user, teacher, classroomAuthor, setClassroomAuthor)}
             </Typography>
           </Grid>
         </Grid>

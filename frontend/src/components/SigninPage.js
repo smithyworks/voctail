@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Grid, Paper, Typography as T, Checkbox } from "@material-ui/core";
+import { Grid, Paper, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 
@@ -12,6 +12,7 @@ import AppPage from "./common/AppPage";
 import logo from "../assets/logo_green.png";
 import VTButton from "./common/Buttons/VTButton";
 import ErrorDialogField from "./common/Dialogs/ErrorDialogField";
+import VoctailCheckbox from "./common/VoctailCheckbox";
 
 const useStyles = makeStyles({
   page: {
@@ -189,7 +190,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
             </VTButton>
 
             <T variant="body2" className={classes.checkbox}>
-              <Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+              <VoctailCheckbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
               <span>Remember me!</span>
             </T>
           </form>

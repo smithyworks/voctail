@@ -49,7 +49,7 @@ function NavButtons({ location, isAdmin, pendingTranslations }) {
   const adminLink = isAdmin ? (
     pendingTranslations && pendingTranslations > 0 ? (
       <Link to="/admin" className={adminLinkClass}>
-        <Badge badgeContent={pendingTranslations} color="primary">
+        <Badge badgeContent={pendingTranslations} color="error">
           Admin
         </Badge>
       </Link>
