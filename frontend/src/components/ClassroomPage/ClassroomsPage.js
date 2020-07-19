@@ -8,6 +8,7 @@ import GoPremiumDialog from "../common/Dialogs/GoPremiumDialog";
 import ClassroomCreateFormDialog from "./ClassroomCreateFormDialog";
 import { deleteClassroom, renameClassroom } from "./ClassroomDashboardUtils";
 import PlaceholderTile from "../common/PlaceholderTile";
+import JoinDialog from "./ClassroomJoinDialog";
 
 function Classrooms() {
   const [user, setUser] = useState([]);
@@ -17,6 +18,9 @@ function Classrooms() {
 
   //Hooks to a current classroom
   const [openCreateForm, setOpenCreateForm] = useState(false);
+  const [joinClassroomForm, setJoinClassroomForm] = useState(false);
+  const [joinTitle, setJoinTitle] = useState("");
+  const [joinClassroom, setJoinClassroom] = useState(null);
   //Hooks to create a new classroom
   const [newTopic, setNewTopic] = useState("");
   const [newDescription, setNewDescription] = useState("");
@@ -25,6 +29,9 @@ function Classrooms() {
 
   const handleGoPremiumClose = () => {
     setGoPremium(false);
+  };
+  const handleJoinFormClose = () => {
+    setJoinClassroomForm(false);
   };
 
   useEffect(() => {
@@ -188,7 +195,11 @@ function Classrooms() {
               title={tile.title}
               teacher={tile.classroom_owner}
               topic={tile.topic}
-              linkTo={"/classrooms/" + tile.classroom_id}
+              onClick={() => {
+                setJoinTitle(tile.title);
+                setJoinClassroom(tile.classroom_id);
+                setJoinClassroomForm(true);
+              }}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
             />
@@ -196,6 +207,12 @@ function Classrooms() {
         ))}
       </ClassroomSection>
 
+      <JoinDialog
+        open={joinClassroomForm}
+        onClose={handleJoinFormClose}
+        title={joinTitle}
+        classroom_id={joinClassroom}
+      />
       <GoPremiumDialog open={goPremium} onClose={handleGoPremiumClose} />
     </AppPage>
   );
