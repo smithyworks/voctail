@@ -211,12 +211,12 @@ function DashboardTile({
           Add to a classroom
         </MenuItem>
       </Menu>
-      <ClassroomAddDocumentDialog
+      {/* <ClassroomAddDocumentDialog
         onAddToClassroom={() => console.log("here")}
         documentTitle={title}
         openCreateForm={addDocumentClassroomOpen}
         closeCreateForm={() => setAddDocumentClassroomOpen(false)}
-      />
+      /> */}
     </Grid>
   );
 }
