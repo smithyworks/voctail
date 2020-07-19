@@ -1,31 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  ButtonBase,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  Grid,
-  Typography,
-  Tooltip,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import AppPage from "../common/AppPage";
+import React from "react";
 
 import { api } from "../../utils";
-import logo_classroom from "../../assets/classroom_logo.png";
-import { ClassroomSection, ConfirmDialog } from "../common";
-import VTButton from "../common/Buttons/VTButton";
 import { toasts } from "../common/AppPage/AppPage";
-import { Link } from "react-router-dom";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import TextField from "@material-ui/core/TextField";
-import ClassroomTile from "../common/ClassroomTile";
-import VTIconFlexButton from "../common/Buttons/IconButton";
-import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
-import GoPremiumDialog from "../common/Dialogs/GoPremiumDialog";
-import ClassroomCreateFormDialog from "./ClassroomCreateFormDialog";
 
 export function deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDataFromDatabase) {
   const indexOfDeletedClassroom = indexOfClassroom(classroomId, classroomDataFromDatabase);

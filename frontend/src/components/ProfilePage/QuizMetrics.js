@@ -7,12 +7,13 @@ import { api } from "../../utils";
 
 import Metrics from "../QuizzesDashboardPage/Metrics";
 import QuizMetricTile from "../common/Quiz/QuizMetricTile";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   grid: { height: "100%", width: "100%" },
 });
 
-function QuizMetrics({ ...props }) {
+function QuizMetrics({ userId, ...props }) {
   const classes = useStyles();
 
   //
@@ -30,29 +31,35 @@ function QuizMetrics({ ...props }) {
   };
 
   useEffect(() => {
-    api
-      .fetchQuizzesMetrics()
-      .then((res) => {
-        if (res) {
-          setQuizList(res.data);
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (userId) {
+      api
+        .fetchQuizzesMetrics(userId)
+        .then((res) => {
+          if (res) {
+            setQuizList(res.data);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [userId]);
 
   return (
     <div>
       <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
-        {quizList.map((v) => (
-          <QuizMetricTile
-            key={v.quiz_id}
-            name={v.title}
-            onViewStatistic={() => handleViewStatOpen(v)}
-            lastResult={v.lastResult}
-            bestResult={v.bestResult}
-            questions={v.questions}
-          />
-        ))}
+        {quizList.length > 0 ? (
+          quizList.map((v) => (
+            <QuizMetricTile
+              key={v.quiz_id}
+              name={v.title}
+              onViewStatistic={() => handleViewStatOpen(v)}
+              lastResult={v.lastResult}
+              bestResult={v.bestResult}
+              questions={v.questions}
+            />
+          ))
+        ) : (
+          <Typography>Please take a quiz to display metrics.</Typography>
+        )}
       </Grid>
       <Metrics onClose={handleViewStatClose} open={openViewStat} quiz={viewQuiz} />
     </div>

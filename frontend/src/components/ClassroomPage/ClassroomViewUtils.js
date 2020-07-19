@@ -1,4 +1,3 @@
-import React from "react";
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage/AppPage";
 
@@ -10,6 +9,25 @@ export function indexOfMember(memberId, members) {
     }
   });
   return output;
+}
+
+export function rangeOfSection(classroomDocumentsFromDatabase, section) {
+  let documentIds = [];
+  for (let document of classroomDocumentsFromDatabase) {
+    if (document.section === section) {
+      documentIds.push(classroomDocumentsFromDatabase.indexOf(document));
+    }
+  }
+  return documentIds;
+}
+
+export function updateRenameSection(classroomDocumentsFromDatabase, section, newTitle) {
+  const range = rangeOfSection(classroomDocumentsFromDatabase, section);
+  let localDocuments = classroomDocumentsFromDatabase.slice(range[0], range[range.length - 1] + 1);
+  for (let i in localDocuments) {
+    localDocuments[i].section = newTitle;
+  }
+  return localDocuments;
 }
 
 export function addMembers(
@@ -83,31 +101,32 @@ export function renameSection(
   classroomDocumentsFromDatabase,
   setClassroomDocumentsFromDatabase
 ) {
+  const range = rangeOfSection(classroomDocumentsFromDatabase, section);
   api
     .renameSection(classroomId, section, newTitle)
-    /*.then((res) => {
-      /*
-      setClassroomDataFromDatabase(
-        classroomDataFromDatabase
-          .slice(0, indexOfRenamedClassroom)
-          .concat([classroomRenamed])
-          .concat(classroomDataFromDatabase.slice(indexOfRenamedClassroom + 1))
+    .then(() => {
+      setClassroomDocumentsFromDatabase(
+        classroomDocumentsFromDatabase
+          .slice(0, range[0])
+          .concat(updateRenameSection(classroomDocumentsFromDatabase, section, newTitle))
+          .concat(classroomDocumentsFromDatabase.slice(range[range.length - 1] + 1))
       );
-    })*/
+    })
     .catch((err) => console.log(err));
   toasts.toastSuccess("Section renamed!");
 }
 
-export function deleteSection(classroomId, section, classroomDataFromDatabase, setClassroomDataFromDatabase) {
+export function deleteSection(classroomId, section, classroomDocumentsFromDatabase, setClassroomDocumentsFromDatabase) {
+  const range = rangeOfSection(classroomDocumentsFromDatabase, section);
   api
     .deleteSection(classroomId, section)
-    /*.then((res) => {
-      setClassroomDataFromDatabase(
-        classroomDataFromDatabase
-          .slice(0, indexOfDeletedClassroom)
-          .concat(classroomDataFromDatabase.slice(indexOfDeletedClassroom + 1))
+    .then(() => {
+      setClassroomDocumentsFromDatabase(
+        classroomDocumentsFromDatabase
+          .slice(0, range[0])
+          .concat(classroomDocumentsFromDatabase.slice(range[range.length - 1] + 1))
       );
-    })*/
+    })
     .catch((err) => console.log(err));
   toasts.toastSuccess("Section deleted!");
 }

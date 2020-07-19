@@ -68,11 +68,11 @@ function Translations(suggestions, translation, rejects, qstate, addResult) {
         if (v === translation) {
           lines.push(
             state === states.correct ? (
-              <ChoiceButton id={i} accept word={suggestions[i]}>
+              <ChoiceButton id={i} accept>
                 {suggestions[i]}
               </ChoiceButton>
             ) : (
-              <ChoiceButton id={i} show word={suggestions[i]}>
+              <ChoiceButton id={i} show>
                 {suggestions[i]}
               </ChoiceButton>
             )
