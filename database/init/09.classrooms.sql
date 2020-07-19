@@ -33,7 +33,7 @@ INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES
     (6, 9, true), (6, 11, false), (6, 4, false),
    (6, 5, false), (6, 6, false),
     (7, 10, true), (7, 7, false), (7, 6, false),
-    (8, 11, false), (8, 4, false), (8, 4, false),
+    (8, 11, false), (8, 4, false),
     (8, 6, true), (8, 9, false), (8, 2, false),
     (8, 7, true), (8, 10, false), (8, 8, false),
     (9, 8, true), (9, 4, false), (9, 3, false),
