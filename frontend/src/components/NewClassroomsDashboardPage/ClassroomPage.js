@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { api } from "../../utils";
 import { AppPage, ClassroomSection, UserTile, PlaceholderTile } from "../common";
@@ -7,8 +7,10 @@ import InviteMembersDialog from "../common/InviteMembersDialog";
 import ChapterDialog from "./ChapterDialog";
 import Chapter from "./Chapter";
 import { toasts } from "../common/AppPage/AppPage";
+import { UserContext } from "../../App";
 
 function ClassroomPage() {
+  const user = useContext(UserContext);
   const { params } = useRouteMatch();
 
   const [classroom, setClassroom] = useState();
@@ -44,6 +46,8 @@ function ClassroomPage() {
 
   if (!classroom) return <AppPage />;
 
+  const isTeacher = !!classroom.teachers.find((t) => t.user_id === user.user_id);
+
   return (
     <AppPage>
       <div>
@@ -55,6 +59,7 @@ function ClassroomPage() {
               tooltipTitle={timeParser(u.last_seen)}
               connected={isConnected(u.last_seen)}
               isMemberTeacher={true}
+              onDelete={isTeacher ? removeMember : undefined}
             />
           ))}
         </ClassroomSection>
@@ -74,6 +79,7 @@ function ClassroomPage() {
                 tooltipTitle={timeParser(u.last_seen)}
                 connected={isConnected(u.last_seen)}
                 isMemberTeacher={true}
+                onDelete={isTeacher ? removeMember : undefined}
               />
             ))
           ) : (
