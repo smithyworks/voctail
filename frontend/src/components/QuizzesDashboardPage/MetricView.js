@@ -64,21 +64,21 @@ function MetricView({ questions, results, disablePadding }) {
         <div className={classes.innerContainer} style={{ padding: disablePadding ? undefined : "20px 20px 0 20px" }}>
           <Table>
             <colgroup>
+              <col style={{ width: "10%" }} />
               <col style={{ width: "7%" }} />
+              <col style={{ width: "10%" }} />
               <col style={{ width: "7%" }} />
-              <col style={{ width: "7%" }} />
-              <col style={{ width: "7%" }} />
-              <col style={{ width: "7%" }} />
-              <col style={{ width: "7%" }} />
-              <col style={{ width: "58%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "43%" }} />
             </colgroup>
             <TableHead>
               <TableRow>
-                <TableCell align="right">Time</TableCell>
+                <TableCell align="right">Last Taken</TableCell>
                 <TableCell align="right">Wrong</TableCell>
-                <TableCell align="right">Taken</TableCell>
+                <TableCell align="right">Attempted</TableCell>
                 <TableCell align="right">Total</TableCell>
-                <TableCell align="right">Taken (%)</TableCell>
+                <TableCell align="right">Attempted (%)</TableCell>
                 <TableCell align="right">Total (%)</TableCell>
                 <TableCell align="right">unknowns</TableCell>
               </TableRow>
