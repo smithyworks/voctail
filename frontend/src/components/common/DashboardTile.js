@@ -80,7 +80,21 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo, category, fits, video }) {
+function DashboardTile({
+  title,
+  author,
+  onDelete,
+  isOwned,
+  onEdit,
+  onGenerateQuiz,
+  linkTo,
+  category,
+  fits,
+  video,
+  inClassroom,
+  isTeacher,
+  onRemove,
+}) {
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
@@ -182,24 +196,40 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
               </Grid>
             </Grid>
           </div>
-          <div
-            className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
-            onClick={openMenu}
-            ref={anchor}
-          >
-            <MoreVertIcon />
-          </div>
+          {(!inClassroom || isTeacher) && (
+            <div
+              className={`${classes.menuIconContainer} ${hovered ? classes.menuIconIn : classes.menuIconOut}`}
+              onClick={openMenu}
+              ref={anchor}
+            >
+              <MoreVertIcon />
+            </div>
+          )}
         </Paper>
       </Tooltip>
-      <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
-        {!!isOwned && (
-          <div>
-            <MenuItem onClick={_onEdit}>Edit</MenuItem>
-            <MenuItem onClick={_onDelete}>Delete</MenuItem>
-          </div>
-        )}
-        <MenuItem onClick={_onGenerateQuiz}>Create Quiz</MenuItem>
-      </Menu>
+      {!inClassroom && (
+        <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
+          {!!isOwned && (
+            <div>
+              <MenuItem onClick={_onEdit}>Edit</MenuItem>
+              <MenuItem onClick={_onDelete}>Delete</MenuItem>
+            </div>
+          )}
+          <MenuItem onClick={_onGenerateQuiz}>Create Quiz</MenuItem>
+        </Menu>
+      )}
+      {inClassroom && isTeacher && (
+        <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
+          <MenuItem
+            onClick={() => {
+              onRemove();
+              setMenuOpen(false);
+            }}
+          >
+            Remove
+          </MenuItem>
+        </Menu>
+      )}
     </Grid>
   );
 }

@@ -1,6 +1,20 @@
 const { log } = require("./log.js");
 const { query } = require("./db.js");
 
+async function removeDocumentHandler(req, res) {
+  try {
+    const { classroom_id, document_id } = req.body;
+    await query("DELETE FROM classroom_documents WHERE document_id = $1 AND classroom_id = $2", [
+      document_id,
+      classroom_id,
+    ]);
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
 async function addChapterHandler(req, res) {
   try {
     const { classroom_id, name } = req.body;
@@ -449,4 +463,5 @@ module.exports = {
   addDocumentToClassroom,
   addChapterHandler,
   removeMemberHandler,
+  removeDocumentHandler,
 };

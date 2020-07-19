@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, Grid } from "@material-ui/core";
 import { DashboardTile } from "../common";
 
-function Chapter({ name, documents, classroom_id }) {
+function Chapter({ name, documents, classroom_id, isTeacher, onRemove }) {
   console.log(name, documents, classroom_id);
   return (
     <Grid item xs={12}>
@@ -21,6 +21,9 @@ function Chapter({ name, documents, classroom_id }) {
               author={d.author}
               category={d.category}
               linkTo={`/classrooms/${classroom_id}/documents/${d.document_id}`}
+              inClassroom
+              isTeacher={isTeacher}
+              onRemove={() => onRemove(d.document_id)}
             />
           ))}
       </Grid>

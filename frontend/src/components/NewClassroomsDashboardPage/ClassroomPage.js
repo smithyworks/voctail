@@ -43,6 +43,9 @@ function ClassroomPage() {
       api.removeClassroomMember(classroom.classroom_id, id).then(reload);
     } else toasts.toastError("Cannot remove the classroom owner!");
   }
+  function removeDocument(id) {
+    api.removeDocumentFromClassroom(classroom.classroom_id, id).then(reload);
+  }
 
   if (!classroom) return <AppPage />;
 
@@ -96,7 +99,13 @@ function ClassroomPage() {
         <ClassroomSection title="Documents" hasAddButton onAdd={() => setAddChapterDialogOpen(true)}>
           {classroom.chapters && classroom.chapters.length > 0 ? (
             classroom.chapters.map((c, i) => (
-              <Chapter documents={classroom.documents} name={c} classroom_id={classroom.classroom_id} />
+              <Chapter
+                documents={classroom.documents}
+                name={c}
+                classroom_id={classroom.classroom_id}
+                isTeacher={isTeacher}
+                onRemove={removeDocument}
+              />
             ))
           ) : (
             <div style={{ height: 150 }} />
