@@ -3,8 +3,22 @@ const { query } = require("./db.js");
 
 async function classroomsHandler(req, res) {
   try {
-    const { rows } = await query("SELECT * FROM classrooms ORDER BY classroom_id DESC");
-    res.status(200).json({ rows });
+    const { user_id } = req.authData.user;
+
+    const { rows: public_classrooms } = await query("SELECT * FROM classrooms ORDER BY classroom_id DESC");
+    const {
+      rows: student_classrooms,
+    } = await query(
+      "SELECT classrooms.* FROM classroom_members LEFT JOIN classrooms ON classroom_members.classroom_id = classrooms.classroom_id WHERE classroom_members.member_id = $1 AND teacher = false ORDER BY classroom_id DESC",
+      [user_id]
+    );
+    const {
+      rows: teacher_classrooms,
+    } = await query(
+      "SELECT classrooms.* FROM classroom_members LEFT JOIN classrooms ON classroom_members.classroom_id = classrooms.classroom_id WHERE classroom_members.member_id = $1 AND teacher = true ORDER BY classroom_id DESC",
+      [user_id]
+    );
+    res.status(200).json({ public_classrooms, teacher_classrooms, student_classrooms });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong with the classrooms handler.");
