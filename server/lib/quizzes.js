@@ -27,20 +27,23 @@ function generateQuestions(wordList, transList, length) {
   //limit to length question items
   const words = shuffle(wordList).slice(0, length);
 
-  const len = suggestionsList.length;
   let i = 0;
   let questions = [];
   let suggestions = [];
+
+  const len = suggestionsList.length;
+
+  const slice = (arr, from, to) => (to < from ? arr.slice(from, len).concat(arr.slice(0, to)) : arr.slice(from, to));
 
   words.forEach((v) => {
     // choice: taking first translation - alt. random below - ideally users translation
     const translation = transList.filter((t) => v.word_id === t.word_id)[0].translation;
     //const translation = shuffle (translationList)[0].translation;
-    suggestions = suggestionsList.slice((i * 3) % len, ((i + 1) * 3) % len);
+    suggestions = slice(suggestionsList, (i * 3) % len, ((i + 1) * 3) % len);
     // ensures the correct translation is not added as suggestion
     if (suggestions.filter((v) => v === translation).length >= 1) {
       i++;
-      suggestions = suggestionsList.slice((i * 3) % len, ((i + 1) * 3) % len);
+      suggestions = slice(suggestionsList, (i * 3) % len, ((i + 1) * 3) % len);
     }
     i++;
 
@@ -336,7 +339,7 @@ async function quizzesMetricsHandler(req, res) {
         quizResults.push({ lastResult, bestResult, ...q });
       }
     });
-    log(quizResults);
+
     res.status(200).json(quizResults);
   } catch (err) {
     log(err);

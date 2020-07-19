@@ -105,7 +105,7 @@ function Text({ document, lookupWordByWord }) {
     setMenuOpen(false);
     if (user.premium)
       api
-        .createQuizFromDoc(document.document_id, 20)
+        .createQuizFromDocFixedLength(document.document_id)
         .then((res) => toasts.toastSuccess("Successfully created a quiz for this document!"))
         .catch((err) => toasts.toastError("Encountered a problem while creating your quiz!"));
     else toasts.goPremium();

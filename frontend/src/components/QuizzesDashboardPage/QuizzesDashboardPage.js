@@ -90,7 +90,7 @@ function QuizzesDashboard({ ...props }) {
   const onDelete = (quiz) => {
     deleteInfo.current = {
       title: "You are about to delete the quiz forever!",
-      body: `Are you sure you want to delete the quiz "${quiz.title}" (${quiz.quiz_id})?\nThis cannot be undone!`,
+      body: `Are you sure you want to delete the quiz "${quiz.title}"?\nThis cannot be undone!`,
       confirmText: quiz.title,
       onClose: () => {
         setDeleteOpen(false);
