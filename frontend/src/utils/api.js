@@ -48,6 +48,14 @@ export function endMasquerade(user_id) {
   return axios.get(`${base}/admin/end-masquerade`);
 }
 
+export function contributedTranslations() {
+  return axios.post(`${base}/admin/contributed-translations`);
+}
+
+export function updateTranslation(translation_id, approved) {
+  return axios.post(`${base}/admin/update-translation`, { translation_id, approved });
+}
+
 //quizzes
 
 export function fetchQuizzes() {

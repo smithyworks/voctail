@@ -6,7 +6,6 @@ import {
   SigninPage,
   SignoutRedirect,
   Error404Page,
-  IntroPage,
   AdminPage,
   DocumentPage,
   QuizzesDashboardPage,
@@ -21,9 +20,14 @@ import { localStorage, api } from "./utils";
 import ShowcasePage from "./components/common/ShowcasePage";
 import { getColor } from "./components/common/Quiz/colorCycler";
 
-function ProtectedRoute({ ...props }) {
-  if (localStorage.hasTokens()) return <Route {...props} />;
-  else return <Redirect to="/404" />;
+function ProtectedRoute({ redirectTo, path, ...props }) {
+  if (localStorage.hasTokens()) return <Route path {...props} />;
+  else
+    return (
+      <Route path={path}>
+        <Redirect to={redirectTo} />
+      </Route>
+    );
 }
 
 function AdminRoute({ ...props }) {
@@ -64,7 +68,6 @@ function App() {
         <Switch>
           <AdminRoute path="/showcase" component={ShowcasePage} />
           <AdminRoute path="/admin" component={AdminPage} />
-
           <ProtectedRoute path="/dashboard" component={DashboardPage} />
           <ProtectedRoute path="/quizzes/:id" component={QuizPage} />
           <ProtectedRoute path="/quizzes" component={QuizzesDashboardPage} />
@@ -75,16 +78,20 @@ function App() {
           <ProtectedRoute path="/account" component={AccountPage} />
           <ProtectedRoute path="/profile" component={ProfilePage} />
           <ProtectedRoute path="/users/:user_id" component={ProfilePage} />
-
           <Route path="/signup">
             <SigninPage signup />
           </Route>
           <Route path="/signin" component={SigninPage} />
           <Route path="/signout" component={SignoutRedirect} />
 
-          <Route exact path="/" component={IntroPage} />
+          <ProtectedRoute exact path="/" redirectTo="/signin">
+            <Redirect to="/dashboard" />
+          </ProtectedRoute>
+
           <Route path="/404" component={Error404Page} />
-          <Route component={Error404Page} />
+          <Route>
+            <Redirect to="/404" />
+          </Route>
         </Switch>
       </Router>
     </UserContext.Provider>

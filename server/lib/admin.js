@@ -93,10 +93,40 @@ async function endMasqueradeHandler(req, res) {
   }
 }
 
+async function contributedTranslationsHandler(req, res) {
+  try {
+    const { rows: translations } = await query(
+      "SELECT translations.*, words.word FROM translations LEFT JOIN words ON translations.word_id = words.word_id WHERE translations.contributor_id IS NOT NULL"
+    );
+    res.status(200).json(translations);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
+async function updateTranslationHandler(req, res) {
+  try {
+    const { translation_id, approved } = req.body;
+
+    await query("UPDATE translations SET approved = $1, pending = false WHERE translation_id = $2", [
+      approved,
+      translation_id,
+    ]);
+
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong.");
+  }
+}
+
 module.exports = {
   usersHandler,
   deleteUser,
   revokeTokenHandler,
   masqueradeHandler,
   endMasqueradeHandler,
+  contributedTranslationsHandler,
+  updateTranslationHandler,
 };

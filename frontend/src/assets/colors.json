@@ -103,42 +103,69 @@
       "#cbbeb5"
     ]
   },
-  "quizChoiceButton": {
+  "quizChoiceIcon": {
     "neutral": {
-      "color": "#000",
-      "backgroundColor": "#FFF",
-      "borderColor": "#000",
-      "&:hover": {
-        "borderColor": "#000",
-        "opacity": 0.7
-      }
+      "color": "#FFF",
+      "backgroundColor": "lightseagreen"
+    },
+    "neutralHover": {
+      "color": "lightseagreen",
+      "backgroundColor": "#FFF"
     },
     "accept": {
-      "color": "#000",
-      "backgroundColor": "#FFF",
-      "borderColor": "#4fcc53",
-      "&:hover": {
-        "borderColor": "#4fcc53",
-        "opacity": 0.7
-      }
+      "color": "lightseagreen",
+      "backgroundColor": "#FFF"
+    },
+    "acceptHover": {
+      "color": "lightseagreen",
+      "backgroundColor": "#FFF"
     },
     "reject": {
-      "color": "#000",
-      "backgroundColor": "#d43131",
-      "borderColor": "#000",
-      "&:hover": {
-        "backgroundColor": "#d43131",
-        "opacity": 0.7
-      }
+      "color": "#d43131",
+      "backgroundColor": "#FFF"
+    },
+    "rejectHover": {
+      "color": "#d43131",
+      "backgroundColor": "#FFF"
     },
     "show": {
-      "color": "#000",
+      "color": "#FFF",
+      "backgroundColor": "#d43131"
+    },
+    "showHover": {
+      "color": "#FFF",
+      "backgroundColor": "#d43131"
+    }
+  },
+  "quizChoiceButton": {
+    "neutral": {
+      "color": "lightseagreen",
       "backgroundColor": "#FFF",
-      "borderColor": "#F00",
+      "borderColor": "lightseagreen",
       "&:hover": {
-        "borderColor": "#F00",
-        "opacity": 0.7
+        "backgroundColor": "lightseagreen",
+        "color": "white"
       }
+    },
+    "inactive": {
+      "color": "lightseagreen",
+      "backgroundColor": "#FFF",
+      "borderColor": "lightseagreen"
+    },
+    "accept": {
+      "color": "#FFF",
+      "backgroundColor": "lightseagreen",
+      "borderColor": "#FFF"
+    },
+    "reject": {
+      "color": "#FFF",
+      "backgroundColor": "#d43131",
+      "borderColor": "#FFF"
+    },
+    "show": {
+      "color": "#d43131",
+      "backgroundColor": "#FFF",
+      "borderColor": "#d43131"
     }
   },
   "documentViewer": {

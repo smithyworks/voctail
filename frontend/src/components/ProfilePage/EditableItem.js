@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
-import { Typography, IconButton, TextField } from "@material-ui/core";
+import { Typography, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import EditIcon from "@material-ui/icons/Edit";
 
 import { ConfirmDialog } from "../common";
 import { validation } from "../../utils";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   infoItem: {
@@ -74,7 +75,7 @@ function EditableItem({ title, value, onEdit, isEmail, disabled }) {
           onConfirm={_edit}
           disabled={dialogDisabled}
         >
-          <TextField variant="outlined" onChange={_change} margin="dense" />
+          <ErrorDialogField variant="outlined" onChange={_change} margin="dense" />
         </ConfirmDialog>
       )}
     </div>

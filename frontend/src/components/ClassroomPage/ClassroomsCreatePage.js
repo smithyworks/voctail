@@ -14,12 +14,12 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import Checkbox from "@material-ui/core/Checkbox";
 import { toasts } from "../common/AppPage/AppPage";
 import VTButton from "../common/Buttons/VTButton";
 import { Button, ButtonBase, Dialog, DialogTitle, DialogActions, DialogContent, Grid, Link } from "@material-ui/core";
 import logo_classroom from "../../assets/classroom_logo.png";
 import { ConfirmDialog } from "../common";
+import VoctailCheckbox from "../common/VoctailCheckbox";
 
 const useStyles = makeStyles(() => ({
   headUpText: {
@@ -299,7 +299,7 @@ function ClassroomsCreatePage() {
               </ListItemAvatar>
               <ListItemText id={labelId} primary={tile.name} />
               <ListItemSecondaryAction>
-                <Checkbox
+                <VoctailCheckbox
                   onChange={handleToggle(tile.user_id)}
                   checked={registeredStudentIds.indexOf(tile.user_id) !== -1}
                   inputProps={{ "aria-labelledby": labelId }}
@@ -322,7 +322,7 @@ function ClassroomsCreatePage() {
               </ListItemAvatar>
               <ListItemText id={labelId} primary={tile.title} />
               <ListItemSecondaryAction>
-                <Checkbox
+                <VoctailCheckbox
                   onChange={handleToggle(tile.document_id)}
                   checked={registeredDocumentIds.indexOf(tile.document_id) !== -1}
                   inputProps={{ "aria-labelledby": labelId }}
