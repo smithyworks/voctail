@@ -102,7 +102,7 @@ function Dashboard() {
     else toasts.goPremium();
   }
 
-  const [fitLookup, setFitLookup] = useState();
+  const [fitLookup, setFitLookup] = useState({});
   function calcAllDocumentsFit() {
     if (documentDataFromDatabase)
       api
@@ -159,21 +159,23 @@ function Dashboard() {
         expandable
       >
         {usersDocuments.length !== 0 ? (
-          usersDocuments.map((tile, i) => (
-            <DashboardTile
-              key={i}
-              title={tile.title}
-              author={tile.author}
-              fits={getFit(tile.document_id)}
-              isOwned
-              onEdit={() => handleEdit(tile)}
-              onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
-              onGenerateQuiz={() => createQuiz(tile.document_id)}
-              onAddToClassroom={() => console.log("tile.title")}
-              linkTo={"/documents/" + tile.document_id}
-              category={tile.category}
-            />
-          ))
+          usersDocuments
+            .sort((a, b) => (fitLookup[a.document_id] < fitLookup[b.document_id] ? -1 : 1))
+            .map((tile, i) => (
+              <DashboardTile
+                key={i}
+                title={tile.title}
+                author={tile.author}
+                fits={getFit(tile.document_id)}
+                isOwned
+                onEdit={() => handleEdit(tile)}
+                onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
+                onGenerateQuiz={() => createQuiz(tile.document_id)}
+                onAddToClassroom={() => console.log("tile.title")}
+                linkTo={"/documents/" + tile.document_id}
+                category={tile.category}
+              />
+            ))
         ) : user && user.premium ? (
           <PlaceholderTile
             tooltipTitle={"You have no own documents. Add your own document now!"}
@@ -204,6 +206,7 @@ function Dashboard() {
       <DashboardSection title={"Music Videos"} expandable>
         {documentDataFromDatabase
           .filter((doc) => doc.category === "music-video")
+          .sort((a, b) => (fitLookup[a.document_id] < fitLookup[b.document_id] ? -1 : 1))
           .map((tile, i) => (
             <DashboardTile
               key={i}
@@ -221,6 +224,7 @@ function Dashboard() {
       <DashboardSection title={"Short Stories"} expandable>
         {documentDataFromDatabase
           .filter((doc) => doc.category === "(Short) Story")
+          .sort((a, b) => (fitLookup[a.document_id] < fitLookup[b.document_id] ? -1 : 1))
           .map((tile, i) => (
             <DashboardTile
               key={i}
@@ -237,6 +241,7 @@ function Dashboard() {
       <DashboardSection title={"Fairy Tales"} expandable>
         {documentDataFromDatabase
           .filter((doc) => doc.category === "Fairy Tale")
+          .sort((a, b) => (fitLookup[a.document_id] < fitLookup[b.document_id] ? -1 : 1))
           .map((tile, i) => (
             <DashboardTile
               key={i}
@@ -253,6 +258,7 @@ function Dashboard() {
       <DashboardSection title={"Newspaper Articles"} expandable>
         {documentDataFromDatabase
           .filter((doc) => doc.category === "Newspaper Article")
+          .sort((a, b) => (fitLookup[a.document_id] < fitLookup[b.document_id] ? -1 : 1))
           .map((tile, i) => (
             <DashboardTile
               key={i}
@@ -269,6 +275,7 @@ function Dashboard() {
       <DashboardSection title={"Others"} expandable>
         {documentDataFromDatabase
           .filter((doc) => doc.category === "Others")
+          .sort((a, b) => (fitLookup[a.document_id] < fitLookup[b.document_id] ? -1 : 1))
           .map((tile, i) => (
             <DashboardTile
               key={i}
