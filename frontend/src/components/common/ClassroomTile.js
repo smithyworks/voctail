@@ -86,7 +86,7 @@ function teacherData(user, user_id, classroomAuthor, setClassroomAuthor) {
   return classroomAuthor;
 }
 
-function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename, linkTo }) {
+function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename, linkTo, onClick }) {
   const user = useContext(UserContext);
   const classes = useStyles();
   const backgroundColor = getColor(`classroom-${id}`);
@@ -121,8 +121,9 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
         elevation={hovered ? 5 : 2}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        component={Link}
+        component={linkTo ? Link : undefined}
         to={linkTo}
+        onClick={onClick}
       >
         <Grid container direction="column" justify="space-between">
           <Grid item>
