@@ -21,7 +21,7 @@ function DocumentMetrics(userId) {
   }, [userId]);
 
   return (
-    <div>
+    <>
       {documents.filter((d) => d.last_seen).length === 0 ? (
         <Typography> Please read a document to show metrics. </Typography>
       ) : (
@@ -46,7 +46,7 @@ function DocumentMetrics(userId) {
           </TableBody>
         </Table>
       )}
-    </div>
+    </>
   );
 }
 export default DocumentMetrics;
