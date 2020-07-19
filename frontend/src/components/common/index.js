@@ -8,7 +8,9 @@ import DashboardTile from "./DashboardTile";
 import QuizSection from "./Quiz/QuizSection";
 import QuizTile from "./Quiz/QuizTile";
 import ClassroomTile from "./ClassroomTile";
+import ClassroomTileSelect from "./ClassroomTileSelect";
 import ClassroomSection from "./ClassroomSection";
+import ClassroomSectionDialog from "./ClassroomSectionDialog";
 import SectionSection from "./SectionSection";
 import ChapterSection from "./ChapterSection";
 import PlaceholderTile from "./PlaceholderTile";
@@ -28,7 +30,9 @@ export {
   QuizSection,
   QuizTile,
   ClassroomTile,
+  ClassroomTileSelect,
   ClassroomSection,
+  ClassroomSectionDialog,
   SectionSection,
   ChapterSection,
   PlaceholderTile,

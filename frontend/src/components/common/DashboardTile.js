@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 import LocalBarOutlinedIcon from "@material-ui/icons/LocalBarOutlined";
 import voctailColors from "../../assets/colors.json";
-import ClassroomAddDocumentDialog from "../ClassroomPage";
+import ClassroomAddDocumentDialog from "../ClassroomPage/ClassroomAddDocumentDialog";
 
 //example tile images
 import shortStoriesPreview from "../../assets/books.jpg";
@@ -90,6 +90,7 @@ function DashboardTile({
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
+  const [addDocumentClassroomOpen, setAddDocumentClassroomOpen] = useState(false);
 
   const anchor = useRef();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -201,9 +202,13 @@ function DashboardTile({
           </div>
         )}
         <MenuItem onClick={_onGenerateQuiz}>Create Quiz</MenuItem>
-        <MenuItem onClick={_onAddToClassroom}>Add to a classroom</MenuItem>
+        <MenuItem onClick={() => setAddDocumentClassroomOpen(true)}>Add to a classroom</MenuItem>
       </Menu>
-      <ClassroomAddDocumentDialog />
+      <ClassroomAddDocumentDialog
+        documentTitle={title}
+        openCreateForm={addDocumentClassroomOpen}
+        closeCreateForm={() => setAddDocumentClassroomOpen(false)}
+      />
     </Grid>
   );
 }
