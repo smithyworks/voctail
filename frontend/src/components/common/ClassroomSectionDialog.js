@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
+import { makeStyles, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles({
   paper: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ClassroomSectionDialog({ title, children, Button, invisible }) {
+function ClassroomSectionDialog({ children, invisible }) {
   const classes = useStyles();
 
   if (!invisible) {

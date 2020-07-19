@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Typography, Divider } from "@material-ui/core";
+import { Paper, Typography, Divider, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
@@ -13,12 +13,18 @@ const useStyles = makeStyles({
   },
 });
 
-function ProfileSection({ title, disablePadding, children }) {
+function ProfileSection({ title, disablePadding, children, Filter }) {
   const classes = useStyles();
 
   return (
     <Paper className={classes.section} elevation={0}>
-      <Typography variant="h5">{title}</Typography>
+      <Grid container justify="space-between" direction="row">
+        <Grid item>
+          <Typography variant="h5">{title}</Typography>
+        </Grid>
+        <Grid item>{Filter}</Grid>
+      </Grid>
+
       <Divider />
       <div className={classes.innerContainer}>{children}</div>
     </Paper>

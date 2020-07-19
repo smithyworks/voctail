@@ -144,6 +144,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             label="Title*"
             type="title"
             error={errorTitle}
+            setError={setErrorTitle}
             onChange={(e) => {
               titleInput.current = e.target.value;
               setErrorTitle(false);
@@ -157,6 +158,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             label="Author*"
             type="author"
             error={errorAuthor}
+            setError={setErrorAuthor}
             onChange={(e) => {
               authorInput.current = e.target.value;
               setErrorAuthor(false);
