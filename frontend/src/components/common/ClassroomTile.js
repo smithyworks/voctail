@@ -1,16 +1,16 @@
 import React, { useState, useRef, useContext } from "react";
-import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, TextField } from "@material-ui/core";
+import { Paper, makeStyles, Grid, Typography, Menu, MenuItem } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./Quiz/colorCycler";
 import { api } from "../../utils";
 import { toasts } from "./AppPage/AppPage";
-import ConfirmDialog from "./Dialogs/ConfirmDialog";
 import { UserContext } from "../../App";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { VTButton } from "../common/index";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 import WarningDialog from "../AdminPage/WarningDialog";
+import ErrorDialogField from "./Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   container: {
@@ -152,7 +152,7 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
       <WarningDialog
         open={confirmDialogOpen}
         info={{
-          title: "You are about to delete a document forever!",
+          title: "You are about to delete this classroom forever!",
           body: `Are you sure you want to delete the classroom "${title}" created by ${teacherData(
             user,
             teacher,
@@ -164,34 +164,9 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
             onDelete();
             setConfirmDialogOpen(false);
           },
+          onConfirm: onDelete,
         }}
       />
-
-      <ConfirmDialog
-        open={false}
-        title="Deleting a classroom..."
-        onConfirm={() => {
-          onDelete();
-          setConfirmDialogOpen(false);
-        }}
-        onClose={() => {
-          setConfirmDialogOpen(false);
-        }}
-      >
-        <Grid container>
-          <Grid element>
-            <Typography> Are you sure you want to delete</Typography>
-          </Grid>
-          <Grid element>
-            <Typography style={{ color: "red", marginLeft: "5px", marginRight: "5px", fontWeight: "bold" }}>
-              {" " + title}
-            </Typography>
-          </Grid>
-          <Grid element>
-            <Typography>?</Typography>
-          </Grid>
-        </Grid>
-      </ConfirmDialog>
 
       <Dialog
         open={renameDialogOpen}
@@ -203,7 +178,7 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
         <VoctailDialogTitle id="rename-classroom">{"Rename " + title}</VoctailDialogTitle>
         <DialogContent>
           <Grid container justify="flex-start" alignItems="center" direction="column">
-            <TextField
+            <ErrorDialogField
               required
               error={errorNewTitle}
               className={classes.textField}

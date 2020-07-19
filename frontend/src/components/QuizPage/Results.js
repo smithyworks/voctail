@@ -66,8 +66,7 @@ export function Results({ onReport, onRetake, base }) {
 export function ResultsTable({ onReport, className }) {
   const classes = useStyles();
   const results = onReport();
-  console.log("Results", onReport());
-  console.log(className);
+
   return (
     <div className={className}>
       {results.taken > 0 ? (

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
 import { toasts } from "../common/AppPage/AppPage";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
@@ -25,84 +23,51 @@ const formStyles = makeStyles(() => ({
   buttons: { margin: "1%" },
 }));
 
-function createClassroom(
-  user,
-  title,
-  topic,
-  description,
-  classroomDataFromDatabase,
-  setClassroomDataFromDatabase,
-  classroomAsTeacherDataFromDatabase,
-  setClassroomAsTeacherDataFromDatabase
-) {
-  const addThisClassroom = () => {
-    api
-      .createClassroom(user, title, topic, description, true)
-      .then((res) => {
-        setClassroomDataFromDatabase(res.data.rows.concat(classroomDataFromDatabase));
-        setClassroomAsTeacherDataFromDatabase(res.data.rows.concat(classroomAsTeacherDataFromDatabase));
-      })
-      .catch((err) => console.log(err));
-  };
-  addThisClassroom();
-  toasts.toastSuccess("Classroom created!");
-}
-
-function ClassroomCreateFormDialog({
-  user,
-  openCreateForm,
-  closeCreateForm,
-  newTitle,
-  setNewTitle,
-  newTopic,
-  setNewTopic,
-  newDescription,
-  setNewDescription,
-  classroomDataFromDatabase,
-  setClassroomDataFromDatabase,
-  classroomAsTeacherDataFromDatabase,
-  setClassroomAsTeacherDataFromDatabase,
-}) {
+function ClassroomCreateFormDialog({ open, onClose, onCreate }) {
   const classes = formStyles();
   const [errorTitle, setErrorTitle] = useState(false);
   const [errorTopic, setErrorTopic] = useState(false);
 
+  const [title, setTitle] = useState();
+  const [topic, setTopic] = useState();
+  const [description, setDescription] = useState();
+
   const handleChangeTitle = (event) => {
-    setNewTitle(event.target.value);
-    if (errorTitle || newTitle > 0) {
+    setTitle(event.target.value);
+    if (errorTitle && title && title?.trim() !== "") {
       setErrorTitle(false);
     }
   };
   const handleChangeTopic = (event) => {
-    setNewTopic(event.target.value);
-    if (errorTopic || newTopic > 0) {
+    setTopic(event.target.value);
+    if (errorTopic && topic && topic?.trim() !== "") {
       setErrorTopic(false);
     }
   };
   const handleChangeDescription = (event) => {
-    setNewDescription(event.target.value);
+    setDescription(event.target.value);
   };
   const clearForm = () => {
-    setNewTitle("");
-    setNewTopic("");
-    setNewDescription("");
+    setTitle("");
+    setTopic("");
+    setDescription("");
   };
+
+  function createClassroom(title, topic, description) {
+    if (onCreate) onCreate(title, topic, description);
+  }
 
   return (
     <div>
-      <Dialog open={openCreateForm} onClose={closeCreateForm} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
         <VoctailDialogTitle id="form-dialog-title"> New Classroom </VoctailDialogTitle>
         <DialogContent>
-          <DialogContentText className={classes.description}>
-            {" "}
-            Please fill the details to create your classroom.{" "}
-          </DialogContentText>
           <ErrorDialogField
             required
             error={errorTitle}
             className={classes.textField}
             autoFocus
-            value={newTitle}
+            value={title}
             onChange={handleChangeTitle}
             margin="dense"
             id="name"
@@ -115,7 +80,7 @@ function ClassroomCreateFormDialog({
             error={errorTopic}
             className={classes.textField}
             autoFocus
-            value={newTopic}
+            value={topic}
             onChange={handleChangeTopic}
             margin="dense"
             id="name"
@@ -126,7 +91,7 @@ function ClassroomCreateFormDialog({
           <ErrorDialogField
             className={classes.textField}
             autoFocus
-            value={newDescription}
+            value={description}
             onChange={handleChangeDescription}
             margin="dense"
             id="name"
@@ -139,40 +104,31 @@ function ClassroomCreateFormDialog({
         </DialogContent>
         <DialogActions>
           <VTButton
-            danger
+            secondary
             style={{ margin: "1%" }}
             onClick={() => {
-              closeCreateForm();
+              onClose();
             }}
           >
             Cancel
           </VTButton>
           <VTButton
-            accept
+            neutral
             style={{ margin: "1%" }}
             onClick={() => {
-              if (newTitle.length < 1) {
+              if (!title || title.length < 1) {
                 toasts.toastError("Please give your classroom a title !");
                 setErrorTitle(true);
                 return;
               }
-              if (newTopic.length < 1) {
+              if (!topic || topic.length < 1) {
                 toasts.toastError("Please give your classroom a topic !");
                 setErrorTopic(true);
                 return;
               }
-              createClassroom(
-                user,
-                newTitle,
-                newTopic,
-                newDescription,
-                classroomDataFromDatabase,
-                setClassroomDataFromDatabase,
-                classroomAsTeacherDataFromDatabase,
-                setClassroomAsTeacherDataFromDatabase
-              );
+              createClassroom(title, topic, description);
               clearForm();
-              closeCreateForm();
+              onClose();
             }}
           >
             Create

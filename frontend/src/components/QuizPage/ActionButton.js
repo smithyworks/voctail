@@ -6,7 +6,6 @@ import colors from "../../assets/colors.json";
 import clsx from "clsx";
 
 const extract = (colQChoice) => {
-  console.log(colQChoice);
   const cols = {
     color: colQChoice.color,
     backgroundColor: colQChoice.backgroundColor,

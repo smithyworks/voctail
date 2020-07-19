@@ -3,8 +3,34 @@ const { query } = require("./db.js");
 
 async function classroomsHandler(req, res) {
   try {
-    const { rows } = await query("SELECT * FROM classrooms ORDER BY classroom_id DESC");
-    res.status(200).json({ rows });
+    const { user_id } = req.authData.user;
+
+    const { rows: public_classrooms } = await query("SELECT * FROM classrooms ORDER BY classroom_id DESC");
+    const {
+      rows: student_classrooms,
+    } = await query(
+      "SELECT classrooms.* FROM classroom_members LEFT JOIN classrooms ON classroom_members.classroom_id = classrooms.classroom_id WHERE classroom_members.member_id = $1 AND teacher = false ORDER BY classroom_id DESC",
+      [user_id]
+    );
+
+    const {
+      rows: teacher_classrooms_ids,
+    } = await query(
+      "SELECT classroom_id FROM classroom_members WHERE member_id = $1 AND teacher = true ORDER BY classroom_id DESC",
+      [user_id]
+    );
+    const taught_classroom_ids = teacher_classrooms_ids.map((c) => c.classroom_id);
+
+    const {
+      rows: teacher_classrooms,
+    } = await query("SELECT * FROM classrooms WHERE classroom_id = ANY($1) OR classroom_owner = $2", [
+      taught_classroom_ids,
+      user_id,
+    ]);
+
+    const administered_classroom_ids = teacher_classrooms.map((c) => c.classroom_id);
+
+    res.status(200).json({ public_classrooms, teacher_classrooms, student_classrooms, administered_classroom_ids });
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong with the classrooms handler.");
@@ -163,30 +189,20 @@ async function documentsHandler(req, res) {
 
 async function createClassroom(req, res) {
   try {
-    const { teacher, title, description, topic, open } = req.body;
+    const { user_id } = req.authData.user;
+    const { title, description, topic } = req.body;
+
     if (title.length < 1 || topic.length < 1) {
       log(`"Invalid document data ${title} ${topic}.`);
       res.status(400).send("Invalid classroom data.");
     }
-    const {
-      input,
-    } = await query(
+
+    await query(
       "INSERT INTO classrooms (classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4, $5)",
-      [teacher, title, description, topic, open]
+      [user_id, title, description, topic, true]
     );
-    const {
-      rows,
-    } = await query(
-      "SELECT * FROM classrooms WHERE classroom_id = (SELECT MAX(classroom_id) AS LastClass FROM classrooms WHERE title = $1 AND topic = $2)",
-      [title, topic]
-    );
-    const {
-      initialTeacher,
-    } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, true)", [
-      rows[0].classroom_id,
-      teacher,
-    ]);
-    res.status(201).json({ rows });
+
+    res.sendStatus(201);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");
