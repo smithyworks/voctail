@@ -152,7 +152,6 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
 
       <WarningDialog
         open={confirmDialogOpen}
-        onConfirm={() => console.log("onConfirm")}
         info={{
           title: "You are about to delete this classroom forever!",
           body: `Are you sure you want to delete the classroom "${title}" created by ${teacherData(
@@ -166,6 +165,7 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
             onDelete();
             setConfirmDialogOpen(false);
           },
+          onConfirm: onDelete,
         }}
       />
 
