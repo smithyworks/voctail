@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Paper } from "@material-ui/core";
+import React, { useState } from "react";
+import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 import color from "../../assets/colors.json";
