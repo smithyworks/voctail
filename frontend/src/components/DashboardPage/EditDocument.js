@@ -26,14 +26,19 @@ const useStyles = makeStyles(() => ({
 }));
 
 function EditDocument({ refresh, open, onClose, documentId, title, author, isPublic, currentCategory }) {
-  const titleInput = useRef(null);
-  const authorInput = useRef(null);
+  const titleInput = useRef("");
+  const authorInput = useRef("");
   const [publicDocument, setPublicDocument] = useState(false);
   const [category, setCategory] = useState(null);
+  const [errorTitle, setErrorTitle] = useState(false);
+  const [errorAuthor, setErrorAuthor] = useState(false);
 
   const classes = useStyles();
-  titleInput.current = title;
-  authorInput.current = author;
+  useEffect(() => {
+    titleInput.current = title;
+    authorInput.current = author;
+  }, [open]);
+
   useEffect(() => {
     setPublicDocument(isPublic);
     setCategory(currentCategory);
@@ -49,10 +54,12 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, isPub
   //verify the metadata and the document for the upload to prevent false uploads
   function verify() {
     if (titleInput.current.length <= 1) {
+      setErrorTitle(true);
       toasts.toastWarning("The title cannot be empty.");
       return false;
     }
     if (authorInput.current.length <= 1) {
+      setErrorAuthor(true);
       toasts.toastWarning("The author cannot be empty.");
       return false;
     }
@@ -93,8 +100,13 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, isPub
             id="title"
             label="Title*"
             type="title"
+            error={errorTitle}
+            setError={setErrorTitle}
             defaultValue={titleInput.current}
-            onChange={(e) => (titleInput.current = e.target.value)}
+            onChange={(e) => {
+              titleInput.current = e.target.value;
+              setErrorTitle(false);
+            }}
             fullWidth
           />
           <ErrorDialogField
@@ -103,8 +115,13 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, isPub
             id="author"
             label="Author*"
             type="author"
+            error={errorAuthor}
+            setError={setErrorAuthor}
             defaultValue={authorInput.current}
-            onChange={(e) => (authorInput.current = e.target.value)}
+            onChange={(e) => {
+              authorInput.current = e.target.value;
+              setErrorAuthor(false);
+            }}
             fullWidth
           />
 
@@ -152,7 +169,6 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, isPub
           <VTButton
             neutral
             onClick={() => {
-              verify();
               if (verify()) editThisDocument();
               //else toasts.toastWarning("Please review your entries.");
             }}

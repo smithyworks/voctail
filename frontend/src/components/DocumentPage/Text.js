@@ -47,7 +47,6 @@ function Text({ document, lookupWordByWord }) {
   const classes = useStyles();
 
   const user = useContext(UserContext);
-  console.log(document);
 
   const [blocks, setBlocks] = useState();
   useEffect(() => {

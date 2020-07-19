@@ -107,27 +107,31 @@ function ProfilePage() {
           </Grid>
         </ProfileSection>
 
-        <ProfileSection title="Vocabulary">
-          <Grid container justify="space-between">
-            <Grid item style={{ display: "flex", alignItems: "baseline" }}>
-              <span>
-                <VoctailCheckbox
-                  style={{ marginBottom: 7 }}
-                  checked={showKnowns}
-                  onClick={() => setShowKnowns(!showKnowns)}
+        <ProfileSection
+          title="Vocabulary"
+          Filter={
+            <Grid container justify="space-between">
+              <Grid item style={{ display: "flex", alignItems: "baseline" }}>
+                <span>
+                  <VoctailCheckbox
+                    style={{ marginBottom: 7 }}
+                    checked={showKnowns}
+                    onClick={() => setShowKnowns(!showKnowns)}
+                  />
+                </span>
+                <Typography display="inline" style={{ margin: "0 60px 0 0" }}>
+                  Show known words
+                </Typography>
+                <ErrorDialogField
+                  margin="dense"
+                  variant="outlined"
+                  placeholder="Filter..."
+                  onChange={(e) => setVocabFilter(e.target.value)}
                 />
-              </span>
-              <Typography display="inline" style={{ margin: "0 60px 0 0" }}>
-                Show known words
-              </Typography>
-              <ErrorDialogField
-                margin="dense"
-                variant="outlined"
-                placeholder="Filter..."
-                onChange={(e) => setVocabFilter(e.target.value)}
-              />
+              </Grid>
             </Grid>
-          </Grid>
+          }
+        >
           <VocabularyCloud
             userId={user.user_id}
             filter={vocabularyFilter}
@@ -140,7 +144,7 @@ function ProfilePage() {
           <QuizMetrics userId={user.user_id} />
         </ProfileSection>
 
-        <ProfileSection title="Documents History">
+        <ProfileSection title="Documents">
           <Grid container justify="space-between">
             <DocumentMetrics userId={user.user_id} />
           </Grid>
