@@ -69,7 +69,7 @@ function ClassroomFromSelectSection({ openCreateForm, closeCreateForm, onAddToCl
         </DialogContent>
         <DialogActions>
           <VTButton
-            danger
+            secondary
             style={{ margin: "1%" }}
             onClick={() => {
               closeCreateForm();
@@ -77,7 +77,7 @@ function ClassroomFromSelectSection({ openCreateForm, closeCreateForm, onAddToCl
           >
             Cancel
           </VTButton>
-          <VTButton accept style={{ margin: "1%" }} onClick={onAddToClassroom}>
+          <VTButton neutral style={{ margin: "1%" }} onClick={onAddToClassroom}>
             Add
           </VTButton>
         </DialogActions>

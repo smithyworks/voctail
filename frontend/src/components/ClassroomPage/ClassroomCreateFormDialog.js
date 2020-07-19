@@ -139,7 +139,7 @@ function ClassroomCreateFormDialog({
         </DialogContent>
         <DialogActions>
           <VTButton
-            danger
+            secondary
             style={{ margin: "1%" }}
             onClick={() => {
               closeCreateForm();
@@ -148,7 +148,7 @@ function ClassroomCreateFormDialog({
             Cancel
           </VTButton>
           <VTButton
-            accept
+            neutral
             style={{ margin: "1%" }}
             onClick={() => {
               if (newTitle.length < 1) {

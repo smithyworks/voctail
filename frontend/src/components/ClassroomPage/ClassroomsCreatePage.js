@@ -16,9 +16,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import { toasts } from "../common/AppPage/AppPage";
 import VTButton from "../common/Buttons/VTButton";
-import { Button, ButtonBase, Dialog, DialogTitle, DialogActions, DialogContent, Grid, Link } from "@material-ui/core";
-import logo_classroom from "../../assets/classroom_logo.png";
-import { ConfirmDialog } from "../common";
 import VoctailCheckbox from "../common/VoctailCheckbox";
 
 const useStyles = makeStyles(() => ({
@@ -42,120 +39,6 @@ const useStyles = makeStyles(() => ({
     margin: "10px 10px",
   },
 }));
-
-function ClassroomItem({
-  classes,
-  setPopUpOpen,
-  setClassroomId,
-  setClassroomTitle,
-  setClassroomTopic,
-  setClassroomAuthor,
-  setClassroomDescription,
-  tile,
-}) {
-  return (
-    <ButtonBase
-      focusRipple
-      className={classes.image}
-      focusVisibleClassName={classes.focusVisible}
-      style={{
-        width: "40%",
-        margin: "5%",
-      }}
-      onClick={() => {
-        setPopUpOpen(true);
-        setClassroomId(tile.classroom_id);
-        setClassroomTitle(tile.title);
-        setClassroomTopic(tile.topic);
-        setClassroomDescription(tile.description);
-      }}
-    >
-      <span
-        className={classes.imageSrc}
-        style={{
-          backgroundImage: `url(${logo_classroom})`,
-        }}
-      />
-      <span className={classes.imageBackdrop} />
-      <span className={classes.imageButton}>
-        <Typography component="span" variant="h4" color="inherit" className={classes.imageTitle}>
-          {tile.title}
-          <span className={classes.imageMarked} />
-        </Typography>
-      </span>
-    </ButtonBase>
-  );
-}
-
-function ClassroomOverviewPopUp({
-  open,
-  onClose,
-  classroomDataFromDatabase,
-  setClassroomDataFromDatabase,
-  classroomId,
-  classroomTitle,
-  classroomTopic,
-  classroomAuthor,
-  classroomDescription,
-  deleteClassroom,
-}) {
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-
-  return (
-    <Dialog onClose={onClose} aria-labelledby="classroom-overview-popup" open={open} keepMounted>
-      <DialogTitle id="classroom-overview-popup-title" onClose={onClose}>
-        {classroomTitle}
-      </DialogTitle>
-      <DialogContent dividers>
-        <Typography gutterBottom>Topic: {classroomTopic}</Typography>
-        <Typography gutterBottom>Teacher: {classroomAuthor}</Typography>
-        <Typography gutterBottom>Description: {classroomDescription}</Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
-        </Button>
-        <Button
-          onClick={() => {
-            setConfirmDialogOpen(true);
-          }}
-          color="secondary"
-        >
-          Delete
-        </Button>
-        <Button component={Link} to={"/classrooms/view?classroom=" + classroomId} color="primary">
-          Open
-        </Button>
-      </DialogActions>
-      <ConfirmDialog
-        open={confirmDialogOpen}
-        title="Deleting a classroom..."
-        onConfirm={() => {
-          deleteClassroom(classroomId, classroomDataFromDatabase, setClassroomDataFromDatabase);
-          setConfirmDialogOpen(false);
-          onClose();
-        }}
-        onClose={() => {
-          setConfirmDialogOpen(false);
-        }}
-      >
-        <Grid container>
-          <Grid element>
-            <Typography> Are you sure you want to delete</Typography>
-          </Grid>
-          <Grid element>
-            <Typography style={{ color: "red", marginLeft: "5px", marginRight: "5px", fontWeight: "bold" }}>
-              {" " + classroomTitle}
-            </Typography>
-          </Grid>
-          <Grid element>
-            <Typography>?</Typography>
-          </Grid>
-        </Grid>
-      </ConfirmDialog>
-    </Dialog>
-  );
-}
 
 function HeadUpText(props) {
   const classes = useStyles();
@@ -268,8 +151,8 @@ function ClassroomsCreatePage() {
           );
         })}
       </List>
-      <VTButton accept className={classes.button} onClick={addStudents} color="primary">
-        Add student
+      <VTButton neutral className={classes.button} onClick={addStudents} color="primary">
+        Add Student
       </VTButton>
 
       <List dense className={classes.root}>
@@ -284,8 +167,8 @@ function ClassroomsCreatePage() {
           );
         })}
       </List>
-      <VTButton accept className={classes.button} onClick={addDocuments} color="primary">
-        Add document
+      <VTButton neutral className={classes.button} onClick={addDocuments} color="primary">
+        Add Document
       </VTButton>
 
       <HeadUpText text="Classrooms from the database" />

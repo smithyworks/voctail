@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from "react";
-import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, TextField } from "@material-ui/core";
+import { Paper, makeStyles, Grid, Typography, Menu, MenuItem } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./Quiz/colorCycler";
@@ -11,6 +11,7 @@ import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { VTButton } from "../common/index";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 import WarningDialog from "../AdminPage/WarningDialog";
+import ErrorDialogField from "./Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   container: {
@@ -203,7 +204,7 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
         <VoctailDialogTitle id="rename-classroom">{"Rename " + title}</VoctailDialogTitle>
         <DialogContent>
           <Grid container justify="flex-start" alignItems="center" direction="column">
-            <TextField
+            <ErrorDialogField
               required
               error={errorNewTitle}
               className={classes.textField}
