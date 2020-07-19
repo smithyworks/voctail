@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import LocalBarIcon from "@material-ui/icons/LocalBar";
 import LocalBarOutlinedIcon from "@material-ui/icons/LocalBarOutlined";
 import voctailColors from "../../assets/colors.json";
+import ClassroomAddDocumentDialog from "../ClassroomPage/ClassroomAddDocumentDialog";
 
 //example tile images
 import shortStoriesPreview from "../../assets/books.jpg";
@@ -74,10 +75,22 @@ const useStyles = makeStyles({
   },
 });
 
-function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQuiz, linkTo, category, fits }) {
+function DashboardTile({
+  title,
+  author,
+  onDelete,
+  isOwned,
+  onEdit,
+  onGenerateQuiz,
+  onAddToClassroom,
+  linkTo,
+  category,
+  fits,
+}) {
   const classes = useStyles();
 
   const [hovered, setHovered] = useState(false);
+  const [addDocumentClassroomOpen, setAddDocumentClassroomOpen] = useState(false);
 
   const anchor = useRef();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -120,6 +133,12 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
   function _onGenerateQuiz(e) {
     if (typeof onGenerateQuiz === "function") {
       onGenerateQuiz(e);
+      setMenuOpen(false);
+    }
+  }
+  function _onAddToClassroom(e) {
+    if (typeof onGenerateQuiz === "function") {
+      onAddToClassroom(e);
       setMenuOpen(false);
     }
   }
@@ -183,7 +202,21 @@ function DashboardTile({ title, author, onDelete, isOwned, onEdit, onGenerateQui
           </div>
         )}
         <MenuItem onClick={_onGenerateQuiz}>Create Quiz</MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAddDocumentClassroomOpen(true);
+            setMenuOpen(false);
+          }}
+        >
+          Add to a classroom
+        </MenuItem>
       </Menu>
+      <ClassroomAddDocumentDialog
+        onAddToClassroom={() => console.log("here")}
+        documentTitle={title}
+        openCreateForm={addDocumentClassroomOpen}
+        closeCreateForm={() => setAddDocumentClassroomOpen(false)}
+      />
     </Grid>
   );
 }

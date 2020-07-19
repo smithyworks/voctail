@@ -169,6 +169,7 @@ function Dashboard() {
               onEdit={() => handleEdit(tile)}
               onDelete={() => verifyDelete(tile.title, tile.author, tile.document_id)}
               onGenerateQuiz={() => createQuiz(tile.document_id)}
+              onAddToClassroom={() => console.log("tile.title")}
               linkTo={"/documents/" + tile.document_id}
               category={tile.category}
             />
@@ -206,6 +207,7 @@ function Dashboard() {
           .map((tile, i) => (
             <DashboardTile
               key={i}
+              document={tile}
               title={tile.title}
               author={tile.author}
               fits={getFit(tile.document_id)}

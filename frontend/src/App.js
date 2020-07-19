@@ -89,7 +89,7 @@ function App() {
           </ProtectedRoute>
 
           <Route path="/404" component={Error404Page} />
-          <Route>
+          <Route component={Error404Page}>
             <Redirect to="/404" />
           </Route>
         </Switch>

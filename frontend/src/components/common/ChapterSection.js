@@ -76,7 +76,6 @@ function ChapterSection({ title, children, renameSection, deleteSection }) {
         <MenuItem
           onClick={() => {
             deleteSection();
-            console.log("click");
             setAnchorEl(false);
           }}
         >
