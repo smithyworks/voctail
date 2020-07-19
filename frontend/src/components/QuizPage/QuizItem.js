@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Grid, Typography as T } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { shuffle } from "../common/Quiz/QuizzesUtilities";
-import VTButton from "../common/Buttons/VTButton";
 import ChoiceButton from "./ChoiceButton";
+import ActionButton from "./ActionButton";
 
 const useStyles = makeStyles({
   gridHeader: { height: "20%", width: "100%", backgroundColor: "rgba(0,0,0,0.3)" },
@@ -145,43 +145,39 @@ function Actions(qstate, nextQ, is_last, showResult) {
     switch (action) {
       case "Done":
         return (
-          <VTButton
-            danger
+          <ActionButton
+            done
             key={key}
-            variant="outlined"
             onClick={() => {
               showResult();
             }}
           >
             Done
-          </VTButton>
+          </ActionButton>
         );
       case "Show":
         return (
-          <VTButton
-            neutral
+          <ActionButton
+            show
             key={key}
-            variant="outlined"
             onClick={() => {
               qstate.set(qstate.states.shown);
             }}
           >
             Show
-          </VTButton>
+          </ActionButton>
         );
       default:
         //Next
         return (
-          <VTButton
-            accept
+          <ActionButton
             key={key}
-            variant="outlined"
             onClick={() => {
               nextQ();
             }}
           >
             Next
-          </VTButton>
+          </ActionButton>
         );
     }
   }

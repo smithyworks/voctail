@@ -120,7 +120,7 @@ function QuizzesDashboard({ ...props }) {
 
   return (
     <AppPage location="quizzes" id="quizzes-page">
-      <QuizSection title={"Challenges"}>
+      <QuizSection title={"Challenges"} premium={user.premium}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizChallenges.map((v) => (
             <QuizTile
@@ -140,7 +140,7 @@ function QuizzesDashboard({ ...props }) {
         </Grid>
       </QuizSection>
       {quizDocuments.length > 0 ? (
-        <QuizSection title={"Document Quizzes"}>
+        <QuizSection title={"Document Quizzes"} premium={user.premium}>
           <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
             {quizDocuments.map((v) => (
               <QuizTile
@@ -160,7 +160,7 @@ function QuizzesDashboard({ ...props }) {
           </Grid>
         </QuizSection>
       ) : undefined}
-      <QuizSection title={"Random Quizzes"} onAdd={() => handleRandomOpen()} hasAddButton={true}>
+      <QuizSection title={"Random Quizzes"} onAdd={() => handleRandomOpen()} hasAddButton={true} premium={user.premium}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizRandom.length > 0 ? (
             quizRandom.map((v) => (
@@ -183,7 +183,7 @@ function QuizzesDashboard({ ...props }) {
           )}
         </Grid>
       </QuizSection>
-      <QuizSection title={"Custom Quizzes"} onAdd={() => handleCustomOpen()} hasAddButton={true}>
+      <QuizSection title={"Custom Quizzes"} onAdd={() => handleCustomOpen()} hasAddButton={true} premium={user.premium}>
         <Grid className={classes.grid} container justify="flex-start" alignItems="left" direction="row">
           {quizCustom.map((v) => (
             <QuizTile
