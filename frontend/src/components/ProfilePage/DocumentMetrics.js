@@ -1,19 +1,21 @@
 import { Paper, Table, TableBody, TableHead } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DocumentRow from "./DocumentRow";
 import { api } from "../../utils";
 
 function DocumentMetrics(userId) {
   const [documents, setDocuments] = useState([]);
 
-  api
-    .fetchDocuments()
-    .then((res) => {
-      if (res) {
-        setDocuments(res.data.documents);
-      }
-    })
-    .catch((err) => console.log(err));
+  useEffect(() => {
+    api
+      .fetchDocuments()
+      .then((res) => {
+        if (res) {
+          setDocuments(res.data.documents);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <Table size="small" component={Paper} elevation={0}>
