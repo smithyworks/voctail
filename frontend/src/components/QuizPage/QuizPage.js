@@ -11,10 +11,10 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles({
-  container: { height: "100%", width: "100%" },
+  container: { height: "calc(100% - 80px)", width: "100%" },
   layoutBody: { height: "80%", width: "100%" },
   title: {
-    color: "black",
+    color: "#666",
   },
   layoutHeader: {
     height: "15%",
@@ -40,7 +40,7 @@ function QuizLayout({ title, children }) {
     <Paper className={classes.container}>
       <div className={classes.layoutHeader}>
         <div className={classes.layoutHeaderBox}>
-          <T variant={"h3"} className={classes.title}>
+          <T variant="h3" className={classes.title}>
             {title}
           </T>
         </div>
