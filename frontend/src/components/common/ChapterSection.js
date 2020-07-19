@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
+import { Paper, makeStyles, Typography, Grid } from "@material-ui/core";
 import { IconButton, Menu, MenuItem, TextField } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import CreationDialog from "./Dialogs/CreationDialog";
+import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { toasts } from "./AppPage/AppPage";
+import { VTButton } from "../common/index";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
 const useStyles = makeStyles({
   paper: {
     paddingBottom: "3%",
   },
 
-  innerContainer: {
-    padding: "3px 20px 8px 20px",
+  title: {
+    fontWeight: "lighter",
+    fontSize: "18px",
   },
 
   expansionIcon: {
@@ -29,7 +32,6 @@ const useStyles = makeStyles({
 function ChapterSection({ title, children, renameSection, deleteSection }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [errorNewTitle, setErrorNewTitle] = useState(false);
@@ -82,40 +84,57 @@ function ChapterSection({ title, children, renameSection, deleteSection }) {
           Delete
         </MenuItem>
       </Menu>
-      <Divider />
       <div className={classes.innerContainer}>{children}</div>
-      <CreationDialog
+      <Dialog
         open={renameDialogOpen}
-        title={"Renaming " + title + "..."}
-        description={"Provide a new title below"}
-        validationButtonName="Save"
-        onConfirm={() => {
-          if (newTitle.length < 1) {
-            toasts.toastError("Please give your section a title !");
-            setErrorNewTitle(true);
-            return;
-          }
-          renameSection(newTitle);
-          setRenameDialogOpen(false);
-        }}
         onClose={() => {
           setRenameDialogOpen(false);
         }}
+        aria-labelledby="rename-section"
       >
-        <TextField
-          required
-          error={errorNewTitle}
-          className={classes.textField}
-          autoFocus
-          value={newTitle}
-          onChange={handleChangeNewTitle}
-          margin="dense"
-          id="name"
-          label="New Title"
-          type="text"
-          fullWidth
-        />
-      </CreationDialog>
+        <VoctailDialogTitle id="rename-section">{"Rename " + title}</VoctailDialogTitle>
+        <DialogContent>
+          <Grid container justify="flex-start" alignItems="center" direction="column">
+            <TextField
+              required
+              error={errorNewTitle}
+              className={classes.textField}
+              autoFocus
+              value={newTitle}
+              onChange={handleChangeNewTitle}
+              margin="dense"
+              id="name"
+              label="New Title"
+              type="text"
+              fullWidth
+            />
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <VTButton
+            secondary
+            onClick={() => {
+              setRenameDialogOpen(false);
+            }}
+          >
+            Cancel
+          </VTButton>
+          <VTButton
+            success
+            onClick={() => {
+              if (newTitle.length < 1) {
+                toasts.toastError("Please give your section a title !");
+                setErrorNewTitle(true);
+                return;
+              }
+              renameSection(newTitle);
+              setRenameDialogOpen(false);
+            }}
+          >
+            Save
+          </VTButton>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 }

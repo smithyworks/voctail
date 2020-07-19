@@ -33,22 +33,11 @@ const formStyles = makeStyles(() => ({
 
 const names = ["Chapter 1", "Chapter 2"];
 
-function ClassroomFromSelectSection({ openCreateForm, closeCreateForm }) {
+function ClassroomFromSelectSection({ openCreateForm, closeCreateForm, onAddToClassroom }) {
   const classes = formStyles();
-  const [personName, setPersonName] = useState([]);
+  const [sectionSelected, setSectionSelected] = useState([]);
   const handleChange = (event) => {
-    setPersonName(event.target.value);
-  };
-
-  const handleChangeMultiple = (event) => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setPersonName(value);
+    setSectionSelected(event.target.value);
   };
 
   return (
@@ -61,12 +50,12 @@ function ClassroomFromSelectSection({ openCreateForm, closeCreateForm }) {
             Select a section to add your document.{" "}
           </DialogContentText>
           <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-name-label">Name</InputLabel>
+            <InputLabel id="demo-mutiple-name-label">Section</InputLabel>
             <Select
               labelId="demo-mutiple-name-label"
               id="demo-mutiple-name"
               multiple
-              value={personName}
+              value={sectionSelected}
               onChange={handleChange}
               input={<Input />}
             >
@@ -88,7 +77,7 @@ function ClassroomFromSelectSection({ openCreateForm, closeCreateForm }) {
           >
             Cancel
           </VTButton>
-          <VTButton accept style={{ margin: "1%" }}>
+          <VTButton accept style={{ margin: "1%" }} onClick={onAddToClassroom}>
             Add
           </VTButton>
         </DialogActions>

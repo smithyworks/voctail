@@ -139,6 +139,96 @@ function Classrooms() {
           ))}
         </ClassroomSection>
       )}
+      <ClassroomSection title="My Classrooms as a Student" invisible={classroomAsStudentDataFromDatabase.length === 0}>
+        {classroomAsStudentDataFromDatabase.map((tile) => (
+          <React.Fragment key={tile.classroom_id}>
+            <ClassroomTile
+              isOwned
+              id={tile.classroom_id}
+              title={tile.title}
+              teacher={tile.classroom_owner}
+              topic={tile.topic}
+              linkTo={"/classrooms/" + tile.classroom_id}
+              onDelete={() => {
+                deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                deleteClassroom(
+                  tile.classroom_id,
+                  classroomAsStudentDataFromDatabase,
+                  setClassroomAsStudentDataFromDatabase
+                );
+              }}
+              onRename={(newTitle) => {
+                renameClassroom(
+                  tile.classroom_id,
+                  newTitle,
+                  classroomAsStudentDataFromDatabase,
+                  setClassroomAsStudentDataFromDatabase
+                );
+                renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
+              }}
+            />
+          </React.Fragment>
+        ))}
+      </ClassroomSection>
+      <ClassroomSection
+        title="My Classrooms as a Teacher"
+        invisible={classroomAsTeacherDataFromDatabase.length === 0}
+        Button={
+          <VTIconFlexButton
+            toolTipLabel={
+              user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"
+            }
+            onClick={user.premium ? () => setOpenCreateForm(true) : () => setGoPremium(true)}
+            voctailDisabled={!user.premium}
+            aria-label="new-classroom"
+          />
+        }
+      >
+        <ClassroomCreateFormDialog
+          openCreateForm={openCreateForm}
+          closeCreateForm={() => setOpenCreateForm(false)}
+          user={user.user_id}
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newTopic={newTopic}
+          setNewTopic={setNewTopic}
+          newDescription={newDescription}
+          setNewDescription={setNewDescription}
+          classroomDataFromDatabase={classroomDataFromDatabase}
+          setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+          classroomAsTeacherDataFromDatabase={classroomAsTeacherDataFromDatabase}
+          setClassroomAsTeacherDataFromDatabase={setClassroomAsTeacherDataFromDatabase}
+        />
+        {classroomAsTeacherDataFromDatabase.map((tile) => (
+          <React.Fragment key={tile.classroom_id}>
+            <ClassroomTile
+              isOwned
+              id={tile.classroom_id}
+              title={tile.title}
+              teacher={tile.classroom_owner}
+              topic={tile.topic}
+              linkTo={"/classrooms/" + tile.classroom_id}
+              onDelete={() => {
+                deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                deleteClassroom(
+                  tile.classroom_id,
+                  classroomAsTeacherDataFromDatabase,
+                  setClassroomAsTeacherDataFromDatabase
+                );
+              }}
+              onRename={(newTitle) => {
+                renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                renameClassroom(
+                  tile.classroom_id,
+                  newTitle,
+                  classroomAsTeacherDataFromDatabase,
+                  setClassroomAsTeacherDataFromDatabase
+                );
+              }}
+            />
+          </React.Fragment>
+        ))}
+      </ClassroomSection>
       <ClassroomSection
         title="Public Classrooms"
         description="You have here the classrooms you are registered to."
@@ -179,12 +269,6 @@ function Classrooms() {
               linkTo={"/classrooms/" + tile.classroom_id}
               classroomDataFromDatabase={classroomDataFromDatabase}
               setClassroomDataFromDatabase={setClassroomDataFromDatabase}
-              onDelete={() => {
-                deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
-              }}
-              onRename={(newTitle) => {
-                renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
-              }}
             />
           </React.Fragment>
         ))}

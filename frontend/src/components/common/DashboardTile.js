@@ -136,12 +136,6 @@ function DashboardTile({
       setMenuOpen(false);
     }
   }
-  function _onAddToClassroom(e) {
-    if (typeof onGenerateQuiz === "function") {
-      onAddToClassroom(e);
-      setMenuOpen(false);
-    }
-  }
 
   return (
     <Grid item xs={12} sm={6} md={3} lg={3} className={classes.container}>
