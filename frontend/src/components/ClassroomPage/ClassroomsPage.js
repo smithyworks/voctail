@@ -144,6 +144,7 @@ function Classrooms() {
           <React.Fragment key={tile.classroom_id}>
             <ClassroomTile
               isOwned
+              id={tile.classroom_id}
               title={tile.title}
               teacher={tile.classroom_owner}
               topic={tile.topic}
@@ -202,6 +203,7 @@ function Classrooms() {
           <React.Fragment key={tile.classroom_id}>
             <ClassroomTile
               isOwned
+              id={tile.classroom_id}
               title={tile.title}
               teacher={tile.classroom_owner}
               topic={tile.topic}
