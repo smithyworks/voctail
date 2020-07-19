@@ -142,7 +142,7 @@ function ProfilePage() {
 
         <ProfileSection title="Documents History">
           <Grid container justify="space-between">
-            <DocumentMetrics />
+            <DocumentMetrics userId={user.user_id} />
           </Grid>
         </ProfileSection>
       </div>

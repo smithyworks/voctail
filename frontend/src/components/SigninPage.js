@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Grid, Paper, Typography as T, TextField, Checkbox } from "@material-ui/core";
+import { Grid, Paper, Typography as T, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Error as ErrorIcon, Info as InfoIcon } from "@material-ui/icons";
 
@@ -11,6 +11,7 @@ import { refresh } from "../App.js";
 import AppPage from "./common/AppPage";
 import logo from "../assets/logo_green.png";
 import VTButton from "./common/Buttons/VTButton";
+import ErrorDialogField from "./common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   page: {
@@ -151,7 +152,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
             )}
 
             {isSignupPage && (
-              <TextField
+              <ErrorDialogField
                 variant="outlined"
                 placeholder="John Doe"
                 label="Name"
@@ -159,10 +160,10 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
                 margin="dense"
                 className={classes.inputs}
                 onChange={(e) => (nameRef.current = e.target.value)}
-              ></TextField>
+              ></ErrorDialogField>
             )}
 
-            <TextField
+            <ErrorDialogField
               variant="outlined"
               placeholder="username@example.com"
               label="Email"
@@ -170,9 +171,9 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
               margin="dense"
               className={classes.inputs}
               onChange={(e) => (emailRef.current = e.target.value)}
-            ></TextField>
+            ></ErrorDialogField>
 
-            <TextField
+            <ErrorDialogField
               variant="outlined"
               placeholder="password"
               label="Password"
@@ -181,7 +182,7 @@ function SigninPage({ signup: isSignupPage, onSignin }) {
               margin="dense"
               className={classes.inputs}
               onChange={(e) => (passwordRef.current = e.target.value)}
-            ></TextField>
+            ></ErrorDialogField>
 
             <VTButton neutral type="submit" variant="contained" fullWidth className={classes.inputs} disableElevation>
               {isSignupPage ? "Sign Up Now" : "Sign In"}

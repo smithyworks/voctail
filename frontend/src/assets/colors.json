@@ -223,5 +223,15 @@
     "headUp": {
       "color": "white"
     }
+  },
+  "vocabularyCloud": {
+    "known": {
+      "borderColor": "#4fcc53",
+      "backgroundColor": "rgb(0,128,0,0.2)"
+    },
+    "unknown": {
+      "borderColor": "#d43131",
+      "backgroundColor": "rgb(255,0,0,0.3)"
+    }
   }
 }
