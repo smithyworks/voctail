@@ -1,5 +1,3 @@
-import React from "react";
-
 import { api } from "../../utils";
 import { toasts } from "../common/AppPage/AppPage";
 

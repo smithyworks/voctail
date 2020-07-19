@@ -37,12 +37,12 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, isPub
   useEffect(() => {
     titleInput.current = title;
     authorInput.current = author;
-  }, [open]);
+  }, [open]); // eslint-disable-line
 
   useEffect(() => {
     setPublicDocument(isPublic);
     setCategory(currentCategory);
-  }, [isPublic, currentCategory]);
+  }, [isPublic, currentCategory]); // eslint-disable-line
 
   const handleStatusChange = (event) => {
     setPublicDocument(event.target.checked);

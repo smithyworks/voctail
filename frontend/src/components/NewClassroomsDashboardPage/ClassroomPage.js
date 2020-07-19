@@ -21,7 +21,7 @@ function ClassroomPage() {
   const reload = () => setCount(count + 1);
   useEffect(() => {
     api.fetchClassroom(params.classroom_id).then((res) => setClassroom(res.data));
-  }, [count]);
+  }, [count]); // eslint-disable-line
 
   const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
   const [addTeacherDialogOpen, setAddTeacherDialogOpen] = useState(false);

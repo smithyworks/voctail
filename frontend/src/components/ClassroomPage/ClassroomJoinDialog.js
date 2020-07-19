@@ -2,17 +2,10 @@ import React, { useContext } from "react";
 import { toasts } from "../common/AppPage";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
-import { UserContext, refresh } from "../../App";
+import { UserContext } from "../../App";
 
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
-
-const useStyles = makeStyles(() => ({
-  container: { height: 200, width: "100%" },
-  grid: { height: 100, width: "100%" },
-  userItem: { width: "150px" },
-}));
 
 function JoinDialog({ title, open, onClose, link, classroom_id }) {
   const contextUser = useContext(UserContext);

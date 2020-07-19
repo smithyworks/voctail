@@ -1,16 +1,5 @@
 import React, { useState, useRef } from "react";
-import {
-  Paper,
-  makeStyles,
-  Grid,
-  Typography,
-  Menu,
-  MenuItem,
-  Badge,
-  withStyles,
-  Tooltip,
-  Hidden,
-} from "@material-ui/core";
+import { Paper, makeStyles, Grid, Typography, Menu, MenuItem, Badge, withStyles, Tooltip } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ProfilePicture from "../ProfilePage/ProfilePicture";

@@ -81,7 +81,7 @@ function TranslationsTabPanel() {
         console.log(err);
         toasts.toastError("Encountered an issue communicating with the server.");
       });
-  }, [count]);
+  }, [count]); // eslint-disable-line
 
   return (
     <Paper className={classes.paper}>

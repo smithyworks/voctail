@@ -125,7 +125,7 @@ function Dashboard() {
         }
       })
       .catch((err) => console.log(err));
-  }, [countToRefresh]);
+  }, [countToRefresh]); // eslint-disable-line
 
   function getFit(document_id) {
     if (!fitLookup) return false;

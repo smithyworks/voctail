@@ -1,5 +1,3 @@
-import { forEach } from "lodash";
-
 export function timeParser(time) {
   const week = ["Undefined", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   if (time == null) {
