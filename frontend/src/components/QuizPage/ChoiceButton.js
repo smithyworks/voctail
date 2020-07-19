@@ -22,6 +22,7 @@ const useStyles = makeStyles({
   inactive: color.quizChoiceButton.inactive,
   paper: {
     width: "15%",
+    minWidth: "200px",
     height: "54px",
     cursor: "pointer",
     display: "inline-block",

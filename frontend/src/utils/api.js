@@ -73,8 +73,8 @@ export function fetchQuizzesByCategory() {
 export function fetchQuizMetrics(quiz_id) {
   return axios.get(`${base}/quiz-metrics`, { params: { quiz_id: quiz_id } });
 }
-export function fetchQuizzesMetrics() {
-  return axios.get(`${base}/quizzes-metrics`);
+export function fetchQuizzesMetrics(user_id) {
+  return axios.get(`${base}/quizzes-metrics`, { params: { user_id: user_id } });
 }
 export function deleteQuiz(quiz_id) {
   return axios.post(`${base}/delete-quiz`, { quiz_id });
