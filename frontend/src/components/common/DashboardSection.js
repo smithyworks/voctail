@@ -37,6 +37,10 @@ const useStyles = makeStyles({
   formControl: {
     minWidth: 120,
   },
+
+  sectionHeader: {
+    height: 60,
+  },
 });
 
 function DashboardSection({ title, children, Button, expandable }) {
@@ -58,7 +62,7 @@ function DashboardSection({ title, children, Button, expandable }) {
 
   return (
     <Paper elevation={0} className={classes.paper}>
-      <Grid container justify="space-between" direction="row" alignItems="center">
+      <Grid container justify="space-between" direction="row" alignItems="center" className={classes.sectionHeader}>
         <Grid item xs style={{ paddingLeft: "10px" }}>
           <Typography variant="h5" className={classes.title}>
             {title}

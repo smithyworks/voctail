@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     paddingTop: "10px",
   },
   header: {
-    height: "50px",
+    height: "60px",
   },
 
   expandContainer: {
