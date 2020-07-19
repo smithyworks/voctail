@@ -24,6 +24,7 @@ function generateQuestions(wordList, transList, length) {
 
   //random suggestions
   const suggestionsList = shuffle(transList.map((v) => v.translation));
+  //limit to length question items
   const words = shuffle(wordList).slice(0, length);
 
   const len = suggestionsList.length;
@@ -342,7 +343,36 @@ async function quizzesMetricsHandler(req, res) {
   }
 }
 
-// potentially think about a more sophisticated approach to determining suitable translations eg rank metric
+function generateFromWordList(words, length) {
+  const wordList = [];
+  const transList = [];
+  const included = [];
+  const unknown = [];
+
+  words.forEach((v) => {
+    if (!included.includes(v.word_id)) {
+      included.push(v.word_id);
+      wordList.push({ word: v.word, word_id: v.word_id });
+      transList.push({ translation: v.translation, word_id: v.word_id });
+      if (!v.known) {
+        // sage indices of unknown
+        unknown.push(included.length - 1);
+      }
+    }
+  });
+
+  // if enough words unknown use unknown words only else fallback on all words
+  const questions =
+    unknown.length >= length
+      ? generateQuestions(
+          wordList.filter((v, i) => unknown.includes(i)),
+          transList.filter((v, i) => unknown.includes(i)),
+          length
+        )
+      : generateQuestions(wordList, transList, length);
+  return questions;
+}
+
 async function createQuizHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
@@ -350,23 +380,12 @@ async function createQuizHandler(req, res) {
     const title = req.body.title;
     const { rows: entryList } = await query(
       //additional INNER JOIN with translations ensures translations exist
-      "SELECT words.word, words.word_id, translations.translation FROM words INNER JOIN users_words ON words.word_id = users_words.word_id \
+      "SELECT words.word, words.word_id, translations.translation, users_words.known FROM words \
+        INNER JOIN users_words ON words.word_id = users_words.word_id \
         INNER JOIN translations ON words.word_id = translations.word_id WHERE users_words.user_id = $1",
       [user_id]
     );
-    const wordList = [];
-    const transList = [];
-    const included = [];
-    entryList.forEach((v) => {
-      if (!included.includes(v.word_id)) {
-        included.push(v.word_id);
-        wordList.push({ word: v.word, word_id: v.word_id });
-        transList.push({ translation: v.translation, word_id: v.word_id });
-      }
-    });
-
-    const questions = generateQuestions(wordList, transList, length);
-
+    const questions = generateFromWordList(entryList, length);
     const quiz = await insertSQL(title, questions, user_id, {});
 
     res.status(200).json(quiz);
@@ -388,7 +407,7 @@ async function createQuizFromDocHandler(req, res) {
 
     const { rows: entryList } = await query(
       //for now df document_id 2 as boot strapped (DB) -> document_id=$1, user_id=$2, pass params document_id, user_id
-      "SELECT words.word, words.word_id, translations.translation\
+      "SELECT words.word, words.word_id, translations.translation, users_words.known\
          FROM words INNER JOIN documents_words ON documents_words.word_id = words.word_id\
           AND documents_words.document_id = 2 \
          INNER JOIN  users_words ON users_words.word_id = words.word_id \
@@ -397,18 +416,7 @@ async function createQuizFromDocHandler(req, res) {
       [user_id]
     );
 
-    const wordList = [];
-    const transList = [];
-    const included = [];
-    entryList.forEach((v) => {
-      if (!included.includes(v.word_id)) {
-        included.push(v.word_id);
-        wordList.push({ word: v.word, word_id: v.word_id });
-        transList.push({ translation: v.translation, word_id: v.word_id });
-      }
-    });
-
-    const questions = generateQuestions(wordList, transList, length);
+    const questions = generateFromWordList(entryList, length);
 
     //check number of quizzes with this title
     //fetch all quizzes by this user created for the document with the document_id
