@@ -146,11 +146,11 @@ function EditDocument({ refresh, open, onClose, documentId, title, author, isPub
           />
         </DialogContent>
         <DialogActions>
-          <VTButton neutral onClick={onClose}>
+          <VTButton secondary onClick={onClose}>
             Cancel
           </VTButton>
           <VTButton
-            accept
+            neutral
             onClick={() => {
               verify();
               if (verify()) editThisDocument();
