@@ -7,6 +7,7 @@ import Text from "./Text.js";
 import BlockContainer from "./BlockContainer";
 import AddTranslationDialog from "./AddTranslationDialog";
 import { api } from "../../utils";
+import { refresh } from "../../App";
 
 const useStyles = makeStyles({
   container: {
@@ -110,7 +111,10 @@ function DocumentPage() {
     api
       .addTranslation(word_id, translation)
       .catch((err) => toasts.toastError("Encountered an error while communicating with the server..."))
-      .then((res) => toasts.toastSuccess("Successfully added a translation!"))
+      .then((res) => {
+        toasts.toastSuccess("Successfully added a translation!");
+        refresh();
+      })
       .finally(reload);
   }
 
