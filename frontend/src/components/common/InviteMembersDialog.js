@@ -29,6 +29,7 @@ const useStyles = makeStyles({
     color: "grey",
   },
   name: {
+    paddingLeft: "10px",
     color: "grey",
   },
   inputContainer: {
@@ -37,11 +38,12 @@ const useStyles = makeStyles({
   menu: {
     position: "absolute",
     left: "0",
-    minWidth: "300px",
+    minWidth: "400px",
     top: "50px",
     backgroundColor: "white",
     maxHeight: "200px",
     overflowY: "auto",
+    zIndex: "1000",
   },
   chipsContainer: {
     marginTop: "10px",
@@ -55,13 +57,15 @@ function MemberItem({ email, name, selected, onClick }) {
   return (
     <Grid container onClick={onClick} component={MenuItem}>
       <Grid item xs>
-        <Typography>{email}</Typography>
+        <Typography variant="body2">{email}</Typography>
       </Grid>
       <Grid item xs>
-        <Typography className={classes.name}>{name}</Typography>
+        <Typography variant="body2" wrap="no-wrap" className={classes.name}>
+          {name}
+        </Typography>
       </Grid>
       <Grid item xs={1}>
-        <Typography>{selected && <Check />}</Typography>
+        <Typography variant="body2">{selected && <Check />}</Typography>
       </Grid>
     </Grid>
   );
@@ -71,6 +75,8 @@ function InviteMembersDialog({ open, onInvite, onClose, memberType }) {
   const classes = useStyles();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [focused, setFocused] = useState(false);
+  console.log(focused);
 
   const [users, setUsers] = useState();
   useEffect(() => {
@@ -146,6 +152,7 @@ function InviteMembersDialog({ open, onInvite, onClose, memberType }) {
         onClose={_onClose}
         onConfirm={_invite}
         noScroll
+        style={{ minWidth: "500px" }}
       >
         <Grid className={classes.container}>
           <div className={classes.inputContainer}>
@@ -154,9 +161,11 @@ function InviteMembersDialog({ open, onInvite, onClose, memberType }) {
               placeholder="email@example.com"
               margin="dense"
               onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
             />
 
-            {!!userItems && menuOpen && (
+            {!!userItems && (menuOpen || focused) && (
               <ClickAwayListener onClickAway={() => setMenuOpen(false)}>
                 <Paper className={classes.menu}>
                   <MenuList>{userItems}</MenuList>

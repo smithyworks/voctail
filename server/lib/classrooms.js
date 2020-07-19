@@ -69,8 +69,36 @@ async function classroomsAsTeacherHandler(req, res) {
 
 async function classroomHandler(req, res) {
   try {
-    const { rows } = await query("SELECT * FROM classrooms WHERE classroom_id = $1", [req.query.classroom_id]);
-    res.status(200).json({ rows });
+    const { classroom_id } = req.body;
+
+    const {
+      rows: [classroom],
+    } = await query("SELECT * FROM classrooms WHERE classroom_id = $1", [classroom_id]);
+
+    const {
+      rows: students,
+    } = await query(
+      "SELECT users.* FROM classroom_members LEFT JOIN users ON classroom_members.member_id = users.user_id WHERE classroom_members.classroom_id = $1 AND classroom_members.teacher = false",
+      [classroom_id]
+    );
+    classroom.students = students;
+
+    const {
+      rows: teachers,
+    } = await query(
+      "SELECT users.* FROM classroom_members LEFT JOIN users ON classroom_members.member_id = users.user_id WHERE classroom_members.classroom_id = $1 AND classroom_members.teacher = true",
+      [classroom_id]
+    );
+    classroom.teachers = teachers;
+
+    const {
+      rows: [owner],
+    } = await query("SELECT * from users WHERE user_id = $1", [classroom.classroom_owner]);
+    classroom.owner = owner;
+
+    if (!teachers.find((t) => t.user_id === owner.user_id)) teachers.push(owner);
+
+    res.status(200).json(classroom);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong with the classroom handler.");

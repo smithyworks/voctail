@@ -149,6 +149,9 @@ export function addTranslation(word_id, translation) {
 export function fetchClassrooms() {
   return axios.get(`${base}/classrooms`);
 }
+export function fetchClassroom(classroom_id) {
+  return axios.post(`${base}/classroom`, { classroom_id });
+}
 
 export function fetchClassroomsAsStudent(member_id) {
   return axios.get(`${base}/classrooms-as-student`, { params: { member_id: member_id } });
