@@ -32,6 +32,13 @@ function ClassroomsDashboardPage() {
     api.createClassroom(title, topic, description).then(() => reload());
   }
 
+  const accessibleClassroomIds = classrooms
+    ? [
+        ...classrooms.teacher_classrooms.map((c) => c.classroom_id),
+        ...classrooms.student_classrooms.map((c) => c.classroom_id),
+      ]
+    : [];
+
   if (!classrooms) return <CircularProgress />;
 
   return (
