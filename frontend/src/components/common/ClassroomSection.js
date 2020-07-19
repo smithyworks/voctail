@@ -14,6 +14,7 @@ const useStyles = makeStyles({
 
   innerContainer: {
     paddingBottom: "20px",
+    paddingTop: "10px",
   },
 
   expansionIcon: {
