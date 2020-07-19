@@ -21,7 +21,6 @@ import { parseDocument } from "./parseDocument";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 import VoctailCheckbox from "../common/VoctailCheckbox";
 import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
-import VTTextfield from "../common/VTTextfield";
 
 const useStyles = makeStyles(() => ({
   container: { height: 200, width: "100%" },
@@ -165,19 +164,6 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             fullWidth
           />
 
-          <VTTextfield
-            autoFocus
-            margin="dense"
-            id="author"
-            label="Author*"
-            type="author"
-            error={errorAuthor}
-            onChange={(e) => {
-              authorInput.current = e.target.value;
-              setErrorAuthor(false);
-            }}
-            fullWidth
-          />
           <DialogContentText />
 
           <FormControl className={classes.formControl}>
