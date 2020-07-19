@@ -1,6 +1,19 @@
 const { log } = require("./log.js");
 const { query } = require("./db.js");
 
+async function addChapterHandler(req, res) {
+  try {
+    const { classroom_id, name } = req.body;
+
+    await query("INSERT INTO classroom_documents (classroom_id, section) VALUES ($1, $2)", [classroom_id, name]);
+
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong with the classrooms handler.");
+  }
+}
+
 async function classroomsHandler(req, res) {
   try {
     const { user_id } = req.authData.user;
@@ -128,6 +141,16 @@ async function classroomHandler(req, res) {
     classroom.owner = owner;
 
     if (!teachers.find((t) => t.user_id === owner.user_id)) teachers.push(owner);
+
+    const {
+      rows: documents,
+    } = await query(
+      "SELECT classroom_documents.section AS chapter, documents.* FROM classroom_documents LEFT JOIN documents ON documents.document_id = classroom_documents.document_id WHERE classroom_documents.classroom_id = $1",
+      [classroom_id]
+    );
+
+    classroom.documents = documents;
+    classroom.chapters = [...new Set(documents.map((d) => d.chapter))];
 
     res.status(200).json(classroom);
   } catch (err) {
@@ -413,4 +436,5 @@ module.exports = {
   addMembersToClassroom,
   deleteMemberFromClassroom,
   addDocumentToClassroom,
+  addChapterHandler,
 };

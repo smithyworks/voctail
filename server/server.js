@@ -87,6 +87,7 @@ server.get("/api/quiz-title", auth.tokenMiddleWare, quizzes.quizTitleHandler);
 server.get("/api/classrooms", auth.tokenMiddleWare, classrooms.classroomsHandler);
 server.post("/api/classroom", auth.tokenMiddleWare, classrooms.classroomHandler);
 server.post("/api/add-classroom-members", auth.tokenMiddleWare, classrooms.addMembersHandler);
+server.post("/api/add-classroom-chapter", auth.tokenMiddleWare, classrooms.addChapterHandler);
 // old
 server.get("/api/classrooms-as-student", auth.tokenMiddleWare, classrooms.classroomsAsStudentHandler);
 server.get("/api/classrooms-as-teacher", auth.tokenMiddleWare, classrooms.classroomsAsTeacherHandler);

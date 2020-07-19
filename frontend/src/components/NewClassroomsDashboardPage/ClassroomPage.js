@@ -4,6 +4,8 @@ import { api } from "../../utils";
 import { AppPage, ClassroomSection, UserTile, PlaceholderTile } from "../common";
 import { timeParser, isConnected } from "../../utils/parsers";
 import InviteMembersDialog from "../common/InviteMembersDialog";
+import ChapterDialog from "./ChapterDialog";
+import Chapter from "./Chapter";
 
 function ClassroomPage() {
   const { params } = useRouteMatch();
@@ -15,9 +17,11 @@ function ClassroomPage() {
   useEffect(() => {
     api.fetchClassroom(params.classroom_id).then((res) => setClassroom(res.data));
   }, [count]);
+  console.log(classroom);
 
   const [addStudentDialogOpen, setAddStudentDialogOpen] = useState(false);
   const [addTeacherDialogOpen, setAddTeacherDialogOpen] = useState(false);
+  const [addChapterDialogOpen, setAddChapterDialogOpen] = useState(false);
 
   function addTeachers(ids) {
     setAddTeacherDialogOpen(false);
@@ -26,6 +30,10 @@ function ClassroomPage() {
   function addStudents(ids) {
     setAddStudentDialogOpen(false);
     api.addStudentsToClassroom(classroom.classroom_id, ids).then(reload);
+  }
+  function addChapter(name) {
+    setAddChapterDialogOpen(false);
+    api.addChapterToClassroom(classroom.classroom_id, name).then(reload);
   }
 
   if (!classroom) return <AppPage />;
@@ -71,6 +79,22 @@ function ClassroomPage() {
           onClose={() => setAddStudentDialogOpen(false)}
           title="Add Students"
           onInvite={addStudents}
+        />
+
+        <ClassroomSection title="Documents" hasAddButton onAdd={() => setAddChapterDialogOpen(true)}>
+          {classroom.chapters && classroom.chapters.length > 0 ? (
+            classroom.chapters.map((c, i) => (
+              <Chapter documents={classroom.documents} name={c} classroom_id={classroom.classroom_id} />
+            ))
+          ) : (
+            <div style={{ height: 150 }} />
+          )}
+        </ClassroomSection>
+        <ChapterDialog
+          title="Add a Chapter"
+          open={addChapterDialogOpen}
+          onClose={() => setAddChapterDialogOpen(false)}
+          onSubmit={addChapter}
         />
       </div>
     </AppPage>
