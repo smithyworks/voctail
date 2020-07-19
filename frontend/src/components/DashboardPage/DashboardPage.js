@@ -199,6 +199,7 @@ function Dashboard() {
             onGenerateQuiz={() => createQuiz(document_id)}
             linkTo={"/documents/" + document_id}
             category={category}
+            video={category === "music-video"}
           />
         ))}
       </DashboardSection>
@@ -217,6 +218,7 @@ function Dashboard() {
               onGenerateQuiz={() => createQuiz(tile.document_id)}
               linkTo={"/documents/" + tile.document_id}
               category={tile.category}
+              video
             />
           ))}
       </DashboardSection>
