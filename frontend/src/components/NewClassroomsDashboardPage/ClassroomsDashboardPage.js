@@ -4,6 +4,7 @@ import { api } from "../../utils";
 import { CircularProgress } from "@material-ui/core";
 import { UserContext } from "../../App";
 import ClassroomCreateFormDialog from "../ClassroomPage/ClassroomCreateFormDialog";
+import JoinDialog from "../ClassroomPage/ClassroomJoinDialog";
 
 function ClassroomsDashboardPage() {
   const [classrooms, setClassrooms] = useState();
@@ -19,6 +20,13 @@ function ClassroomsDashboardPage() {
   }, [count]);
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [joinClassroomForm, setJoinClassroomForm] = useState(false);
+  const [joinTitle, setJoinTitle] = useState("");
+  const [joinClassroom, setJoinClassroom] = useState(null);
+
+  const handleJoinFormClose = () => {
+    setJoinClassroomForm(false);
+  };
 
   function createClassroom(title, topic, description) {
     api.createClassroom(title, topic, description).then(() => reload());
@@ -81,7 +89,12 @@ function ClassroomsDashboardPage() {
                 title={c.title}
                 teacher={c.classroom_owner}
                 topic={c.topic}
-                linkTo={"/classrooms/" + c.classroom_id}
+                onClick={() => {
+                  setJoinTitle(c.title);
+                  setJoinClassroom(c.classroom_id);
+                  setJoinClassroomForm(true);
+                  console.log("open dialog");
+                }}
                 onDelete={() => {
                   console.log("delete");
                   api.deleteClassroom(c.classroom_id).then((res) => reload());
@@ -98,6 +111,12 @@ function ClassroomsDashboardPage() {
           open={createDialogOpen}
           onClose={() => setCreateDialogOpen(false)}
           onCreate={createClassroom}
+        />
+        <JoinDialog
+          open={joinClassroomForm}
+          onClose={handleJoinFormClose}
+          title={joinTitle}
+          classroom_id={joinClassroom}
         />
       </div>
     </AppPage>
