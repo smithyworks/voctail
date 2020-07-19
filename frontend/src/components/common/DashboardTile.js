@@ -202,9 +202,17 @@ function DashboardTile({
           </div>
         )}
         <MenuItem onClick={_onGenerateQuiz}>Create Quiz</MenuItem>
-        <MenuItem onClick={() => setAddDocumentClassroomOpen(true)}>Add to a classroom</MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAddDocumentClassroomOpen(true);
+            setMenuOpen(false);
+          }}
+        >
+          Add to a classroom
+        </MenuItem>
       </Menu>
       <ClassroomAddDocumentDialog
+        onAddToClassroom={() => console.log("here")}
         documentTitle={title}
         openCreateForm={addDocumentClassroomOpen}
         closeCreateForm={() => setAddDocumentClassroomOpen(false)}

@@ -27,7 +27,7 @@ const formStyles = makeStyles(() => ({
   buttons: { margin: "1%" },
 }));
 
-function ClassroomAddDocumentDialog({ openCreateForm, closeCreateForm, documentTitle }) {
+function ClassroomAddDocumentDialog({ openCreateForm, closeCreateForm, documentTitle, onAddtoClassroom }) {
   const classes = formStyles();
   const user = useContext(UserContext);
   const [classroomAsTeacherDataFromDatabase, setClassroomAsTeacherDataFromDatabase] = useState([]);
@@ -55,7 +55,16 @@ function ClassroomAddDocumentDialog({ openCreateForm, closeCreateForm, documentT
             <Grid container direction="column">
               {classroomAsTeacherDataFromDatabase.map((tile) => (
                 <React.Fragment key={tile.classroom_id}>
-                  <ClassroomTileSelect isOwned title={tile.title} teacher={tile.classroom_owner} topic={tile.topic} />
+                  <ClassroomTileSelect
+                    isOwned
+                    title={tile.title}
+                    teacher={tile.classroom_owner}
+                    topic={tile.topic}
+                    onClick={() => {
+                      setSelectSectionOpen(true);
+                      closeCreateForm();
+                    }}
+                  />
                 </React.Fragment>
               ))}
             </Grid>
@@ -74,6 +83,7 @@ function ClassroomAddDocumentDialog({ openCreateForm, closeCreateForm, documentT
         </DialogActions>
       </Dialog>
       <ClassroomFormSelectSection
+        onAddToClassroom={onAddtoClassroom}
         openCreateForm={selectSectionOpen}
         closeCreateForm={() => setSelectSectionOpen(false)}
       />
