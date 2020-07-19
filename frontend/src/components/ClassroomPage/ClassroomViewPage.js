@@ -8,14 +8,7 @@ import InviteMembersDialog from "../common/InviteMembersDialog";
 import { api } from "../../utils";
 import { timeParser, isConnected } from "../../utils/parsers";
 import VTIconFlexButton from "../common/Buttons/IconButton";
-import {
-  addMembers,
-  deleteMember,
-  getSections,
-  renameSection,
-  deleteSection,
-  rangeOfSection,
-} from "./ClassroomViewUtils";
+import { addMembers, deleteMember, getSections, renameSection, deleteSection } from "./ClassroomViewUtils";
 
 function ClassroomViewPage() {
   const { classroom_id } = useParams();

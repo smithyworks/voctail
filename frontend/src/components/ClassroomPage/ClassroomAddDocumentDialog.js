@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
+import React, { useState, useContext } from "react";
+import { Dialog, DialogActions, DialogContent, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { api } from "../../utils";
 import VTButton from "../common/Buttons/VTButton";
-import { toasts } from "../common/AppPage/AppPage";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import TextField from "@material-ui/core/TextField";
 import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
+import { ClassroomSectionDialog } from "../common";
+import { UserContext } from "../../App";
+import ClassroomTileSelect from "../common/ClassroomTileSelect";
+import ClassroomFormSelectSection from "../ClassroomPage/ClassroomFormSelectSection";
 
 const formStyles = makeStyles(() => ({
   header: {
@@ -25,117 +27,39 @@ const formStyles = makeStyles(() => ({
   buttons: { margin: "1%" },
 }));
 
-function createClassroom(
-  user,
-  title,
-  topic,
-  description,
-  classroomDataFromDatabase,
-  setClassroomDataFromDatabase,
-  classroomAsTeacherDataFromDatabase,
-  setClassroomAsTeacherDataFromDatabase
-) {
-  const addThisClassroom = () => {
-    api
-      .createClassroom(user, title, topic, description, true)
-      .then((res) => {
-        setClassroomDataFromDatabase(res.data.rows.concat(classroomDataFromDatabase));
-        setClassroomAsTeacherDataFromDatabase(res.data.rows.concat(classroomAsTeacherDataFromDatabase));
-      })
-      .catch((err) => console.log(err));
-  };
-  addThisClassroom();
-  toasts.toastSuccess("Classroom created!");
-}
-
-function ClassroomCreateFormDialog({
-  user,
-  openCreateForm,
-  closeCreateForm,
-  newTitle,
-  setNewTitle,
-  newTopic,
-  setNewTopic,
-  newDescription,
-  setNewDescription,
-  classroomDataFromDatabase,
-  setClassroomDataFromDatabase,
-  classroomAsTeacherDataFromDatabase,
-  setClassroomAsTeacherDataFromDatabase,
-}) {
+function ClassroomAddDocumentDialog({ openCreateForm, closeCreateForm, documentTitle }) {
   const classes = formStyles();
-  const [errorTitle, setErrorTitle] = useState(false);
-  const [errorTopic, setErrorTopic] = useState(false);
+  const user = useContext(UserContext);
+  const [classroomAsTeacherDataFromDatabase, setClassroomAsTeacherDataFromDatabase] = useState([]);
+  const [selectSectionOpen, setSelectSectionOpen] = useState(false);
 
-  const handleChangeTitle = (event) => {
-    setNewTitle(event.target.value);
-    if (errorTitle || newTitle > 0) {
-      setErrorTitle(false);
-    }
-  };
-  const handleChangeTopic = (event) => {
-    setNewTopic(event.target.value);
-    if (errorTopic || newTopic > 0) {
-      setErrorTopic(false);
-    }
-  };
-  const handleChangeDescription = (event) => {
-    setNewDescription(event.target.value);
-  };
-  const clearForm = () => {
-    setNewTitle("");
-    setNewTopic("");
-    setNewDescription("");
-  };
+  api
+    .fetchClassroomsAsTeacher(user.user_id)
+    .then((resForTeacher) => {
+      if (resForTeacher) {
+        setClassroomAsTeacherDataFromDatabase(resForTeacher.data.rows);
+      }
+    })
+    .catch((err) => console.log(err));
 
   return (
     <div>
       <Dialog open={openCreateForm} onClose={closeCreateForm} aria-labelledby="form-dialog-title">
-        <VoctailDialogTitle id="form-dialog-title"> New Classroom </VoctailDialogTitle>
+        <VoctailDialogTitle id="form-dialog-title"> Adding {documentTitle} to a classroom... </VoctailDialogTitle>
         <DialogContent>
           <DialogContentText className={classes.description}>
             {" "}
-            Please fill the details to create your classroom.{" "}
+            Please choose a classroom to add your document.{" "}
           </DialogContentText>
-          <TextField
-            required
-            error={errorTitle}
-            className={classes.textField}
-            autoFocus
-            value={newTitle}
-            onChange={handleChangeTitle}
-            margin="dense"
-            id="name"
-            label="Title"
-            type="text"
-            fullWidth
-          />
-          <TextField
-            required
-            error={errorTopic}
-            className={classes.textField}
-            autoFocus
-            value={newTopic}
-            onChange={handleChangeTopic}
-            margin="dense"
-            id="name"
-            label="Topic"
-            type="text"
-            fullWidth
-          />
-          <TextField
-            className={classes.textField}
-            autoFocus
-            value={newDescription}
-            onChange={handleChangeDescription}
-            margin="dense"
-            id="name"
-            label="Description"
-            multiline
-            rowsMax={10}
-            type="text"
-            fullWidth
-          />
+          <ClassroomSectionDialog>
+            <Grid container direction="column">
+              {classroomAsTeacherDataFromDatabase.map((tile) => (
+                <React.Fragment key={tile.classroom_id}>
+                  <ClassroomTileSelect isOwned title={tile.title} teacher={tile.classroom_owner} topic={tile.topic} />
+                </React.Fragment>
+              ))}
+            </Grid>
+          </ClassroomSectionDialog>
         </DialogContent>
         <DialogActions>
           <VTButton
@@ -147,40 +71,14 @@ function ClassroomCreateFormDialog({
           >
             Cancel
           </VTButton>
-          <VTButton
-            accept
-            style={{ margin: "1%" }}
-            onClick={() => {
-              if (newTitle.length < 1) {
-                toasts.toastError("Please give your classroom a title !");
-                setErrorTitle(true);
-                return;
-              }
-              if (newTopic.length < 1) {
-                toasts.toastError("Please give your classroom a topic !");
-                setErrorTopic(true);
-                return;
-              }
-              createClassroom(
-                user,
-                newTitle,
-                newTopic,
-                newDescription,
-                classroomDataFromDatabase,
-                setClassroomDataFromDatabase,
-                classroomAsTeacherDataFromDatabase,
-                setClassroomAsTeacherDataFromDatabase
-              );
-              clearForm();
-              closeCreateForm();
-            }}
-          >
-            Create
-          </VTButton>
         </DialogActions>
       </Dialog>
+      <ClassroomFormSelectSection
+        openCreateForm={selectSectionOpen}
+        closeCreateForm={() => setSelectSectionOpen(false)}
+      />
     </div>
   );
 }
 
-export default ClassroomCreateFormDialog;
+export default ClassroomAddDocumentDialog;
