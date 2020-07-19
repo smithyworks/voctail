@@ -93,7 +93,7 @@ function Dashboard() {
   function createQuiz(documentId) {
     if (user.premium)
       api
-        .createQuizFromDoc(documentId, 20)
+        .createQuizFromDocFixedLength(documentId)
         .then(() => {
           toasts.toastSuccess("Successfully created a quiz for this document! You can check your quiz out now!");
           //setMenuOpen(false);

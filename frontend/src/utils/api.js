@@ -96,6 +96,10 @@ export function createQuizFromDoc(document_id, length) {
   //"document_id":document_id, "length":length
   return axios.post(`${base}/create-document-quiz`, { document_id, length });
 }
+export function createQuizFromDocFixedLength(document_id) {
+  //"document_id":document_id, "length":length
+  return axios.post(`${base}/create-document-quiz`, { document_id, length: 5 });
+}
 export function createCustomQuiz(title, questions) {
   return axios.post(`${base}/create-custom-quiz`, { title, questions });
 }
