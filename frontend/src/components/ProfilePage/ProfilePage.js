@@ -105,13 +105,8 @@ function ProfilePage() {
           </Grid>
         </ProfileSection>
 
-        <ProfileSection title="Metrics">
+        <ProfileSection title="Vocabulary">
           <Grid container justify="space-between">
-            <Grid item>
-              <Typography variant="h6" className={classes.subSectionTitle}>
-                Vocabulary
-              </Typography>
-            </Grid>
             <Grid item style={{ display: "flex", alignItems: "baseline" }}>
               <span>
                 <Checkbox style={{ marginBottom: 7 }} checked={showKnowns} onClick={() => setShowKnowns(!showKnowns)} />
@@ -133,9 +128,9 @@ function ProfilePage() {
             showKnowns={showKnowns}
             showActions={isSelf}
           />
-          <Typography variant="h6" className={classes.subSectionTitle}>
-            Quizzes
-          </Typography>
+        </ProfileSection>
+
+        <ProfileSection title="Quizzes">
           <QuizMetrics />
         </ProfileSection>
 

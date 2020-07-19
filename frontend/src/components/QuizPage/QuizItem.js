@@ -68,14 +68,12 @@ function Translations(suggestions, translation, rejects, qstate, addResult) {
         if (v === translation) {
           lines.push(
             state === states.correct ? (
-              <ChoiceButton id={i} accept>
-                {" "}
-                {suggestions[i]}{" "}
+              <ChoiceButton id={i} accept word={suggestions[i]}>
+                {suggestions[i]}
               </ChoiceButton>
             ) : (
-              <ChoiceButton id={i} show>
-                {" "}
-                {suggestions[i]}{" "}
+              <ChoiceButton id={i} show word={suggestions[i]}>
+                {suggestions[i]}
               </ChoiceButton>
             )
           );
@@ -83,11 +81,12 @@ function Translations(suggestions, translation, rejects, qstate, addResult) {
           lines.push(
             rejects.state.includes(i) ? (
               <ChoiceButton id={i} reject>
-                {" "}
-                {suggestions[i]}{" "}
+                {suggestions[i]}
               </ChoiceButton>
             ) : (
-              <ChoiceButton id={i}> {suggestions[i]} </ChoiceButton>
+              <ChoiceButton id={i} inactive>
+                {suggestions[i]}
+              </ChoiceButton>
             )
           );
         }
@@ -105,6 +104,7 @@ function Translations(suggestions, translation, rejects, qstate, addResult) {
                 }
                 qstate.set(qstate.states.correct);
               }}
+              word={suggestions[i]}
             >
               {suggestions[i]}
             </ChoiceButton>
