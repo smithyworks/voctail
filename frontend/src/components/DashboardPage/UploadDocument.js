@@ -52,7 +52,6 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
   const [publicDocument, setPublicDocument] = useState(true);
   const [fileName, setFileName] = useState();
 
-  //const imageInput = useRef(); todo use image
   const [category, setCategory] = useState("");
   const classes = useStyles();
   const [errorTitle, setErrorTitle] = useState(false);
@@ -115,7 +114,6 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
 
   //add this document after reading the file with the file reader (use effects gets triggered by the documentLoaded which is activated in readFile()
   function addThisDocument(blocks) {
-    //todo
     if (blocks) {
       api
         .addDocument(publisherId, titleInput.current, authorInput.current, category, publicDocument, blocks)
