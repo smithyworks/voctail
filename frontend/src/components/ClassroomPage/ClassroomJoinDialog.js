@@ -28,9 +28,9 @@ function JoinDialog({ title, open, onClose, link, classroom_id }) {
       console.log("classroom_id", classroom_id);
 
       api
-        .addStudentsToClassroom(classroom_id, user_id)
+        .addStudentsToClassroom(classroom_id, [user_id])
         .then((res) => {
-          //set Window Location
+          window.location = "/classrooms/" + classroom_id;
           toasts.toastSuccess("You are now a new member of this classroom!");
         })
         .catch((err) => toasts.toastError("Something went wrong while communicating with the server..."));

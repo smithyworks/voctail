@@ -97,11 +97,12 @@ function ClassroomsDashboardPage() {
                 teacher={c.classroom_owner}
                 topic={c.topic}
                 onClick={() => {
-                  if (accessibleClassroomIds) {
+                  if (!accessibleClassroomIds.includes(c.classroom_id)) {
                     setJoinTitle(c.title);
                     setJoinClassroom(c.classroom_id);
                     setJoinClassroomForm(true);
-                    console.log("open dialog");
+                  } else {
+                    window.location = "/classrooms/" + c.classroom_id;
                   }
                 }}
                 onDelete={() => {
