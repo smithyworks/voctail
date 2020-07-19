@@ -97,10 +97,12 @@ function ClassroomsDashboardPage() {
                 teacher={c.classroom_owner}
                 topic={c.topic}
                 onClick={() => {
-                  setJoinTitle(c.title);
-                  setJoinClassroom(c.classroom_id);
-                  setJoinClassroomForm(true);
-                  console.log("open dialog");
+                  if (accessibleClassroomIds) {
+                    setJoinTitle(c.title);
+                    setJoinClassroom(c.classroom_id);
+                    setJoinClassroomForm(true);
+                    console.log("open dialog");
+                  }
                 }}
                 onDelete={() => {
                   console.log("delete");
