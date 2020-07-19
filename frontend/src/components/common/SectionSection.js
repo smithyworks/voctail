@@ -9,7 +9,7 @@ const useStyles = makeStyles({
   },
   title: { fontWeight: "Lighter" },
   innerContainer: {
-    padding: "20px 20px 8px 20px",
+    padding: "10px 10px 8px 10px",
   },
 
   expansionIcon: {

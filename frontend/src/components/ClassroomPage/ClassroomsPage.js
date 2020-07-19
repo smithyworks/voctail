@@ -64,7 +64,7 @@ function Classrooms() {
 
   return (
     <AppPage location="classrooms" id="classrooms-saved-page">
-      <ClassroomSection title="My Classrooms as a student" description="Your classrooms as a student">
+      <ClassroomSection title="My Classrooms as a Student" invisible={classroomAsStudentDataFromDatabase.length === 0}>
         {classroomAsStudentDataFromDatabase.map((tile) => (
           <React.Fragment key={tile.classroom_id}>
             <ClassroomTile
@@ -73,12 +73,21 @@ function Classrooms() {
               teacher={tile.classroom_owner}
               topic={tile.topic}
               linkTo={"/classrooms/" + tile.classroom_id}
-              classroomDataFromDatabase={classroomDataFromDatabase}
-              setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {
                 deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                deleteClassroom(
+                  tile.classroom_id,
+                  classroomAsStudentDataFromDatabase,
+                  setClassroomAsStudentDataFromDatabase
+                );
               }}
               onRename={(newTitle) => {
+                renameClassroom(
+                  tile.classroom_id,
+                  newTitle,
+                  classroomAsStudentDataFromDatabase,
+                  setClassroomAsStudentDataFromDatabase
+                );
                 renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
               }}
             />
@@ -86,8 +95,8 @@ function Classrooms() {
         ))}
       </ClassroomSection>
       <ClassroomSection
-        title="My Classrooms as a teacher"
-        description="Your classrooms as a teacher"
+        title="My Classrooms as a Teacher"
+        invisible={classroomAsTeacherDataFromDatabase.length === 0}
         Button={
           <VTIconFlexButton
             toolTipLabel={
@@ -122,20 +131,29 @@ function Classrooms() {
               teacher={tile.classroom_owner}
               topic={tile.topic}
               linkTo={"/classrooms/" + tile.classroom_id}
-              classroomDataFromDatabase={classroomDataFromDatabase}
-              setClassroomDataFromDatabase={setClassroomDataFromDatabase}
               onDelete={() => {
                 deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                deleteClassroom(
+                  tile.classroom_id,
+                  classroomAsTeacherDataFromDatabase,
+                  setClassroomAsTeacherDataFromDatabase
+                );
               }}
               onRename={(newTitle) => {
                 renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                renameClassroom(
+                  tile.classroom_id,
+                  newTitle,
+                  classroomAsTeacherDataFromDatabase,
+                  setClassroomAsTeacherDataFromDatabase
+                );
               }}
             />
           </React.Fragment>
         ))}
       </ClassroomSection>
       <ClassroomSection
-        title="Public classrooms"
+        title="Public Classrooms"
         description="You have here the classrooms you are registered to."
         Button={
           <VTIconFlexButton

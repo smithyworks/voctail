@@ -6,8 +6,10 @@ import { getColor } from "./Quiz/colorCycler";
 import { api } from "../../utils";
 import { toasts } from "./AppPage/AppPage";
 import ConfirmDialog from "./Dialogs/ConfirmDialog";
-import CreationDialog from "./Dialogs/CreationDialog";
 import { UserContext } from "../../App";
+import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
+import { VTButton } from "../common/index";
+import VoctailDialogTitle from "../common/Dialogs/VoctailDialogTitle";
 
 const useStyles = makeStyles({
   container: {
@@ -110,13 +112,6 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
     e.stopPropagation();
   }
 
-  function _onRename(e) {
-    if (typeof onRename === "function") {
-      onRename(e);
-      setMenuOpen(false);
-    }
-  }
-
   return (
     <Grid item xs={12} sm={6} md={3} lg={3} className={classes.container}>
       <Paper
@@ -137,7 +132,7 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
           </Grid>
           <Grid item>
             <Typography className={classes.teacher}>
-              {"Open by " + teacherData(user, teacher, classroomAuthor, setClassroomAuthor)}
+              {"Created by " + teacherData(user, teacher, classroomAuthor, setClassroomAuthor)}
             </Typography>
           </Grid>
         </Grid>
@@ -179,38 +174,56 @@ function ClassroomTile({ title, id, teacher, topic, isOwned, onDelete, onRename,
         </Grid>
       </ConfirmDialog>
 
-      <CreationDialog
+      <Dialog
         open={renameDialogOpen}
-        title={"Renaming " + title + "..."}
-        description={"Provide a new title below"}
-        validationButtonName="Save"
-        onConfirm={() => {
-          if (newTitle.length < 1) {
-            toasts.toastError("Please give your classroom a title !");
-            setErrorNewTitle(true);
-            return;
-          }
-          onRename(newTitle);
-          setRenameDialogOpen(false);
-        }}
         onClose={() => {
           setRenameDialogOpen(false);
         }}
+        aria-labelledby="rename-classroom"
       >
-        <TextField
-          required
-          error={errorNewTitle}
-          className={classes.textField}
-          autoFocus
-          value={newTitle}
-          onChange={handleChangeNewTitle}
-          margin="dense"
-          id="name"
-          label="New Title"
-          type="text"
-          fullWidth
-        />
-      </CreationDialog>
+        <VoctailDialogTitle id="rename-classroom">{"Rename " + title}</VoctailDialogTitle>
+        <DialogContent>
+          <Grid container justify="flex-start" alignItems="center" direction="column">
+            <TextField
+              required
+              error={errorNewTitle}
+              className={classes.textField}
+              autoFocus
+              value={newTitle}
+              onChange={handleChangeNewTitle}
+              margin="dense"
+              id="name"
+              label="New Title"
+              type="text"
+              fullWidth
+            />
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <VTButton
+            secondary
+            onClick={() => {
+              setRenameDialogOpen(false);
+            }}
+          >
+            Cancel
+          </VTButton>
+          <VTButton
+            success
+            onClick={() => {
+              if (newTitle.length < 1) {
+                toasts.toastError("Please give your classroom a title !");
+                setErrorNewTitle(true);
+                return;
+              }
+              onRename(newTitle);
+              setRenameDialogOpen(false);
+            }}
+          >
+            Save
+          </VTButton>
+        </DialogActions>
+      </Dialog>
 
       <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
         <MenuItem

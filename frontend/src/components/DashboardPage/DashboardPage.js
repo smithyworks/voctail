@@ -28,6 +28,8 @@ function Dashboard() {
   const dialogInfo = useRef();
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const [classroomAsTeacherDataFromDatabase, setClassroomAsTeacherDataFromDatabase] = useState([]);
+
   const [premiumOpen, setPremiumOpen] = useState(false);
 
   const handleCheckoutPremium = () => {
