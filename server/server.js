@@ -92,6 +92,7 @@ server.post("/api/add-classroom-chapter", auth.tokenMiddleWare, classrooms.addCh
 server.post("/api/remove-classroom-document", auth.tokenMiddleWare, classrooms.removeDocumentHandler);
 server.post("/api/delete-classroom-chapter", auth.tokenMiddleWare, classrooms.deleteChapterHandler);
 server.post("/api/rename-classroom-chapter", auth.tokenMiddleWare, classrooms.renameChapterHandler);
+server.post("/api/add-classroom-documents", auth.tokenMiddleWare, classrooms.addDocumentsHandler);
 // old
 server.get("/api/classrooms-as-student", auth.tokenMiddleWare, classrooms.classroomsAsStudentHandler);
 server.get("/api/classrooms-as-teacher", auth.tokenMiddleWare, classrooms.classroomsAsTeacherHandler);

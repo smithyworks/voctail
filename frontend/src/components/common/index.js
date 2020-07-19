@@ -17,6 +17,7 @@ import PlaceholderTile from "./PlaceholderTile";
 import Breadcrumbs from "./Breadcrumbs";
 import UserTile from "./UserTile";
 import GoPremiumDialog from "./Dialogs/GoPremiumDialog";
+import AddDocumentDialog from "./AddDocumentDialog";
 
 export {
   AppPage,
@@ -39,4 +40,5 @@ export {
   Breadcrumbs,
   UserTile,
   GoPremiumDialog,
+  AddDocumentDialog,
 };

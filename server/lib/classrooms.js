@@ -1,6 +1,26 @@
 const { log } = require("./log.js");
 const { query } = require("./db.js");
 
+async function addDocumentsHandler(req, res) {
+  try {
+    const { classroom_id, section, document_ids } = req.body;
+
+    for (let i = 0; i < document_ids; i++) {
+      const id = document_ids[i];
+      await query("INSERT INTO classroom_documents (classroom_id, document_id, section) VALUES ($1,$2,$3)", [
+        classroom_id,
+        id,
+        section,
+      ]);
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    log(err);
+    res.sendStatus(500);
+  }
+}
+
 async function deleteChapterHandler(req, res) {
   try {
     const { classroom_id, name } = req.body;
@@ -498,4 +518,5 @@ module.exports = {
   removeDocumentHandler,
   deleteChapterHandler,
   renameChapterHandler,
+  addDocumentsHandler,
 };

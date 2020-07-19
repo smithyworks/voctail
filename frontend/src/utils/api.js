@@ -177,6 +177,9 @@ export function removeChapterFromClassoom(classroom_id, name) {
 export function renameChapterFromClassoom(classroom_id, name, newName) {
   return axios.post(`${base}/rename-classroom-chapter`, { classroom_id, name, newName });
 }
+export function addDocumentsToClassroom(classroom_id, section, document_ids) {
+  return axios.post(`${base}/add-classroom-documents`, { classroom_id, section, document_ids });
+}
 
 // old
 export function fetchClassroomsAsStudent(member_id) {

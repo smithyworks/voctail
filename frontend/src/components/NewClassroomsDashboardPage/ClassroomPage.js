@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useRouteMatch } from "react-router-dom";
 import { api } from "../../utils";
-import { AppPage, ClassroomSection, UserTile, PlaceholderTile } from "../common";
+import { AppPage, ClassroomSection, UserTile, PlaceholderTile, AddDocumentDialog } from "../common";
 import { timeParser, isConnected } from "../../utils/parsers";
 import InviteMembersDialog from "../common/InviteMembersDialog";
 import ChapterDialog from "./ChapterDialog";
@@ -15,6 +15,7 @@ function ClassroomPage() {
 
   const [classroom, setClassroom] = useState();
   const oldName = useRef();
+  const chapter = useRef();
 
   const [count, setCount] = useState(0);
   const reload = () => setCount(count + 1);
@@ -27,6 +28,7 @@ function ClassroomPage() {
   const [addTeacherDialogOpen, setAddTeacherDialogOpen] = useState(false);
   const [addChapterDialogOpen, setAddChapterDialogOpen] = useState(false);
   const [renameChapterDialogOpen, setRenameChapterDialogOpen] = useState(false);
+  const [addDocumentsDialogOpen, setAddDocumentsDialogOpen] = useState(false);
 
   function addTeachers(ids) {
     setAddTeacherDialogOpen(false);
@@ -54,6 +56,10 @@ function ClassroomPage() {
   function renameChapter(name) {
     setRenameChapterDialogOpen(false);
     api.renameChapterFromClassoom(classroom.classroom_id, oldName.current, name).then(reload);
+  }
+  function addDocuments(ids) {
+    setAddDocumentsDialogOpen(false);
+    api.addDocumentsToClassroom(classroom.classroom_id, chapter.current, ids).then(reload);
   }
 
   if (!classroom) return <AppPage />;
@@ -134,6 +140,10 @@ function ClassroomPage() {
                     oldName.current = name;
                     setRenameChapterDialogOpen(true);
                   }}
+                  onAdd={(name) => {
+                    chapter.current = name;
+                    setAddDocumentsDialogOpen(true);
+                  }}
                 />
               ))
           ) : (
@@ -151,6 +161,11 @@ function ClassroomPage() {
           open={renameChapterDialogOpen}
           onClose={() => setRenameChapterDialogOpen(false)}
           onSubmit={renameChapter}
+        />
+        <AddDocumentDialog
+          open={addDocumentsDialogOpen}
+          onClose={() => setAddDocumentsDialogOpen(false)}
+          onAdd={addDocuments}
         />
       </div>
     </AppPage>

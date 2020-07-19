@@ -3,7 +3,7 @@ import { Typography, Grid, IconButton, MenuItem, Menu } from "@material-ui/core"
 import { DashboardTile } from "../common";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
-function Chapter({ name, documents, classroom_id, isTeacher, onRemove, onDelete, onRename }) {
+function Chapter({ name, documents, classroom_id, isTeacher, onRemove, onDelete, onRename, onAdd }) {
   console.log(name, documents, classroom_id);
   const anchor = useRef();
   const [menuOpen, setMenuOpen] = useState();
@@ -22,6 +22,14 @@ function Chapter({ name, documents, classroom_id, isTeacher, onRemove, onDelete,
                 </IconButton>
               </span>
               <Menu anchorEl={anchor.current} open={menuOpen} onClose={() => setMenuOpen(false)}>
+                <MenuItem
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onAdd(name);
+                  }}
+                >
+                  Add Document
+                </MenuItem>
                 <MenuItem
                   onClick={() => {
                     setMenuOpen(false);
