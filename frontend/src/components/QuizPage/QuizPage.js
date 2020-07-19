@@ -11,7 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles({
-  container: { height: "100%", width: "100%" },
+  container: { height: "calc(100% - 80px)", width: "100%" },
   layoutBody: { height: "80%", width: "100%" },
   title: {
     color: "#666",
