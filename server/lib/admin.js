@@ -109,7 +109,10 @@ async function updateTranslationHandler(req, res) {
   try {
     const { translation_id, approved } = req.body;
 
-    await query("UPDATE translations SET approved = $1 WHERE translation_id = $2", [approved, translation_id]);
+    await query("UPDATE translations SET approved = $1, pending = false WHERE translation_id = $2", [
+      approved,
+      translation_id,
+    ]);
 
     res.sendStatus(200);
   } catch (err) {

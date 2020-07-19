@@ -21,7 +21,15 @@ function TranslationRow({ translation, onApprove, onReject }) {
       <TableCell>{translation.contributor_id}</TableCell>
       <TableCell>{translation.word}</TableCell>
       <TableCell>{translation.translation}</TableCell>
-      <TableCell>{translation.approved ? <CheckIcon /> : " "}</TableCell>
+      <TableCell>
+        {translation.pending ? (
+          <span style={{ color: "red" }}>Pending</span>
+        ) : translation.approved ? (
+          <span style={{ color: "green" }}>Approved</span>
+        ) : (
+          "Rejected"
+        )}
+      </TableCell>
       <TableCell>
         {translation.approved ? (
           <VTButton warning startIcon={<CrossIcon />} onClick={() => onReject(translation.translation_id)}>
@@ -84,7 +92,7 @@ function TranslationsTabPanel() {
             <TableCell>Contributor ID</TableCell>
             <TableCell>Word</TableCell>
             <TableCell>Translation</TableCell>
-            <TableCell>Approved</TableCell>
+            <TableCell>Status</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>

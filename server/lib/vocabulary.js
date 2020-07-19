@@ -49,7 +49,7 @@ async function addTranslationHandler(req, res) {
     const { user_id } = req.authData.user;
 
     await query(
-      "INSERT INTO translations (word_id, translation, contributor_id, language, approved, pending) VALUES ($1, $2, $3, 'german', false), true",
+      "INSERT INTO translations (word_id, translation, contributor_id, language, approved, pending) VALUES ($1, $2, $3, 'german', false, true)",
       [word_id, translation, user_id]
     );
 
