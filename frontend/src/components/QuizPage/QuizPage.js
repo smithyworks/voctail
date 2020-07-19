@@ -118,7 +118,6 @@ function Quiz({ ...props }) {
     });
     const [wrong, taken, total] = [unknowns.length, result.length, quiz.questions.length];
     const [percentageTaken, percentageTotal] = [perc(taken - wrong, taken), perc(taken - wrong, total)];
-    console.log("getResulst", wrong, taken, total, percentageTaken, percentageTotal, unknowns);
     return { wrong, taken, total, percentageTaken, percentageTotal, unknowns };
   };
 
