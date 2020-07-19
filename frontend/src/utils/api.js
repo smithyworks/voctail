@@ -187,8 +187,8 @@ export function getSections(classroom_id) {
   return axios.get(`${base}/classrooms-sections`, { params: { classroom_id: classroom_id } });
 }
 
-export function createClassroom(teacher, title, topic, description, open) {
-  return axios.post(`${base}/create-classroom`, { teacher, title, topic, description, open });
+export function createClassroom(title, topic, description) {
+  return axios.post(`${base}/create-classroom`, { title, topic, description });
 }
 
 export function deleteClassroom(classroom_id) {

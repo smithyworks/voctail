@@ -189,30 +189,20 @@ async function documentsHandler(req, res) {
 
 async function createClassroom(req, res) {
   try {
-    const { teacher, title, description, topic, open } = req.body;
+    const { user_id } = req.authData.user;
+    const { title, description, topic } = req.body;
+
     if (title.length < 1 || topic.length < 1) {
       log(`"Invalid document data ${title} ${topic}.`);
       res.status(400).send("Invalid classroom data.");
     }
-    const {
-      input,
-    } = await query(
+
+    await query(
       "INSERT INTO classrooms (classroom_owner, title, description, topic, open) VALUES($1, $2, $3, $4, $5)",
-      [teacher, title, description, topic, open]
+      [user_id, title, description, topic, true]
     );
-    const {
-      rows,
-    } = await query(
-      "SELECT * FROM classrooms WHERE classroom_id = (SELECT MAX(classroom_id) AS LastClass FROM classrooms WHERE title = $1 AND topic = $2)",
-      [title, topic]
-    );
-    const {
-      initialTeacher,
-    } = await query("INSERT INTO classroom_members (classroom_id, member_id, teacher) VALUES ($1, $2, true)", [
-      rows[0].classroom_id,
-      teacher,
-    ]);
-    res.status(201).json({ rows });
+
+    res.sendStatus(201);
   } catch (err) {
     log(err);
     res.status(500).send("Something went wrong.");

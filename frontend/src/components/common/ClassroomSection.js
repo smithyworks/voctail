@@ -1,6 +1,8 @@
 import React from "react";
 import { Paper, makeStyles, Typography, Divider, Grid } from "@material-ui/core";
 
+import { VTIconFlexButton } from "./Buttons/IconButton";
+
 const useStyles = makeStyles({
   paper: {
     padding: "30px 30px 8px 30px",
@@ -30,7 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ClassroomSection({ title, children, Button, invisible }) {
+function ClassroomSection({ title, children, hasAddButton, onAdd, invisible }) {
   const classes = useStyles();
 
   if (!invisible) {
@@ -42,7 +44,9 @@ function ClassroomSection({ title, children, Button, invisible }) {
               {title}
             </Typography>
           </Grid>
-          <Grid item>{Button}</Grid>
+          <Grid item>
+            {!!hasAddButton && <VTIconFlexButton toolTipLabel={"Create a classroom!"} onClick={onAdd} />}
+          </Grid>
         </Grid>
         <Divider />
         <div className={classes.innerContainer}>

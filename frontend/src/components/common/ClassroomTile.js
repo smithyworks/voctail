@@ -5,7 +5,6 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { getColor } from "./Quiz/colorCycler";
 import { api } from "../../utils";
 import { toasts } from "./AppPage/AppPage";
-import ConfirmDialog from "./Dialogs/ConfirmDialog";
 import { UserContext } from "../../App";
 import { Dialog, DialogActions, DialogContent } from "@material-ui/core";
 import { VTButton } from "../common/index";

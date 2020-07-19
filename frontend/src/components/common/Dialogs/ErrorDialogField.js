@@ -37,7 +37,7 @@ function ErrorDialogField({ numeric, error, setError, onChange, label, warning, 
   // if(error || inputRef.current > 0)
   const _onChange = (e) => {
     onChange(e);
-    if (error) {
+    if (error && setError) {
       setError(false);
     }
   };
