@@ -1,5 +1,5 @@
 INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, created) VALUES
-  (1, 'Quiz Fruits','[
+  (1, 'Fruits','[
     {"vocabulary":"banana", "suggestions":["Himbeere", "Erdbeere", "Apfel"], "translation":"Banane"},
     {"vocabulary":"pineapple", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Ananas"},
     {"vocabulary":"orange", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Orange"},
@@ -12,7 +12,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, created) VALU
     {"vocabulary":"acai", "suggestions":["Banane", "Erdbeere", "Apfel"], "translation":"Acai"}
     ]',false,true, NOW()),
 
-  (2, 'Quiz Vehicles','[
+  (2, 'Vehicles','[
     {"vocabulary":"car", "suggestions":["Zug", "Flugzeug", "Rakete"], "translation":"Auto"},
     {"vocabulary":"train", "suggestions":["Auto", "Flugzeug", "Rakete"], "translation":"Zug"},
     {"vocabulary":"plane", "suggestions":["Zug", "Auto", "Rakete"], "translation":"Flugzeug"},
@@ -22,7 +22,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, created) VALU
     ]',false,true, NOW()),
 
 
-  (3, 'Quiz Colors','[
+  (3, 'Colors','[
     {"vocabulary":"white", "suggestions":["rot", "schwarz", "gelb"], "translation":"weiß"},
     {"vocabulary":"black", "suggestions":["weiß", "grün", "gelb"], "translation":"schwarz"},
     {"vocabulary":"yellow", "suggestions":["weiß", "schwarz", "türkis"], "translation":"gelb"},
@@ -35,7 +35,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, created) VALU
     {"vocabulary":"turquoise", "suggestions":["weiß", "schwarz", "gelb"], "translation":"türkis"}
     ]',false,true, NOW()),
 
-  (4, 'Quiz Numbers','[
+  (4, 'Numbers','[
     {"vocabulary":"one", "suggestions":["zwei", "sechs", "acht"], "translation":"eins"},
     {"vocabulary":"two", "suggestions":["eins", "sechs", "acht"], "translation":"zwei"},
     {"vocabulary":"three", "suggestions":["zwei", "sechs", "acht"], "translation":"drei"},
@@ -48,7 +48,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, created) VALU
     {"vocabulary":"ten", "suggestions":["zwei", "sechs", "acht"], "translation":"zehn"}
     ]',false, true, NOW()),
 
-  (5, 'Challenge10', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
+  (5, 'Chugger', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
     {"vocabulary": "soul", "suggestions": ["Bezüge", "Tage", "Dirn"], "translation": "Gefühl"}, 
     {"vocabulary": "its", "suggestions": ["fermentierte Maische", "sonntägig", "Abteilung"], "translation": "deren"}, 
     {"vocabulary": "are", "suggestions": ["aufgefallen", "geherzt", "elektrisch"], "translation": "bist"}, 
@@ -59,7 +59,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, created) VALU
     {"vocabulary": "how", "suggestions": ["Abrechnung", "Kabinette", "Aussprache"], "translation": "auf welche Weise"}
     ]', true, false, NOW()),
 
-  (6, 'Challenge50', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
+  (6, 'Enthusiast', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
     {"vocabulary": "soul", "suggestions": ["Bezüge", "Tage", "Dirn"], "translation": "Gefühl"}, 
     {"vocabulary": "its", "suggestions": ["fermentierte Maische", "sonntägig", "Abteilung"], "translation": "deren"}, 
     {"vocabulary": "are", "suggestions": ["aufgefallen", "geherzt", "elektrisch"], "translation": "bist"}, 
@@ -70,7 +70,7 @@ INSERT INTO quizzes (quiz_id, title, questions, is_day, is_custom, created) VALU
     {"vocabulary": "how", "suggestions": ["Abrechnung", "Kabinette", "Aussprache"], "translation": "auf welche Weise"}
     ]', true, false, NOW()),
 
-  (7, 'Challenge100', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
+  (7, 'Barkeeper', '[{"vocabulary": "spirit", "suggestions": ["ablenkend", "dachten", "bedeutungslos"], "translation": "Alkohol"},
     {"vocabulary": "soul", "suggestions": ["Bezüge", "Tage", "Dirn"], "translation": "Gefühl"}, 
     {"vocabulary": "its", "suggestions": ["fermentierte Maische", "sonntägig", "Abteilung"], "translation": "deren"}, 
     {"vocabulary": "are", "suggestions": ["aufgefallen", "geherzt", "elektrisch"], "translation": "bist"}, 

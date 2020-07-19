@@ -1,5 +1,6 @@
 UPDATE users SET profile_pic_url = 'uploads/trump.jpg' WHERE user_id = 1;
 UPDATE users SET profile_pic_url = 'uploads/christopher.jpg' WHERE user_id = 2;
+UPDATE users SET profile_pic_url = 'uploads/ben.jpg' WHERE user_id = 3;
 UPDATE users SET profile_pic_url = 'uploads/clara.jpeg' WHERE user_id = 4;
 UPDATE users SET profile_pic_url = 'uploads/men1.jpg' WHERE user_id = 6;
 UPDATE users SET profile_pic_url = 'uploads/women.jpg' WHERE user_id = 7;
