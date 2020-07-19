@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 function MetricView({ questions, results, disablePadding }) {
   const classes = useStyles();
 
-  const resultsList = Object.keys(results).map((k) => ({ date: timeElapsed(k), ...results[k] }));
+  const resultsList = results.map((r) => ({ ...r, date: timeElapsed(r.date) }));
 
   const formatQ = (questions) => {
     const lb = 80;

@@ -277,7 +277,15 @@ async function viewMetricsHandler(req, res) {
     const { user_id } = req.authData.user;
     const quiz_id = req.query.quiz_id;
 
-    const { bestRun, metrics } = await fetchMetrics(user_id, quiz_id);
+    let { bestRun, metrics } = await fetchMetrics(user_id, quiz_id);
+
+    const metricKeys = Object.keys(metrics)
+      .map((v) => new Date(v))
+      .sort()
+      .reverse();
+    metrics = metricKeys.map((v) => {
+      return { date: v, ...metrics[v] };
+    });
 
     res.status(200).json({ bestRun, metrics });
   } catch (err) {

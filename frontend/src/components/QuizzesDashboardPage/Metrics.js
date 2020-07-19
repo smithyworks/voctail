@@ -10,7 +10,7 @@ function Metrics({ onClose, open, quiz }) {
     onClose();
   };
 
-  const [results, setResults] = useState({});
+  const [results, setResults] = useState([]);
   useEffect(() => {
     if (quiz.quiz_id !== undefined) {
       api
