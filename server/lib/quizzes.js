@@ -289,7 +289,7 @@ async function viewMetricsHandler(req, res) {
 async function quizzesMetricsHandler(req, res) {
   //wrong, taken, total, percentageTaken, percentageTotal, unknowns
   try {
-    const { user_id } = req.authData.user;
+    const { user_id } = req.query;
 
     //sorted by date desc - only taken quizzes appear -> metrics != null as well
     const {

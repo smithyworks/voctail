@@ -42,22 +42,12 @@ function Header({ children, onClick }) {
   );
 }
 
-function DocumentRow({ id, title, author, header, publisher, user }) {
+function DocumentRow({ title, author, header, publisher, last_seen }) {
   const classes = useStyles();
 
   let title_val, author_val, duration_val, publisher_val;
 
   const [pub, setPub] = useState("");
-  const [lastSeen, setLastSeen] = useState();
-
-  function getLastSeen(documentId) {
-    api
-      .getLastSeen(user.userId, documentId)
-      .then((res) => {
-        if (res) setLastSeen(res.data[0].last_seen);
-      })
-      .catch((err) => console.log(err));
-  }
 
   if (header) {
     title_val = <Header>Title</Header>;
@@ -65,11 +55,10 @@ function DocumentRow({ id, title, author, header, publisher, user }) {
     publisher_val = <Header>Publisher</Header>;
     duration_val = <Header>Last Seen</Header>;
   } else {
-    getLastSeen(id);
     let d = <Grey>never</Grey>;
 
-    if (lastSeen) {
-      const { days, hours, minutes } = timediff(new Date(lastSeen), new Date(), "DHm");
+    if (last_seen) {
+      const { days, hours, minutes } = timediff(new Date(last_seen), new Date(), "DHm");
       d = "";
       if (days > 0 || hours > 0 || minutes > 0) {
         if (days > 0) d += `${hours} d `;
@@ -100,7 +89,6 @@ function DocumentRow({ id, title, author, header, publisher, user }) {
       <TableCell className={classes.cell}> {title_val}</TableCell>
       <TableCell className={classes.cell}>{author_val}</TableCell>
       <TableCell className={classes.cell}>{publisher_val}</TableCell>
-
       <TableCell align="right" className={classes.cell}>
         {duration_val}
       </TableCell>

@@ -137,7 +137,7 @@ function ProfilePage() {
         </ProfileSection>
 
         <ProfileSection title="Quizzes">
-          <QuizMetrics />
+          <QuizMetrics userId={user.user_id} />
         </ProfileSection>
 
         <ProfileSection title="Documents History">

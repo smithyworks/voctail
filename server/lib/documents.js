@@ -59,6 +59,22 @@ async function documentDataHandler(req, res) {
   }
 }
 
+async function documentMetricsHandler(req, res) {
+  try {
+    const user_id = req.query.user;
+    const {
+      rows: documents,
+    } = await query(
+      "SELECT * FROM documents INNER JOIN users_documents ON documents.document_id = users_documents.document_id WHERE users_documents.user_id=$1 ORDER BY users_documents.last_seen DESC",
+      [user_id]
+    );
+    res.status(200).json({ documents });
+  } catch (err) {
+    log(err);
+    res.status(500).send("Something went wrong while fetching documents.");
+  }
+}
+
 async function deleteDocument(req, res) {
   try {
     const { document_id } = req.body;
@@ -239,23 +255,6 @@ async function viewedDocumentNowHandler(req, res) {
   }
 }
 
-async function getDocumentLastSeen(req, res) {
-  try {
-    const user_id = req.query.user;
-    const document_id = req.query.document;
-    const {
-      rows,
-    } = await query(
-      "SELECT last_seen FROM users_documents WHERE users_documents.document_id=$1 AND users_documents.user_id=$2",
-      [document_id, user_id]
-    );
-    res.status(200).json(rows);
-  } catch (err) {
-    log(err);
-    res.status(500).send("Something went wrong.");
-  }
-}
-
 async function calcDocumentFit(req, res) {
   try {
     const { user_id } = req.authData.user;
@@ -300,6 +299,6 @@ module.exports = {
   editDocument,
   documentTitleHandler,
   viewedDocumentNowHandler,
-  getDocumentLastSeen,
   calcDocumentFit,
+  documentMetricsHandler,
 };

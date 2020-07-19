@@ -64,6 +64,81 @@ function Classrooms() {
 
   return (
     <AppPage location="classrooms" id="classrooms-saved-page">
+      {classroomAsStudentDataFromDatabase.length !== 0 && (
+        <ClassroomSection title="My Classrooms as a Student" description="Your classrooms as a student">
+          {classroomAsStudentDataFromDatabase.map((tile) => (
+            <React.Fragment key={tile.classroom_id}>
+              <ClassroomTile
+                isOwned
+                title={tile.title}
+                teacher={tile.classroom_owner}
+                topic={tile.topic}
+                linkTo={"/classrooms/" + tile.classroom_id}
+                classroomDataFromDatabase={classroomDataFromDatabase}
+                setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+                onDelete={() => {
+                  deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                }}
+                onRename={(newTitle) => {
+                  renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                }}
+              />
+            </React.Fragment>
+          ))}
+        </ClassroomSection>
+      )}
+
+      {classroomAsTeacherDataFromDatabase.length !== 0 && (
+        <ClassroomSection
+          title="My Classrooms as a Teacher"
+          description="Your classrooms as a teacher"
+          Button={
+            <VTIconFlexButton
+              toolTipLabel={
+                user.premium ? "Create a classroom" : "Creating classrooms is only available in Voctail Premium"
+              }
+              onClick={user.premium ? () => setOpenCreateForm(true) : () => setGoPremium(true)}
+              voctailDisabled={!user.premium}
+              aria-label="new-classroom"
+            />
+          }
+        >
+          <ClassroomCreateFormDialog
+            openCreateForm={openCreateForm}
+            closeCreateForm={() => setOpenCreateForm(false)}
+            user={user.user_id}
+            newTitle={newTitle}
+            setNewTitle={setNewTitle}
+            newTopic={newTopic}
+            setNewTopic={setNewTopic}
+            newDescription={newDescription}
+            setNewDescription={setNewDescription}
+            classroomDataFromDatabase={classroomDataFromDatabase}
+            setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+            classroomAsTeacherDataFromDatabase={classroomAsTeacherDataFromDatabase}
+            setClassroomAsTeacherDataFromDatabase={setClassroomAsTeacherDataFromDatabase}
+          />
+          {classroomAsTeacherDataFromDatabase.map((tile) => (
+            <React.Fragment key={tile.classroom_id}>
+              <ClassroomTile
+                isOwned
+                title={tile.title}
+                teacher={tile.classroom_owner}
+                topic={tile.topic}
+                linkTo={"/classrooms/" + tile.classroom_id}
+                classroomDataFromDatabase={classroomDataFromDatabase}
+                setClassroomDataFromDatabase={setClassroomDataFromDatabase}
+                onDelete={() => {
+                  deleteClassroom(tile.classroom_id, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                }}
+                onRename={(newTitle) => {
+                  renameClassroom(tile.classroom_id, newTitle, classroomDataFromDatabase, setClassroomDataFromDatabase);
+                }}
+              />
+            </React.Fragment>
+          ))}
+        </ClassroomSection>
+      )}
       <ClassroomSection title="My Classrooms as a Student" invisible={classroomAsStudentDataFromDatabase.length === 0}>
         {classroomAsStudentDataFromDatabase.map((tile) => (
           <React.Fragment key={tile.classroom_id}>

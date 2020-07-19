@@ -137,6 +137,11 @@
       "backgroundColor": "#d43131"
     }
   },
+  "quizActionButton": {
+    "general": {
+      "opacity": "0.7"
+    }
+  },
   "quizChoiceButton": {
     "neutral": {
       "color": "lightseagreen",

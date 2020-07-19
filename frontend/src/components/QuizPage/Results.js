@@ -14,7 +14,6 @@ const useStyles = makeStyles({
   resultsContainer: {
     height: "85%",
     width: "100%",
-    //textAlign:"center",
     position: "relative",
     overflow: "hidden",
   },
@@ -29,6 +28,16 @@ const useStyles = makeStyles({
   nav: {
     height: "15%",
     width: "100%",
+  },
+  text: {
+    fontSize: "22px",
+    fontWeight: "lighter",
+  },
+  noResult: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
   },
 });
 
@@ -55,54 +64,64 @@ export function Results({ onReport, onRetake, base }) {
 }
 
 export function ResultsTable({ onReport, className }) {
+  const classes = useStyles();
   const results = onReport();
   console.log("Results", onReport());
   console.log(className);
   return (
     <div className={className}>
-      <Table>
-        <TableBody>
-          <TableRow>
-            <TableCell align="right">
-              <T variant={"h5"}>Your score:</T>
-            </TableCell>
-            <TableCell align="right">
-              <T variant={"h5"}>(taken)</T>
-            </TableCell>
-            <TableCell align="right">
-              <T variant={"h5"}>
-                {results.taken > 0
-                  ? results.taken - results.wrong + "/" + results.taken + "  ( " + results.percentageTaken + "% )"
-                  : "  Answer at least one question."}
-              </T>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell />
-            <TableCell align="right">
-              <T variant={"h5"}>(total)</T>
-            </TableCell>
-            <TableCell align="right">
-              <T variant={"h5"}>
-                {results.taken > 0
-                  ? results.taken - results.wrong + "/" + results.total + "  ( " + results.percentageTotal + "% )"
-                  : "  Answer at least one question."}
-              </T>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell align="right">
-              <T variant={"h5"}>Words to recap:</T>
-            </TableCell>
-            <TableCell />
-            <TableCell align="right">
-              <T variant={"h5"}>
-                {results.unknowns.length > 0 ? results.unknowns.join(", ") : "Good job. Nothing to recap."}
-              </T>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      {results.taken > 0 ? (
+        <Table>
+          <colgroup>
+            <col style={{ width: "25%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "60%" }} />
+          </colgroup>
+          <TableBody>
+            <TableRow>
+              <TableCell align="left">
+                <T className={classes.text}>Your score:</T>
+              </TableCell>
+              <TableCell align="left">
+                <T className={classes.text}>(taken)</T>
+              </TableCell>
+              <TableCell align="right">
+                <T className={classes.text}>
+                  {results.taken - results.wrong + "/" + results.taken + "  ( " + results.percentageTaken + "% )"}
+                </T>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell />
+              <TableCell align="left">
+                <T className={classes.text}>(total)</T>
+              </TableCell>
+              <TableCell align="right">
+                <T className={classes.text}>
+                  {results.taken - results.wrong + "/" + results.total + "  ( " + results.percentageTotal + "% )"}
+                </T>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell align="left">
+                <T className={classes.text}>{results.unknowns.length > 0 ? "Words to recap:" : undefined}</T>
+              </TableCell>
+              <TableCell />
+              <TableCell align="right">
+                <T className={classes.text}>
+                  {results.unknowns.length > 0 ? results.unknowns.join(", ") : "Good job. Nothing to recap."}
+                </T>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      ) : (
+        <div className={classes.noResult}>
+          <T className={classes.text} align={"center"}>
+            Answer at least one question.
+          </T>
+        </div>
+      )}
     </div>
   );
 }

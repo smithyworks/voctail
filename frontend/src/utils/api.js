@@ -73,8 +73,8 @@ export function fetchQuizzesByCategory() {
 export function fetchQuizMetrics(quiz_id) {
   return axios.get(`${base}/quiz-metrics`, { params: { quiz_id: quiz_id } });
 }
-export function fetchQuizzesMetrics() {
-  return axios.get(`${base}/quizzes-metrics`);
+export function fetchQuizzesMetrics(user_id) {
+  return axios.get(`${base}/quizzes-metrics`, { params: { user_id: user_id } });
 }
 export function deleteQuiz(quiz_id) {
   return axios.post(`${base}/delete-quiz`, { quiz_id });
@@ -126,8 +126,8 @@ export function viewedDocumentNow(document_id) {
   return axios.post(`${base}/viewed-document-now`, { document_id });
 }
 
-export function getLastSeen(user_id, document_id) {
-  return axios.get(`${base}/get-last-seen`, { params: { user: user_id, document: document_id } });
+export function getDocumentMetrics(user_id) {
+  return axios.get(`${base}/get-document-metrics`, { params: { user: user_id } });
 }
 
 export function calcDocumentFit(document_id) {

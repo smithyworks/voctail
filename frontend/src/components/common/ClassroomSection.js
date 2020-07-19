@@ -24,6 +24,10 @@ const useStyles = makeStyles({
     marginLeft: "initial",
     marginTop: "-5px",
   },
+
+  sectionHeader: {
+    height: 60,
+  },
 });
 
 function ClassroomSection({ title, children, Button, invisible }) {
@@ -32,7 +36,7 @@ function ClassroomSection({ title, children, Button, invisible }) {
   if (!invisible) {
     return (
       <Paper elevation={0} className={classes.paper}>
-        <Grid container justify="space-between" direction="row" alignItems="center">
+        <Grid container justify="space-between" direction="row" alignItems="center" className={classes.sectionHeader}>
           <Grid style={{ paddingLeft: "10px" }}>
             <Typography variant="h5" className={classes.title}>
               {title}

@@ -6,12 +6,12 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  TextField,
 } from "@material-ui/core";
 import WarningIcon from "@material-ui/icons/Warning";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { VTButton } from "../common";
+import ErrorDialogField from "../common/Dialogs/ErrorDialogField";
 
 const useStyles = makeStyles({
   title: {
@@ -38,7 +38,11 @@ function WarningDialog({ open, info }) {
     confirmInput = (
       <>
         <DialogContentText className={classes.confirmTitle}>To confirm, type "{confirmText}"</DialogContentText>
-        <TextField variant="outlined" margin="dense" onChange={(e) => setInputText(e.target.value)}></TextField>
+        <ErrorDialogField
+          variant="outlined"
+          margin="dense"
+          onChange={(e) => setInputText(e.target.value)}
+        ></ErrorDialogField>
       </>
     );
     disabled = confirmText !== inputText;

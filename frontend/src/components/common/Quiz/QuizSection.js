@@ -12,7 +12,12 @@ const useStyles = makeStyles({
     marginBottom: "20px",
   },
   title: { fontWeight: "lighter" },
-  innerContainer: {},
+  innerContainer: {
+    paddingTop: "10px",
+  },
+  header: {
+    height: "60px",
+  },
 
   expandContainer: {
     height: "200px",
@@ -35,7 +40,7 @@ const useStyles = makeStyles({
   },
 });
 
-function QuizSection({ title, children, onAdd, hasAddButton, expandable }) {
+function QuizSection({ title, children, onAdd, hasAddButton, premium, expandable }) {
   const classes = useStyles();
 
   function _onAdd(e) {
@@ -63,13 +68,20 @@ function QuizSection({ title, children, onAdd, hasAddButton, expandable }) {
 
   return (
     <Paper elevation={0} className={classes.paper}>
-      <Grid container justify="space-between" direction="row" alignItems="center">
+      <Grid container justify="space-between" direction="row" alignItems="center" className={classes.header}>
         <Grid item xs style={{ paddingLeft: "10px" }}>
           <Typography variant="h5" className={classes.title}>
             {title}
           </Typography>
         </Grid>
-        <Grid item>{!!hasAddButton && <VTIconFlexButton toolTipLabel={"Add a new Quiz"} onClick={_onAdd} />}</Grid>
+        <Grid item>
+          {!!hasAddButton &&
+            (!!premium ? (
+              <VTIconFlexButton toolTipLabel={"Add a new Quiz"} onClick={_onAdd} />
+            ) : (
+              <VTIconFlexButton voctailDisabled toolTipLabel={"Add a new Quiz"} onClick={_onAdd} />
+            ))}
+        </Grid>
       </Grid>
       <Divider />
 

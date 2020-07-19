@@ -23,20 +23,20 @@ function TranslationRow({ translation, onApprove, onReject }) {
       <TableCell>{translation.translation}</TableCell>
       <TableCell>
         {translation.pending ? (
-          <span style={{ color: "red" }}>Pending</span>
+          <span style={{ color: "#d43131" }}>Pending</span>
         ) : translation.approved ? (
-          <span style={{ color: "green" }}>Approved</span>
+          <span style={{ color: "#4fcc53" }}>Approved</span>
         ) : (
           "Rejected"
         )}
       </TableCell>
       <TableCell>
         {translation.approved ? (
-          <VTButton warning startIcon={<CrossIcon />} onClick={() => onReject(translation.translation_id)}>
+          <VTButton danger startIcon={<CrossIcon />} onClick={() => onReject(translation.translation_id)}>
             Reject
           </VTButton>
         ) : (
-          <VTButton danger startIcon={<CheckIcon />} onClick={() => onApprove(translation.translation_id)}>
+          <VTButton accept startIcon={<CheckIcon />} onClick={() => onApprove(translation.translation_id)}>
             Approve
           </VTButton>
         )}
