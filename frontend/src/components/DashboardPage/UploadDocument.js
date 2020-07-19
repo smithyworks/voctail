@@ -163,6 +163,7 @@ function UploadDocument({ refresh, publisherId, handleAddClose, open }) {
             }}
             fullWidth
           />
+
           <DialogContentText />
 
           <FormControl className={classes.formControl}>

@@ -126,8 +126,8 @@ export function viewedDocumentNow(document_id) {
   return axios.post(`${base}/viewed-document-now`, { document_id });
 }
 
-export function getLastSeen(user_id, document_id) {
-  return axios.get(`${base}/get-last-seen`, { params: { user: user_id, document: document_id } });
+export function getDocumentMetrics(user_id) {
+  return axios.get(`${base}/get-document-metrics`, { params: { user: user_id } });
 }
 
 export function calcDocumentFit(document_id) {
