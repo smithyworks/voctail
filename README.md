@@ -11,6 +11,12 @@
 
 ## Description
 
+Voctail (Vocabulary Cocktail) is a web application that allows German learners to upload a text and read it with the help of interactive English dictionary annotations. The mechanism is as follows:
+
+- A user uploads a German text to the server
+- The server then parses the text and uses [dict.cc](https://www.dict.cc)'s English-German vocabulary list to create English annotations
+- The user accesses the generated documents and hovers on words to reveal pop-ups containing the English translations
+
 This repository contains the 3 systems that make up our project: the ReactJS frontend, the NodeJS server, and the PostgreSQL database.
 
 ## Requirements
